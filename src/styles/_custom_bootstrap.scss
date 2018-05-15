@@ -1,0 +1,11 @@
+$light-color: #e6e8f4;
+
+// Array of colors from _variables.scss
+$theme-colors: (
+light: $light-color,
+dark: #323545,
+primary: #3c457d,
+secondary: #b1bbec,
+) !default;
+
+$grey-900: #323545,
