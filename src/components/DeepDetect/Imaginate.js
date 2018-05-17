@@ -61,7 +61,7 @@ export default class RightPanel extends React.Component {
         <form>
           <div className="form-row align-items-center">
             <div className="col-auto">
-              <label className="sr-only" for="inlineFormInput">Image URL</label>
+              <label className="sr-only" htmlFor="inlineFormInput">Image URL</label>
               <input type="text" className="form-control mb-2" id="inlineFormInput" placeholder="Image URL"></input>
             </div>
             <div className="col-auto">
