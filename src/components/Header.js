@@ -21,7 +21,7 @@ class Header extends React.Component {
               <ul className="list-unstyled navbar-sub-nav">
                 <li>
                   <Link to="/" className="nav-link">
-                    testing...
+                    About
                   </Link>
                 </li>
               </ul>
