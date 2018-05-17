@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
-import AboutTooltip from './AboutTooltip';
-
 @inject('commonStore')
 @observer
 class Header extends React.Component {

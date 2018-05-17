@@ -3,6 +3,9 @@ import { inject, observer } from 'mobx-react';
 import { withRouter } from 'react-router-dom'
 import { parse as qsParse } from 'query-string';
 
+import ServiceList from '../widgets/ServiceList';
+import ServiceNew from '../widgets/ServiceNew';
+
 @inject('commonStore')
 @withRouter
 @observer
@@ -57,17 +60,8 @@ export default class LeftPanel extends React.Component {
       <div className="nav-sidebar left-sidebar">
         <div className="nav-sidebar-inner-scroll">
 
-          <div className="context-header">
-            <div className="sidebar-context-title">Infra</div>
-          </div>
-
-          <div className="progress">
-            <div className="progress-bar" role="progressbar" style={{width: '25%'}} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">GPU 1</div>
-          </div>
-
-          <div className="progress">
-            <div className="progress-bar bg-warning" role="progressbar" style={{width: '75%'}} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">GPU 2</div>
-          </div>
+          <ServiceList />
+          <ServiceNew />
 
         </div>
       </div>
