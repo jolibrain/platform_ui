@@ -3,7 +3,7 @@ import agent from '../agent';
 
 const LIMIT = 10;
 
-export class ServicesStore {
+export class DeepdetectStore {
 
     @observable isLoading = false;
     @observable page = 0;
@@ -69,4 +69,4 @@ export class ServicesStore {
         }
 }
 
-export default new ServicesStore();
+export default new DeepdetectStore();

@@ -11,10 +11,12 @@ import App from './components/App';
 
 import commonStore from './stores/commonStore.js';
 import deepdetectStore from './stores/deepdetectStore.js';
+import gpuStore from './stores/gpuStore.js';
 
 const stores = {
   commonStore,
   deepdetectStore,
+  gpuStore,
 }
 
 // For easier debugging
