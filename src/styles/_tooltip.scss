@@ -1,0 +1,13 @@
+#tooltip {
+  opacity: 1;
+  margin-left:50px;
+}
+
+#tooltip .tooltip-inner {
+  text-align:left;
+}
+
+#tooltip .tooltip-inner ul {
+  padding-left: 20px;
+  list-style: none;
+}
