@@ -37,20 +37,36 @@ export default class GpuInfo extends React.Component {
     if(gpuInfo == null)
       return null;
 
-    return (
-      <div className="block">
-        <div className="context-header">
-          <div className="sidebar-context-title">Infra</div>
-        </div>
-
+    return (<div>
         {
           gpuInfo.gpus.map( (gpu, index) => {
 
-            const percent = parseInt(gpu['memory.used'] * 100 / gpu['memory.total'], 10);
+            const memoryPercent = parseInt(gpu['memory.used'] * 100 / gpu['memory.total'], 10);
+            const utilPercent = parseInt(gpu['utilization.gpu'], 10);
 
             return (
-              <div className="progress" key={`progress${index}`}>
-                <div className="progress-bar" role="progressbar" style={{width: `${percent}%`}} aria-valuenow={percent} aria-valuemin="0" aria-valuemax="100">GPU {index}</div>
+              <div key={`gpuInfo${index}`} className="block">
+                <div className="context-header">
+                  <div className="sidebar-context-title">GPU {index}</div>
+                </div>
+                <div className="progress">
+                  <div className="progress-bar" role="progressbar" style={{width: `${memoryPercent}%`}} aria-valuenow={memoryPercent} aria-valuemin="0" aria-valuemax="100">Memory {index}</div>
+                </div>
+                <div className="progress">
+                  <div className="progress-bar" role="progressbar" style={{width: `${utilPercent}%`}} aria-valuenow={utilPercent} aria-valuemin="0" aria-valuemax="100">Util. {index}</div>
+                </div>
+                <div className="list">
+                  <ul>
+                  {
+                    gpu.processes.map( process => {
+
+                      return (<li>
+                        {process.username} ({process.gpu_memory_usage}Mo)
+                      </li>);
+                    })
+                  }
+                  </ul>
+                </div>
               </div>
             );
           })
