@@ -4,9 +4,14 @@ import agent from '../agent';
 export class GpuStore {
 
   @observable gpuInfo = null;
+  @observable settings = {};
+
+  @action setup(configStore) {
+    this.settings = configStore.gpuInfo;
+  }
 
   $req() {
-    return agent.GpuInfo.get();
+    return agent.GpuInfo.get(this.settings);
   }
 
   @action loadGpuInfo() {

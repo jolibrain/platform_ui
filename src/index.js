@@ -10,13 +10,17 @@ import "./styles/styles.css"
 import App from './components/App';
 
 import commonStore from './stores/commonStore.js';
-import deepdetectStore from './stores/deepdetectStore.js';
+import configStore from './stores/configStore.js';
 import gpuStore from './stores/gpuStore.js';
+import deepdetectStore from './stores/deepdetectStore.js';
+import imaginateStore from './stores/imaginateStore.js';
 
 const stores = {
   commonStore,
-  deepdetectStore,
+  configStore,
   gpuStore,
+  deepdetectStore,
+  imaginateStore,
 }
 
 // For easier debugging

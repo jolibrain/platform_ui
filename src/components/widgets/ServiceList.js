@@ -3,28 +3,32 @@ import { inject, observer } from 'mobx-react';
 import { Link } from 'react-router-dom'
 
 @inject('commonStore')
+@inject('deepdetectStore')
 @observer
 export default class ServiceList extends React.Component {
 
+  componentDidMount() {
+    this.props.deepdetectStore.loadServices()
+  }
+
   render() {
+
+    const { ddStore } = this.props.deepdetectStore;
+
+    if(!ddStore)
+      return null;
+
     return (
       <div className="block list-group">
-        <Link to='/' className="list-group-item list-group-item-action d-flex justify-content-between align-items-center active">
-          Cras justo odio
-          <span className="badge badge-light badge-pill">14</span>
-        </Link>
-        <Link to='/' className="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-          Dapibus ac facilisis in
-          <span className="badge badge-secondary badge-pill">1</span>
-        </Link>
-        <Link to='/' className="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-          Morbi leo risus
-          <span className="badge badge-primary badge-pill">12</span>
-        </Link>
-        <Link to='/' className="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-          Porta ac consectetur ac
-          <span className="badge badge-primary badge-pill">13</span>
-        </Link>
+        {
+          ddStore.services().map( (service, index) => {
+            return (
+              <Link to='/' className="list-group-item list-group-item-action d-flex justify-content-between align-items-center" key={`service-${index}`}>
+              { service.name }
+              </Link>
+            );
+          })
+        }
       </div>
     );
   }

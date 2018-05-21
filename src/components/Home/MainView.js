@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 import { parse as qsParse } from 'query-string';
 
 import RightPanel from './RightPanel';
-import Imaginate from '../DeepDetect/Imaginate';
+import Imaginate from '../widgets/Imaginate';
 
 @inject('commonStore')
 @withRouter

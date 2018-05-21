@@ -1,72 +1,51 @@
 import { observable, action, computed } from 'mobx';
 import agent from '../agent';
 
-const LIMIT = 10;
+export class deepdetectStore {
 
-export class DeepdetectStore {
+  @observable isLoading = false;
+  @observable servicesRegistry = observable.map();
+  @observable service = null;
 
-    @observable isLoading = false;
-    @observable page = 0;
-    @observable totalPagesCount = 0;
-    @observable servicesRegistry = observable.map();
-    @observable predicate = {};
+  @observable settings = {};
 
-    @computed get services() {
-          return this.servicesRegistry.values();
-        };
+  @action setup(configStore) {
+    this.settings = configStore.deepdetect;
+  }
 
-    @action setPage(page) {
-          this.page = page;
-        }
+  @computed get services() {
+    return this.servicesRegistry.values();
+  };
 
-    clear() {
-          this.servicesRegistry.clear();
-          this.page = 0;
-        }
+  @action setService(service) {
+    this.service = service;
+  }
 
-    $req() {
-          return agent.Deepdetect.services(this.page, LIMIT, this.predicate);
-        }
+  clear() {
+    this.servicesRegistry.clear();
+  }
 
-    @action loadServices() {
-          this.isLoading = true;
-          return this.$req()
-            .then(action(({ services, servicesCount }) => {
-                      this.servicesRegistry.clear();
-                      services.forEach(service => this.servicesRegistry.set(service.name, service));
-                      this.totalPagesCount = Math.ceil(servicesCount / LIMIT);
-                    }))
-            .finally(action(() => { this.isLoading = false; }));
-        }
+  $reqInfo() {
+    return agent.Deepdetect.info(this.settings);
+  }
 
-    @action loadArticle(slug, { acceptCached = false } = {}) {
-          if (acceptCached) {
-                  const article = this.getArticle(slug);
-                  if (article) return Promise.resolve(article);
-                }
-          this.isLoading = true;
-          return agent.Deepdetect.service(slug)
-            .then(action(({ article }) => {
-                      this.servicesRegistry.set(article.slug, article);
-                      return article;
-                    }))
-            .finally(action(() => { this.isLoading = false; }));
-        }
+  $reqPutService(name, data) {
+    return agent.Deepdetect.putService(this.settings, name, data);
+  }
 
+  @action async loadServices() {
+    const info = await this.$reqInfo();
+    console.log(info);
+    //    info.services.forEach( (service, index) => {
+    //      this.servicesRegistry.push(service);
+    //    });
+  }
 
-    @action createService(service) {
-          return agent.Deepdetect.createService(service)
-            .then(({ service }) => {
-                      this.servicesRegistry.set(service.name, service);
-                      return service;
-                    })
-        }
+  @action async newService(name, data) {
+    await this.$reqPutService(name, data);
+    this.loadServices();
+  }
 
-    @action deleteArticle(slug) {
-          this.servicesRegistry.delete(slug);
-          return agent.Deepdetect.deleteService(slug)
-            .catch(action(err => { this.loadServices(); throw err; }));
-        }
 }
 
-export default new DeepdetectStore();
+export default new deepdetectStore();

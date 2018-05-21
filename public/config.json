@@ -1,0 +1,34 @@
+{
+  "deepdetect": {
+    "server": {
+      "host": "10.10.77.61",
+      "port": 8700
+    },
+    "services": {
+      "defaultConfig": {
+        "description": "example classification service",
+        "model": {
+          "repository": "/home/me/models/example",
+          "templates": "../templates/caffe"
+        },
+        "mllib": "caffe",
+        "parameters": {
+          "input": { "connector": "txt" },
+          "mllib": { "nclasses": 20 },
+          "output": {}
+        }
+      }
+    }
+  },
+  "imaginate": {
+    "initImages": [
+      "http://www.latimes.com/resizer/_UFdhbRRNmTGfcyG7bvSxemgUeg=/1200x675/arc-anglerfish-arc2-prod-tronc.s3.amazonaws.com/public/YARI3W45EZAENOOWORQBMDLCIY.jpg",
+      "http://www.latimes.com/resizer/IA9IhUJi4yS1y1YQ48TP72zKY_Y=/1200x900/www.trbimg.com/img-5a734583/turbine/la-fo-dr-macro-lager-beer-20180203",
+      "https://i.imgur.com/oBbmiaA.jpg"
+    ]
+  },
+  "gpuInfo": {
+    "gpuStatServer": "http://10.10.77.61:12345",
+    "refreshRate": 5000
+  }
+}

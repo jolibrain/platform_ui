@@ -1,6 +1,6 @@
 import superagentPromise from 'superagent-promise';
 import _superagent from 'superagent';
-//import DD from 'deepdetect-js';
+import DD from 'deepdetect-js';
 
 const superagent = superagentPromise(_superagent, global.Promise);
 
@@ -14,17 +14,27 @@ const handleErrors = err => {
 const responseBody = res => res.body;
 
 /* ====
+ * json config
+ * ====
+ */
+
+const Config = {
+  get: (path = 'config.json') =>
+  superagent
+  .get(path)
+  .end(handleErrors)
+  .then(responseBody),
+};
+
+/* ====
  * gpustats
  * ====
  */
 
-// gpustat server on eris
-const GPUSTAT_SERVER = 'http://10.10.77.61:12345';
-
 const GpuInfo = {
-  get: () =>
+  get: (settings) =>
   superagent
-  .get(GPUSTAT_SERVER)
+  .get(settings.gpuStatServer)
   .end(handleErrors)
   .then(responseBody),
 };
@@ -34,22 +44,22 @@ const GpuInfo = {
  * ====
  */
 
-//const dd = new DD({path: 'api'});
-//
-//const Deepdetect = {
-//  info: () =>
-//    dd.info(),
-//  createService: (serviceName, model, description, mllib, parametersInput, parametersMlLib, parametersOutput, type) =>
-//    dd.putService(serviceName, model, description, mllib, parametersInput, parametersMlLib, parametersOutput, type),
-//  getService: (serviceName) =>
-//    dd.getService(serviceName),
-//  deleteService: (serviceName, clear = 'lib') =>
-//    dd.deleteService(serviceName, clear),
-//};
-//
+
+const Deepdetect = {
+  info: (settings) => {
+    const dd = new DD(settings.server);
+    dd.info()
+  },
+  putService: (settings, name, data) => {
+    const dd = new DD(settings.server);
+    dd.putService(name, data);
+  },
+};
+
 
 
 export default {
+  Config,
   GpuInfo,
-  //  Deepdetect,
+  Deepdetect,
 };

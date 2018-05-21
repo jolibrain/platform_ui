@@ -1,6 +1,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 
+@inject('configStore')
 @inject('gpuStore')
 @observer
 export default class GpuInfo extends React.Component {
@@ -18,7 +19,8 @@ export default class GpuInfo extends React.Component {
   }
 
   componentDidMount() {
-    var intervalId = setInterval(this.timer.bind(this), 5000);
+    const refreshRate = this.props.configStore.gpuInfo.refreshRate;
+    var intervalId = setInterval(this.timer.bind(this), refreshRate);
     this.setState({intervalId: intervalId});
   }
 
@@ -77,9 +79,9 @@ export default class GpuInfo extends React.Component {
                 <div className="list">
                   <ul>
                   {
-                    gpu.processes.map( process => {
+                    gpu.processes.map( (process, idx) => {
 
-                      return (<li>
+                      return (<li key={idx}>
                         {process.username} ({process.gpu_memory_usage}Mo)
                       </li>);
                     })

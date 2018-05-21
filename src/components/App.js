@@ -5,7 +5,11 @@ import { inject, observer } from 'mobx-react';
 
 import Home from './Home';
 
+@inject('configStore')
 @inject('commonStore')
+@inject('gpuStore')
+@inject('deepdetectStore')
+@inject('imaginateStore')
 @withRouter
 @observer
 export default class App extends React.Component {
@@ -14,6 +18,11 @@ export default class App extends React.Component {
     if (!this.props.commonStore.token) {
       this.props.commonStore.setAppLoaded();
     }
+    this.props.configStore.loadConfig(() => {
+      this.props.gpuStore.setup(this.props.configStore);
+      this.props.deepdetectStore.setup(this.props.configStore);
+      this.props.imaginateStore.setup(this.props.configStore);
+    });
   }
 
   componentDidMount() {
@@ -24,7 +33,9 @@ export default class App extends React.Component {
   }
 
   render() {
-    if (this.props.commonStore.appLoaded) {
+    if (this.props.commonStore.appLoaded &&
+        this.props.configStore.configLoaded
+    ) {
       // <Route path="/login" component={Login} />
       // <Route path="/register" component={Register} />
       // <Route path="/editor/:slug?" component={Editor} />
