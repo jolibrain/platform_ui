@@ -9,7 +9,6 @@ export class imaginateStore {
   @observable selectedIndex = 0;
 
   @action setup(configStore) {
-    console.log(configStore.imaginate);
     this.settings = configStore.imaginate;
     this.imgList = this.settings.initImages;
   }

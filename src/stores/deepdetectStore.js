@@ -4,8 +4,10 @@ import agent from '../agent';
 export class deepdetectStore {
 
   @observable isLoading = false;
-  @observable servicesRegistry = observable.map();
-  @observable service = null;
+
+  @observable services = [];
+  @observable creatingService = false;
+  @observable currentServiceIndex = -1;
 
   @observable settings = {};
 
@@ -13,16 +15,8 @@ export class deepdetectStore {
     this.settings = configStore.deepdetect;
   }
 
-  @computed get services() {
-    return this.servicesRegistry.values();
-  };
-
-  @action setService(service) {
-    this.service = service;
-  }
-
-  clear() {
-    this.servicesRegistry.clear();
+  @action setCurrentServiceIndex(currentServiceIndex) {
+    this.currentServiceIndex = currentServiceIndex;
   }
 
   $reqInfo() {
@@ -35,15 +29,20 @@ export class deepdetectStore {
 
   @action async loadServices() {
     const info = await this.$reqInfo();
-    console.log(info);
-    //    info.services.forEach( (service, index) => {
-    //      this.servicesRegistry.push(service);
-    //    });
+
+    if (info.head && info.head.services) {
+      this.services = info.head.services;
+    }
+
+    if (this.services.length > 0 && this.currentServiceIndex === -1)
+      this.currentServiceIndex = 0;
+
   }
 
   @action async newService(name, data) {
+    this.creatingService = true;
     await this.$reqPutService(name, data);
-    this.loadServices();
+    this.creatingService = false;
   }
 
 }

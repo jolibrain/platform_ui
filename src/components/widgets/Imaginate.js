@@ -9,7 +9,6 @@ import { withRouter } from 'react-router-dom'
 export default class Imaginate extends React.Component {
 
   render() {
-    console.log(this.props.imaginateStore);
     return (
       <div className='imaginate'>
 

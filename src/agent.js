@@ -48,11 +48,11 @@ const GpuInfo = {
 const Deepdetect = {
   info: (settings) => {
     const dd = new DD(settings.server);
-    dd.info()
+    return dd.info();
   },
   putService: (settings, name, data) => {
     const dd = new DD(settings.server);
-    dd.putService(name, data);
+    return dd.putService(name, data);
   },
 };
 

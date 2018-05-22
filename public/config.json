@@ -1,5 +1,6 @@
 {
   "deepdetect": {
+    "infoRefreshRate": 2000,
     "server": {
       "host": "localhost",
       "port": 18104,
