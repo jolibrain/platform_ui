@@ -1,14 +1,15 @@
 {
   "deepdetect": {
     "server": {
-      "host": "10.10.77.61",
-      "port": 8700
+      "host": "localhost",
+      "port": 18104,
+      "path": "/api"
     },
     "services": {
       "defaultConfig": {
         "description": "example classification service",
         "model": {
-          "repository": "/home/me/models/example",
+          "repository": "/data1/core_ui/models/detection_600/",
           "templates": "../templates/caffe"
         },
         "mllib": "caffe",

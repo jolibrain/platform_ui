@@ -18,7 +18,7 @@ export default class ServiceNew extends React.Component {
     this.handleConfigChange = this.handleConfigChange.bind(this);
 
     this.state = {
-      config: {},
+      config: this.props.deepdetectStore.settings.services.defaultConfig,
       inputOptions: {
         mode: 'javascript'
       }
@@ -48,28 +48,26 @@ export default class ServiceNew extends React.Component {
           <div className="sidebar-context-title">New service</div>
         </div>
 
-        <form>
-          <div className="form-row align-items-center">
+        <div className="form-row align-items-center">
 
-            <div className="col-auto">
-              <label className="sr-only" htmlFor="inlineFormInputName">Name</label>
-              <input type="text" className="form-control mb-2" id="inlineFormInputName" placeholder="Service Name" ref={this.serviceNameRef}></input>
-            </div>
-
-            <div className="col-auto">
-              <CodeMirror
-                defaultValue={JSON.stringify(settings.services.defaultConfig, null, 1)}
-                options={this.state.inputOptions}
-                onChange={this.handleConfigChange}
-              />
-            </div>
-
-            <div className="col-auto">
-              <button type="submit" className="btn btn-primary mb-2" onClick={this.submitService}>Add Service</button>
-            </div>
-
+          <div className="col-auto">
+            <label className="sr-only" htmlFor="inlineFormInputName">Name</label>
+            <input type="text" className="form-control mb-2" id="inlineFormInputName" placeholder="Service Name" ref={this.serviceNameRef}></input>
           </div>
-        </form>
+
+          <div className="col-auto">
+            <CodeMirror
+              defaultValue={JSON.stringify(settings.services.defaultConfig, null, 1)}
+              options={this.state.inputOptions}
+              onChange={this.handleConfigChange}
+            />
+          </div>
+
+          <div className="col-auto">
+            <button type="submit" className="btn btn-primary mb-2" onClick={this.submitService}>Add Service</button>
+          </div>
+
+        </div>
 
       </div>
     );
