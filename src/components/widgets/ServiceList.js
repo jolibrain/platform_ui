@@ -54,9 +54,9 @@ export default class ServiceList extends React.Component {
         {
           services.map( (service, index) => {
             return (
-              <span className={`list-group-item list-group-item-action d-flex justify-content-between align-items-center ${ currentServiceIndex === index ? 'active' : ''}`} key={`service-${index}`} onClick={this.setServiceIndex.bind(this, index)}>
+              <button className={`list-group-item list-group-item-action d-flex justify-content-between align-items-center ${ currentServiceIndex === index ? 'active' : ''}`} key={`service-${index}`} onClick={this.setServiceIndex.bind(this, index)}>
               { service.name }
-              </span>
+              </button>
             );
           })
         }

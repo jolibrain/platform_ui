@@ -1,46 +1,74 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'react-router-dom'
+import Boundingbox from 'react-bounding-box';
 
 @inject('commonStore')
 @inject('imaginateStore')
+@inject('deepdetectStore')
 @withRouter
 @observer
 export default class Imaginate extends React.Component {
 
+  constructor(props) {
+    super(props);
+
+    this.selectImage = this.selectImage.bind(this);
+    this.loadImage = this.loadImage.bind(this);
+  }
+
+  selectImage(index) {
+    const store = this.props.imaginateStore;
+    store.setSelectedImage(index);
+    this.loadImage();
+  }
+
+  loadImage() {
+    const store = this.props.imaginateStore;
+    const ddStore = this.props.deepdetectStore;
+
+    if (ddStore.currentServiceIndex === -1)
+      return null;
+
+    const service = ddStore.services[ddStore.currentServiceIndex];
+    store.predictSelectedImage(service.name);
+  }
+
   render() {
+
+    const store = this.props.imaginateStore;
+    const ddStore = this.props.deepdetectStore;
+
+    if (ddStore.currentServiceIndex === -1)
+      return null;
+
     return (
       <div className='imaginate'>
 
-        <form>
-          <div className="form-row align-items-center">
-            <div className="col-auto">
-              <label className="sr-only" htmlFor="inlineFormInput">Image URL</label>
-              <input type="text" className="form-control mb-2" id="inlineFormInput" placeholder="Image URL"></input>
-            </div>
-            <div className="col-auto">
-              <button type="submit" className="btn btn-primary mb-2">Submit</button>
-            </div>
+        <div className='row'>
+          <div className='img-list'>
+            {
+              store.imgList.map( (img, index) => {
+                return (
+                  <img
+                    src={img.url}
+                    key={`img-${index}`}
+                    className='img-block'
+                    alt=''
+                    onClick={this.selectImage.bind(this, index)}
+                  />
+                );
+              })
+            }
           </div>
-        </form>
-
-        <div className='img-list'>
-          {
-            this.props.imaginateStore.imgList.map( (url, index) => {
-              return (
-                <img
-                  src={url}
-                  key={`img-${index}`}
-                  className='img-block'
-                  alt=''
-                />
-              );
-            })
-          }
         </div>
 
-        <div className='img-display'>
-          <span></span>
+        <div className='row'>
+          <div className='img-display'>
+            <Boundingbox image={store.selectedImage.url}
+                         boxes={store.selectedImage.boxes}
+            />
+          </div>
         </div>
 
         <div className='img-results'>
@@ -50,9 +78,11 @@ export default class Imaginate extends React.Component {
         <div className="row commands">
           <div className="col-md-6">
             <span>CURL</span>
+            <code>{`curl -X POST 'http://localhost:8000/predict' -d '${JSON.stringify(store.selectedImage.postData, null, 2)}'`}</code>
           </div>
           <div className="col-md-6">
             <span>JSON Response</span>
+            <code>{JSON.stringify(store.selectedImage.json, null, 2)}</code>
           </div>
         </div>
 
