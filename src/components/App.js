@@ -9,6 +9,7 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import faPlusCircle from '@fortawesome/fontawesome-free-solid/faPlusCircle'
 import faAngleDown from '@fortawesome/fontawesome-free-solid/faAngleDown'
 import faAngleRight from '@fortawesome/fontawesome-free-solid/faAngleRight'
+import faCube from '@fortawesome/fontawesome-free-solid/faCube'
 
 import Home from './Home';
 import Service from './Service';
@@ -17,7 +18,8 @@ import ServiceNew from './ServiceNew';
 fontawesome.library.add(
   faPlusCircle,
   faAngleDown,
-  faAngleRight
+  faAngleRight,
+  faCube
 )
 
 @inject('configStore')
@@ -65,8 +67,9 @@ export default class App extends React.Component {
           <Header />
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route path="/services/new" component={ServiceNew} />
-            <Route path="/services/:serviceName" component={Service} />
+            <Route path="/predict" component={Service} />
+            <Route path="/predict/new" component={ServiceNew} />
+            <Route path="/predict/:serviceName" component={Service} />
           </Switch>
         </div>
       );

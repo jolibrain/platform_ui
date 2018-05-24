@@ -38,9 +38,9 @@ class Header extends React.Component {
 
               <ul className="list-unstyled navbar-sub-nav">
                 <li>
-                  <Link to='/services/new' style={{ textDecoration: 'none' }}>
-                    <FontAwesomeIcon icon="plus-circle" />&nbsp;
-                    Add service
+                  <Link to='/predict' style={{ textDecoration: 'none' }}>
+                    <FontAwesomeIcon icon="cube" />&nbsp;
+                    Predict
                   </Link>
                 </li>
                 <li>

@@ -32,11 +32,11 @@ export default class GpuInfoItem extends React.Component {
 
         <div>
           <span className="font-weight-bold">{index}</span>. &nbsp;
-          <span className='temp text-danger'>{gpu['temperature.gpu']}°C</span>
+          <span className='temp'>{gpu['temperature.gpu']}°C</span>
           ,&nbsp;
           <span className='util'>{utilPercent}%</span>
           ,&nbsp;
-          <span className='memUsed'>{memoryMo}</span> / <span className='memTotal'>{memoryTotal}</span> Mo
+          <span className='memUsed text-primary'>{memoryMo}</span> / <span className='memTotal text-secondary'>{memoryTotal}</span> Mo
         </div>
 
         <div

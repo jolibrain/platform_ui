@@ -52,7 +52,7 @@ export default class ServiceList extends React.Component {
             <li className={currentServiceIndex === index ? 'active' : ''}>
               <Link
                 key={`service-${index}`}
-                to={`/services/${service.name}`}>
+                to={`/predict/${service.name}`}>
                 <span className='nav-item-name'>{ service.name }</span>
               </Link>
             </li>
