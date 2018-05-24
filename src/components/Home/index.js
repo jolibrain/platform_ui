@@ -1,13 +1,9 @@
 import React from 'react';
-import { inject, observer } from 'mobx-react';
-import { withRouter } from 'react-router-dom';
+import { Timeline } from 'react-twitter-widgets'
 
 import ServiceList from '../widgets/ServiceList';
 import GpuInfo from '../widgets/GpuInfo';
 
-@inject('commonStore')
-@withRouter
-@observer
 export default class Home extends React.Component {
 
   render() {
@@ -25,6 +21,16 @@ export default class Home extends React.Component {
           </div>
 
           <div className="col-md-4">
+            <Timeline
+              dataSource={{
+                sourceType: 'profile',
+                screenName: 'jolibrain'
+              }}
+              options={{
+                username: 'Jolibrain',
+                height: '600'
+              }}
+            />
           </div>
 
         </div>
