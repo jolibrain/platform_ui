@@ -55,7 +55,8 @@ export default class App extends React.Component {
 
   render() {
     if (this.props.commonStore.appLoaded &&
-        this.props.configStore.configLoaded
+        this.props.configStore.configLoaded &&
+        this.props.deepdetectStore.servicesLoaded
     ) {
       // <Route path="/login" component={Login} />
       // <Route path="/register" component={Register} />
@@ -69,9 +70,9 @@ export default class App extends React.Component {
           <Header />
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route path="/predict" component={Service} />
-            <Route path="/predict/new" component={ServiceNew} />
             <Route path="/predict/:serviceName" component={Service} />
+            <Route path="/predict/new" component={ServiceNew} />
+            <Route path="/predict" component={Service} />
           </Switch>
         </div>
       );

@@ -4,6 +4,7 @@ import agent from '../agent';
 export class deepdetectStore {
 
   @observable isLoading = false;
+  @observable servicesLoaded = false;
 
   @observable services = [];
   @observable creatingService = false;
@@ -13,6 +14,7 @@ export class deepdetectStore {
 
   @action setup(configStore) {
     this.settings = configStore.deepdetect;
+    this.loadServices();
   }
 
   @action setCurrentServiceIndex(currentServiceIndex) {
@@ -43,6 +45,7 @@ export class deepdetectStore {
     if (this.services.length > 0 && this.currentServiceIndex === -1)
       this.currentServiceIndex = 0;
 
+    this.servicesLoaded = true;
   }
 
   @action async newService(name, data) {

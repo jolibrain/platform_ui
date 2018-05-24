@@ -9,15 +9,36 @@ import { withRouter } from 'react-router-dom';
 @withRouter
 @observer
 export default class Service extends React.Component {
-  componentWillMount() {
-    const serviceName = this.props.match.params.serviceName;
-    console.log(serviceName);
-    this.props.deepdetectStore.setCurrentService(serviceName);
+
+  constructor(props) {
+    super(props);
+
+    this.setCurrentService = this.setCurrentService.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const serviceName = nextProps.match.params.serviceName;
-    this.props.deepdetectStore.setCurrentService(serviceName);
+  setCurrentService(serviceName = null) {
+
+    if(serviceName === null) {
+      this.props.deepdetectStore.setCurrentServiceIndex(0);
+    } else {
+      this.props.deepdetectStore.setCurrentService(serviceName);
+    }
+
+  }
+
+  componentWillMount() {
+    const serviceName = this.props.match.params.serviceName;
+    this.setCurrentService(serviceName);
+  }
+
+  componentWillReceiveProps(props) {
+    const serviceName = props.match.params.serviceName;
+    this.setCurrentService(serviceName);
+  }
+
+  componentWillUpdate(props) {
+    const serviceName = props.match.params.serviceName;
+    this.setCurrentService(serviceName);
   }
 
   render() {
