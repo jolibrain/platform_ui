@@ -5,13 +5,13 @@ import { inject, observer } from 'mobx-react';
 
 import fontawesome from '@fortawesome/fontawesome'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import faPlus from '@fortawesome/fontawesome-free-solid/faPlus'
+import faPlusCircle from '@fortawesome/fontawesome-free-solid/faPlusCircle'
 
 import Home from './Home';
 import Service from './Service';
 import ServiceNew from './ServiceNew';
 
-fontawesome.library.add(faPlus)
+fontawesome.library.add(faPlusCircle)
 
 @inject('configStore')
 @inject('commonStore')

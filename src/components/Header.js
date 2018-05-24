@@ -40,7 +40,7 @@ class Header extends React.Component {
               <ul className="list-unstyled navbar-sub-nav">
                 <li>
                   <Link to='/services/new' style={{ textDecoration: 'none' }}>
-                    <FontAwesomeIcon icon="plus" />&nbsp;
+                    <FontAwesomeIcon icon="plus-circle" />&nbsp;
                     Add service
                   </Link>
                 </li>
