@@ -45,7 +45,7 @@ export default class GpuInfo extends React.Component {
     return (
       <div className='gpuinfo'>
         <h5><FontAwesomeIcon icon="tachometer-alt" /> GPU Monitoring</h5>
-        {gpuInfo.gpus.map( (gpu, index) => <GpuInfoItem index={index} gpu={gpu} />)}
+        {gpuInfo.gpus.map( (gpu, index) => <GpuInfoItem key={index} index={index} gpu={gpu} />)}
       </div>
     );
   }

@@ -11,6 +11,7 @@ import { withRouter } from 'react-router-dom';
 export default class Service extends React.Component {
   componentWillMount() {
     const serviceName = this.props.match.params.serviceName;
+    console.log(serviceName);
     this.props.deepdetectStore.setCurrentService(serviceName);
   }
 

@@ -49,7 +49,7 @@ export default class ServiceList extends React.Component {
       {
         services.map( (service, index) => {
           return (
-            <li className={currentServiceIndex === index ? 'active' : ''}>
+            <li key={`service-${index}`} className={currentServiceIndex === index ? 'active' : ''}>
               <Link
                 key={`service-${index}`}
                 to={`/predict/${service.name}`}>

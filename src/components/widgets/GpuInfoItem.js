@@ -47,7 +47,7 @@ export default class GpuInfoItem extends React.Component {
         </div>
 
         <div className="list processList" style={this.state.detailsVisible ? {} : {display: 'none'}}>
-          <table class="table table-sm">
+          <table className="table table-sm">
             <thead>
               <tr>
                 <th scope="col">User</th>
@@ -67,7 +67,7 @@ export default class GpuInfoItem extends React.Component {
               return (<tr key={idx}>
                 <td>{process.username}</td>
                 <td className='processPID'>{process.pid}</td>
-                <td><span class={`badge badge-${levelMemory}`}>{process.gpu_memory_usage}M</span></td>
+                <td><span className={`badge badge-${levelMemory}`}>{process.gpu_memory_usage}M</span></td>
               </tr>);
             })
           }
