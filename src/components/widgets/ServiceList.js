@@ -45,27 +45,21 @@ export default class ServiceList extends React.Component {
       return null;
 
     return (
-      <div className="block">
-
-        <div className="context-header">
-          <div className="sidebar-context-title">Services</div>
-        </div>
-
-        <div className="list-group">
-        {
-          services.map( (service, index) => {
-            return (
+      <ul className="serviceList sidebar-top-level-items">
+      {
+        services.map( (service, index) => {
+          return (
+            <li className={currentServiceIndex === index ? 'active' : ''}>
               <Link
                 key={`service-${index}`}
-                to={`/services/${service.name}`}
-                className={`list-group-item list-group-item-action d-flex justify-content-between align-items-center ${ currentServiceIndex === index ? 'active' : ''}`}>
-              { service.name }
+                to={`/services/${service.name}`}>
+                <span className='nav-item-name'>{ service.name }</span>
               </Link>
-            );
-          })
-        }
-        </div>
-      </div>
+            </li>
+          );
+        })
+      }
+      </ul>
     );
   }
 

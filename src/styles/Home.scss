@@ -17,35 +17,17 @@
   background-color: #fafafa;
   box-shadow: inset -2px 0 0 #e5e5e5;
   transform: translate3d(0, 0, 0);
-  padding:5px;
 }
 .left-sidebar .nav-sidebar-inner-scroll {
   overflow: hidden;
   height: 100%;
   width: 100%;
 }
-.left-sidebar .context-header {
-  position: relative;
-  margin-right: 2px;
-  width: 220px;
-}
 .nav-sidebar a {
   text-decoration: none;
 }
-.left-sidebar .context-header{
-  transition: padding 0.3s;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  padding: 10px 16px 10px 10px;
-  color: #2e2e2e;
-}
 .left-sidebar .progress {
   margin:10px
-}
-.left-sidebar .context-header .sidebar-context-title {
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .main-view.content-wrapper {
