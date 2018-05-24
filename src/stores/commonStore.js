@@ -2,7 +2,7 @@ import { observable, action, reaction } from 'mobx';
 
 class CommonStore {
 
-  @observable appName = 'DeepDetect - Core UI';
+  @observable appName = 'DeepDetect';
   @observable token = window.localStorage.getItem('token');
   @observable appLoaded = false;
 
