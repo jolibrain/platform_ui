@@ -68,6 +68,7 @@ ul.serviceList {
 .serviceList li .nav-item-name {
   flex: 1;
 }
+
 /*
  * ====
  * ServiceNew
@@ -76,4 +77,18 @@ ul.serviceList {
 
 .react-codemirror2 {
   width: 100%;
+}
+
+/*
+ * ====
+ * GpuInfo
+ * ====
+ */
+
+.gpuinfo h5 {
+  margin-top:5px;
+}
+
+.gpuinfo .block .detailsBadge {
+  cursor: pointer;
 }

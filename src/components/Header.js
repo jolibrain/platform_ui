@@ -4,7 +4,6 @@ import { inject, observer } from 'mobx-react';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
-
 @inject('commonStore')
 @observer
 class Header extends React.Component {
