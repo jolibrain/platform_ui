@@ -10,6 +10,7 @@ import faPlusCircle from '@fortawesome/fontawesome-free-solid/faPlusCircle'
 import faAngleDown from '@fortawesome/fontawesome-free-solid/faAngleDown'
 import faAngleRight from '@fortawesome/fontawesome-free-solid/faAngleRight'
 import faCube from '@fortawesome/fontawesome-free-solid/faCube'
+import faTachometer from '@fortawesome/fontawesome-free-solid/faTachometerAlt'
 
 import Home from './Home';
 import Service from './Service';
@@ -19,7 +20,8 @@ fontawesome.library.add(
   faPlusCircle,
   faAngleDown,
   faAngleRight,
-  faCube
+  faCube,
+  faTachometer
 )
 
 @inject('configStore')

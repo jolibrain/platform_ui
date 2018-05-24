@@ -1,5 +1,6 @@
 import React from 'react';
 import { Timeline } from 'react-twitter-widgets'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
 import ServiceList from '../widgets/ServiceList';
 import GpuInfo from '../widgets/GpuInfo';
@@ -12,7 +13,7 @@ export default class Home extends React.Component {
         <div className="row">
 
           <div className="col-md-4">
-            <h5>Predict</h5>
+            <h5><FontAwesomeIcon icon="cube"/> Predict</h5>
             <ServiceList />
           </div>
 

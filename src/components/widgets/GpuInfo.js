@@ -1,5 +1,6 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
 import GpuInfoItem from './GpuInfoItem';
 
@@ -43,7 +44,7 @@ export default class GpuInfo extends React.Component {
 
     return (
       <div className='gpuinfo'>
-        <h5>GPU Monitoring</h5>
+        <h5><FontAwesomeIcon icon="tachometer-alt" /> GPU Monitoring</h5>
         {gpuInfo.gpus.map( (gpu, index) => <GpuInfoItem index={index} gpu={gpu} />)}
       </div>
     );
