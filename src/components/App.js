@@ -10,6 +10,7 @@ import Home from './Home';
 @inject('gpuStore')
 @inject('deepdetectStore')
 @inject('imaginateStore')
+@inject('modalStore')
 @withRouter
 @observer
 export default class App extends React.Component {
@@ -22,6 +23,7 @@ export default class App extends React.Component {
       this.props.gpuStore.setup(this.props.configStore);
       this.props.deepdetectStore.setup(this.props.configStore);
       this.props.imaginateStore.setup(this.props.configStore);
+      this.props.modalStore.setup(this.props.configStore);
     });
   }
 

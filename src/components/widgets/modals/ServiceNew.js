@@ -1,7 +1,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 
-import CodeMirror from 'react-codemirror';
+import {Controlled as CodeMirror} from 'react-codemirror2'
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/javascript/javascript';
 
@@ -43,29 +43,28 @@ export default class ServiceNew extends React.Component {
       return null;
 
     return (
-      <div className="block">
-        <div className="context-header">
-          <div className="sidebar-context-title">New service</div>
+      <div>
+        <div className="modal-header">
+          <h5 className="modal-title">New service</h5>
         </div>
 
-        <div className="form-row align-items-center">
-
-          <div className="col-auto">
+        <div className="modal-body">
+          <div className="form-row">
             <label className="sr-only" htmlFor="inlineFormInputName">Name</label>
             <input type="text" className="form-control mb-2" id="inlineFormInputName" placeholder="Service Name" ref={this.serviceNameRef}></input>
           </div>
 
-          <div className="col-auto">
+          <div className="form-row">
             <CodeMirror
-              defaultValue={JSON.stringify(settings.services.defaultConfig, null, 1)}
+              value={JSON.stringify(settings.services.defaultConfig, null, 1)}
               options={this.state.inputOptions}
               onChange={this.handleConfigChange}
             />
           </div>
+        </div>
 
-          <div className="col-auto">
+        <div className="modal-footer">
             <button type="submit" className="btn btn-primary mb-2" onClick={this.submitService}>Add Service</button>
-          </div>
 
         </div>
 

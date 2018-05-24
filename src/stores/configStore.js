@@ -19,6 +19,8 @@ export class configStore {
     initImages: []
   };
 
+  @observable modals = [];
+
   $req(path) {
     return agent.Config.get();
   }
@@ -30,6 +32,7 @@ export class configStore {
         this.gpuInfo = config.gpuInfo;
         this.deepdetect = config.deepdetect;
         this.imaginate = config.imaginate;
+        this.modals = config.modals;
         callback();
       }));
   }

@@ -14,6 +14,7 @@ import configStore from './stores/configStore.js';
 import gpuStore from './stores/gpuStore.js';
 import deepdetectStore from './stores/deepdetectStore.js';
 import imaginateStore from './stores/imaginateStore.js';
+import modalStore from './stores/modalStore.js';
 
 const stores = {
   commonStore,
@@ -21,6 +22,7 @@ const stores = {
   gpuStore,
   deepdetectStore,
   imaginateStore,
+  modalStore,
 }
 
 // For easier debugging

@@ -54,9 +54,9 @@ export default class GpuInfo extends React.Component {
                 <div className="context-header">
                   <div className="sidebar-context-title">[{index}] {gpu.name}</div>
                   <p>
-                    <span class='temp'>{gpu['temperature.gpu']}°C</span>, <span className='util'>{utilPercent}%</span>
+                    <span className='temp'>{gpu['temperature.gpu']}°C</span>, <span className='util'>{utilPercent}%</span>
                     <br/>
-                    <span class='memUsed'>{memoryMo}</span> / <span className='memTotal'>{memoryTotal}</span> Mo
+                    <span className='memUsed'>{memoryMo}</span> / <span className='memTotal'>{memoryTotal}</span> Mo
                   </p>
                 </div>
 

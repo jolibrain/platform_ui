@@ -4,7 +4,6 @@ import { withRouter } from 'react-router-dom'
 import { parse as qsParse } from 'query-string';
 
 import ServiceList from '../widgets/ServiceList';
-import ServiceNew from '../widgets/ServiceNew';
 
 @inject('commonStore')
 @withRouter
@@ -61,7 +60,6 @@ export default class LeftPanel extends React.Component {
         <div className="nav-sidebar-inner-scroll">
 
           <ServiceList />
-          <ServiceNew />
 
         </div>
       </div>

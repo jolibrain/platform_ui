@@ -1818,6 +1818,10 @@ codemirror@^5.18.2:
   version "5.37.0"
   resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.37.0.tgz#c349b584e158f590277f26d37c2469a6bc538036"
 
+codemirror@^5.38.0:
+  version "5.38.0"
+  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.38.0.tgz#26a9551446e51dbdde36aabe60f72469724fd332"
+
 coffee-script@^1.6.3:
   version "1.12.7"
   resolved "https://registry.yarnpkg.com/coffee-script/-/coffee-script-1.12.7.tgz#c05dae0cb79591d05b3070a8433a98c9a89ccc53"
@@ -6870,6 +6874,13 @@ react-app-rewired@^1.5.2:
     cross-spawn "^5.1.0"
     dotenv "^4.0.0"
 
+react-bootstrap4-modal@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/react-bootstrap4-modal/-/react-bootstrap4-modal-1.3.0.tgz#59df5c21652fa007f54017c6b9cd496e6b2dafc1"
+  dependencies:
+    classnames "^2.2.5"
+    prop-types "^15.5.10"
+
 react-bootstrap@^0.32.1:
   version "0.32.1"
   resolved "https://registry.yarnpkg.com/react-bootstrap/-/react-bootstrap-0.32.1.tgz#60624c1b48a39d773ef6cce6421a4f33ecc166bb"
@@ -6894,12 +6905,9 @@ react-bootstrap@^0.32.1:
     prop-types "^15.6.1"
     seedrandom "^2.4.3"
 
-"react-bounding-box@file:/home/alx/code/react-bounding-box/":
-  version "0.2.1"
-  dependencies:
-    babel-runtime "^6.11.6"
-    prop-types "^15.6.1"
-    seedrandom "^2.4.3"
+react-codemirror2@^5.0.2:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/react-codemirror2/-/react-codemirror2-5.0.2.tgz#f4fce815487fc9d29aa123994c185570520bf54b"
 
 react-codemirror@^1.0.0:
   version "1.0.0"
