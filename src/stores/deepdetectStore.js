@@ -19,6 +19,12 @@ export class deepdetectStore {
     this.currentServiceIndex = currentServiceIndex;
   }
 
+  @action setCurrentService(serviceName) {
+    this.currentServiceIndex = this.services.findIndex( service => {
+      return service.name === serviceName;
+    });
+  }
+
   $reqInfo() {
     return agent.Deepdetect.info(this.settings);
   }

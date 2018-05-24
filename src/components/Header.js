@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+
 
 @inject('commonStore')
 @observer
@@ -36,6 +38,12 @@ class Header extends React.Component {
               </h1>
 
               <ul className="list-unstyled navbar-sub-nav">
+                <li>
+                  <Link to='/services/new' style={{ textDecoration: 'none' }}>
+                    <FontAwesomeIcon icon="plus" />&nbsp;
+                    Add service
+                  </Link>
+                </li>
                 <li>
                   <OverlayTrigger placement='bottom' overlay={tooltip}>
 										<a className='nav-link'>

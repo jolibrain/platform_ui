@@ -49,16 +49,18 @@ export default class ServiceList extends React.Component {
 
         <div className="context-header">
           <div className="sidebar-context-title">Services</div>
-          <Link to='/service' className='btn btn-primary btn-sm'>New Service</Link>
         </div>
 
         <div className="list-group">
         {
           services.map( (service, index) => {
             return (
-              <button className={`list-group-item list-group-item-action d-flex justify-content-between align-items-center ${ currentServiceIndex === index ? 'active' : ''}`} key={`service-${index}`} onClick={this.setServiceIndex.bind(this, index)}>
+              <Link
+                key={`service-${index}`}
+                to={`/services/${service.name}`}
+                className={`list-group-item list-group-item-action d-flex justify-content-between align-items-center ${ currentServiceIndex === index ? 'active' : ''}`}>
               { service.name }
-              </button>
+              </Link>
             );
           })
         }

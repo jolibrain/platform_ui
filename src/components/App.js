@@ -3,8 +3,15 @@ import React from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 
+import fontawesome from '@fortawesome/fontawesome'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import faPlus from '@fortawesome/fontawesome-free-solid/faPlus'
+
 import Home from './Home';
 import Service from './Service';
+import ServiceNew from './ServiceNew';
+
+fontawesome.library.add(faPlus)
 
 @inject('configStore')
 @inject('commonStore')
@@ -51,7 +58,8 @@ export default class App extends React.Component {
           <Header />
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route path="/service" component={Service} />
+            <Route path="/services/new" component={ServiceNew} />
+            <Route path="/services/:serviceName" component={Service} />
           </Switch>
         </div>
       );

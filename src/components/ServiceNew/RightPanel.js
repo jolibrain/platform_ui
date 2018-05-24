@@ -3,13 +3,12 @@ import { inject, observer } from 'mobx-react';
 import { withRouter } from 'react-router-dom'
 import { parse as qsParse } from 'query-string';
 
-import RightPanel from './RightPanel';
-import Imaginate from '../widgets/Imaginate';
+import GpuInfo from '../widgets/GpuInfo';
 
 @inject('commonStore')
 @withRouter
 @observer
-export default class MainView extends React.Component {
+export default class RightPanel extends React.Component {
 
   componentWillMount() {
     //this.props.articlesStore.setPredicate(this.getPredicate());
@@ -57,14 +56,11 @@ export default class MainView extends React.Component {
 
   render() {
     return (
-      <div className="main-view content-wrapper">
-        <div className="container-fluid">
-          <div className="content">
-            <Imaginate />
-            <RightPanel />
-          </div>
+      <aside className="right-sidebar right-sidebar right-sidebar-expanded">
+        <div className="issuable-sidebar">
+          <GpuInfo />
         </div>
-      </div>
+      </aside>
     );
   }
 };

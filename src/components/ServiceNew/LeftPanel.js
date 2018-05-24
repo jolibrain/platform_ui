@@ -3,13 +3,12 @@ import { inject, observer } from 'mobx-react';
 import { withRouter } from 'react-router-dom'
 import { parse as qsParse } from 'query-string';
 
-import RightPanel from './RightPanel';
-import Imaginate from '../widgets/Imaginate';
+import ServiceList from '../widgets/ServiceList';
 
 @inject('commonStore')
 @withRouter
 @observer
-export default class MainView extends React.Component {
+export default class LeftPanel extends React.Component {
 
   componentWillMount() {
     //this.props.articlesStore.setPredicate(this.getPredicate());
@@ -57,12 +56,11 @@ export default class MainView extends React.Component {
 
   render() {
     return (
-      <div className="main-view content-wrapper">
-        <div className="container-fluid">
-          <div className="content">
-            <Imaginate />
-            <RightPanel />
-          </div>
+      <div className="nav-sidebar left-sidebar">
+        <div className="nav-sidebar-inner-scroll">
+
+          <ServiceList />
+
         </div>
       </div>
     );

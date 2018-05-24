@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 import { parse as qsParse } from 'query-string';
 
 import RightPanel from './RightPanel';
-import Imaginate from '../widgets/Imaginate';
+import ServiceNew from '../widgets/ServiceNew';
 
 @inject('commonStore')
 @withRouter
@@ -60,7 +60,7 @@ export default class MainView extends React.Component {
       <div className="main-view content-wrapper">
         <div className="container-fluid">
           <div className="content">
-            <Imaginate />
+            <ServiceNew />
             <RightPanel />
           </div>
         </div>
