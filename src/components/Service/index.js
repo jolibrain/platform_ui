@@ -9,6 +9,11 @@ import { withRouter } from 'react-router-dom';
 @withRouter
 @observer
 export default class Service extends React.Component {
+  componentWillMount() {
+    const serviceName = this.props.match.params.serviceName;
+    this.props.deepdetectStore.setCurrentService(serviceName);
+  }
+
   componentWillReceiveProps(nextProps) {
     const serviceName = nextProps.match.params.serviceName;
     this.props.deepdetectStore.setCurrentService(serviceName);
