@@ -30,6 +30,7 @@ class Header extends React.Component {
           <div className="header-content">
 
             <div className="title-container">
+
               <h1 className="title">
                 <Link to="/">
                   {this.props.commonStore.appName.toLowerCase()}
@@ -43,15 +44,20 @@ class Header extends React.Component {
                     Predict
                   </Link>
                 </li>
-                <li>
-                  <OverlayTrigger placement='bottom' overlay={tooltip}>
-										<a className='nav-link'>
-											About
-										</a>
-									</OverlayTrigger>
-                </li>
               </ul>
 
+            </div>
+
+            <div className="navbar-collapse d-flex justify-content-end">
+              <ul className="nav nabar-nav">
+                <li>
+                  <OverlayTrigger placement='bottom' overlay={tooltip}>
+                    <a className='nav-link mr-sm-2'>
+                      About
+                    </a>
+                  </OverlayTrigger>
+                </li>
+              </ul>
             </div>
 
           </div>

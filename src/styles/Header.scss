@@ -38,6 +38,7 @@
   position: relative;
   min-height: 40px;
   padding-left: 0;
+  width: 100%;
 }
 
 .header.navbar .header-content .title-container {
@@ -83,7 +84,7 @@
 }
 .header.navbar .nav > li {
 }
-.navbar-sub-nav > li > a, .navbar-nav > li > a {
+.navbar-sub-nav > li > a, .navbar-nav > li > a, a.nav-link {
   display: -webkit-flex;
   display: flex;
   align-items: center;
@@ -95,4 +96,11 @@
   height: 32px;
   font-weight: 600;
   color: $light-color !important;
+}
+
+.navbar-nav {
+  float: left;
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
 }
