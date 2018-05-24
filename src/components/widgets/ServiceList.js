@@ -1,10 +1,9 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import Modal from 'react-bootstrap4-modal';
+import { Link } from 'react-router-dom'
 
 @inject('commonStore')
 @inject('deepdetectStore')
-@inject('modalStore')
 @observer
 export default class ServiceList extends React.Component {
 
@@ -16,7 +15,6 @@ export default class ServiceList extends React.Component {
     };
 
     this.setServiceIndex = this.setServiceIndex.bind(this);
-    this.openServiceNewModal = this.openServiceNewModal.bind(this);
     this.timer();
   }
 
@@ -38,10 +36,6 @@ export default class ServiceList extends React.Component {
     this.props.deepdetectStore.setCurrentServiceIndex(index);
   }
 
-  openServiceNewModal() {
-    this.props.modalStore.setVisible('serviceNew');
-  }
-
   render() {
 
     const ddstore = this.props.deepdetectStore;
@@ -55,7 +49,7 @@ export default class ServiceList extends React.Component {
 
         <div className="context-header">
           <div className="sidebar-context-title">Services</div>
-          <button className='btn btn-primary btn-sm' onClick={this.openServiceNewModal}>New Service</button>
+          <Link to='/service' className='btn btn-primary btn-sm'>New Service</Link>
         </div>
 
         <div className="list-group">

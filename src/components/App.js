@@ -4,6 +4,7 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 
 import Home from './Home';
+import Service from './Service';
 
 @inject('configStore')
 @inject('commonStore')
@@ -50,6 +51,7 @@ export default class App extends React.Component {
           <Header />
           <Switch>
             <Route path="/" component={Home} />
+            <Route path="/service" component={Service} />
           </Switch>
         </div>
       );
