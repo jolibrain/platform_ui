@@ -40,7 +40,7 @@ export default class GpuInfoItem extends React.Component {
         </div>
 
         <div
-          className="float-right badge detailsBadge"
+          className="badge detailsBadge"
           onClick={this.toggleDetails}
         >
           Details <FontAwesomeIcon icon={this.state.detailsVisible ? 'angle-down' : 'angle-right'}/>
