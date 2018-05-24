@@ -44,6 +44,7 @@ export default class GpuInfo extends React.Component {
           gpuInfo.gpus.map( (gpu, index) => {
 
             const memoryMo = parseInt(gpu['memory.used'], 10);
+            const memoryTotal = parseInt(gpu['memory.total'], 10);
             const memoryPercent = parseInt(memoryMo * 100 / gpu['memory.total'], 10);
             const utilPercent = parseInt(gpu['utilization.gpu'], 10);
 
@@ -51,38 +52,26 @@ export default class GpuInfo extends React.Component {
               <div key={`gpuInfo${index}`} className="block">
 
                 <div className="context-header">
-                  <div className="sidebar-context-title">GPU {index}</div>
+                  <div className="sidebar-context-title">[{index}] {gpu.name}</div>
+                  <p>
+                    <span class='temp'>{gpu['temperature.gpu']}°C</span>, <span className='util'>{utilPercent}%</span>
+                    <br/>
+                    <span class='memUsed'>{memoryMo}</span> / <span className='memTotal'>{memoryTotal}</span> Mo
+                  </p>
                 </div>
 
-                <div className='row'>
-                  <div className='col-md-2'>
-                    Mem.:
-                  </div>
-                  <div className='col-md-10'>
-                    <div className="progress">
-                      <div className="progress-bar" role="progressbar" style={{width: `${memoryPercent}%`}} aria-valuenow={memoryPercent} aria-valuemin="0" aria-valuemax="100">{memoryMo}Mo</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className='row'>
-                  <div className='col-md-2'>
-                    Util.:
-                  </div>
-                  <div className='col-md-10'>
-                    <div className="progress">
-                      <div className="progress-bar" role="progressbar" style={{width: `${utilPercent}%`}} aria-valuenow={utilPercent} aria-valuemin="0" aria-valuemax="100">{utilPercent}%</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="list">
+                <div className="list processList">
                   <ul>
                   {
                     gpu.processes.map( (process, idx) => {
 
                       return (<li key={idx}>
-                        {process.username} ({process.gpu_memory_usage}Mo)
+                        <span className='processUsername'>{process.username}</span>
+                        /
+                        <span className='processCommand'>{process.command}</span>
+                        /
+                        <span className='processPID'>{process.pid}</span>
+                        &nbsp;(<span className='processMemory'>{process.gpu_memory_usage}M</span>)
                       </li>);
                     })
                   }
