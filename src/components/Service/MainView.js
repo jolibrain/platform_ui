@@ -59,10 +59,10 @@ export default class MainView extends React.Component {
     return (
       <div className="main-view content-wrapper">
         <div className="container-fluid">
-          <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <ul class="nav navbar-nav ml-auto">
-              <li class="nav-item">
-                <Link to='/predict/new' class="btn btn-primary">New Service</Link>
+          <nav className="navbar navbar-expand-lg navbar-light bg-light">
+            <ul className="nav navbar-nav ml-auto">
+              <li className="nav-item">
+                <Link to='/predict/new' className="btn btn-primary">New Service</Link>
               </li>
             </ul>
           </nav>

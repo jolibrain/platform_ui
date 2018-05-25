@@ -13,6 +13,8 @@ export default class ServiceNew extends React.Component {
   constructor(props) {
     super(props);
     this.serviceNameRef = React.createRef();
+    this.serviceDescriptionRef = React.createRef();
+    this.serviceModelLocationRef = React.createRef();
 
     this.submitService = this.submitService.bind(this);
     this.handleConfigChange = this.handleConfigChange.bind(this);
@@ -43,7 +45,8 @@ export default class ServiceNew extends React.Component {
       return null;
 
     return (
-      <div>
+      <div className="widget-service-new">
+
         <div className="row">
           <h5>New service</h5>
         </div>
@@ -67,13 +70,15 @@ export default class ServiceNew extends React.Component {
               <input type="text" className="form-control mb-2" id="inlineFormInputModelLocation" placeholder="Service Model Location" ref={this.serviceModelLocationRef}></input>
             </div>
 
+            <button type="submit" className="btn btn-primary" onClick={this.submitService}>Add Service</button>
+
           </div>
 
           <div className="col-md-6">
 
             <div className="form-row">
               <CodeMirror
-                value={JSON.stringify(settings.services.defaultConfig, null, 1)}
+                value={JSON.stringify(this.state.config, null, 1)}
                 options={this.state.inputOptions}
                 onChange={this.handleConfigChange}
               />
@@ -83,11 +88,7 @@ export default class ServiceNew extends React.Component {
 
         </div>
 
-        <div className="row">
-          <button type="submit" className="btn btn-primary ml-auto" onClick={this.submitService}>Add Service</button>
-        </div>
-
-    </div>
+      </div>
     );
   }
 

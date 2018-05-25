@@ -10,7 +10,7 @@ import { withRouter } from 'react-router-dom';
 export default class ServiceNew extends React.Component {
   render() {
     return (
-      <div className="layout-page page-gutter page-with-contextual-sidebar right-sidebar-collapsed page-with-icon-sidebar">
+      <div className="layout-page page-gutter page-with-contextual-sidebar right-sidebar-collapsed page-with-icon-sidebar service-new">
 
         <LeftPanel />
         <MainView />

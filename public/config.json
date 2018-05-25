@@ -2,7 +2,7 @@
   "deepdetect": {
     "infoRefreshRate": 10000,
     "server": {
-      "host": "localhost",
+      "host": "192.168.90.201",
       "port": 18104,
       "path": "/api"
     },
