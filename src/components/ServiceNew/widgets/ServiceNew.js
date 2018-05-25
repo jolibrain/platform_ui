@@ -116,7 +116,7 @@ export default class ServiceNew extends React.Component {
 
         <div className="row">
 
-          <div className="col-md-6">
+          <div className="col-md-5">
 
             <div className="form-row">
               <label className="sr-only" htmlFor="inlineFormInputName">Name</label>
@@ -161,7 +161,7 @@ export default class ServiceNew extends React.Component {
 
           </div>
 
-          <div className="col-md-6">
+          <div className="col-md-7">
 
             <div className="form-row">
               <CopyToClipboard text={curlCommand}
