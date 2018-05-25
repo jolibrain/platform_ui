@@ -7,8 +7,14 @@ import { Controlled as CodeMirror } from 'react-codemirror2'
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/javascript/javascript';
 
+import { Typeahead } from 'react-bootstrap-typeahead';
+
+import 'react-bootstrap-typeahead/css/Typeahead.css';
+import 'react-bootstrap-typeahead/css/Typeahead-bs4.css';
+
 @inject('commonStore')
 @inject('deepdetectStore')
+@inject('modelRepositoriesStore')
 @observer
 export default class ServiceNew extends React.Component {
 
@@ -22,9 +28,17 @@ export default class ServiceNew extends React.Component {
     this.handleConfigChange = this.handleConfigChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
 
+    let config = this.props.deepdetectStore.settings.services.defaultConfig;
+    const defaultModelLocation = this.props.modelRepositoriesStore.repositories[0];
+
+    if(config.model && config.model.repository) {
+      config.model.repository = defaultModelLocation;
+    }
+
     this.state = {
       serviceName: 'PLEASE_DEFINE',
-      config: JSON.stringify(this.props.deepdetectStore.settings.services.defaultConfig, null, 1),
+      config: JSON.stringify(config, null, 1),
+      modelLocation: defaultModelLocation,
       copied: false,
     }
 
@@ -38,7 +52,7 @@ export default class ServiceNew extends React.Component {
   handleInputChange() {
     const serviceName = this.serviceNameRef.current.value;
     const serviceDescription = this.serviceDescriptionRef.current.value;
-    const serviceModelLocation = this.serviceModelLocationRef.current.value;
+    const serviceModelLocation = this.state.modelLocation;
 
     let config = JSON.parse(this.state.config);
 
@@ -121,13 +135,13 @@ export default class ServiceNew extends React.Component {
 
             <div className="form-row">
               <label className="sr-only" htmlFor="inlineFormInputModelLocation">Model Location</label>
-              <input
-                type="text"
-                className="form-control mb-2"
+              <Typeahead
                 id="inlineFormInputModelLocation"
-                placeholder="Service Model Location"
                 ref={this.serviceModelLocationRef}
+                options={toJS(this.props.modelRepositoriesStore.autocompleteRepositories)}
+                placeholder="Model Repository location"
                 onChange={this.handleInputChange}
+                onSelect={(val) => this.setState({modelLocation: val})}
               />
             </div>
 
