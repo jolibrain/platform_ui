@@ -12,6 +12,7 @@
     "@fortawesome/fontawesome-free-solid": "^5.0.13",
     "@fortawesome/react-fontawesome": "^0.0.20",
     "bootstrap": "^4.1.1",
+    "circular-json": "^0.5.4",
     "codemirror": "^5.38.0",
     "custom-react-scripts": "^0.2.2",
     "deepdetect-js": "file:/home/alx/code/jolibrain/deepdetect-js/",

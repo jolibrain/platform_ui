@@ -24,7 +24,7 @@ export default class GpuInfoItem extends React.Component {
 
     const memoryMo = parseInt(gpu['memory.used'], 10);
     const memoryTotal = parseInt(gpu['memory.total'], 10);
-    const memoryPercent = parseInt(memoryMo * 100 / gpu['memory.total'], 10);
+    //const memoryPercent = parseInt(memoryMo * 100 / gpu['memory.total'], 10);
     const utilPercent = parseInt(gpu['utilization.gpu'], 10);
 
     return (

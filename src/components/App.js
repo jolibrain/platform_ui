@@ -4,7 +4,6 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 
 import fontawesome from '@fortawesome/fontawesome'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
 import faPlusCircle from '@fortawesome/fontawesome-free-solid/faPlusCircle'
 import faAngleDown from '@fortawesome/fontawesome-free-solid/faAngleDown'
@@ -29,7 +28,7 @@ fontawesome.library.add(
 @inject('gpuStore')
 @inject('deepdetectStore')
 @inject('imaginateStore')
-@inject('modalStore')
+@inject('modelRepositoriesStore')
 @withRouter
 @observer
 export default class App extends React.Component {
@@ -38,11 +37,11 @@ export default class App extends React.Component {
     if (!this.props.commonStore.token) {
       this.props.commonStore.setAppLoaded();
     }
-    this.props.configStore.loadConfig(() => {
-      this.props.gpuStore.setup(this.props.configStore);
-      this.props.deepdetectStore.setup(this.props.configStore);
-      this.props.imaginateStore.setup(this.props.configStore);
-      this.props.modalStore.setup(this.props.configStore);
+    this.props.configStore.loadConfig((config) => {
+      this.props.gpuStore.setup(config);
+      this.props.deepdetectStore.setup(config);
+      this.props.imaginateStore.setup(config);
+      this.props.modelRepositoriesStore.setup(config);
     });
   }
 

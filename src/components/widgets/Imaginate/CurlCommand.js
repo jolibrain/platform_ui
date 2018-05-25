@@ -1,11 +1,11 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 
-import {Controlled as CodeMirror} from 'react-codemirror2'
+import { Controlled as CodeMirror } from 'react-codemirror2'
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/javascript/javascript';
 
-import {CopyToClipboard} from 'react-copy-to-clipboard';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 @inject('imaginateStore')
 @observer

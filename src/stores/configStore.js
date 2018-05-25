@@ -19,7 +19,10 @@ export class configStore {
     initImages: []
   };
 
-  @observable modals = [];
+  @observable modelRepositories = {
+    nginxPath: '/model_repositories/',
+    systemPath: '/data/models/',
+  }
 
   $req(path) {
     return agent.Config.get();
@@ -32,8 +35,8 @@ export class configStore {
         this.gpuInfo = config.gpuInfo;
         this.deepdetect = config.deepdetect;
         this.imaginate = config.imaginate;
-        this.modals = config.modals;
-        callback();
+        this.modelRepositories = config.modelRepositories;
+        callback(this);
       }));
   }
 }

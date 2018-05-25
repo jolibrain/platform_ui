@@ -61,10 +61,38 @@ const Deepdetect = {
   },
 };
 
+/* ====
+ * model repositories
+ * ====
+ */
 
+const ModelRepositories = {
+  getRelativePath: (settings) =>
+  superagent
+  .get(settings.nginxPath)
+  .end(handleErrors)
+  .then(res => {
+    const parser = new DOMParser();
+    const htmlDoc = parser.parseFromString(res.text, "text/html");
+    const aElements = htmlDoc.getElementsByTagName('a');
+
+    let relativePath = [];
+
+    for(var i = 0; i < aElements.length; i++) {
+      const repo = aElements[i].text;
+
+      // Check if folder and if not parent folder
+      if(repo.indexOf('/') !== -1 && repo !== '../')
+        relativePath.push(repo);
+    }
+
+    return relativePath;
+  }),
+}
 
 export default {
   Config,
   GpuInfo,
   Deepdetect,
+  ModelRepositories,
 };

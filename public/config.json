@@ -36,5 +36,8 @@
     "gpuStatServer": "http://10.10.77.61:12345",
     "refreshRate": 5000
   },
-  "modals": ["serviceNew"]
+  "modelRepositories": {
+    "nginxPath": "/model_repositories/",
+    "systemPath": "/data/models/"
+  }
 }
