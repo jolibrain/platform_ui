@@ -2,7 +2,7 @@
   "deepdetect": {
     "infoRefreshRate": 10000,
     "server": {
-      "host": "192.168.90.201",
+      "host": "localhost",
       "port": 18104,
       "path": "/api"
     },
@@ -38,6 +38,6 @@
   },
   "modelRepositories": {
     "nginxPath": "/model_repositories/",
-    "systemPath": "/data/models/"
+    "systemPath": "/data1/core_ui/models/"
   }
 }

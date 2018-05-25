@@ -27,14 +27,12 @@ export class modelRepositoriesStore {
   }
 
   @computed get autocompleteRepositories() {
-    const data = this.repositories.map( (repo, index) => {
+    return this.repositories.map( (repo, index) => {
       return {
         id: index,
         label: repo
       }
     });
-    console.log(data);
-    return data;
   }
 
 }

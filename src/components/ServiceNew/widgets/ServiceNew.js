@@ -1,7 +1,10 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import { toJS } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
 import { Controlled as CodeMirror } from 'react-codemirror2'
 import 'codemirror/lib/codemirror.css';
@@ -16,6 +19,7 @@ import 'react-bootstrap-typeahead/css/Typeahead-bs4.css';
 @inject('deepdetectStore')
 @inject('modelRepositoriesStore')
 @observer
+@withRouter
 export default class ServiceNew extends React.Component {
 
   constructor(props) {
@@ -36,6 +40,7 @@ export default class ServiceNew extends React.Component {
     }
 
     this.state = {
+      creatingService: false,
       serviceName: 'PLEASE_DEFINE',
       config: JSON.stringify(config, null, 1),
       modelLocation: defaultModelLocation,
@@ -70,8 +75,12 @@ export default class ServiceNew extends React.Component {
 
   submitService() {
     const serviceName = this.serviceNameRef.current.value;
-    const serviceData = this.state.config;
-    this.props.deepdetectStore.newService(serviceName, serviceData);
+    const serviceData = JSON.parse(this.state.config);
+    this.setState({creatingService: true});
+    this.props.deepdetectStore.newService(serviceName, serviceData, () => {
+      this.setState({creatingService: false});
+      this.props.history.push(`/predict/${serviceName}`);
+    });
   }
 
   handleCopyClipboard() {
@@ -145,7 +154,10 @@ export default class ServiceNew extends React.Component {
               />
             </div>
 
-            <button type="submit" className="btn btn-primary" onClick={this.submitService}>Add Service</button>
+            <button type="submit" className="btn btn-primary" onClick={this.submitService}>
+              <FontAwesomeIcon icon="spinner" spin style={this.state.creatingService ? {} : {display: 'none'}}/>&nbsp;
+              Add Service
+            </button>
 
           </div>
 

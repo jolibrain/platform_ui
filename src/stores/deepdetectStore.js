@@ -48,10 +48,9 @@ export class deepdetectStore {
     this.servicesLoaded = true;
   }
 
-  @action async newService(name, data) {
-    this.creatingService = true;
+  @action async newService(name, data, callback) {
     await this.$reqPutService(name, data);
-    this.creatingService = false;
+    callback();
   }
 
 }
