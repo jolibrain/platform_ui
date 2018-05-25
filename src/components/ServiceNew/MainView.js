@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 import { parse as qsParse } from 'query-string';
 
 import RightPanel from './RightPanel';
-import ServiceNew from '../widgets/ServiceNew';
+import ServiceNew from './widgets/ServiceNew';
 
 @inject('commonStore')
 @withRouter

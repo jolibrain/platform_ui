@@ -1,6 +1,6 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { withRouter } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { parse as qsParse } from 'query-string';
 
 import RightPanel from './RightPanel';
@@ -59,6 +59,13 @@ export default class MainView extends React.Component {
     return (
       <div className="main-view content-wrapper">
         <div className="container-fluid">
+          <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <ul class="nav navbar-nav ml-auto">
+              <li class="nav-item">
+                <Link to='/predict/new' class="btn btn-primary">New Service</Link>
+              </li>
+            </ul>
+          </nav>
           <div className="content">
             <Imaginate />
             <RightPanel />

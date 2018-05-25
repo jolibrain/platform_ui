@@ -70,8 +70,8 @@ export default class App extends React.Component {
           <Header />
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route path="/predict/:serviceName" component={Service} />
             <Route path="/predict/new" component={ServiceNew} />
+            <Route path="/predict/:serviceName" component={Service} />
             <Route path="/predict" component={Service} />
           </Switch>
         </div>
