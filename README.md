@@ -72,6 +72,8 @@ App must be configured using `public/config.json` file. It contains various sect
 
 ```js
   // Top level *imaginate* config object
+  // src/components/widgets/Imaginate
+  // src/store/imaginateStore.js
   "imaginate": {
 
     // Setup display elements
@@ -157,6 +159,7 @@ This section configure the **GpuInfo** widget.
 
 ```js
   // Top level *Gpu Info* config object
+  // src/components/widgets/GpuInfo
   "gpuInfo": {
 
     // Where is Gpu Stat Server serving its json from ?
@@ -173,7 +176,8 @@ This section configure the **GpuInfo** widget.
 When creating a new service, the app is pre-loading repositories path and user is limited to these path for the newly created model.
 
 ```js
-  // Top level *Gpu Info* config object
+  // Top level *Model Repositories* config object
+  // src/store/modelRepositories.js
   "modelRepositories": {
 
     // Nginx config
