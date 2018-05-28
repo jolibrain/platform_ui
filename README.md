@@ -22,6 +22,36 @@ Open your browser on [http://localhost:3000](http://localhost:3000)
 
 App must be configured using `public/config.json` file. It contains various sections that helps configure various parts of this app.
 
+### Deep Detect section
+
+```js
+  // Top level *deepdetect* config object
+  "deepdetect": {
+
+    // How often (in millisec) should the app call /info
+    // to refresh Service List
+    "infoRefreshRate": 10000,
+
+    // Deep Detect server configuration
+    // Should be similar to nginx proxy path
+    "server": {
+      "host": "192.168.90.201",
+      "port": 18104,
+      "path": "/api"
+    },
+
+    // Services configuration
+    "services": {
+
+      // Default configuration available when creating a new service
+      "defaultConfig": {
+        ...
+      }
+
+    }
+  },
+```
+
 ### Imaginate section
 
 ```js
@@ -103,6 +133,42 @@ App must be configured using `public/config.json` file. It contains various sect
       "blank_label": false
     }
   },
+```
+
+### GPU Stat server section
+
+This section configure the **GpuInfo** widget.
+
+```js
+  // Top level *Gpu Info* config object
+  "gpuInfo": {
+
+    // Where is Gpu Stat Server serving its json from ?
+    "gpuStatServer": "http://10.10.77.61:12345",
+
+    // How often (in millisec) should the widget be refreshed ?
+    "refreshRate": 5000
+
+  }
+```
+
+### Model Repositories section
+
+When creating a new service, the app is pre-loading repositories path and user is limited to these path for the newly created model.
+
+```js
+  // Top level *Gpu Info* config object
+  "modelRepositories": {
+
+    // Nginx config
+    // which location is served by nginx to fetch the index of available models ?
+    "nginxPath": "/model_repositories/",
+
+    // Server config
+    // When selecting a path from nginx result, what prefix should be added so this path correspond to existing system path ?
+    "systemPath": "/data1/core_ui/models/"
+
+  }
 ```
 
 ## Deploy with nginx
