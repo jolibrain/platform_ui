@@ -113,6 +113,12 @@ App must be configured using `public/config.json` file. It contains various sect
       // src/store/imaginateStore.js
       "segmentation": false,
 
+      // If true, display segmentation on a canvas separated from the image canvas
+      "separateSegmentation": false,
+
+      // segmentation colors to use
+      "segmentationColors": ["#1b9e77", "#d95f02"]
+
     },
 
     // Confidence controls

@@ -25,6 +25,9 @@ export default class BoundingBoxDisplay extends React.Component {
         boxes={image.boxes}
         selectedIndex={this.props.selectedBoxIndex}
         onSelected={this.props.onOver}
+        pixelSegmentation={image.pixelSegmentation}
+        separateSegmentation={store.settings.display.separateSegmentation}
+        segmentationColors={store.settings.display.segmentationColors}
       />
     );
   }

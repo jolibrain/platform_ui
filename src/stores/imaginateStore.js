@@ -117,6 +117,10 @@ export class imaginateStore {
       );
     }
 
+    image.pixelSegmentation = typeof image.json.body.predictions[0].vals
+      ? []
+      : image.json.body.predictions[0].vals;
+
     this.selectedImage = image;
   }
 

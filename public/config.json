@@ -36,9 +36,11 @@
         ]
       },
       "mode": "description",
+      "okClass": "",
       "boundingBox": true,
       "segmentation": false,
-      "okClass": ""
+      "separateSegmentation": false,
+      "segmentationColors": ["#1b9e77", "#d95f02"]
     },
     "threshold": {
       "confidence": 0.5,
