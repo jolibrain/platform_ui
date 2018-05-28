@@ -1,12 +1,13 @@
 import React from 'react';
-import { inject, observer } from 'mobx-react';
-import { withRouter } from 'react-router-dom'
+import {inject, observer} from 'mobx-react';
+import {withRouter} from 'react-router-dom';
 
 import ImageList from './ImageList';
 import BoundingBoxDisplay from './BoundingBoxDisplay';
-//import Results from './Results';
 import CurlCommand from './CurlCommand';
 import JsonResponse from './JsonResponse';
+import Description from './Description';
+import Threshold from './Threshold';
 
 @inject('commonStore')
 @inject('imaginateStore')
@@ -62,15 +63,21 @@ export default class Imaginate extends React.Component {
           </div>
         </div>
 
-        <div className='row'>
+        <div className="row">
           <div className="col-md-8">
             <BoundingBoxDisplay />
           </div>
           <div className="col-md-4">
+            <div className="row threshold">
+              <Threshold />
+            </div>
+            <div className="row description">
+              <Description />
+            </div>
             <div className="row commands">
               <CurlCommand />
             </div>
-            <div className="row">
+            <div className="row json">
               <JsonResponse />
             </div>
           </div>
