@@ -6,26 +6,25 @@ import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 @inject("imaginateStore")
 @observer
 export default class BoundingBoxDisplay extends React.Component {
-  componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
-  }
-
   render() {
     const store = this.props.imaginateStore;
     const image = store.selectedImage;
 
-    if (image === null)
+    if (image === null) {
       return (
         <div className="alert alert-primary" role="alert">
           <FontAwesomeIcon icon="spinner" spin />&nbsp; Loading...
         </div>
       );
+    }
 
     return (
       <Boundingbox
         className="boundingboxdisplay"
         image={image.url}
         boxes={image.boxes}
+        selectedIndex={this.props.selectedBoxIndex}
+        onSelected={this.props.onOver}
       />
     );
   }

@@ -9,6 +9,9 @@ export class imaginateStore {
   @observable selectedImageIndex = -1;
   @observable selectedImage = null;
 
+  @observable curlParams = null;
+  @observable confidence = null;
+
   @action
   setup(configStore) {
     this.settings = configStore.imaginate;
@@ -33,6 +36,8 @@ export class imaginateStore {
     // If existing image, init the first selected one
     if (this.imgList.length > 0) this.selectedImageIndex = 0;
 
+    this.confidence = this.settings.threshold.confidence;
+
     this.isLoaded = true;
   }
 
@@ -54,7 +59,7 @@ export class imaginateStore {
       service: serviceName,
       parameters: {
         output: {
-          confidence_threshold: this.settings.threshold.confidence
+          confidence_threshold: this.confidence
         }
       },
       data: [image.url]
@@ -96,16 +101,28 @@ export class imaginateStore {
       image.postData.parameters.output.rois = "rois";
     }
 
+    this.curlParams = image.postData;
     image.json = await this.$reqPostPredict(image.postData);
+
     image.boxes = image.json.body.predictions[0].classes.map(
       predict => predict.bbox
     );
+
+    if (
+      (this.settings.request.objSearch || this.settings.request.imgSearch) &&
+      typeof image.json.body.predictions[0].rois !== "undefined"
+    ) {
+      image.boxes = image.json.body.predictions[0].rois.map(
+        predict => predict.bbox
+      );
+    }
+
     this.selectedImage = image;
   }
 
   @action
   setThreshold(thresholdValue) {
-    this.settings.threshold.confidence = thresholdValue;
+    this.confidence = thresholdValue;
   }
 }
 

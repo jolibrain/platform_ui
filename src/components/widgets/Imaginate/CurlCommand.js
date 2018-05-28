@@ -33,7 +33,7 @@ export default class CurlCommand extends React.Component {
     if (store.selectedImage === null) return null;
 
     const curlCommand = `curl -X POST 'http://localhost:8000/predict' -d '${JSON.stringify(
-      store.selectedImage.postData,
+      store.curlParams,
       null,
       1
     )}'`;

@@ -42,16 +42,17 @@ export default class Threshold extends React.Component {
     ];
 
     thresholds.forEach(config => {
-      if (config.value === store.settings.threshold.confidence) {
+      if (config.value === store.confidence) {
         config.classNames = "btn btn-primary";
       }
     });
 
     return (
       <div className="btn-group" role="group" aria-label="Threshold controls">
-        {thresholds.map(config => {
+        {thresholds.map((config, index) => {
           return (
             <button
+              key={index}
               type="button"
               className={config.classNames}
               onClick={this.handleClick.bind(this, config.value)}

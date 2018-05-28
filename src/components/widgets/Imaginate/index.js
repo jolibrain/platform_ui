@@ -18,8 +18,15 @@ export default class Imaginate extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      selectedBoxIndex: -1
+    };
+
     this.selectImage = this.selectImage.bind(this);
     this.loadImage = this.loadImage.bind(this);
+
+    this.onOver = this.onOver.bind(this);
+    this.onLeave = this.onLeave.bind(this);
   }
 
   componentDidMount() {
@@ -40,6 +47,14 @@ export default class Imaginate extends React.Component {
 
     const service = ddStore.services[ddStore.currentServiceIndex];
     store.predictSelectedImage(service.name);
+  }
+
+  onOver(index) {
+    this.setState({ selectedBoxIndex: index });
+  }
+
+  onLeave() {
+    this.setState({ selectedBoxIndex: -1 });
   }
 
   render() {
@@ -65,7 +80,11 @@ export default class Imaginate extends React.Component {
               <Threshold loadImage={this.loadImage} />
             </div>
             <div className="row description">
-              <Description />
+              <Description
+                selectedBoxIndex={this.state.selectedBoxIndex}
+                onOver={this.onOver}
+                onOver={this.onLeave}
+              />
             </div>
             <div className="row commands">
               <CurlCommand />

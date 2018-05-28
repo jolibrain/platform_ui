@@ -51,8 +51,8 @@ export default class Description extends React.Component {
                     aria-valuenow={percent}
                     aria-valuemin="0"
                     aria-valuemax="100"
-                    onMouseOver={() => {}}
-                    onMouseLeave={() => {}}
+                    onMouseOver={this.props.onOver.bind(this, index)}
+                    onMouseLeave={this.props.onLeave}
                   >
                     {category.cat}
                   </div>
@@ -137,8 +137,8 @@ export default class Description extends React.Component {
                 <span
                   key={index}
                   className="fa-stack fa-lg"
-                  onMouseOver={() => {}}
-                  onMouseLeave={() => {}}
+                  onMouseOver={this.props.onOver.bind(this, index)}
+                  onMouseLeave={this.props.onLeave}
                 >
                   <i className={bottomClass} style={styles} />
                   <i className={topClass} style={{ opacity: opacity }} />
