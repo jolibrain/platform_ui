@@ -47,7 +47,10 @@
     },
     "request": {
       "objSearch": false,
-      "imgSearch": false
+      "imgSearch": false,
+      "best": false,
+      "ctc": false,
+      "blank_label": false
     }
   },
   "gpuInfo": {
