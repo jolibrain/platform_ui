@@ -54,12 +54,47 @@ export class imaginateStore {
       service: serviceName,
       parameters: {
         output: {
-          bbox: true,
           confidence_threshold: this.settings.threshold.confidence
         }
       },
       data: [image.url]
     };
+
+    if (this.settings.display.boundingBox) {
+      image.postData.parameters.output.bbox = true;
+    }
+
+    if (this.settings.request.best) {
+      image.postData.parameters.output.best = parseInt(
+        this.settings.request.best,
+        10
+      );
+    }
+
+    if (this.settings.request.ctc) {
+      image.postData.parameters.output.ctc = true;
+    }
+
+    if (this.settings.request.blank_label) {
+      image.postData.parameters.output.blank_label = parseInt(
+        this.settings.request.blank_label,
+        10
+      );
+    }
+
+    if (this.settings.display.segmentation) {
+      image.postData.parameters.input = { segmentation: true };
+      image.postData.parameters.mllib = { gpu: true };
+      image.postData.parameters.output = {};
+    }
+
+    if (this.settings.request.objSearch || this.settings.request.imgSearch) {
+      image.postData.parameters.output.search = true;
+    }
+
+    if (this.settings.request.objSearch) {
+      image.postData.parameters.output.rois = "rois";
+    }
 
     image.json = await this.$reqPostPredict(image.postData);
     image.boxes = image.json.body.predictions[0].classes.map(
