@@ -41,7 +41,7 @@
       "okClass": ""
     },
     "threshold": {
-      "confidence": 0.1,
+      "confidence": 0.5,
       "controls": true,
       "controlSteps": [0.8, 0.5, 0.3]
     },

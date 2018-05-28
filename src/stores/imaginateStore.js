@@ -49,6 +49,7 @@ export class imaginateStore {
   @action
   async predictSelectedImage(serviceName) {
     const image = this.imgList[this.selectedImageIndex];
+
     image.postData = {
       service: serviceName,
       parameters: {
@@ -59,11 +60,17 @@ export class imaginateStore {
       },
       data: [image.url]
     };
+
     image.json = await this.$reqPostPredict(image.postData);
     image.boxes = image.json.body.predictions[0].classes.map(
       predict => predict.bbox
     );
     this.selectedImage = image;
+  }
+
+  @action
+  setThreshold(thresholdValue) {
+    this.settings.threshold.confidence = thresholdValue;
   }
 }
 
