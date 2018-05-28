@@ -1,21 +1,20 @@
-import React from 'react';
-import {inject, observer} from 'mobx-react';
-import {withRouter} from 'react-router-dom';
+import React from "react";
+import { inject, observer } from "mobx-react";
+import { withRouter } from "react-router-dom";
 
-import ImageList from './ImageList';
-import BoundingBoxDisplay from './BoundingBoxDisplay';
-import CurlCommand from './CurlCommand';
-import JsonResponse from './JsonResponse';
-import Description from './Description';
-import Threshold from './Threshold';
+import ImageList from "./ImageList";
+import BoundingBoxDisplay from "./BoundingBoxDisplay";
+import CurlCommand from "./CurlCommand";
+import JsonResponse from "./JsonResponse";
+import Description from "./Description";
+import Threshold from "./Threshold";
 
-@inject('commonStore')
-@inject('imaginateStore')
-@inject('deepdetectStore')
+@inject("commonStore")
+@inject("imaginateStore")
+@inject("deepdetectStore")
 @withRouter
 @observer
 export default class Imaginate extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -37,29 +36,23 @@ export default class Imaginate extends React.Component {
     const store = this.props.imaginateStore;
     const ddStore = this.props.deepdetectStore;
 
-    if (ddStore.currentServiceIndex === -1)
-      return null;
+    if (ddStore.currentServiceIndex === -1) return null;
 
     const service = ddStore.services[ddStore.currentServiceIndex];
     store.predictSelectedImage(service.name);
   }
 
   render() {
-
     const store = this.props.imaginateStore;
     const ddStore = this.props.deepdetectStore;
 
-    if (ddStore.currentServiceIndex === -1 || !store.isLoaded)
-      return null;
+    if (ddStore.currentServiceIndex === -1 || !store.isLoaded) return null;
 
     return (
-      <div className='imaginate'>
-
-        <div className='row'>
-          <div className='img-list col-sm-12'>
-            <ImageList
-              selectImage={this.selectImage}
-            />
+      <div className="imaginate">
+        <div className="row">
+          <div className="img-list col-sm-12">
+            <ImageList selectImage={this.selectImage} />
           </div>
         </div>
 
@@ -81,11 +74,8 @@ export default class Imaginate extends React.Component {
               <JsonResponse />
             </div>
           </div>
-
         </div>
-
-
       </div>
     );
   }
-};
+}

@@ -1,9 +1,8 @@
-import { observable, action, reaction } from 'mobx';
+import { observable, action, reaction } from "mobx";
 
 class CommonStore {
-
-  @observable appName = 'DeepDetect';
-  @observable token = window.localStorage.getItem('token');
+  @observable appName = "DeepDetect";
+  @observable token = window.localStorage.getItem("token");
   @observable appLoaded = false;
 
   constructor() {
@@ -11,22 +10,23 @@ class CommonStore {
       () => this.token,
       token => {
         if (token) {
-          window.localStorage.setItem('token', token);
+          window.localStorage.setItem("token", token);
         } else {
-          window.localStorage.removeItem('token');
+          window.localStorage.removeItem("token");
         }
       }
     );
   }
 
-  @action setToken(token) {
+  @action
+  setToken(token) {
     this.token = token;
   }
 
-  @action setAppLoaded() {
+  @action
+  setAppLoaded() {
     this.appLoaded = true;
   }
-
 }
 
 export default new CommonStore();

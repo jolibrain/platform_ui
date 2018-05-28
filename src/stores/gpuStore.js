@@ -1,12 +1,12 @@
-import { observable, action } from 'mobx';
-import agent from '../agent';
+import { observable, action } from "mobx";
+import agent from "../agent";
 
 export class GpuStore {
-
   @observable gpuInfo = null;
   @observable settings = {};
 
-  @action setup(configStore) {
+  @action
+  setup(configStore) {
     this.settings = configStore.gpuInfo;
   }
 
@@ -14,11 +14,13 @@ export class GpuStore {
     return agent.GpuInfo.get(this.settings);
   }
 
-  @action loadGpuInfo() {
-    this.$req()
-      .then(action( gpuInfo => {
+  @action
+  loadGpuInfo() {
+    this.$req().then(
+      action(gpuInfo => {
         this.gpuInfo = gpuInfo;
-      }));
+      })
+    );
   }
 }
 

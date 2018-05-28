@@ -1,13 +1,13 @@
-import { observable, action, computed } from 'mobx';
-import agent from '../agent';
+import { observable, action, computed } from "mobx";
+import agent from "../agent";
 
 export class modelRepositoriesStore {
-
   @observable isLoaded = false;
   @observable settings = {};
-  @observable repositories = []
+  @observable repositories = [];
 
-  @action setup(configStore) {
+  @action
+  setup(configStore) {
     this.settings = configStore.modelRepositories;
     this.load();
   }
@@ -16,25 +16,27 @@ export class modelRepositoriesStore {
     return agent.ModelRepositories.getRelativePath(this.settings);
   }
 
-  @action load() {
-    this.$req()
-      .then(action( repositories => {
-        this.repositories = repositories.map( repo => {
-          return this.settings.systemPath + repo
+  @action
+  load() {
+    this.$req().then(
+      action(repositories => {
+        this.repositories = repositories.map(repo => {
+          return this.settings.systemPath + repo;
         });
         this.isLoaded = true;
-      }));
+      })
+    );
   }
 
-  @computed get autocompleteRepositories() {
-    return this.repositories.map( (repo, index) => {
+  @computed
+  get autocompleteRepositories() {
+    return this.repositories.map((repo, index) => {
       return {
         id: index,
         label: repo
-      }
+      };
     });
   }
-
 }
 
 export default new modelRepositoriesStore();

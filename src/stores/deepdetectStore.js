@@ -1,8 +1,7 @@
-import { observable, action } from 'mobx';
-import agent from '../agent';
+import { observable, action } from "mobx";
+import agent from "../agent";
 
 export class deepdetectStore {
-
   @observable isLoading = false;
   @observable servicesLoaded = false;
 
@@ -12,17 +11,20 @@ export class deepdetectStore {
 
   @observable settings = {};
 
-  @action setup(configStore) {
+  @action
+  setup(configStore) {
     this.settings = configStore.deepdetect;
     this.loadServices();
   }
 
-  @action setCurrentServiceIndex(currentServiceIndex) {
+  @action
+  setCurrentServiceIndex(currentServiceIndex) {
     this.currentServiceIndex = currentServiceIndex;
   }
 
-  @action setCurrentService(serviceName) {
-    this.currentServiceIndex = this.services.findIndex( service => {
+  @action
+  setCurrentService(serviceName) {
+    this.currentServiceIndex = this.services.findIndex(service => {
       return service.name === serviceName;
     });
   }
@@ -35,7 +37,8 @@ export class deepdetectStore {
     return agent.Deepdetect.putService(this.settings, name, data);
   }
 
-  @action async loadServices() {
+  @action
+  async loadServices() {
     const info = await this.$reqInfo();
 
     if (info.head && info.head.services) {
@@ -48,11 +51,11 @@ export class deepdetectStore {
     this.servicesLoaded = true;
   }
 
-  @action async newService(name, data, callback) {
+  @action
+  async newService(name, data, callback) {
     await this.$reqPutService(name, data);
     callback();
   }
-
 }
 
 export default new deepdetectStore();

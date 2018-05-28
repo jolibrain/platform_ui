@@ -1,14 +1,14 @@
-import superagentPromise from 'superagent-promise';
-import _superagent from 'superagent';
-import DD from 'deepdetect-js';
+import superagentPromise from "superagent-promise";
+import _superagent from "superagent";
+import DD from "deepdetect-js";
 
 const superagent = superagentPromise(_superagent, global.Promise);
 
 const handleErrors = err => {
-    if (err && err.response && err.response.status === 401) {
-      // console.log(err);
-    }
-    return err;
+  if (err && err.response && err.response.status === 401) {
+    // console.log(err);
+  }
+  return err;
 };
 
 const responseBody = res => res.body;
@@ -19,11 +19,11 @@ const responseBody = res => res.body;
  */
 
 const Config = {
-  get: (path = 'config.json') =>
-  superagent
-  .get(path)
-  .end(handleErrors)
-  .then(responseBody),
+  get: (path = "config.json") =>
+    superagent
+      .get(path)
+      .end(handleErrors)
+      .then(responseBody)
 };
 
 /* ====
@@ -32,11 +32,11 @@ const Config = {
  */
 
 const GpuInfo = {
-  get: (settings) =>
-  superagent
-  .get(settings.gpuStatServer)
-  .end(handleErrors)
-  .then(responseBody),
+  get: settings =>
+    superagent
+      .get(settings.gpuStatServer)
+      .end(handleErrors)
+      .then(responseBody)
 };
 
 /* ====
@@ -44,9 +44,8 @@ const GpuInfo = {
  * ====
  */
 
-
 const Deepdetect = {
-  info: (settings) => {
+  info: settings => {
     const dd = new DD(settings.server);
     return dd.info();
   },
@@ -58,7 +57,7 @@ const Deepdetect = {
   postPredict: (settings, postData) => {
     const dd = new DD(settings.server);
     return dd.postPredict(postData);
-  },
+  }
 };
 
 /* ====
@@ -67,32 +66,32 @@ const Deepdetect = {
  */
 
 const ModelRepositories = {
-  getRelativePath: (settings) =>
-  superagent
-  .get(settings.nginxPath)
-  .end(handleErrors)
-  .then(res => {
-    const parser = new DOMParser();
-    const htmlDoc = parser.parseFromString(res.text, "text/html");
-    const aElements = htmlDoc.getElementsByTagName('a');
+  getRelativePath: settings =>
+    superagent
+      .get(settings.nginxPath)
+      .end(handleErrors)
+      .then(res => {
+        const parser = new DOMParser();
+        const htmlDoc = parser.parseFromString(res.text, "text/html");
+        const aElements = htmlDoc.getElementsByTagName("a");
 
-    let relativePath = [];
+        let relativePath = [];
 
-    for(var i = 0; i < aElements.length; i++) {
-      const repo = aElements[i].text;
+        for (var i = 0; i < aElements.length; i++) {
+          const repo = aElements[i].text;
 
-      // Check if folder and if not parent folder
-      if(repo.indexOf('/') !== -1 && repo !== '../')
-        relativePath.push(repo);
-    }
+          // Check if folder and if not parent folder
+          if (repo.indexOf("/") !== -1 && repo !== "../")
+            relativePath.push(repo);
+        }
 
-    return relativePath;
-  }),
-}
+        return relativePath;
+      })
+};
 
 export default {
   Config,
   GpuInfo,
   Deepdetect,
-  ModelRepositories,
+  ModelRepositories
 };

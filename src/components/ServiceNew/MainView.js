@@ -1,16 +1,15 @@
-import React from 'react';
-import { inject, observer } from 'mobx-react';
-import { withRouter } from 'react-router-dom'
-import { parse as qsParse } from 'query-string';
+import React from "react";
+import { inject, observer } from "mobx-react";
+import { withRouter } from "react-router-dom";
+import { parse as qsParse } from "query-string";
 
-import RightPanel from './RightPanel';
-import ServiceNew from './widgets/ServiceNew';
+import RightPanel from "./RightPanel";
+import ServiceNew from "./widgets/ServiceNew";
 
-@inject('commonStore')
+@inject("commonStore")
 @withRouter
 @observer
 export default class MainView extends React.Component {
-
   componentWillMount() {
     //this.props.articlesStore.setPredicate(this.getPredicate());
   }
@@ -34,20 +33,23 @@ export default class MainView extends React.Component {
   }
 
   getTab(props = this.props) {
-    return qsParse(props.location.search).tab || 'all';
+    return qsParse(props.location.search).tab || "all";
   }
 
   getPredicate(props = this.props) {
     switch (this.getTab(props)) {
-      case 'feed': return { myFeed: true };
-      case 'tag': return { tag: qsParse(props.location.search).tag };
-      default: return {};
+      case "feed":
+        return { myFeed: true };
+      case "tag":
+        return { tag: qsParse(props.location.search).tag };
+      default:
+        return {};
     }
   }
 
-  handleTabChange = (tab) => {
+  handleTabChange = tab => {
     if (this.props.location.query.tab === tab) return;
-    this.props.router.push({ ...this.props.location, query: { tab } })
+    this.props.router.push({ ...this.props.location, query: { tab } });
   };
 
   handleSetPage = page => {
@@ -67,4 +69,4 @@ export default class MainView extends React.Component {
       </div>
     );
   }
-};
+}

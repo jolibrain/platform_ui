@@ -1,20 +1,20 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 
-import { HashRouter } from 'react-router-dom';
-import { configure } from 'mobx';
-import { Provider } from 'mobx-react';
+import { HashRouter } from "react-router-dom";
+import { configure } from "mobx";
+import { Provider } from "mobx-react";
 
-import "./styles/styles.css"
+import "./styles/styles.css";
 
-import App from './components/App';
+import App from "./components/App";
 
-import commonStore from './stores/commonStore.js';
-import configStore from './stores/configStore.js';
-import gpuStore from './stores/gpuStore.js';
-import deepdetectStore from './stores/deepdetectStore.js';
-import imaginateStore from './stores/imaginateStore.js';
-import modelRepositoriesStore from './stores/modelRepositoriesStore.js';
+import commonStore from "./stores/commonStore.js";
+import configStore from "./stores/configStore.js";
+import gpuStore from "./stores/gpuStore.js";
+import deepdetectStore from "./stores/deepdetectStore.js";
+import imaginateStore from "./stores/imaginateStore.js";
+import modelRepositoriesStore from "./stores/modelRepositoriesStore.js";
 
 const stores = {
   commonStore,
@@ -22,20 +22,21 @@ const stores = {
   gpuStore,
   deepdetectStore,
   imaginateStore,
-  modelRepositoriesStore,
-}
+  modelRepositoriesStore
+};
 
 // For easier debugging
 window._____APP_STATE_____ = stores;
 
 configure({
-	enforActions: true,
+  enforActions: true
 });
 
-ReactDOM.render((
+ReactDOM.render(
   <Provider {...stores}>
     <HashRouter>
       <App />
     </HashRouter>
-  </Provider>
-), document.getElementById('root'));
+  </Provider>,
+  document.getElementById("root")
+);

@@ -1,14 +1,12 @@
-import React from 'react';
-import { Link, withRouter } from 'react-router-dom'
+import React from "react";
+import { Link, withRouter } from "react-router-dom";
 
-import RightPanel from './RightPanel';
-import Imaginate from '../widgets/Imaginate';
+import RightPanel from "./RightPanel";
+import Imaginate from "../widgets/Imaginate";
 
 @withRouter
 export default class MainView extends React.Component {
-
   render() {
-
     const serviceName = this.props.match.params.serviceName;
 
     // TODO: Add delete service
@@ -19,15 +17,20 @@ export default class MainView extends React.Component {
     return (
       <div className="main-view content-wrapper">
         <div className="container">
-          <div className='breadcrumbs'>
-            <Link to='/'>DeepDetect</Link> >&nbsp;
-            <Link to='/predict'>Predict</Link> >&nbsp;
+          <div className="breadcrumbs">
+            <Link to="/">DeepDetect</Link> >&nbsp;
+            <Link to="/predict">Predict</Link> >&nbsp;
             <Link to={`/predict/${serviceName}`}>{serviceName}</Link>
           </div>
           <nav className="navbar navbar-expand-lg">
-            <ul className="nav navbar-nav ml-auto" style={{flexDirection: 'row'}}>
+            <ul
+              className="nav navbar-nav ml-auto"
+              style={{ flexDirection: "row" }}
+            >
               <li className="nav-item">
-                <Link to='/predict/new' className="btn btn-outline-primary">New Service</Link>
+                <Link to="/predict/new" className="btn btn-outline-primary">
+                  New Service
+                </Link>
               </li>
             </ul>
           </nav>
@@ -39,4 +42,4 @@ export default class MainView extends React.Component {
       </div>
     );
   }
-};
+}
