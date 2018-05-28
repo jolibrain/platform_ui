@@ -1,45 +1,45 @@
-.service-component .main-view .container-fluid {
+.service-component .main-view .container {
   padding-top: 20px;
 }
-.service-component .main-view .container-fluid .content {
+.service-component .main-view .container .content {
   padding: 0 15px;
 }
-.service-component .main-view .container-fluid .breadcrumbs a,
-.service-component .main-view .container-fluid .breadcrumbs {
+.service-component .main-view .container .breadcrumbs a,
+.service-component .main-view .container .breadcrumbs {
   font-size: 12px;
   color: rgb(112, 112, 112);;
   white-space: nowrap;
   line-height: 16px;
 }
 
-.service-component .main-view .container-fluid nav {
+.service-component .main-view .container nav {
   padding: 4px 8px;
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
 }
 
-.service-component .main-view .container-fluid nav .btn-outline-primary {
+.service-component .main-view .container nav .btn-outline-primary {
   background-color: #fff;
   border-color: #1aaa55;
   box-shadow: none;
   color: #168f48 !important;
 }
 
-.service-component .main-view .container-fluid nav .btn-outline-primary:hover {
+.service-component .main-view .container nav .btn-outline-primary:hover {
   background-color: #1aaa55;
   border-color: #168f48;
   box-shadow: none;
   color: #fff !important;
 }
 
-.service-component .main-view .container-fluid nav .btn-outline-danger {
+.service-component .main-view .container nav .btn-outline-danger {
   background-color: #fff;
   border-color: #fc9403;
   box-shadow: none;
   color: #de7e00 !important;
 }
 
-.service-component .main-view .container-fluid nav .btn-outline-danger:hover {
+.service-component .main-view .container nav .btn-outline-danger:hover {
   background-color: #fc9403;
   border-color: #de7e00;
   box-shadow: none;

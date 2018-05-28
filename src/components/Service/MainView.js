@@ -18,7 +18,7 @@ export default class MainView extends React.Component {
 
     return (
       <div className="main-view content-wrapper">
-        <div className="container-fluid">
+        <div className="container">
           <div className='breadcrumbs'>
             <Link to='/'>DeepDetect</Link> >&nbsp;
             <Link to='/predict'>Predict</Link> >&nbsp;
