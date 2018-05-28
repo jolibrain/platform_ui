@@ -14,6 +14,22 @@ yarn install
 yarn start
 ```
 
+## Deploy with nginx
+
+1.  Edit deepdetect server IP and port in `.nginx.conf`
+1.  Edit model repository alias in `.nginx.conf`
+1.  Copy nginx config file in `site-enabled` :
+
+```
+sudo cp .nginx.conf /etc/nginx/site-enabled/
+```
+
+4.  Reload `nginx` server :
+
+```
+sudo /etc/init.d/nginx reload
+```
+
 ## Usage
 
 Open your browser on [http://localhost:3000](http://localhost:3000)
@@ -169,20 +185,4 @@ When creating a new service, the app is pre-loading repositories path and user i
     "systemPath": "/data1/core_ui/models/"
 
   }
-```
-
-## Deploy with nginx
-
-1.  Edit react app server IP and port in `.nginx.conf`
-2.  Edit deepdetect server IP and port in `.nginx.conf`
-3.  Copy nginx config file in `site-enabled` :
-
-```
-sudo cp .nginx.conf /etc/nginx/site-enabled/
-```
-
-4.  Reload `nginx` server :
-
-```
-sudo /etc/init.d/nginx reload
 ```
