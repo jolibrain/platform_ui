@@ -31,6 +31,10 @@ export default class CurlCommand extends React.Component {
   render() {
 
     const store = this.props.imaginateStore;
+
+    if(store.selectedImage === null)
+      return null;
+
     const curlCommand = `curl -X POST 'http://localhost:8000/predict' -d '${JSON.stringify(store.selectedImage.postData, null, 1)}'`;
 
     let copiedClass = 'btn btn-sm btn-outline-secondary';

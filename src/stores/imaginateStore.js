@@ -8,10 +8,7 @@ export class imaginateStore {
 
   @observable imgList = [];
   @observable selectedImageIndex = -1;
-
-  @computed get selectedImage() {
-    return this.imgList[this.selectedImageIndex];
-  }
+  @observable selectedImage = null;
 
   @action setup(configStore) {
     this.settings = configStore.imaginate;
@@ -34,10 +31,13 @@ export class imaginateStore {
     // If existing image, init the first selected one
     if(this.imgList.length > 0)
       this.selectedImageIndex = 0;
+
+    this.isLoaded = true;
   }
 
   @action setSelectedImage(index) {
     this.selectedImageIndex = index;
+    this.selectedImage = null;
   }
 
   $reqPostPredict(postData) {
@@ -46,7 +46,7 @@ export class imaginateStore {
 
   @action async predictSelectedImage(serviceName) {
     const image = this.imgList[this.selectedImageIndex];
-    this.selectedImage.postData = {
+    image.postData = {
       service: serviceName,
       parameters: {
         output: {
@@ -58,6 +58,7 @@ export class imaginateStore {
     };
     image.json = await this.$reqPostPredict(image.postData);
     image.boxes = image.json.body.predictions[0].classes.map( predict => predict.bbox );
+    this.selectedImage = image;
   }
 
 }
