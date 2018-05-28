@@ -5,8 +5,10 @@
   "devDependencies": {
     "eslint": "^4.19.1",
     "eslint-plugin-react": "^7.8.2",
+    "husky": "^0.14.3",
     "node-sass": "^4.9.0",
     "prettier": "1.13.0",
+    "pretty-quick": "^1.6.0",
     "react-app-rewired": "^1.5.2",
     "sass-loader": "^7.0.1"
   },
@@ -42,6 +44,7 @@
     "superagent-promise": "^1.1.0"
   },
   "scripts": {
+    "precommit": "pretty-quick --staged",
     "build-css": "node-sass-chokidar --include-path ./src/styles --include-path ./node_modules src/styles/ -o src/styles/",
     "watch-css": "npm run build-css && node-sass-chokidar --include-path ./src/styles --include-path ./node_modules src/styles/ -o src/styles --watch --recursive",
     "start-js": "react-scripts start",
