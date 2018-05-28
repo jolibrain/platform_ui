@@ -73,7 +73,11 @@ export default class Imaginate extends React.Component {
 
         <div className="row">
           <div className="col-md-8">
-            <BoundingBoxDisplay />
+            <BoundingBoxDisplay
+              selectedBoxIndex={this.state.selectedBoxIndex}
+              onOver={this.onOver}
+              onLeave={this.onLeave}
+            />
           </div>
           <div className="col-md-4">
             <div className="row threshold">
@@ -83,7 +87,7 @@ export default class Imaginate extends React.Component {
               <Description
                 selectedBoxIndex={this.state.selectedBoxIndex}
                 onOver={this.onOver}
-                onOver={this.onLeave}
+                onLeave={this.onLeave}
               />
             </div>
             <div className="row commands">
