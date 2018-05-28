@@ -15,16 +15,20 @@ export class imaginateStore {
     this.settings.deepdetect = configStore.deepdetect;
 
     // Init image list if available inside config.json
-    if (this.settings.initImages &&
-        this.settings.initImages.length > 0) {
+    if (this.settings.display.initImages) {
 
-      this.imgList = this.settings.initImages.map( img => {
-        return {
-          url: img,
-          boxes: [[10, 10, 10, 10]],
-          json: null
-        }
-      })
+      switch(this.settings.display.initImages.type) {
+        case "urlList":
+        default:
+          this.imgList = this.settings.display.initImages.list.map( img => {
+            return {
+              url: img,
+              boxes: [[10, 10, 10, 10]],
+              json: null
+            }
+          })
+          break;
+      }
 
     }
 
@@ -51,7 +55,7 @@ export class imaginateStore {
       parameters: {
         output: {
           bbox: true,
-          confidence_threshold: 0.1,
+          confidence_threshold: this.settings.threshold.confidence,
         }
       },
       data: [ image.url ]
