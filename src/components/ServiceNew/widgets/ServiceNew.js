@@ -93,6 +93,19 @@ export default class ServiceNew extends React.Component {
       errors.push("Service name already exists");
     }
 
+    const serviceModelLocation = this.typeahead.getInstance().getInput().value;
+
+    if (serviceModelLocation.length === 0) {
+      errors.push("Model Repository Location can't be empty");
+    }
+
+    const { autocompleteRepositories } = this.props.modelRepositoriesStore;
+    const repositories = autocompleteRepositories.map(r => r.label);
+
+    if (!repositories.includes(serviceModelLocation)) {
+      errors.push("Model Repository Location must exists in predefined list");
+    }
+
     this.setState({ errors: errors });
 
     return errors.length === 0;
