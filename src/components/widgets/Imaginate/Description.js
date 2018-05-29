@@ -1,5 +1,6 @@
 import React from "react";
 import { inject, observer } from "mobx-react";
+import ReactTooltip from "react-tooltip";
 
 @inject("imaginateStore")
 @observer
@@ -139,12 +140,14 @@ export default class Description extends React.Component {
                   className="fa-stack fa-lg"
                   onMouseOver={this.props.onOver.bind(this, index)}
                   onMouseLeave={this.props.onLeave}
+                  data-tip={`${category.cat} - ${category.prob.toFixed(2)}`}
                 >
                   <i className={bottomClass} style={styles} />
                   <i className={topClass} style={{ opacity: opacity }} />
                 </span>
               );
             })}
+            <ReactTooltip />
           </div>
         );
     }

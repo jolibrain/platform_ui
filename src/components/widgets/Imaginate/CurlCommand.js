@@ -5,7 +5,7 @@ import { Controlled as CodeMirror } from "react-codemirror2";
 import "codemirror/lib/codemirror.css";
 import "codemirror/mode/javascript/javascript";
 
-import { CopyToClipboard } from "react-copy-to-clipboard";
+import copy from "copy-to-clipboard";
 
 @inject("imaginateStore")
 @observer
@@ -21,10 +21,17 @@ export default class CurlCommand extends React.Component {
   }
 
   handleCopyClipboard() {
+    const store = this.props.imaginateStore;
+    const curlCommand = `curl -X POST 'http://localhost:8000/predict' -d '${
+      store.curlParams
+    }'`;
+
+    copy(curlCommand);
+
     this.setState({ copied: true });
     setTimeout(() => {
       this.setState({ copied: false });
-    }, 2000);
+    }, 500);
   }
 
   render() {
@@ -38,26 +45,20 @@ export default class CurlCommand extends React.Component {
       1
     )}'`;
 
-    let copiedClass = "btn btn-sm btn-outline-secondary";
-    let copiedText = "Copy to clipboard";
-
-    if (this.state.copied === true) {
-      copiedClass = "btn btn-sm btn-outline-success";
-      copiedText = "Copied";
-    }
+    const copiedText = this.state.copied ? "Copied!" : "Copy to clipboard";
 
     return (
-      <div>
-        <h6>
-          CURL&nbsp;
-          <CopyToClipboard text={curlCommand} onCopy={this.handleCopyClipboard}>
-            <button type="button" className={copiedClass}>
-              {copiedText}
-            </button>
-          </CopyToClipboard>
-        </h6>
-        <CodeMirror value={curlCommand} />
-      </div>
+      <pre className="curl-command">
+        <div className="heading">
+          CURL
+          <span className="clipboard" onClick={this.handleCopyClipboard}>
+            {copiedText}
+          </span>
+        </div>
+        <div className="code-wrap">
+          <CodeMirror value={curlCommand} />
+        </div>
+      </pre>
     );
   }
 }
