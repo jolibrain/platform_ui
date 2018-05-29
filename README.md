@@ -196,3 +196,18 @@ When creating a new service, the app is pre-loading repositories path and user i
 
   }
 ```
+
+## Docker
+
+```bash
+docker-build -t core-ui .
+```
+
+```bash
+docker run -it \
+-v ${PWD}:/usr/src/app \
+-v /usr/src/app/node_modules \
+-p 3000:3000 \
+--rm \
+core-ui
+```
