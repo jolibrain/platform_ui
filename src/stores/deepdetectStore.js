@@ -53,8 +53,8 @@ export class deepdetectStore {
 
   @action
   async newService(name, data, callback) {
-    await this.$reqPutService(name, data);
-    callback();
+    const resp = await this.$reqPutService(name, data);
+    callback(resp);
   }
 }
 

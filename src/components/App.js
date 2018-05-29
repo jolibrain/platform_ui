@@ -68,15 +68,7 @@ export default class App extends React.Component {
       this.props.configStore.configLoaded &&
       this.props.deepdetectStore.servicesLoaded
     ) {
-      // <Route path="/login" component={Login} />
-      // <Route path="/register" component={Register} />
-      // <Route path="/editor/:slug?" component={Editor} />
-      // <Route path="/article/:id" component={Article} />
-      // <PrivateRoute path="/settings" component={Settings} />
-      // <Route path="/@:username" component={Profile} />
-      // <Route path="/@:username/favorites" component={Profile} />
-      console.log(this.props.deepdetectStore.services.defaultService);
-
+      // Minimal Layout
       if (
         this.props.deepdetectStore.settings.services.defaultService &&
         this.props.deepdetectStore.settings.services.defaultService.length > 0
@@ -86,6 +78,8 @@ export default class App extends React.Component {
             <Route exact path="/" component={Imaginate} />
           </div>
         );
+
+        // Full Layout
       } else {
         return (
           <div>

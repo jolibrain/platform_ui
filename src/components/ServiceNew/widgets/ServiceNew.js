@@ -2,7 +2,7 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import { toJS } from "mobx";
 import { inject, observer } from "mobx-react";
-import { CopyToClipboard } from "react-copy-to-clipboard";
+import copy from "copy-to-clipboard";
 
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 
@@ -44,7 +44,8 @@ export default class ServiceNew extends React.Component {
       serviceName: "PLEASE_DEFINE",
       config: JSON.stringify(config, null, 1),
       modelLocation: defaultModelLocation,
-      copied: false
+      copied: false,
+      error: ""
     };
 
     this.handleCopyClipboard = this.handleCopyClipboard.bind(this);
@@ -75,13 +76,27 @@ export default class ServiceNew extends React.Component {
     const serviceName = this.serviceNameRef.current.value;
     const serviceData = JSON.parse(this.state.config);
     this.setState({ creatingService: true });
-    this.props.deepdetectStore.newService(serviceName, serviceData, () => {
-      this.setState({ creatingService: false });
-      this.props.history.push(`/predict/${serviceName}`);
+    this.props.deepdetectStore.newService(serviceName, serviceData, resp => {
+      if (resp instanceof Error) {
+        this.setState({
+          creatingService: false,
+          error: resp.message
+        });
+      } else {
+        this.setState({ creatingService: false });
+        this.props.history.push(`/predict/${serviceName}`);
+      }
     });
   }
 
   handleCopyClipboard() {
+    const { settings } = this.props.deepdetectStore;
+    const curlCommand = `curl -X PUT '${window.location.origin}${
+      settings.server.path
+    }/services/${this.state.serviceName}' -d '${this.state.config}'`;
+
+    copy(curlCommand);
+
     this.setState({ copied: true });
     setTimeout(() => {
       this.setState({ copied: false });
@@ -93,17 +108,11 @@ export default class ServiceNew extends React.Component {
 
     if (settings == null) return null;
 
-    const curlCommand = `curl -X PUT 'http://localhost:8000/services/${
-      this.state.serviceName
-    }' -d '${this.state.config}'`;
+    const curlCommand = `curl -X PUT '${window.location.origin}${
+      settings.server.path
+    }/services/${this.state.serviceName}' -d '${this.state.config}'`;
 
-    let copiedClass = "btn btn-sm btn-outline-secondary";
-    let copiedText = "Copy to clipboard";
-
-    if (this.state.copied === true) {
-      copiedClass = "btn btn-sm btn-outline-success";
-      copiedText = "Copied";
-    }
+    const copiedText = this.state.copied ? "Copied!" : "Copy to clipboard";
 
     return (
       <div className="widget-service-new">
@@ -168,20 +177,33 @@ export default class ServiceNew extends React.Component {
                 style={this.state.creatingService ? {} : { display: "none" }}
               />&nbsp; Add Service
             </button>
+
+            <div
+              className="alert alert-danger"
+              role="alert"
+              style={{
+                marginTop: "10px",
+                display: this.state.error.length > 0 ? "" : "none"
+              }}
+            >
+              <b>Error while creating service</b>
+              <br />
+              {this.state.error}
+            </div>
           </div>
 
           <div className="col-md-7">
-            <div className="form-row">
-              <CopyToClipboard
-                text={curlCommand}
-                onCopy={this.handleCopyClipboard}
-              >
-                <button type="button" className={copiedClass}>
+            <pre className="curl-command">
+              <div className="heading">
+                CURL{" "}
+                <span className="clipboard" onClick={this.handleCopyClipboard}>
                   {copiedText}
-                </button>
-              </CopyToClipboard>
-              <CodeMirror value={curlCommand} />
-            </div>
+                </span>
+              </div>
+              <div className="code-wrap">
+                <CodeMirror value={curlCommand} />
+              </div>
+            </pre>
           </div>
         </div>
       </div>

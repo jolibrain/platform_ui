@@ -1,28 +1,30 @@
-.service-new .content {
-  margin: 0 auto;
-  padding-top: 20px;
-}
+@import "./CurlCommand.scss";
 
-.service-new .content .widget-service-new {
-  padding: 5px;
-}
+.service-new {
+  .content {
+    margin: 0 auto;
+    padding-top: 20px;
 
-.service-new .content .widget-service-new h5 {
-  padding-bottom: 10px;
-}
+    .widget-service-new {
+      padding: 5px;
 
-.service-new .content .widget-service-new button {
-  margin-top: 15px;
-}
+      h5 {
+        padding-bottom: 10px;
+      }
+      button {
+        margin-top: 15px;
+      }
+    }
+  }
 
-.service-new input.rbt-input-main {
-  width:323px;
-}
+  input.rbt-input-main {
+    width: 323px;
+  }
 
-.service-new .CodeMirror {
-  height: 400px !important;
-}
-
-.service-new .CodeMirror-hscrollbar {
-  display: none;
+  .CodeMirror {
+    height: 400px !important;
+  }
+  .CodeMirror-hscrollbar {
+    display: none;
+  }
 }
