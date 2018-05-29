@@ -1,4 +1,5 @@
 import React from "react";
+import { toJS } from "mobx";
 import { inject, observer } from "mobx-react";
 import Boundingbox from "react-bounding-box";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
@@ -22,12 +23,12 @@ export default class BoundingBoxDisplay extends React.Component {
       <Boundingbox
         className="boundingboxdisplay"
         image={image.url}
-        boxes={image.boxes}
+        boxes={toJS(image.boxes)}
         selectedIndex={this.props.selectedBoxIndex}
         onSelected={this.props.onOver}
         pixelSegmentation={image.pixelSegmentation}
         separateSegmentation={store.settings.display.separateSegmentation}
-        segmentationColors={store.settings.display.segmentationColors}
+        segmentationColors={toJS(store.settings.display.segmentationColors)}
       />
     );
   }
