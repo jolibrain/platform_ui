@@ -25,7 +25,6 @@ export default class ServiceNew extends React.Component {
     super(props);
     this.serviceNameRef = React.createRef();
     this.serviceDescriptionRef = React.createRef();
-    this.serviceModelLocationRef = React.createRef();
 
     this.submitService = this.submitService.bind(this);
     this.handleConfigChange = this.handleConfigChange.bind(this);
@@ -58,7 +57,7 @@ export default class ServiceNew extends React.Component {
   handleInputChange() {
     const serviceName = this.serviceNameRef.current.value;
     const serviceDescription = this.serviceDescriptionRef.current.value;
-    const serviceModelLocation = this.state.modelLocation;
+    const serviceModelLocation = this.typeahead.getInstance().getInput().value;
 
     let config = JSON.parse(this.state.config);
 
@@ -156,13 +155,12 @@ export default class ServiceNew extends React.Component {
               </label>
               <Typeahead
                 id="inlineFormInputModelLocation"
-                ref={this.serviceModelLocationRef}
+                ref={typeahead => (this.typeahead = typeahead)}
                 options={toJS(
                   this.props.modelRepositoriesStore.autocompleteRepositories
                 )}
                 placeholder="Model Repository location"
                 onChange={this.handleInputChange}
-                onSelect={val => this.setState({ modelLocation: val })}
               />
             </div>
 

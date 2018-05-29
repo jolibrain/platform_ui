@@ -19,7 +19,6 @@ class Header extends React.Component {
         <p>
           deepdetect
           <ul>
-            <li>version : 0.1</li>
             <li>commit : e8592d</li>
           </ul>
         </p>
