@@ -15,7 +15,8 @@ import faSpinner from "@fortawesome/fontawesome-free-solid/faSpinner";
 import Home from "./Home";
 import Service from "./Service";
 import ServiceNew from "./ServiceNew";
-import ServiceLight from "./ServiceLight";
+
+import Imaginate from "./widgets/Imaginate";
 
 fontawesome.library.add(
   faPlusCircle,
@@ -81,7 +82,7 @@ export default class App extends React.Component {
       ) {
         return (
           <div>
-            <Route exact path="/" component={ServiceLight} />
+            <Route exact path="/" component={Imaginate} />
           </div>
         );
       } else {

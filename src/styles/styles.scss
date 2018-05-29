@@ -1,12 +1,12 @@
 // My Bootstrap configuration
-@import './_custom_bootstrap';
+@import "./_custom_bootstrap";
 
 // My tooltip configuration
-@import './_tooltip';
+@import "./_tooltip";
 @import "./_widgets.scss";
 
 // Bootstrap library
-@import 'bootstrap/scss/bootstrap';
+@import "bootstrap/scss/bootstrap";
 
 @import "./Header.scss";
 @import "./Home.scss";
@@ -19,3 +19,7 @@ body {
   font-family: sans-serif;
 }
 
+.btn:focus {
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+}
