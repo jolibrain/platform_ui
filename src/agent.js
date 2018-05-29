@@ -51,7 +51,6 @@ const Deepdetect = {
   },
   putService: (settings, name, data) => {
     const dd = new DD(settings.server);
-    console.log(data);
     return dd.putService(name, data);
   },
   postPredict: (settings, postData) => {

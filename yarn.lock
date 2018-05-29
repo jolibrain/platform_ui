@@ -2374,9 +2374,9 @@ deep-is@~0.1.3:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/deep-is/-/deep-is-0.1.3.tgz#b369d6fb5dbc13eecf524f91b070feedc357cf34"
 
-deepdetect-js@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/deepdetect-js/-/deepdetect-js-1.2.2.tgz#2c5dc4f6df1930e7634a6e950d4b27b4941bac9b"
+deepdetect-js@^1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/deepdetect-js/-/deepdetect-js-1.2.3.tgz#4d3caf42489de5111b034c2f7f02e317a868d0fe"
   dependencies:
     groc "^0.8.0"
     isomorphic-fetch "^2.2.1"

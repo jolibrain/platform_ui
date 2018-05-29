@@ -26,6 +26,7 @@ export default class ServiceNew extends React.Component {
     this.serviceNameRef = React.createRef();
     this.serviceDescriptionRef = React.createRef();
 
+    this.validateBeforeSubmit = this.validateBeforeSubmit.bind(this);
     this.submitService = this.submitService.bind(this);
     this.handleConfigChange = this.handleConfigChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -44,7 +45,7 @@ export default class ServiceNew extends React.Component {
       config: JSON.stringify(config, null, 1),
       modelLocation: defaultModelLocation,
       copied: false,
-      error: ""
+      errors: []
     };
 
     this.handleCopyClipboard = this.handleCopyClipboard.bind(this);
@@ -71,7 +72,37 @@ export default class ServiceNew extends React.Component {
     this.setState({ config: JSON.stringify(config, null, 1) });
   }
 
+  validateBeforeSubmit() {
+    let errors = [];
+
+    const serviceName = this.serviceNameRef.current.value;
+
+    if (serviceName.length === 0) {
+      errors.push("Service name can't be empty");
+    }
+
+    if (serviceName === "new") {
+      errors.push("Service name can't be named 'new'");
+    }
+
+    const ddstore = this.props.deepdetectStore;
+    const { services } = ddstore;
+    const serviceNames = services.map(s => s.name);
+
+    if (serviceNames.includes(serviceName)) {
+      errors.push("Service name already exists");
+    }
+
+    this.setState({ errors: errors });
+
+    return errors.length === 0;
+  }
+
   submitService() {
+    if (!this.validateBeforeSubmit()) {
+      return null;
+    }
+
     const serviceName = this.serviceNameRef.current.value;
     const serviceData = JSON.parse(this.state.config);
     this.setState({ creatingService: true });
@@ -82,7 +113,7 @@ export default class ServiceNew extends React.Component {
           error: resp.message
         });
       } else {
-        this.setState({ creatingService: false });
+        this.setState({ creatingService: false, errors: [] });
         this.props.history.push(`/predict/${serviceName}`);
       }
     });
@@ -181,12 +212,13 @@ export default class ServiceNew extends React.Component {
               role="alert"
               style={{
                 marginTop: "10px",
-                display: this.state.error.length > 0 ? "" : "none"
+                display: this.state.errors.length > 0 ? "" : "none"
               }}
             >
               <b>Error while creating service</b>
-              <br />
-              {this.state.error}
+              <ul>
+                {this.state.errors.map((error, i) => <li key={i}>{error}</li>)}
+              </ul>
             </div>
           </div>
 
