@@ -1,6 +1,12 @@
 # base image
 FROM node:9.6.1
 
+# install and config nginx
+RUN apt-get update
+RUN apt-get install -y nginx
+COPY .nginx.conf /etc/nginx/conf.d/deepdetect.conf
+RUN /etc/init.d/nginx reload
+
 # set working directory
 RUN mkdir /usr/src/app
 WORKDIR /usr/src/app
