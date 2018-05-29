@@ -1,28 +1,12 @@
 {
   "deepdetect": {
-    "infoRefreshRate": 10000,
     "server": {
       "host": "192.168.90.201",
       "port": 18104,
       "path": "/api"
     },
     "services": {
-      "defaultConfig": {
-        "description": "object detection service",
-        "model": {
-          "repository": "/data1/core_ui/models/detection_600/"
-        },
-        "mllib": "caffe",
-        "type": "supervised",
-        "parameters": {
-          "input": {
-            "connector": "image",
-            "height": 300,
-            "width": 300
-          },
-          "mllib": { "nclasses": 21 }
-        }
-      }
+      "defaultService": "test"
     }
   },
   "imaginate": {
@@ -54,13 +38,5 @@
       "ctc": false,
       "blank_label": false
     }
-  },
-  "gpuInfo": {
-    "gpuStatServer": "http://10.10.77.61:12345",
-    "refreshRate": 5000
-  },
-  "modelRepositories": {
-    "nginxPath": "/model_repositories/",
-    "systemPath": "/data1/core_ui/models/"
   }
 }

@@ -2,7 +2,6 @@ import React from "react";
 import { inject, observer } from "mobx-react";
 import { Link } from "react-router-dom";
 
-@inject("commonStore")
 @inject("deepdetectStore")
 @observer
 export default class ServiceList extends React.Component {

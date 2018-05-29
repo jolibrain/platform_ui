@@ -15,6 +15,7 @@ import faSpinner from "@fortawesome/fontawesome-free-solid/faSpinner";
 import Home from "./Home";
 import Service from "./Service";
 import ServiceNew from "./ServiceNew";
+import ServiceLight from "./ServiceLight";
 
 fontawesome.library.add(
   faPlusCircle,
@@ -39,10 +40,16 @@ export default class App extends React.Component {
       this.props.commonStore.setAppLoaded();
     }
     this.props.configStore.loadConfig(config => {
-      this.props.gpuStore.setup(config);
+      if (config.gpuInfo) {
+        this.props.gpuStore.setup(config);
+      }
+
       this.props.deepdetectStore.setup(config);
       this.props.imaginateStore.setup(config);
-      this.props.modelRepositoriesStore.setup(config);
+
+      if (config.modelRepositories) {
+        this.props.modelRepositoriesStore.setup(config);
+      }
     });
   }
 
@@ -67,17 +74,29 @@ export default class App extends React.Component {
       // <PrivateRoute path="/settings" component={Settings} />
       // <Route path="/@:username" component={Profile} />
       // <Route path="/@:username/favorites" component={Profile} />
-      return (
-        <div>
-          <Header />
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route path="/predict/new" component={ServiceNew} />
-            <Route path="/predict/:serviceName" component={Service} />
-            <Route path="/predict" component={Service} />
-          </Switch>
-        </div>
-      );
+      console.log(this.props.deepdetectStore.services.defaultService);
+
+      if (
+        this.props.deepdetectStore.settings.services.defaultService.length > 0
+      ) {
+        return (
+          <div>
+            <Route exact path="/" component={ServiceLight} />
+          </div>
+        );
+      } else {
+        return (
+          <div>
+            <Header />
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route path="/predict/new" component={ServiceNew} />
+              <Route path="/predict/:serviceName" component={Service} />
+              <Route path="/predict" component={Service} />
+            </Switch>
+          </div>
+        );
+      }
     }
     return <Header />;
   }
