@@ -34,7 +34,9 @@ export default class JsonResponse extends React.Component {
   render() {
     const store = this.props.imaginateStore;
 
-    if (store.selectedImage === null) return null;
+    if (store.selectedImage === null || store.selectedImage.json === null) {
+      return null;
+    }
 
     const jsonContent = store.selectedImage.json;
 

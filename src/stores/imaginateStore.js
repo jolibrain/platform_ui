@@ -3,6 +3,7 @@ import agent from "../agent";
 
 export class imaginateStore {
   @observable isLoaded = false;
+  @observable isRequesting = false;
   @observable settings = {};
 
   @observable imgList = [];
@@ -52,8 +53,12 @@ export class imaginateStore {
   }
 
   @action
-  async predictSelectedImage(serviceName) {
+  initPredict(serviceName) {
+    this.isRequesting = true;
+
     const image = this.imgList[this.selectedImageIndex];
+
+    image.json = null;
 
     image.postData = {
       service: serviceName,
@@ -102,6 +107,11 @@ export class imaginateStore {
     }
 
     this.curlParams = image.postData;
+  }
+
+  @action
+  async predict(serviceName) {
+    const image = this.imgList[this.selectedImageIndex];
     image.json = await this.$reqPostPredict(image.postData);
 
     image.boxes = image.json.body.predictions[0].classes.map(
@@ -122,6 +132,7 @@ export class imaginateStore {
       : image.json.body.predictions[0].vals;
 
     this.selectedImage = image;
+    this.isRequesting = false;
   }
 
   @action

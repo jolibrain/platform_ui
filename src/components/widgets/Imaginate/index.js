@@ -46,7 +46,8 @@ export default class Imaginate extends React.Component {
     if (ddStore.currentServiceIndex === -1) return null;
 
     const service = ddStore.services[ddStore.currentServiceIndex];
-    store.predictSelectedImage(service.name);
+    store.initPredict(service.name);
+    store.predict(service.name);
   }
 
   onOver(index) {

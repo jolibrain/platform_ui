@@ -78,6 +78,7 @@ export default class App extends React.Component {
       console.log(this.props.deepdetectStore.services.defaultService);
 
       if (
+        this.props.deepdetectStore.settings.services.defaultService &&
         this.props.deepdetectStore.settings.services.defaultService.length > 0
       ) {
         return (

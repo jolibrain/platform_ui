@@ -1,5 +1,6 @@
 import React from "react";
 import { inject, observer } from "mobx-react";
+import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 
 import { Controlled as CodeMirror } from "react-codemirror2";
 import "codemirror/lib/codemirror.css";
@@ -50,7 +51,8 @@ export default class CurlCommand extends React.Component {
     return (
       <pre className="curl-command">
         <div className="heading">
-          CURL
+          CURL{" "}
+          {store.isRequesting ? <FontAwesomeIcon icon="spinner" spin /> : ""}
           <span className="clipboard" onClick={this.handleCopyClipboard}>
             {copiedText}
           </span>

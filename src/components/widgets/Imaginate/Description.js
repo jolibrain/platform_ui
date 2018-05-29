@@ -5,10 +5,16 @@ import ReactTooltip from "react-tooltip";
 @inject("imaginateStore")
 @observer
 export default class Description extends React.Component {
+  componentWillReceiveProps() {
+    ReactTooltip.rebuild();
+  }
+
   render() {
     const store = this.props.imaginateStore;
 
-    if (store.selectedImage === null) return null;
+    if (store.selectedImage === null || store.selectedImage.json === null) {
+      return null;
+    }
 
     const imageClasses = store.selectedImage.json.body.predictions[0].classes;
 
