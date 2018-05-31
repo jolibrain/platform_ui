@@ -59,6 +59,6 @@
   },
   "modelRepositories": {
     "nginxPath": "/model_repositories/",
-    "systemPath": "/data1/core_ui/models/"
+    "systemPath": "/opt/models/"
   }
 }
