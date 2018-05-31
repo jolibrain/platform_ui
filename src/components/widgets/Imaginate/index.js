@@ -47,7 +47,7 @@ export default class Imaginate extends React.Component {
 
     const service = ddStore.services[ddStore.currentServiceIndex];
 
-    if (typeof servive === "undefined") return null;
+    // if (typeof servive === "undefined") return null;
 
     store.initPredict(service.name);
     store.predict(service.name);

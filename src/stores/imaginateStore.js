@@ -114,22 +114,26 @@ export class imaginateStore {
     const image = this.imgList[this.selectedImageIndex];
     image.json = await this.$reqPostPredict(image.postData);
 
-    image.boxes = image.json.body.predictions[0].classes.map(
-      predict => predict.bbox
-    );
-
-    if (
-      (this.settings.request.objSearch || this.settings.request.imgSearch) &&
-      typeof image.json.body.predictions[0].rois !== "undefined"
-    ) {
-      image.boxes = image.json.body.predictions[0].rois.map(
+    if (typeof image.json.body === "undefined") {
+      image.error = true;
+    } else {
+      image.boxes = image.json.body.predictions[0].classes.map(
         predict => predict.bbox
       );
-    }
 
-    image.pixelSegmentation = typeof image.json.body.predictions[0].vals
-      ? []
-      : image.json.body.predictions[0].vals;
+      if (
+        (this.settings.request.objSearch || this.settings.request.imgSearch) &&
+        typeof image.json.body.predictions[0].rois !== "undefined"
+      ) {
+        image.boxes = image.json.body.predictions[0].rois.map(
+          predict => predict.bbox
+        );
+      }
+
+      image.pixelSegmentation = typeof image.json.body.predictions[0].vals
+        ? []
+        : image.json.body.predictions[0].vals;
+    }
 
     this.selectedImage = image;
     this.isRequesting = false;

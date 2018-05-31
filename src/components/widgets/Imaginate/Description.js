@@ -16,6 +16,12 @@ export default class Description extends React.Component {
       return null;
     }
 
+    const image = store.selectedImage;
+
+    if (image.error) {
+      return null;
+    }
+
     const imageClasses = store.selectedImage.json.body.predictions[0].classes;
 
     switch (store.settings.display.format) {
