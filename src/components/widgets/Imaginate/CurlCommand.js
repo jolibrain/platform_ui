@@ -9,6 +9,7 @@ import "codemirror/mode/javascript/javascript";
 import copy from "copy-to-clipboard";
 
 @inject("imaginateStore")
+@inject("deepdetectStore")
 @observer
 export default class CurlCommand extends React.Component {
   constructor(props) {
@@ -23,9 +24,10 @@ export default class CurlCommand extends React.Component {
 
   handleCopyClipboard() {
     const store = this.props.imaginateStore;
-    const curlCommand = `curl -X POST 'http://localhost:8000/predict' -d '${
-      store.curlParams
-    }'`;
+    const { settings } = this.props.deepdetectStore;
+    const curlCommand = `curl -X POST '${window.location.origin}${
+      settings.server.path
+    }/predict' -d '${store.curlParams}'`;
 
     copy(curlCommand);
 
@@ -37,14 +39,13 @@ export default class CurlCommand extends React.Component {
 
   render() {
     const store = this.props.imaginateStore;
+    const { settings } = this.props.deepdetectStore;
 
     if (store.selectedImage === null) return null;
 
-    const curlCommand = `curl -X POST 'http://localhost:8000/predict' -d '${JSON.stringify(
-      store.curlParams,
-      null,
-      1
-    )}'`;
+    const curlCommand = `curl -X POST '${window.location.origin}${
+      settings.server.path
+    }/predict' -d '${JSON.stringify(store.curlParams, null, 1)}'`;
 
     const copiedText = this.state.copied ? "Copied!" : "Copy to clipboard";
 

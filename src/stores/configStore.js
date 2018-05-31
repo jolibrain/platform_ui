@@ -7,8 +7,6 @@ export class configStore {
   @observable
   deepdetect = {
     server: {
-      host: "localhost",
-      port: 3000,
       path: "/api"
     },
     services: {
