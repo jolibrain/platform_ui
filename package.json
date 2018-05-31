@@ -49,6 +49,6 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "docker-build": "docker build -t core-ui .",
-    "docker-run": "docker run -it -v ${PWD}:/usr/src/app -v /usr/src/app/node_modules -p 18080:80 --rm core-ui"
+    "docker-run": "docker run -it -v ${PWD}:/usr/src/app -v /usr/src/app/node_modules -p 18104:8080 --rm core-ui"
   }
 }
