@@ -5,7 +5,7 @@ FROM node:10.1.0
 RUN apt-get update
 RUN apt-get install -y nginx
 COPY .nginx.conf /etc/nginx/conf.d/deepdetect.conf
-RUN /etc/init.d/nginx reload
+RUN /etc/init.d/nginx start
 
 # set working directory
 RUN mkdir /usr/src/app
