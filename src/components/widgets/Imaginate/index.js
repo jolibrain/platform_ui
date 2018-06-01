@@ -78,18 +78,20 @@ export default class Imaginate extends React.Component {
     return (
       <div className="imaginate">
         <div className="row">
-          <div className="img-list col-sm-12">
-            <ImageList selectImage={this.selectImage} />
-          </div>
-        </div>
-
-        <div className="row">
           <div className="col-md-8">
-            <BoundingBoxDisplay
-              selectedBoxIndex={this.state.selectedBoxIndex}
-              onOver={this.onOver}
-              onLeave={this.onLeave}
-            />
+            <div className="row">
+              <div className="img-list col-sm-12">
+                <ImageList selectImage={this.selectImage} />
+              </div>
+            </div>
+
+            <div className="row">
+              <BoundingBoxDisplay
+                selectedBoxIndex={this.state.selectedBoxIndex}
+                onOver={this.onOver}
+                onLeave={this.onLeave}
+              />
+            </div>
           </div>
           <div className="col-md-4">
             <div className="row threshold">
