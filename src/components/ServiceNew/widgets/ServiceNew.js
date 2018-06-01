@@ -28,22 +28,35 @@ export default class ServiceNew extends React.Component {
 
     this.validateBeforeSubmit = this.validateBeforeSubmit.bind(this);
     this.submitService = this.submitService.bind(this);
-    this.handleConfigChange = this.handleConfigChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
 
-    let config = this.props.deepdetectStore.settings.services.defaultConfig;
-    const defaultModelLocation = this.props.modelRepositoriesStore
-      .repositories[0];
+    const { repositories } = this.props.modelRepositoriesStore;
+    const defaultRepository = repositories[0];
 
-    if (config.model && config.model.repository) {
-      config.model.repository = defaultModelLocation;
+    const ddStore = this.props.deepdetectStore;
+
+    let defaultConfig = ddStore.settings.services.defaultConfig.find(config => {
+      return config.modelName === defaultRepository.modelName;
+    });
+
+    let modelConfig = {
+      error: `missing deepdetect.services.defaultConfig.${
+        defaultRepository.modelName
+      }.modelConfig value in config.json`
+    };
+    if (typeof defaultConfig !== "undefined") {
+      modelConfig = defaultConfig.modelConfig;
+    }
+
+    if (modelConfig.model && modelConfig.model.repository) {
+      modelConfig.model.repository = defaultRepository.label;
     }
 
     this.state = {
       creatingService: false,
       serviceName: "PLEASE_DEFINE",
-      config: JSON.stringify(config, null, 1),
-      modelLocation: defaultModelLocation,
+      defaultConfig: defaultConfig,
+      jsonConfig: JSON.stringify(modelConfig, null, 1),
       copied: false,
       errors: []
     };
@@ -51,25 +64,38 @@ export default class ServiceNew extends React.Component {
     this.handleCopyClipboard = this.handleCopyClipboard.bind(this);
   }
 
-  handleConfigChange(newValue) {
-    this.setState({ config: JSON.stringify(newValue, null, 1) });
-  }
-
   handleInputChange() {
+    const typeahead = this.typeahead.getInstance();
+
     const serviceName = this.serviceNameRef.current.value;
     const serviceDescription = this.serviceDescriptionRef.current.value;
-    const serviceModelLocation = this.typeahead.getInstance().getInput().value;
+    const serviceModelLocation = typeahead.getInput().value;
 
-    let config = JSON.parse(this.state.config);
+    let jsonConfig = JSON.parse(this.state.jsonConfig);
+
+    const defaultConfig = this.state.defaultConfig;
+    const selectedConfig = typeahead.state.selected[0];
+    if (
+      typeof selectedConfig !== "undefined" &&
+      defaultConfig.modelName !== selectedConfig.modelName
+    ) {
+      const ddStore = this.props.deepdetectStore;
+      const newConfig = ddStore.settings.services.defaultConfig.find(config => {
+        return config.modelName === selectedConfig.modelName;
+      });
+      this.setState({ defaultConfig: newConfig });
+      jsonConfig = newConfig.modelConfig;
+    }
 
     if (serviceName.length > 0) this.setState({ serviceName: serviceName });
 
-    if (serviceDescription.length > 0) config.description = serviceDescription;
+    if (serviceDescription.length > 0)
+      jsonConfig.description = serviceDescription;
 
     if (serviceModelLocation.length > 0)
-      config.model.repository = serviceModelLocation;
+      jsonConfig.model.repository = serviceModelLocation;
 
-    this.setState({ config: JSON.stringify(config, null, 1) });
+    this.setState({ jsonConfig: JSON.stringify(jsonConfig, null, 1) });
   }
 
   validateBeforeSubmit() {
@@ -99,10 +125,8 @@ export default class ServiceNew extends React.Component {
       errors.push("Model Repository Location can't be empty");
     }
 
-    const { autocompleteRepositories } = this.props.modelRepositoriesStore;
-    const repositories = autocompleteRepositories.map(r => r.label);
-
-    if (!repositories.includes(serviceModelLocation)) {
+    const { repositories } = this.props.modelRepositoriesStore;
+    if (!repositories.map(r => r.label).includes(serviceModelLocation)) {
       errors.push("Model Repository Location must exists in predefined list");
     }
 
@@ -117,7 +141,7 @@ export default class ServiceNew extends React.Component {
     }
 
     const serviceName = this.serviceNameRef.current.value;
-    const serviceData = JSON.parse(this.state.config);
+    const serviceData = JSON.parse(this.state.jsonConfig);
     this.setState({ creatingService: true });
     this.props.deepdetectStore.newService(serviceName, serviceData, resp => {
       if (resp instanceof Error) {
@@ -136,7 +160,7 @@ export default class ServiceNew extends React.Component {
     const { settings } = this.props.deepdetectStore;
     const curlCommand = `curl -X PUT '${window.location.origin}${
       settings.server.path
-    }/services/${this.state.serviceName}' -d '${this.state.config}'`;
+    }/services/${this.state.serviceName}' -d '${this.state.jsonConfig}'`;
 
     copy(curlCommand);
 
@@ -153,7 +177,7 @@ export default class ServiceNew extends React.Component {
 
     const curlCommand = `curl -X PUT '${window.location.origin}${
       settings.server.path
-    }/services/${this.state.serviceName}' -d '${this.state.config}'`;
+    }/services/${this.state.serviceName}' -d '${this.state.jsonConfig}'`;
 
     const copiedText = this.state.copied ? "Copied!" : "Copy to clipboard";
 
@@ -200,9 +224,7 @@ export default class ServiceNew extends React.Component {
               <Typeahead
                 id="inlineFormInputModelLocation"
                 ref={typeahead => (this.typeahead = typeahead)}
-                options={toJS(
-                  this.props.modelRepositoriesStore.autocompleteRepositories
-                )}
+                options={toJS(this.props.modelRepositoriesStore.repositories)}
                 placeholder="Model Repository location"
                 onChange={this.handleInputChange}
               />

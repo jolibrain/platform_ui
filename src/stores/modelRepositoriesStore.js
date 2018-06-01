@@ -1,4 +1,4 @@
-import { observable, action, computed } from "mobx";
+import { observable, action } from "mobx";
 import agent from "../agent";
 
 export class modelRepositoriesStore {
@@ -20,22 +20,16 @@ export class modelRepositoriesStore {
   load() {
     this.$req().then(
       action(repositories => {
-        this.repositories = repositories.map(repo => {
-          return this.settings.systemPath + repo;
+        this.repositories = repositories.map((repo, index) => {
+          return {
+            id: index,
+            modelName: repo.replace("/", ""),
+            label: this.settings.systemPath + repo
+          };
         });
         this.isLoaded = true;
       })
     );
-  }
-
-  @computed
-  get autocompleteRepositories() {
-    return this.repositories.map((repo, index) => {
-      return {
-        id: index,
-        label: repo
-      };
-    });
   }
 }
 

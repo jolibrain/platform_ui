@@ -5,22 +5,46 @@
       "path": "/api"
     },
     "services": {
-      "defaultConfig": {
-        "description": "object detection service",
-        "model": {
-          "repository": "/data1/core_ui/models/detection_600/"
+      "defaultConfig": [
+        {
+          "modelName": "ggnet",
+          "modelConfig": {
+            "description": "object detection service",
+            "model": {
+              "repository": "/data1/core_ui/models/detection_600/"
+            },
+            "mllib": "caffe",
+            "type": "supervised",
+            "parameters": {
+              "input": {
+                "connector": "image",
+                "height": 224,
+                "width": 224
+              },
+              "mllib": { "nclasses": 21 }
+            }
+          }
         },
-        "mllib": "caffe",
-        "type": "supervised",
-        "parameters": {
-          "input": {
-            "connector": "image",
-            "height": 300,
-            "width": 300
-          },
-          "mllib": { "nclasses": 21 }
+        {
+          "modelName": "resnet_50",
+          "modelConfig": {
+            "description": "object detection service",
+            "model": {
+              "repository": "/data1/core_ui/models/detection_600/"
+            },
+            "mllib": "caffe",
+            "type": "supervised",
+            "parameters": {
+              "input": {
+                "connector": "image",
+                "height": 224,
+                "width": 224
+              },
+              "mllib": { "nclasses": 21 }
+            }
+          }
         }
-      }
+      ]
     }
   },
   "imaginate": {
