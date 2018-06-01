@@ -8,7 +8,7 @@ services:
       dockerfile: docker/nginx/Dockerfile.dev
     image: core-ui-nginx
     ports:
-      - '80:80' # Connect localhost 80 port to container 80 port
+      - '18104:80' # Connect localhost 18104 port to container 80 port
     links: # Link services to access http://react and  http://api inside the container
       - deepdetect:deepdetect
       - react:react
