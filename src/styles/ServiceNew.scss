@@ -1,6 +1,11 @@
 @import "./CurlCommand.scss";
 
 .service-new {
+  .loading {
+    margin-top: 70px;
+    max-width: 300px;
+  }
+
   .content {
     margin: 0 auto;
     padding-top: 20px;

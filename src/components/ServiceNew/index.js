@@ -20,7 +20,7 @@ export default class ServiceNew extends React.Component {
     ) {
       return (
         <div className="layout-page page-gutter page-with-contextual-sidebar right-sidebar-collapsed page-with-icon-sidebar service-new">
-          <div className="alert alert-primary" role="alert">
+          <div className="loading alert alert-primary" role="alert">
             <FontAwesomeIcon icon="spinner" spin />&nbsp; Loading
             repositories...
           </div>
