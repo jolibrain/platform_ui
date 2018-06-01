@@ -7,6 +7,44 @@
     "services": {
       "defaultConfig": [
         {
+          "modelName": "detection_600",
+          "modelConfig": {
+            "description": "object detection service",
+            "model": {
+              "repository": "/opt/models/detection_600/"
+            },
+            "mllib": "caffe",
+            "type": "supervised",
+            "parameters": {
+              "input": {
+                "connector": "image",
+                "height": 300,
+                "width": 300
+              },
+              "mllib": { "nclasses": 601 }
+            }
+          }
+        },
+        {
+          "modelName": "segmentation_150",
+          "modelConfig": {
+            "description": "object detection service",
+            "model": {
+              "repository": "/opt/models/segmentation_150/"
+            },
+            "mllib": "caffe",
+            "type": "supervised",
+            "parameters": {
+              "input": {
+                "connector": "image",
+                "height": 480,
+                "width": 480
+              },
+              "mllib": { "nclasses": 150 }
+            }
+          }
+        },
+        {
           "modelName": "ggnet",
           "modelConfig": {
             "description": "object detection service",
