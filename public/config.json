@@ -21,7 +21,11 @@
                 "height": 300,
                 "width": 300
               },
-              "mllib": { "nclasses": 601 }
+              "mllib": {
+                "nclasses": 601,
+                "gpu": true,
+                "gpuid": 1
+              }
             }
           }
         },
@@ -40,7 +44,11 @@
                 "height": 480,
                 "width": 480
               },
-              "mllib": { "nclasses": 150 }
+              "mllib": {
+                "nclasses": 150,
+                "gpu": true,
+                "gpuid": 1
+              }
             }
           }
         },
@@ -59,7 +67,11 @@
                 "height": 224,
                 "width": 224
               },
-              "mllib": { "nclasses": 21 }
+              "mllib": {
+                "nclasses": 21,
+                "gpu": true,
+                "gpuid": 1
+              }
             }
           }
         },
@@ -78,7 +90,11 @@
                 "height": 224,
                 "width": 224
               },
-              "mllib": { "nclasses": 21 }
+              "mllib": {
+                "nclasses": 21,
+                "gpu": true,
+                "gpuid": 1
+              }
             }
           }
         }
