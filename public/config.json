@@ -82,7 +82,7 @@
     "refreshRate": 5000
   },
   "modelRepositories": {
-    "nginxPath": "/model_repositories/",
+    "nginxPath": "/models/",
     "systemPath": "/opt/models/"
   }
 }
