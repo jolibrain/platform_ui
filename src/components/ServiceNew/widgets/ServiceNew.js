@@ -16,6 +16,7 @@ import "react-bootstrap-typeahead/css/Typeahead.css";
 import "react-bootstrap-typeahead/css/Typeahead-bs4.css";
 
 @inject("commonStore")
+@inject("imaginateStore")
 @inject("deepdetectStore")
 @inject("modelRepositoriesStore")
 @observer
@@ -142,15 +143,27 @@ export default class ServiceNew extends React.Component {
 
     const serviceName = this.serviceNameRef.current.value;
     const serviceData = JSON.parse(this.state.jsonConfig);
+    const ddStore = this.props.deepdetectStore;
+
     this.setState({ creatingService: true });
-    this.props.deepdetectStore.newService(serviceName, serviceData, resp => {
+
+    ddStore.newService(serviceName, serviceData, resp => {
       if (resp instanceof Error) {
         this.setState({
           creatingService: false,
           error: resp.message
         });
       } else {
-        this.setState({ creatingService: false, errors: [] });
+        this.setState({
+          creatingService: false,
+          errors: []
+        });
+
+        const store = this.props.imaginateStore;
+
+        store.initPredict(serviceName);
+        store.predict(serviceName);
+
         this.props.history.push(`/predict/${serviceName}`);
       }
     });

@@ -29,7 +29,15 @@ export default class Imaginate extends React.Component {
     this.onLeave = this.onLeave.bind(this);
   }
 
+  componentWillMount() {
+    this.selectImage(0);
+  }
+
   componentDidMount() {
+    this.selectImage(0);
+  }
+
+  componentWillReceiveProps() {
     this.selectImage(0);
   }
 
