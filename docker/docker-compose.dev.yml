@@ -1,6 +1,4 @@
 version: '3'
-volumes:
-  models: {}
 services:
   server:
     build:
@@ -9,11 +7,11 @@ services:
     image: core-ui-nginx
     ports:
       - '18104:80' # Connect localhost 18104 port to container 80 port
-    links: # Link services to access http://react and  http://api inside the container
+    links: # Link services to access http://react and http://deepdetect inside the container
       - deepdetect:deepdetect
       - react:react
     volumes:
-      - models:/opt/models
+      - /data1/core_ui/models:/opt/models
   react:
     build:
       context: ../.
@@ -33,4 +31,4 @@ services:
     ports:
       - '8080'
     volumes:
-      - models:/opt/models
+      - /data1/core_ui/models:/opt/models
