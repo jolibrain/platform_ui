@@ -11,7 +11,7 @@
           "modelConfig": {
             "description": "object detection service",
             "model": {
-              "repository": "/data1/core_ui/models/detection_600/"
+              "repository": "/opt/models/ggnet/"
             },
             "mllib": "caffe",
             "type": "supervised",
@@ -30,7 +30,7 @@
           "modelConfig": {
             "description": "object detection service",
             "model": {
-              "repository": "/data1/core_ui/models/detection_600/"
+              "repository": "/opt/models/resnet_50/"
             },
             "mllib": "caffe",
             "type": "supervised",

@@ -188,34 +188,45 @@ When creating a new service, the app is pre-loading repositories path and user i
 
     // Nginx config
     // which location is served by nginx to fetch the index of available models ?
-    "nginxPath": "/model_repositories/",
+    "nginxPath": "/models/",
 
     // Server config
     // When selecting a path from nginx result, what prefix should be added so this path correspond to existing system path ?
-    "systemPath": "/data1/core_ui/models/"
+    "systemPath": "/opt/models/"
 
   }
 ```
 
 ## Docker
 
-```bash
-yarn run docker-build
-#
-# or:
-#
-# docker-build -t core-ui .
-```
+### Requirements
+
+Correctly using `/data1/core_ui/models` as models repository on the machine hosting docker.
+
+This folder is mandatory for deepdetect and nginx to link to correct model files.
+
+### Usage
+
+Setup docker for dev env:
 
 ```bash
-yarn run docker-run
-#
-# or:
-#
-# docker run -it \
-# -v ${PWD}:/usr/src/app \
-# -v /usr/src/app/node_modules \
-# -p 3000:3000 \
-# --rm \
-# core-ui
+yarn run dev:install
 ```
+
+Start docker for env:
+
+```bash
+yarn run dev:up
+```
+
+### File description
+
+`[env]` should be replaced by correct environnement (dev/production/product_name/...).
+
+- `package.json` : various scripts to run docker commands
+- `scripts/00-install-[env].sh` : build react and deepdetect containers for **[env]**
+- `docker/docker-compose.[env].sh` : docker-compose configuration for **[env]**
+- `docker/nginx/Dockerfile.[env]` : nginx container Dockerfile for **[env]**
+- `docker/react/Dockerfile.[env]` : react container Dockerfile for **[env]**
+- `docker/deepdetect/Dockerfile.[env]` : deepdetect container Dockerfile for **[env]**
+- `config/nginx/nginx.[env].conf` : nginx config file for **[env]** docker container
