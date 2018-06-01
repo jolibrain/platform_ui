@@ -5,6 +5,7 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 
 @inject("commonStore")
+@inject("deepdetectStore")
 @observer
 class Header extends React.Component {
   render() {
@@ -25,6 +26,8 @@ class Header extends React.Component {
       </Tooltip>
     );
 
+    const { services } = this.props.deepdetectStore;
+
     return (
       <header className="header navbar navbar-dark bg-dark" id="header">
         <div className="container-fluid">
@@ -38,7 +41,10 @@ class Header extends React.Component {
 
               <ul className="list-unstyled navbar-sub-nav">
                 <li>
-                  <Link to="/predict" style={{ textDecoration: "none" }}>
+                  <Link
+                    to={services.length > 0 ? "/predict" : "/predict/new"}
+                    style={{ textDecoration: "none" }}
+                  >
                     <FontAwesomeIcon icon="cube" />&nbsp; Predict
                   </Link>
                 </li>
