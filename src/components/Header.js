@@ -8,6 +8,33 @@ import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 @inject("deepdetectStore")
 @observer
 class Header extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      aboutDown: false
+    };
+
+    this.handleBodyClick = this.handleBodyClick.bind(this);
+    this.handleAboutClick = this.handleAboutClick.bind(this);
+  }
+
+  componentDidMount() {
+    document.body.addEventListener("click", this.handleBodyClick);
+  }
+
+  componentWillUnmount() {
+    document.body.removeEventListener("click", this.handleBodyClick);
+  }
+
+  handleBodyClick() {
+    this.setState({ aboutDown: false });
+  }
+
+  handleAboutClick() {
+    this.setState({ aboutDown: true });
+  }
+
   render() {
     const tooltip = (
       <Tooltip id="tooltip">
@@ -56,16 +83,20 @@ class Header extends React.Component {
                 <li className="nav-item dropdown">
                   <a
                     className="nav-link dropdown-toggle"
+                    href="#"
                     id="navbarDropdown"
                     role="button"
                     data-toggle="dropdown"
                     aria-haspopup="true"
                     aria-expanded="false"
+                    onClick={this.handleAboutClick}
                   >
                     About
                   </a>
                   <div
-                    className="dropdown-menu"
+                    className={`dropdown-menu ${
+                      this.state.aboutDown ? "show" : ""
+                    }`}
                     aria-labelledby="navbarDropdown"
                   >
                     <a
