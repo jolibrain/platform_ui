@@ -35,13 +35,17 @@ export default class GpuInfoItem extends React.Component {
           ,&nbsp;
           <span className="memUsed text-primary">{memoryMo}</span> /{" "}
           <span className="memTotal text-secondary">{memoryTotal}</span> Mo
-        </div>
-
-        <div className="badge detailsBadge" onClick={this.toggleDetails}>
-          Details{" "}
-          <FontAwesomeIcon
-            icon={this.state.detailsVisible ? "angle-down" : "angle-right"}
-          />
+          <div className="badge detailsBadge" onClick={this.toggleDetails}>
+            <span className="fa-layers fa-fw">
+              <FontAwesomeIcon icon="circle" className="circle" />
+              <FontAwesomeIcon
+                icon={this.state.detailsVisible ? "angle-down" : "angle-right"}
+                className="angle"
+                inverse
+                transform="shrink-6"
+              />
+            </span>
+          </div>
         </div>
 
         <div

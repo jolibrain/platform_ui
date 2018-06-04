@@ -7,9 +7,9 @@
 .imaginate .img-list img {
   width: 80px;
   height: auto;
-  font-size: .85714286rem;
+  font-size: 0.85714286rem;
   display: inline-block;
-  margin: 0 .25rem .5rem;
+  margin: 0 0.25rem 0.5rem;
   position: relative;
   display: inline-block;
   vertical-align: middle;
@@ -28,28 +28,28 @@
 ul.serviceList {
   padding-left: 0;
   list-style: none;
-  margin-bottom:60px;
+  margin-bottom: 60px;
 }
 .serviceList li.active {
   box-shadow: inset 4px 0 0 #4b4ba3;
 }
-.sidebar-top-level-items>li.active {
-  background: rgba(0,0,0,0.04);
+.sidebar-top-level-items > li.active {
+  background: rgba(0, 0, 0, 0.04);
 }
 .serviceList li {
   white-space: nowrap;
 }
-.serviceList li.active>a {
+.serviceList li.active > a {
   color: #393982;
 }
-.sidebar-top-level-items>li>a {
+.sidebar-top-level-items > li > a {
   min-height: 44px;
 }
-.sidebar-top-level-items>li.active>a {
+.sidebar-top-level-items > li.active > a {
   margin-left: 4px;
   padding-left: 11px;
 }
-.serviceList li.active>a {
+.serviceList li.active > a {
   font-weight: 600;
 }
 .serviceList li a {
@@ -85,10 +85,21 @@ ul.serviceList {
  * ====
  */
 
-.gpuinfo h5 {
-  margin-top:5px;
-}
+.gpuinfo {
+  h5 {
+    margin-top: 5px;
+  }
 
-.gpuinfo .block .detailsBadge {
-  cursor: pointer;
+  .detailsBadge {
+    cursor: pointer;
+    float: right;
+
+    .circle {
+      color: #aaa;
+    }
+
+    .angle {
+      color: #fff;
+    }
+  }
 }
