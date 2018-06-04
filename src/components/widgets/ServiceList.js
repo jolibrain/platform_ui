@@ -27,7 +27,7 @@ export default class ServiceList extends React.Component {
   }
 
   timer() {
-    this.props.deepdetectStore.loadServices();
+    this.props.deepdetectStore.loadServices(this.props.status);
   }
 
   setServiceIndex(index) {

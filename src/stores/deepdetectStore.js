@@ -33,13 +33,23 @@ export class deepdetectStore {
     return agent.Deepdetect.info(this.settings);
   }
 
+  $reqInfoStatus() {
+    return agent.Deepdetect.infoStatus(this.settings);
+  }
+
   $reqPutService(name, data) {
     return agent.Deepdetect.putService(this.settings, name, data);
   }
 
   @action
-  async loadServices() {
-    const info = await this.$reqInfo();
+  async loadServices(status = false) {
+    let info;
+
+    if (status) {
+      info = await this.$reqInfo();
+    } else {
+      info = await this.$reqInfoStatus();
+    }
 
     if (info.head && info.head.services) {
       this.services = info.head.services;
