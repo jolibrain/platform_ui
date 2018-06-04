@@ -159,7 +159,6 @@ export default class Description extends React.Component {
                 </span>
               );
             })}
-            <ReactTooltip />
           </div>
         );
     }

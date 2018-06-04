@@ -11,6 +11,7 @@ import faAngleRight from "@fortawesome/fontawesome-free-solid/faAngleRight";
 import faCube from "@fortawesome/fontawesome-free-solid/faCube";
 import faTachometer from "@fortawesome/fontawesome-free-solid/faTachometerAlt";
 import faSpinner from "@fortawesome/fontawesome-free-solid/faSpinner";
+import faCircle from "@fortawesome/fontawesome-free-solid/faCircle";
 
 import Home from "./Home";
 import Service from "./Service";
@@ -24,7 +25,8 @@ fontawesome.library.add(
   faAngleRight,
   faCube,
   faTachometer,
-  faSpinner
+  faSpinner,
+  faCircle
 );
 
 @inject("configStore")

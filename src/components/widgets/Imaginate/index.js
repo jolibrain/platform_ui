@@ -1,6 +1,8 @@
 import React from "react";
 import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
+import FontAwesomeIcon from "@fortawesome/react-fontawesome";
+import ReactTooltip from "react-tooltip";
 
 import ImageList from "./ImageList";
 import BoundingBoxDisplay from "./BoundingBoxDisplay";
@@ -19,7 +21,8 @@ export default class Imaginate extends React.Component {
     super(props);
 
     this.state = {
-      selectedBoxIndex: -1
+      selectedBoxIndex: -1,
+      tab: "curl"
     };
 
     this.selectImage = this.selectImage.bind(this);
@@ -27,6 +30,8 @@ export default class Imaginate extends React.Component {
 
     this.onOver = this.onOver.bind(this);
     this.onLeave = this.onLeave.bind(this);
+
+    this.setTab = this.setTab.bind(this);
   }
 
   componentWillMount() {
@@ -39,6 +44,10 @@ export default class Imaginate extends React.Component {
 
   componentWillReceiveProps() {
     this.selectImage(0);
+  }
+
+  setTab(tabName) {
+    this.setState({ tab: tabName });
   }
 
   selectImage(index) {
@@ -106,14 +115,48 @@ export default class Imaginate extends React.Component {
                 onLeave={this.onLeave}
               />
             </div>
-            <div className="row commands">
-              <CurlCommand />
-            </div>
-            <div className="row json">
-              <JsonResponse />
+            <div className="card commands">
+              <div className="card-header">
+                <ul className="nav nav-tabs card-header-tabs">
+                  <li className="nav-item">
+                    <a
+                      className={
+                        this.state.tab === "curl"
+                          ? "nav-link active"
+                          : "nav-link"
+                      }
+                      onClick={this.setTab.bind(this, "curl")}
+                    >
+                      Curl&nbsp;
+                      {store.isRequesting ? (
+                        <FontAwesomeIcon icon="spinner" spin />
+                      ) : (
+                        ""
+                      )}
+                    </a>
+                  </li>
+
+                  <li className="nav-item">
+                    <a
+                      className={
+                        this.state.tab === "json"
+                          ? "nav-link active"
+                          : "nav-link"
+                      }
+                      onClick={this.setTab.bind(this, "json")}
+                    >
+                      JSON
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div className="card-body">
+                {this.state.tab === "curl" ? <CurlCommand /> : <JsonResponse />}
+              </div>
             </div>
           </div>
         </div>
+        <ReactTooltip />
       </div>
     );
   }

@@ -1,10 +1,8 @@
 import React from "react";
 import { inject, observer } from "mobx-react";
-import FontAwesomeIcon from "@fortawesome/react-fontawesome";
-
-import { Controlled as CodeMirror } from "react-codemirror2";
-import "codemirror/lib/codemirror.css";
-import "codemirror/mode/javascript/javascript";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import { docco } from "react-syntax-highlighter/styles/hljs";
+import ReactTooltip from "react-tooltip";
 
 import copy from "copy-to-clipboard";
 
@@ -22,12 +20,16 @@ export default class CurlCommand extends React.Component {
     this.handleCopyClipboard = this.handleCopyClipboard.bind(this);
   }
 
+  componentWillReceiveProps() {
+    ReactTooltip.rebuild();
+  }
+
   handleCopyClipboard() {
     const store = this.props.imaginateStore;
     const { settings } = this.props.deepdetectStore;
     const curlCommand = `curl -X POST '${window.location.origin}${
       settings.server.path
-    }/predict' -d '${store.curlParams}'`;
+    }/predict' -d '${JSON.stringify(store.curlParams)}'`;
 
     copy(curlCommand);
 
@@ -50,18 +52,28 @@ export default class CurlCommand extends React.Component {
     const copiedText = this.state.copied ? "Copied!" : "Copy to clipboard";
 
     return (
-      <pre className="curl-command">
-        <div className="heading">
-          CURL{" "}
-          {store.isRequesting ? <FontAwesomeIcon icon="spinner" spin /> : ""}
-          <span className="clipboard" onClick={this.handleCopyClipboard}>
-            {copiedText}
-          </span>
+      <div>
+        <div className="bd-clipboard">
+          <button
+            className="btn-clipboard"
+            title=""
+            data-tip
+            data-for="copy-tooltip"
+            data-iscapture={true}
+            onClick={this.handleCopyClipboard}
+          >
+            Copy
+          </button>
+          <ReactTooltip
+            id="copy-tooltip"
+            effect="solid"
+            getContent={() => copiedText}
+          />
         </div>
-        <div className="code-wrap">
-          <CodeMirror value={curlCommand} />
-        </div>
-      </pre>
+        <SyntaxHighlighter language="bash" style={docco} className="card-text">
+          {curlCommand}
+        </SyntaxHighlighter>
+      </div>
     );
   }
 }

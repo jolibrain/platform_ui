@@ -1,9 +1,8 @@
 import React from "react";
 import { inject, observer } from "mobx-react";
-
-import { Controlled as CodeMirror } from "react-codemirror2";
-import "codemirror/lib/codemirror.css";
-import "codemirror/mode/javascript/javascript";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import { docco } from "react-syntax-highlighter/styles/hljs";
+import ReactTooltip from "react-tooltip";
 
 import copy from "copy-to-clipboard";
 
@@ -23,7 +22,7 @@ export default class JsonResponse extends React.Component {
   handleCopyClipboard() {
     const store = this.props.imaginateStore;
 
-    copy(store.selectedImage.json);
+    copy(JSON.stringify(store.selectedImage.json));
 
     this.setState({ copied: true });
     setTimeout(() => {
@@ -32,28 +31,37 @@ export default class JsonResponse extends React.Component {
   }
 
   render() {
-    const store = this.props.imaginateStore;
+    const { selectedImage } = this.props.imaginateStore;
 
-    if (store.selectedImage === null || store.selectedImage.json === null) {
+    if (selectedImage === null || selectedImage.json === null) {
       return null;
     }
-
-    const jsonContent = store.selectedImage.json;
 
     const copiedText = this.state.copied ? "Copied!" : "Copy to clipboard";
 
     return (
-      <pre className="curl-command">
-        <div className="heading">
-          JSON Response
-          <span className="clipboard" onClick={this.handleCopyClipboard}>
-            {copiedText}
-          </span>
+      <div>
+        <div className="bd-clipboard">
+          <button
+            className="btn-clipboard"
+            title=""
+            data-tip
+            data-for="copy-tooltip"
+            data-iscapture={true}
+            onClick={this.handleCopyClipboard}
+          >
+            Copy
+          </button>
+          <ReactTooltip
+            id="copy-tooltip"
+            effect="solid"
+            getContent={() => copiedText}
+          />
         </div>
-        <div className="code-wrap">
-          <CodeMirror value={JSON.stringify(jsonContent, null, 1)} />
-        </div>
-      </pre>
+        <SyntaxHighlighter language="json" style={docco} className="card-text">
+          {JSON.stringify(selectedImage.json, null, 1)}
+        </SyntaxHighlighter>
+      </div>
     );
   }
 }

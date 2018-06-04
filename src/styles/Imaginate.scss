@@ -113,4 +113,51 @@
   .description {
     margin: 5px 0;
   }
+
+  .card.commands {
+    .card-body {
+      padding: 0;
+    }
+
+    .card-text {
+      max-height: 500px;
+      margin-bottom: 0;
+    }
+
+    .bd-clipboard {
+      display: block;
+      position: relative;
+      float: right;
+
+      .btn-clipboard {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        z-index: 10;
+        display: block;
+        padding: 0.25rem 0.5rem;
+        font-size: 75%;
+        color: #818a91;
+        cursor: pointer;
+        background-color: rgba(0, 0, 0, 0.4);
+        border: 0;
+        border-radius: 0.25rem;
+        color: #fff;
+      }
+
+      .btn-clipboard:focus {
+        outline: 0;
+      }
+
+      .btn-clipboard:hover {
+        color: #fff;
+        background-color: #027de7;
+      }
+
+      #copy-tooltip {
+        width: 150px;
+        text-align: center;
+      }
+    }
+  }
 }

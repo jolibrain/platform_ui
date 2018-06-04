@@ -1,16 +1,16 @@
 .home {
-  margin-top:100px;
+  margin-top: 100px;
 }
 
 .home h5 {
-  margin-top:9px !important;
+  margin-top: 9px !important;
   padding-bottom: 10px !important;
-  border-bottom: 1px solid rgba(15,70,100,.12);
+  border-bottom: 1px solid rgba(15, 70, 100, 0.12);
 }
 
 .home .serviceList li.active {
-  background:none;
-  box-shadow:none;
+  background: none;
+  box-shadow: none;
   -webkit-box-shadow: none;
 }
 
@@ -63,7 +63,7 @@
   text-decoration: none;
 }
 .left-sidebar .progress {
-  margin:10px
+  margin: 10px;
 }
 
 .main-view.content-wrapper {
@@ -88,7 +88,7 @@
   overflow: hidden;
   border-left: 1px solid #e5e5e5;
   padding-right: 0;
-  font-size:0.95rem;
+  font-size: 0.95rem;
 }
 
 .right-sidebar.right-sidebar-expanded .issuable-sidebar {
@@ -109,9 +109,7 @@
   padding-bottom: 10px;
 }
 .right-sidebar .block {
-  padding: 16px 0;
-  padding-top: 16px;
-  padding-bottom: 16px;
+  padding: 8px 0;
   border-bottom: 1px solid #e8e8e8;
   width: 250px;
 }
