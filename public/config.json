@@ -1,4 +1,9 @@
 {
+  "homeComponent": {
+    "contentType": "json",
+    "title": "DeepDetect Platform",
+    "description": "Welcome to deepdetect"
+  },
   "deepdetect": {
     "infoRefreshRate": 10000,
     "server": {

@@ -5,6 +5,13 @@ export class configStore {
   @observable configLoaded = false;
 
   @observable
+  homeComponent = {
+    contentType: "json", // TODO: more content types
+    title: "DeepDetect Platform",
+    description: "Welcome to deepdetect"
+  };
+
+  @observable
   deepdetect = {
     server: {
       path: "/api"
@@ -44,6 +51,7 @@ export class configStore {
         this.deepdetect = config.deepdetect;
         this.imaginate = config.imaginate;
         this.modelRepositories = config.modelRepositories;
+        this.homeComponent = config.homeComponent;
         callback(this);
       })
     );
