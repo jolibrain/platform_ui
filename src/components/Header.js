@@ -53,10 +53,35 @@ class Header extends React.Component {
 
             <div className="navbar-collapse d-flex justify-content-end">
               <ul className="nav nabar-nav">
-                <li>
-                  <OverlayTrigger placement="bottom" overlay={tooltip}>
-                    <a className="nav-link mr-sm-2">About</a>
-                  </OverlayTrigger>
+                <li className="nav-item dropdown">
+                  <a
+                    className="nav-link dropdown-toggle"
+                    id="navbarDropdown"
+                    role="button"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    About
+                  </a>
+                  <div
+                    className="dropdown-menu"
+                    aria-labelledby="navbarDropdown"
+                  >
+                    <a
+                      className="dropdown-item"
+                      href="https://gitlab.com/jolibrain/core-ui/"
+                    >
+                      Gitlab
+                    </a>
+                    <div className="dropdown-divider" />
+                    <a className="dropdown-item" href="http://deepdetect.com">
+                      DeepDetect
+                    </a>
+                    <a className="dropdown-item" href="http://jolibrain.com">
+                      Jolibrain
+                    </a>
+                  </div>
                 </li>
               </ul>
             </div>

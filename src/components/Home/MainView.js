@@ -10,7 +10,6 @@ import RightPanel from "./RightPanel";
 export default class MainView extends React.Component {
   render() {
     const { homeComponent } = this.props.configStore;
-    console.log(homeComponent);
     return (
       <div className="main-view content-wrapper">
         <div className="container-fluid">
