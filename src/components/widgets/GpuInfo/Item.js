@@ -41,7 +41,7 @@ export default class GpuInfoItem extends React.Component {
               <FontAwesomeIcon
                 icon={this.state.detailsVisible ? "angle-down" : "angle-right"}
                 className="angle"
-                inverse
+                inverse="true"
                 transform="shrink-6"
               />
             </span>
