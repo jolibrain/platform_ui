@@ -68,10 +68,10 @@ export default class Threshold extends React.Component {
                   </button>
                 );
               })
-              .reduce((accu, elem) => {
+              .reduce((accu, elem, index) => {
                 return accu === null
                   ? [elem]
-                  : [...accu, <div className="or" />, elem];
+                  : [...accu, <div key={`or-${index}`} className="or" />, elem];
               }, null)}
           </div>
         </div>
