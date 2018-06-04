@@ -48,19 +48,33 @@ export default class Threshold extends React.Component {
     });
 
     return (
-      <div className="btn-group" role="group" aria-label="Threshold controls">
-        {thresholds.map((config, index) => {
-          return (
-            <button
-              key={index}
-              type="button"
-              className={config.classNames}
-              onClick={this.handleClick.bind(this, config.value)}
-            >
-              {config.name}
-            </button>
-          );
-        })}
+      <div className="card threshold">
+        <div className="card-body">
+          <div
+            className="btn-group"
+            role="group"
+            aria-label="Threshold controls"
+          >
+            {thresholds
+              .map((config, index) => {
+                return (
+                  <button
+                    key={index}
+                    type="button"
+                    className={`button ${config.classNames}`}
+                    onClick={this.handleClick.bind(this, config.value)}
+                  >
+                    {config.name}
+                  </button>
+                );
+              })
+              .reduce((accu, elem) => {
+                return accu === null
+                  ? [elem]
+                  : [...accu, <div className="or" />, elem];
+              }, null)}
+          </div>
+        </div>
       </div>
     );
   }

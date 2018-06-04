@@ -96,7 +96,7 @@ export default class Imaginate extends React.Component {
             </div>
           </div>
           <div className="col-md-4">
-            <div className="row threshold">
+            <div className="row">
               <Threshold loadImage={this.loadImage} />
             </div>
             <div className="row description">
