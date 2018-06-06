@@ -35,7 +35,7 @@ export default class GpuInfoItem extends React.Component {
           <span className="memUsed text-primary">{memoryMo}</span> /{" "}
           <span className="memTotal text-secondary">{memoryTotal}</span> Mo
           <div className="badge detailsBadge" onClick={this.toggleDetails}>
-            <span class="fa-stack">
+            <span className="fa-stack">
               <i className="fas fa-circle fa-stack-2x" />
               <i
                 className={
