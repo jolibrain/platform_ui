@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 import { parse as qsParse } from "query-string";
 
 import RightPanel from "./RightPanel";
-import ServiceNew from "./widgets/ServiceNew";
+import Form from "./Form";
 
 @inject("commonStore")
 @withRouter
@@ -62,7 +62,7 @@ export default class MainView extends React.Component {
       <div className="main-view content-wrapper">
         <div className="container-fluid">
           <div className="content">
-            <ServiceNew />
+            <Form />
             <RightPanel />
           </div>
         </div>

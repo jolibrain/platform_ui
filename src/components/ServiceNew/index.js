@@ -1,7 +1,6 @@
 import LeftPanel from "./LeftPanel";
 import MainView from "./MainView";
 import React from "react";
-import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
@@ -11,18 +10,26 @@ import { withRouter } from "react-router-dom";
 @observer
 export default class ServiceNew extends React.Component {
   render() {
-    const { isLoaded, repositories } = this.props.modelRepositoriesStore;
+    const {
+      isLoaded,
+      repositories,
+      settings
+    } = this.props.modelRepositoriesStore;
 
-    if (
-      !isLoaded ||
-      typeof repositories === "undefined" ||
-      repositories.length === 0
-    ) {
+    if (!isLoaded || typeof repositories === "undefined") {
       return (
         <div className="layout-page page-gutter page-with-contextual-sidebar right-sidebar-collapsed page-with-icon-sidebar service-new">
           <div className="loading alert alert-primary" role="alert">
-            <FontAwesomeIcon icon="spinner" spin />&nbsp; Loading
-            repositories...
+            <i class="fas fa-spinner fa-spin" /> Loading repositories...
+          </div>
+        </div>
+      );
+    } else if (repositories.length === 0) {
+      return (
+        <div className="layout-page page-gutter page-with-contextual-sidebar right-sidebar-collapsed page-with-icon-sidebar service-new">
+          <div className="loading alert alert-danger" role="alert">
+            <i class="fas fa-times" /> No models repository found in :{" "}
+            <code>{settings.systemPath}</code>
           </div>
         </div>
       );
