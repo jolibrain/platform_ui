@@ -143,6 +143,16 @@ export class imaginateStore {
   setThreshold(thresholdValue) {
     this.confidence = thresholdValue;
   }
+
+  @action
+  addImageFromUrl(url) {
+    this.imgList.push({
+      url: url,
+      json: null,
+      boxes: null
+    });
+    this.setSelectedImage(this.imgList.length - 1);
+  }
 }
 
 export default new imaginateStore();

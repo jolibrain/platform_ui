@@ -2,8 +2,26 @@
 @import "./JsonResponse.scss";
 
 .imaginate {
-  .threshold.card {
+  .threshold.card,
+  .inputUrl.card {
     border: 0;
+  }
+
+  .inputUrl.card {
+    .card-body {
+      padding: 5px 1.25rem;
+
+      .form-control:focus {
+        border-color: #ced4da;
+        box-shadow: none;
+        -webkit-box-shadow: none;
+      }
+
+      .input-group-text {
+        border: 0;
+        padding: 0;
+      }
+    }
   }
 
   .threshold {
