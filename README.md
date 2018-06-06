@@ -7,6 +7,7 @@ Web interface to control DeepDetect processus.
 * Yarn : https://yarnpkg.com/lang/en/docs/install/
 * Docker : https://docs.docker.com/install/
 * Docker Compose : https://docs.docker.com/compose/install/
+* Node v10 : https://github.com/creationix/nvm
 
 Correctly using `/data1/core_ui/models` as models repository on the machine hosting docker.
 
