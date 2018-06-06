@@ -42,7 +42,8 @@ export default class ServiceNew extends React.Component {
         <div className="layout-page page-gutter page-with-contextual-sidebar right-sidebar-collapsed page-with-icon-sidebar service-new">
           <div className="loading alert alert-danger" role="alert">
             <i class="fas fa-times" /> No models repository found in :{" "}
-            <code>{settings.systemPath}</code>
+            <code>{settings.systemPath.public}</code> or{" "}
+            <code>{settings.systemPath.public}</code>
           </div>
         </div>
       );

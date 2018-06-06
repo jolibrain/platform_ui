@@ -69,9 +69,9 @@ const Deepdetect = {
  */
 
 const ModelRepositories = {
-  getRelativePath: settings =>
+  getRelativePath: (settings, isPublic = true) =>
     superagent
-      .get(settings.nginxPath)
+      .get(settings.nginxPath[isPublic ? "public" : "private"])
       .end(handleErrors)
       .then(res => {
         const parser = new DOMParser();

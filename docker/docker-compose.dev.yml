@@ -11,7 +11,8 @@ services:
       - deepdetect:deepdetect
       - react:react
     volumes:
-      - /data1/core_ui/models:/opt/models
+      - /data1/core_ui/models/public:/opt/models/public
+      - /data1/core_ui/models/private:/opt/models/private
   react:
     build:
       context: ../.

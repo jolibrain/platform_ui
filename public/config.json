@@ -141,7 +141,13 @@
     "refreshRate": 5000
   },
   "modelRepositories": {
-    "nginxPath": "/models/",
-    "systemPath": "/opt/models/"
+    "nginxPath": {
+      "public": "/models/public/",
+      "private": "/models/private/"
+    },
+    "systemPath": {
+      "public": "/opt/models/public/",
+      "private": "/opt/models/private/"
+    }
   }
 }
