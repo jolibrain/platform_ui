@@ -23,7 +23,7 @@ export default class ServiceNew extends React.Component {
       return (
         <div className="layout-page page-gutter page-with-contextual-sidebar right-sidebar-collapsed page-with-icon-sidebar service-new">
           <div className="loading alert alert-danger" role="alert">
-            <i class="fas fa-times" /> No services configured in :{" "}
+            <i className="fas fa-times" /> No services configured in :{" "}
             <code>deepdetect.services.defaultConfig</code>
             from <code>config.json</code>
           </div>

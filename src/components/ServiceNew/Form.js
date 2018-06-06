@@ -4,8 +4,6 @@ import { toJS } from "mobx";
 import { inject, observer } from "mobx-react";
 import copy from "copy-to-clipboard";
 
-import FontAwesomeIcon from "@fortawesome/react-fontawesome";
-
 import { Controlled as CodeMirror } from "react-codemirror2";
 import "codemirror/lib/codemirror.css";
 import "codemirror/mode/javascript/javascript";
@@ -252,9 +250,8 @@ export default class ServiceNew extends React.Component {
               className="btn btn-primary"
               onClick={this.submitService}
             >
-              <FontAwesomeIcon
-                icon="spinner"
-                spin
+              <i
+                className="fas fa-spinner fa-spin"
                 style={this.state.creatingService ? {} : { display: "none" }}
               />&nbsp; Add Service
             </button>

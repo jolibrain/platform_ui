@@ -3,33 +3,11 @@ import React from "react";
 import { Switch, Route, withRouter } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 
-import fontawesome from "@fortawesome/fontawesome";
-
-import faPlusCircle from "@fortawesome/fontawesome-free-solid/faPlusCircle";
-import faAngleDown from "@fortawesome/fontawesome-free-solid/faAngleDown";
-import faAngleRight from "@fortawesome/fontawesome-free-solid/faAngleRight";
-import faCube from "@fortawesome/fontawesome-free-solid/faCube";
-import faTachometer from "@fortawesome/fontawesome-free-solid/faTachometerAlt";
-import faSpinner from "@fortawesome/fontawesome-free-solid/faSpinner";
-import faCircle from "@fortawesome/fontawesome-free-solid/faCircle";
-import faTimes from "@fortawesome/fontawesome-free-solid/faTimes";
-
 import Home from "./Home";
 import Service from "./Service";
 import ServiceNew from "./ServiceNew";
 
 import Imaginate from "./widgets/Imaginate";
-
-fontawesome.library.add(
-  faPlusCircle,
-  faAngleDown,
-  faAngleRight,
-  faCube,
-  faTachometer,
-  faSpinner,
-  faCircle,
-  faTimes
-);
 
 @inject("configStore")
 @inject("commonStore")

@@ -1,7 +1,6 @@
 import React from "react";
 import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
-import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import ReactTooltip from "react-tooltip";
 
 import ImageList from "./ImageList";
@@ -140,7 +139,7 @@ export default class Imaginate extends React.Component {
                     >
                       Curl&nbsp;
                       {store.isRequesting ? (
-                        <FontAwesomeIcon icon="spinner" spin />
+                        <i className="fas fa-spinner fa-spin" />
                       ) : (
                         ""
                       )}

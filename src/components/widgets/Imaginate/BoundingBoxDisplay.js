@@ -2,7 +2,6 @@ import React from "react";
 import { toJS } from "mobx";
 import { inject, observer } from "mobx-react";
 import Boundingbox from "react-bounding-box";
-import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 
 @inject("imaginateStore")
 @observer
@@ -14,7 +13,7 @@ export default class BoundingBoxDisplay extends React.Component {
     if (image === null) {
       return (
         <div className="alert alert-primary" role="alert">
-          <FontAwesomeIcon icon="spinner" spin />&nbsp; Loading...
+          <i className="fas fa-spinner fa-spin" />&nbsp; Loading...
         </div>
       );
     }

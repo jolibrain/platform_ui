@@ -1,8 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { inject, observer } from "mobx-react";
-import { OverlayTrigger, Tooltip } from "react-bootstrap";
-import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 
 @inject("commonStore")
 @inject("deepdetectStore")
@@ -36,23 +34,6 @@ class Header extends React.Component {
   }
 
   render() {
-    const tooltip = (
-      <Tooltip id="tooltip">
-        <p>
-          core-ui
-          <ul>
-            <li>commit : f60a79</li>
-          </ul>
-        </p>
-        <p>
-          deepdetect
-          <ul>
-            <li>commit : e8592d</li>
-          </ul>
-        </p>
-      </Tooltip>
-    );
-
     const { services } = this.props.deepdetectStore;
 
     return (
@@ -72,7 +53,7 @@ class Header extends React.Component {
                     to={services.length > 0 ? "/predict" : "/predict/new"}
                     style={{ textDecoration: "none" }}
                   >
-                    <FontAwesomeIcon icon="cube" />&nbsp; Predict
+                    <i className="fas fa-cube" />&nbsp; Predict
                   </Link>
                 </li>
               </ul>
@@ -83,7 +64,7 @@ class Header extends React.Component {
                 <li className="nav-item dropdown">
                   <a
                     className="nav-link dropdown-toggle"
-                    href="#"
+                    style={{ cursor: "pointer" }}
                     id="navbarDropdown"
                     role="button"
                     data-toggle="dropdown"

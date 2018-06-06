@@ -1,5 +1,4 @@
 import React from "react";
-import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 
 export default class GpuInfoItem extends React.Component {
   constructor(props) {
@@ -36,13 +35,14 @@ export default class GpuInfoItem extends React.Component {
           <span className="memUsed text-primary">{memoryMo}</span> /{" "}
           <span className="memTotal text-secondary">{memoryTotal}</span> Mo
           <div className="badge detailsBadge" onClick={this.toggleDetails}>
-            <span className="fa-layers fa-fw">
-              <FontAwesomeIcon icon="circle" className="circle" />
-              <FontAwesomeIcon
-                icon={this.state.detailsVisible ? "angle-down" : "angle-right"}
-                className="angle"
-                inverse="true"
-                transform="shrink-6"
+            <span class="fa-stack">
+              <i className="fas fa-circle fa-stack-2x" />
+              <i
+                className={
+                  this.state.detailsVisible
+                    ? "fas fa-angle-down fa-inverse fa-stack-1x"
+                    : "fas fa-angle-right fa-inverse fa-stack-1x"
+                }
               />
             </span>
           </div>

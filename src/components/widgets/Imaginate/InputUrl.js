@@ -20,7 +20,7 @@ export default class InputUrl extends React.Component {
   }
 
   handleKeyPress(event) {
-    if (event.key == "Enter") {
+    if (event.key === "Enter") {
       const input = this.inputRef.current;
       this.props.addUrl(input.value);
       input.value = "";
