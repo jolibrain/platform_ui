@@ -2,37 +2,26 @@
 
 Web interface to control DeepDetect processus.
 
-## Dependencies
+## Requirements
+
+* Yarn : https://yarnpkg.com/lang/en/docs/install/
+* Docker : https://docs.docker.com/install/
+* Docker Compose : https://docs.docker.com/compose/install/
+
+Correctly using `/data1/core_ui/models` as models repository on the machine hosting docker.
+
+This folder is mandatory for deepdetect and nginx to link to correct model files.
+
+## Dev setup
 
 ```bash
-yarn install
-```
-
-## Build
-
-```
-yarn start
-```
-
-## Deploy with nginx
-
-1.  Edit deepdetect server IP and port in `.nginx.conf`
-1.  Edit model repository alias in `.nginx.conf`
-1.  Copy nginx config file in `site-enabled` :
-
-```
-sudo cp .nginx.conf /etc/nginx/site-enabled/
-```
-
-4.  Reload `nginx` server :
-
-```
-sudo /etc/init.d/nginx reload
+yarn dev:setup
+yarn dev:up
 ```
 
 ## Usage
 
-Open your browser on [http://localhost:3000](http://localhost:3000)
+Open your browser on [http://localhost:18104](http://localhost:18104)
 
 ## public/config.json
 
@@ -197,29 +186,7 @@ When creating a new service, the app is pre-loading repositories path and user i
   }
 ```
 
-## Docker
-
-### Requirements
-
-Correctly using `/data1/core_ui/models` as models repository on the machine hosting docker.
-
-This folder is mandatory for deepdetect and nginx to link to correct model files.
-
-### Usage
-
-Setup docker for dev env:
-
-```bash
-yarn run dev:install
-```
-
-Start docker for env:
-
-```bash
-yarn run dev:up
-```
-
-### File description
+## Docker Files
 
 `[env]` should be replaced by correct environnement (dev/production/product_name/...).
 
