@@ -76,8 +76,10 @@ export default class ServiceNew extends React.Component {
 
     const defaultConfig = this.state.defaultConfig;
     const selectedConfig = typeahead.state.selected[0];
+
     if (
       typeof selectedConfig !== "undefined" &&
+      typeof defaultConfig !== "undefined" &&
       defaultConfig.modelName !== selectedConfig.modelName
     ) {
       const ddStore = this.props.deepdetectStore;
@@ -86,6 +88,8 @@ export default class ServiceNew extends React.Component {
       });
       this.setState({ defaultConfig: newConfig });
       jsonConfig = newConfig.modelConfig;
+    } else {
+      return null;
     }
 
     if (serviceName.length > 0) this.setState({ serviceName: serviceName });
