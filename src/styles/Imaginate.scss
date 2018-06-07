@@ -186,4 +186,23 @@
   .boundingBoxCanvas {
     max-height: 60vh !important;
   }
+
+  .img-list {
+    padding: 0;
+
+    #carousel {
+      overflow: auto;
+      white-space: nowrap;
+      margin-bottom: 5px;
+
+      .slide {
+        display: inline-block;
+
+        img {
+          padding: 5px;
+          width: 80px;
+        }
+      }
+    }
+  }
 }

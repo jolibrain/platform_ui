@@ -7,16 +7,18 @@ export default class ImageList extends React.Component {
   render() {
     const store = this.props.imaginateStore;
     return (
-      <div>
+      <div id="carousel">
         {store.imgList.map((img, index) => {
           return (
-            <img
-              src={img.url}
-              key={`img-${index}`}
-              className="img-block"
-              alt=""
-              onClick={this.props.selectImage.bind(this, index)}
-            />
+            <div key={`img-${index}`} className="slide">
+              <img
+                src={img.url}
+                key={`img-${index}`}
+                className="img-block"
+                alt=""
+                onClick={this.props.selectImage.bind(this, index)}
+              />
+            </div>
           );
         })}
       </div>
