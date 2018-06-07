@@ -9,11 +9,6 @@ export default class MainView extends React.Component {
   render() {
     const serviceName = this.props.match.params.serviceName;
 
-    // TODO: Add delete service
-    //          <li className="nav-item">
-    //            <Link to={`/predict/${serviceName}/delete`} className="btn btn-outline-danger">Delete Service</Link>
-    //          </li>
-
     return (
       <div className="main-view content-wrapper">
         <div className="container">
@@ -27,6 +22,14 @@ export default class MainView extends React.Component {
               className="nav navbar-nav ml-auto"
               style={{ flexDirection: "row" }}
             >
+              <li className="nav-item">
+                <Link
+                  to={`/predict/${serviceName}/delete`}
+                  className="btn btn-outline-danger"
+                >
+                  Delete Service
+                </Link>
+              </li>
               <li className="nav-item">
                 <Link to="/predict/new" className="btn btn-outline-primary">
                   New Service

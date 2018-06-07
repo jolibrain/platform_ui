@@ -1,47 +1,53 @@
 .service-component .main-view .container {
   padding-top: 20px;
-}
-.service-component .main-view .container .content {
-  padding: 0 15px;
-}
-.service-component .main-view .container .breadcrumbs a,
-.service-component .main-view .container .breadcrumbs {
-  font-size: 12px;
-  color: rgb(112, 112, 112);;
-  white-space: nowrap;
-  line-height: 16px;
-}
 
-.service-component .main-view .container nav {
-  padding: 4px 8px;
-  border-top: 1px solid #eee;
-  border-bottom: 1px solid #eee;
-}
+  .content {
+    padding: 0 15px;
+  }
 
-.service-component .main-view .container nav .btn-outline-primary {
-  background-color: #fff;
-  border-color: #1aaa55;
-  box-shadow: none;
-  color: #168f48 !important;
-}
+  .breadcrumbs a,
+  .breadcrumbs {
+    font-size: 12px;
+    color: rgb(112, 112, 112);
+    white-space: nowrap;
+    line-height: 16px;
+  }
 
-.service-component .main-view .container nav .btn-outline-primary:hover {
-  background-color: #1aaa55;
-  border-color: #168f48;
-  box-shadow: none;
-  color: #fff !important;
-}
+  nav {
+    padding: 4px 8px;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
 
-.service-component .main-view .container nav .btn-outline-danger {
-  background-color: #fff;
-  border-color: #fc9403;
-  box-shadow: none;
-  color: #de7e00 !important;
-}
+    .btn {
+      margin-left: 10px;
+    }
 
-.service-component .main-view .container nav .btn-outline-danger:hover {
-  background-color: #fc9403;
-  border-color: #de7e00;
-  box-shadow: none;
-  color: #fff !important;
+    .btn-outline-primary {
+      background-color: #fff;
+      border-color: #1aaa55;
+      box-shadow: none;
+      color: #168f48 !important;
+    }
+
+    .btn-outline-primary:hover {
+      background-color: #1aaa55;
+      border-color: #168f48;
+      box-shadow: none;
+      color: #fff !important;
+    }
+
+    .btn-outline-danger {
+      background-color: #fff;
+      border-color: #fc9403;
+      box-shadow: none;
+      color: #de7e00 !important;
+    }
+
+    .btn-outline-danger:hover {
+      background-color: #fc9403;
+      border-color: #de7e00;
+      box-shadow: none;
+      color: #fff !important;
+    }
+  }
 }
