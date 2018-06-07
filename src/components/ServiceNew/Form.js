@@ -8,7 +8,7 @@ import { Controlled as CodeMirror } from "react-codemirror2";
 import "codemirror/lib/codemirror.css";
 import "codemirror/mode/javascript/javascript";
 
-import { Typeahead } from "react-bootstrap-typeahead";
+import { Typeahead, Menu, MenuItem } from "react-bootstrap-typeahead";
 
 import "react-bootstrap-typeahead/css/Typeahead.css";
 import "react-bootstrap-typeahead/css/Typeahead-bs4.css";
@@ -242,6 +242,29 @@ export default class ServiceNew extends React.Component {
                 options={toJS(this.props.modelRepositoriesStore.repositories)}
                 placeholder="Model Repository location"
                 onChange={this.handleInputChange}
+                renderMenu={(results, menuProps) => (
+                  <Menu {...menuProps}>
+                    {results.map((result, index) => {
+                      console.log(result);
+
+                      let badgeClasses = "badge float-right";
+                      let badgeText = "Public";
+                      if (result.isPublic) {
+                        badgeClasses += " badge-primary";
+                      } else {
+                        badgeClasses += " badge-warning";
+                        badgeText = "Private";
+                      }
+
+                      return (
+                        <MenuItem option={result} position={index}>
+                          {result.label}
+                          <span class={badgeClasses}>{badgeText}</span>
+                        </MenuItem>
+                      );
+                    })}
+                  </Menu>
+                )}
               />
             </div>
 
