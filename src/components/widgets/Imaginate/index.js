@@ -166,7 +166,6 @@ export default class Imaginate extends React.Component {
             </div>
           </div>
         </div>
-        <ReactTooltip />
       </div>
     );
   }

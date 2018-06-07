@@ -1,10 +1,26 @@
 import React from "react";
+import { findDOMNode } from "react-dom";
 import { inject, observer } from "mobx-react";
 import ReactTooltip from "react-tooltip";
 
 @inject("imaginateStore")
 @observer
 export default class Description extends React.Component {
+  constructor(props) {
+    super(props);
+    this._nodes = new Map();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.selectedBoxIndex === -1) {
+      this._nodes.forEach(n => ReactTooltip.hide(findDOMNode(n)));
+    } else {
+      console.log(`show ${nextProps.selectedBoxIndex}`);
+      const node = findDOMNode(this._nodes.get(nextProps.selectedBoxIndex));
+      ReactTooltip.show(node);
+    }
+  }
+
   render() {
     const store = this.props.imaginateStore;
 
@@ -136,10 +152,8 @@ export default class Description extends React.Component {
                   ? " fa-square"
                   : " fa-circle";
 
-              let opacity = category.prob;
-              if (this.props.selectedBoxIndex === index) {
-                opacity = 1;
-              }
+              const opacity =
+                this.props.selectedBoxIndex === index ? 1 : category.prob;
               styles.opacity = opacity;
 
               let topClass = "fa fa-stack-1x fa-inverse fa-" + category.cat;
@@ -151,32 +165,16 @@ export default class Description extends React.Component {
                     className="fa-stack fa-lg"
                     onMouseOver={this.props.onOver.bind(this, index)}
                     onMouseLeave={this.props.onLeave}
-                    data-tip
-                    data-for={`category-tooltip-${index}`}
+                    data-tip={`${category.cat} - ${category.prob.toFixed(2)}`}
+                    ref={c => this._nodes.set(index, c)}
                   >
                     <i className={bottomClass} style={styles} />
                     <i className={topClass} style={{ opacity: opacity }} />
                   </span>
-                  <ReactTooltip
-                    key={`tooltip-${index}`}
-                    id={`category-tooltip-${index}`}
-                    effect="solid"
-                    getContent={[
-                      () => {
-                        return this.props.selectedBoxIndex === index ? (
-                          <span>
-                            {category.cat} - {category.prob.toFixed(2)}
-                          </span>
-                        ) : (
-                          ""
-                        );
-                      },
-                      50
-                    ]}
-                  />
                 </div>
               );
             })}
+            <ReactTooltip effect="solid" />
           </div>
         );
     }
