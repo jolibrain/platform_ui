@@ -86,8 +86,11 @@ export default class ServiceNew extends React.Component {
       const newConfig = ddStore.settings.services.defaultConfig.find(config => {
         return config.modelName === selectedConfig.modelName;
       });
-      this.setState({ defaultConfig: newConfig });
-      jsonConfig = newConfig.modelConfig;
+
+      if (typeof newconfig !== "undefined") {
+        this.setState({ defaultConfig: newConfig });
+        jsonConfig = newConfig.modelConfig;
+      }
     } else {
       return null;
     }
