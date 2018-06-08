@@ -33,7 +33,7 @@ export default class ServiceNew extends React.Component {
       return (
         <div className="layout-page page-gutter page-with-contextual-sidebar right-sidebar-collapsed page-with-icon-sidebar service-new">
           <div className="loading alert alert-primary" role="alert">
-            <i class="fas fa-spinner fa-spin" /> Loading repositories...
+            <i className="fas fa-spinner fa-spin" /> Loading repositories...
           </div>
         </div>
       );

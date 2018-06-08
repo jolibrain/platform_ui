@@ -29,6 +29,8 @@ export default class ServiceNew extends React.Component {
     this.submitService = this.submitService.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
 
+    this.handleCurlChange = this.handleCurlChange.bind(this);
+
     const { repositories } = this.props.modelRepositoriesStore;
     const defaultRepository = repositories[0];
 
@@ -133,6 +135,12 @@ export default class ServiceNew extends React.Component {
       errors.push("Model Repository Location must exists in predefined list");
     }
 
+    try {
+      JSON.parse(this.state.jsonConfig);
+    } catch (e) {
+      errors.push("Invalid json in curl command, please check its syntax");
+    }
+
     this.setState({ errors: errors });
 
     return errors.length === 0;
@@ -183,6 +191,16 @@ export default class ServiceNew extends React.Component {
     setTimeout(() => {
       this.setState({ copied: false });
     }, 2000);
+  }
+
+  handleCurlChange(editor, data, value) {
+    const { settings } = this.props.deepdetectStore;
+    const curlCommand = `curl -X PUT '${window.location.origin}${
+      settings.server.path
+    }/services/${this.state.serviceName}' -d '`;
+
+    const jsonConfig = value.replace(curlCommand, "").slice(0, -1);
+    this.setState({ jsonConfig: jsonConfig });
   }
 
   render() {
@@ -245,8 +263,6 @@ export default class ServiceNew extends React.Component {
                 renderMenu={(results, menuProps) => (
                   <Menu {...menuProps}>
                     {results.map((result, index) => {
-                      console.log(result);
-
                       let badgeClasses = "badge float-right";
                       let badgeText = "Public";
                       if (result.isPublic) {
@@ -257,9 +273,9 @@ export default class ServiceNew extends React.Component {
                       }
 
                       return (
-                        <MenuItem option={result} position={index}>
+                        <MenuItem key={index} option={result} position={index}>
                           {result.label}
-                          <span class={badgeClasses}>{badgeText}</span>
+                          <span className={badgeClasses}>{badgeText}</span>
                         </MenuItem>
                       );
                     })}
@@ -303,7 +319,11 @@ export default class ServiceNew extends React.Component {
                 </span>
               </div>
               <div className="code-wrap">
-                <CodeMirror value={curlCommand} />
+                <CodeMirror
+                  value={curlCommand}
+                  onBeforeChange={this.handleCurlChange}
+                  onChange={this.handleCurlChange}
+                />
               </div>
             </pre>
           </div>
