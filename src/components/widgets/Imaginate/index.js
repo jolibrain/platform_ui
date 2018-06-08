@@ -66,7 +66,6 @@ export default class Imaginate extends React.Component {
     if (typeof service === "undefined") {
       this.props.history.push(`/predict/new`);
     }
-    console.log(service);
 
     store.initPredict(service);
     store.predict(service);
