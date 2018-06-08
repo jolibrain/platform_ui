@@ -81,6 +81,10 @@ export class imaginateStore {
       data: [image.url]
     };
 
+    if (typeof image.path !== "undefined") {
+      image.postData.data = [image.path];
+    }
+
     if (this.settings.display.boundingBox) {
       image.postData.parameters.output.bbox = true;
     }
@@ -180,7 +184,8 @@ export class imaginateStore {
     );
     this.imgList = serverImages.map(i => {
       return {
-        url: systemPath + folderName + "/" + i,
+        url: nginx + folderName + "/" + i,
+        path: systemPath + folderName + "/" + i,
         json: null,
         boxes: null
       };
