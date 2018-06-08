@@ -124,7 +124,12 @@ export default class Imaginate extends React.Component {
                 onLeave={this.onLeave}
               />
             </div>
-            <div className="card commands">
+            <div
+              className="card commands"
+              style={{
+                display: store.selectedImage === null ? "none" : "flex"
+              }}
+            >
               <div className="card-header">
                 <ul className="nav nav-tabs card-header-tabs">
                   <li className="nav-item">

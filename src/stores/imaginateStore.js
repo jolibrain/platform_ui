@@ -18,18 +18,25 @@ export class imaginateStore {
     this.settings = configStore.imaginate;
     this.settings.deepdetect = configStore.deepdetect;
 
+    const initImages = this.settings.display.initImages;
+
     // Init image list if available inside config.json
-    if (this.settings.display.initImages) {
-      switch (this.settings.display.initImages.type) {
+    if (typeof initImages !== "undefined") {
+      switch (initImages.type) {
         case "urlList":
         default:
-          this.imgList = this.settings.display.initImages.list.map(img => {
-            return {
-              url: img,
-              boxes: [[10, 10, 10, 10]],
-              json: null
-            };
-          });
+          const list = initImages.list;
+
+          if (typeof list !== "undefined" && list.length > 0) {
+            this.imgList = this.settings.display.initImages.list.map(img => {
+              return {
+                url: img,
+                boxes: [[10, 10, 10, 10]],
+                json: null
+              };
+            });
+          }
+
           break;
       }
     }
@@ -54,9 +61,13 @@ export class imaginateStore {
 
   @action
   initPredict(serviceName) {
-    this.isRequesting = true;
+    if (this.imgList.length === 0) return null;
 
     const image = this.imgList[this.selectedImageIndex];
+
+    if (typeof image === "undefined") return null;
+
+    this.isRequesting = true;
 
     image.json = null;
 
@@ -111,7 +122,12 @@ export class imaginateStore {
 
   @action
   async predict(serviceName) {
+    if (this.imgList.length === 0) return null;
+
     const image = this.imgList[this.selectedImageIndex];
+
+    if (typeof image === "undefined") return null;
+
     image.json = await this.$reqPostPredict(image.postData);
 
     if (typeof image.json.body === "undefined") {

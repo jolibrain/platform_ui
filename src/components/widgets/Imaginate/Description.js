@@ -29,9 +29,7 @@ export default class Description extends React.Component {
 
     const image = store.selectedImage;
 
-    if (image.error) {
-      return null;
-    }
+    if (image === null || image.error) return null;
 
     const imageClasses = store.selectedImage.json.body.predictions[0].classes;
 
