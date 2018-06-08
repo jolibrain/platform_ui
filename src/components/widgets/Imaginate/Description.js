@@ -33,6 +33,8 @@ export default class Description extends React.Component {
 
     const imageClasses = store.selectedImage.json.body.predictions[0].classes;
 
+    if (typeof imageClasses === "undefined") return null;
+
     switch (store.settings.display.format) {
       case "expectation":
         return (
