@@ -34,8 +34,20 @@ export class configStore {
 
   @observable
   modelRepositories = {
-    nginxPath: "/model_repositories/",
-    systemPath: "/data/models/"
+    nginxPath: {
+      public: "/models/public/",
+      private: "/models/private/"
+    },
+    systemPath: {
+      public: "/opt/platform/models/public/",
+      private: "/opt/platform/models/private/"
+    }
+  };
+
+  @observable
+  dataRepositories = {
+    nginxPath: "/data/",
+    systemPath: "/opt/platform/data/"
   };
 
   $req(path) {
@@ -51,6 +63,7 @@ export class configStore {
         this.deepdetect = config.deepdetect;
         this.imaginate = config.imaginate;
         this.modelRepositories = config.modelRepositories;
+        this.dataRepositories = config.dataRepositories;
         this.homeComponent = config.homeComponent;
         callback(this);
       })

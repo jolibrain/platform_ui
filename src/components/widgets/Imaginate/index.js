@@ -8,7 +8,7 @@ import CurlCommand from "./CurlCommand";
 import JsonResponse from "./JsonResponse";
 import Description from "./Description";
 import Threshold from "./Threshold";
-import InputUrl from "./InputUrl";
+import InputData from "./InputData";
 
 @inject("commonStore")
 @inject("imaginateStore")
@@ -26,7 +26,6 @@ export default class Imaginate extends React.Component {
 
     this.selectImage = this.selectImage.bind(this);
     this.loadImage = this.loadImage.bind(this);
-    this.addUrl = this.addUrl.bind(this);
 
     this.onOver = this.onOver.bind(this);
     this.onLeave = this.onLeave.bind(this);
@@ -48,12 +47,6 @@ export default class Imaginate extends React.Component {
 
   setTab(tabName) {
     this.setState({ tab: tabName });
-  }
-
-  addUrl(url) {
-    const store = this.props.imaginateStore;
-    store.addImageFromUrl(url);
-    this.loadImage();
   }
 
   selectImage(index) {
@@ -95,7 +88,7 @@ export default class Imaginate extends React.Component {
     return (
       <div className="imaginate">
         <div className="row">
-          <div className="col-md-8">
+          <div className="col-md-7">
             <div className="row">
               <div className="img-list col-sm-12">
                 <ImageList selectImage={this.selectImage} />
@@ -110,9 +103,9 @@ export default class Imaginate extends React.Component {
               />
             </div>
           </div>
-          <div className="col-md-4">
+          <div className="col-md-5">
             <div className="row">
-              <InputUrl addUrl={this.addUrl} />
+              <InputData loadImage={this.loadImage} />
             </div>
             <div className="row">
               <Threshold loadImage={this.loadImage} />

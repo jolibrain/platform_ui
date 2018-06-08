@@ -61,6 +61,7 @@ export class imaginateStore {
 
   @action
   initPredict(serviceName) {
+    console.log("iinit");
     if (this.imgList.length === 0) return null;
 
     const image = this.imgList[this.selectedImageIndex];
@@ -122,6 +123,7 @@ export class imaginateStore {
 
   @action
   async predict(serviceName) {
+    console.log("predict");
     if (this.imgList.length === 0) return null;
 
     const image = this.imgList[this.selectedImageIndex];
@@ -168,6 +170,26 @@ export class imaginateStore {
       boxes: null
     });
     this.setSelectedImage(this.imgList.length - 1);
+  }
+
+  $reqImgFromPath(path) {
+    return agent.Webserver.listFiles(path);
+  }
+
+  @action
+  async addImageFromPath(nginxPath, systemPath, folderName, callback) {
+    const serverImages = await this.$reqImgFromPath(
+      nginxPath + folderName + "/"
+    );
+    this.imgList = serverImages.map(i => {
+      return {
+        url: systemPath + folderName + "/" + i,
+        json: null,
+        boxes: null
+      };
+    });
+    this.setSelectedImage(0);
+    callback();
   }
 }
 
