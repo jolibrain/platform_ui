@@ -60,8 +60,7 @@ export class imaginateStore {
   }
 
   @action
-  initPredict(serviceName) {
-    console.log("iinit");
+  initPredict(service) {
     if (this.imgList.length === 0) return null;
 
     const image = this.imgList[this.selectedImageIndex];
@@ -73,7 +72,7 @@ export class imaginateStore {
     image.json = null;
 
     image.postData = {
-      service: serviceName,
+      service: service.name,
       parameters: {
         output: {
           confidence_threshold: this.confidence
@@ -122,8 +121,7 @@ export class imaginateStore {
   }
 
   @action
-  async predict(serviceName) {
-    console.log("predict");
+  async predict(service) {
     if (this.imgList.length === 0) return null;
 
     const image = this.imgList[this.selectedImageIndex];
