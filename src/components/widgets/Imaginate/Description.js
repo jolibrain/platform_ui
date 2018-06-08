@@ -15,7 +15,6 @@ export default class Description extends React.Component {
     if (nextProps.selectedBoxIndex === -1) {
       this._nodes.forEach(n => ReactTooltip.hide(findDOMNode(n)));
     } else {
-      console.log(`show ${nextProps.selectedBoxIndex}`);
       const node = findDOMNode(this._nodes.get(nextProps.selectedBoxIndex));
       ReactTooltip.show(node);
     }
