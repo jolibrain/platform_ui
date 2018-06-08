@@ -103,9 +103,8 @@ export class imaginateStore {
       );
     }
 
-    if (this.settings.display.segmentation) {
+    if (service.mltype === "segmentation") {
       image.postData.parameters.input = { segmentation: true };
-      image.postData.parameters.mllib = { gpu: true };
       image.postData.parameters.output = {};
     }
 
