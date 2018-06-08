@@ -184,7 +184,7 @@ export class imaginateStore {
     );
     this.imgList = serverImages.map(i => {
       return {
-        url: nginx + folderName + "/" + i,
+        url: nginxPath + folderName + "/" + i,
         path: systemPath + folderName + "/" + i,
         json: null,
         boxes: null
