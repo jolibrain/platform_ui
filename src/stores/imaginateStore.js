@@ -132,22 +132,22 @@ export class imaginateStore {
     if (typeof image.json.body === "undefined") {
       image.error = true;
     } else {
-      image.boxes = image.json.body.predictions[0].classes.map(
-        predict => predict.bbox
-      );
+      const prediction = image.json.body.predictions[0];
+      const classes = prediction.classes;
+
+      if (typeof classes !== "undefined") {
+        image.boxes = classes.map(predict => predict.bbox);
+      }
 
       if (
         (this.settings.request.objSearch || this.settings.request.imgSearch) &&
         typeof image.json.body.predictions[0].rois !== "undefined"
       ) {
-        image.boxes = image.json.body.predictions[0].rois.map(
-          predict => predict.bbox
-        );
+        image.boxes = prediction.rois.map(predict => predict.bbox);
       }
 
-      image.pixelSegmentation = typeof image.json.body.predictions[0].vals
-        ? []
-        : image.json.body.predictions[0].vals;
+      image.pixelSegmentation =
+        typeof prediction.vals === "undefined" ? [] : prediction.vals;
     }
 
     this.selectedImage = image;
