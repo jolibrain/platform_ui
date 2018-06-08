@@ -36,20 +36,48 @@ export default class ServiceList extends React.Component {
 
   render() {
     const ddstore = this.props.deepdetectStore;
-    const { services, currentServiceIndex } = ddstore;
+    const { servers, currentServerIndex } = ddstore;
 
-    if (services.length === 0) return null;
+    const services = [].concat.apply(
+      [],
+      servers.map((server, serverIndex) => {
+        return server.services.map((service, serviceIndex) => {
+          return {
+            serverName: server.name,
+            serviceName: service.name,
+            isActive:
+              currentServerIndex === serverIndex &&
+              server.currentServiceIndex === serviceIndex
+          };
+        });
+      })
+    );
+
+    if (services.length === 0)
+      return (
+        <ul className="serviceList sidebar-top-level-items">
+          <li />
+        </ul>
+      );
 
     return (
       <ul className="serviceList sidebar-top-level-items">
         {services.map((service, index) => {
           return (
             <li
-              key={`service-${index}`}
-              className={currentServiceIndex === index ? "active" : ""}
+              key={`service-item-${index}`}
+              className={service.isActive ? "active" : ""}
             >
-              <Link key={`service-${index}`} to={`/predict/${service.name}`}>
-                <span className="nav-item-name">{service.name}</span>
+              <Link
+                key={`service-link-${index}`}
+                to={`/predict/${service.serverName}/${service.serviceName}`}
+              >
+                <span className="nav-item-name">
+                  {service.serviceName}
+                  <span class="badge badge-secondary">
+                    {service.serverName}
+                  </span>
+                </span>
               </Link>
             </li>
           );

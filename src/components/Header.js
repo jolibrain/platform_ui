@@ -34,8 +34,6 @@ class Header extends React.Component {
   }
 
   render() {
-    const { services } = this.props.deepdetectStore;
-
     return (
       <header className="header navbar navbar-dark bg-dark" id="header">
         <div className="container-fluid">
@@ -49,10 +47,7 @@ class Header extends React.Component {
 
               <ul className="list-unstyled navbar-sub-nav">
                 <li>
-                  <Link
-                    to={services.length > 0 ? "/predict" : "/predict/new"}
-                    style={{ textDecoration: "none" }}
-                  >
+                  <Link to="/predict" style={{ textDecoration: "none" }}>
                     <i className="fas fa-cube" />&nbsp; Predict
                   </Link>
                 </li>

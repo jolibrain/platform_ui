@@ -6,9 +6,29 @@
   },
   "deepdetect": {
     "infoRefreshRate": 10000,
-    "server": {
-      "path": "/api"
-    },
+    "servers": [
+      {
+        "name": "public",
+        "settings": {
+          "path": "/api/public",
+          "isWritable": false
+        }
+      },
+      {
+        "name": "private",
+        "settings": {
+          "path": "/api/private",
+          "isWritable": true
+        }
+      },
+      {
+        "name": "training",
+        "settings": {
+          "path": "/api/training",
+          "isWritable": false
+        }
+      }
+    ],
     "services": {
       "defaultConfig": [
         {

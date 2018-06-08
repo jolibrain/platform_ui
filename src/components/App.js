@@ -47,8 +47,7 @@ export default class App extends React.Component {
   render() {
     if (
       this.props.commonStore.appLoaded &&
-      this.props.configStore.configLoaded &&
-      this.props.deepdetectStore.servicesLoaded
+      this.props.configStore.configLoaded
     ) {
       // Minimal Layout
       if (
@@ -69,8 +68,7 @@ export default class App extends React.Component {
             <Switch>
               <Route exact path="/" component={Home} />
               <Route path="/predict/new" component={ServiceNew} />
-              <Route path="/predict/:serviceName" component={Service} />
-              <Route path="/predict" component={Service} />
+              <Route path="/predict/:server/:serviceName" component={Service} />
             </Switch>
           </div>
         );

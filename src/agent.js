@@ -46,19 +46,19 @@ const GpuInfo = {
 
 const Deepdetect = {
   info: settings => {
-    const dd = new DD(settings.server);
+    const dd = new DD(settings);
     return dd.info();
   },
   infoStatus: settings => {
-    const dd = new DD(settings.server);
+    const dd = new DD(settings);
     return dd.info({ status: true });
   },
   putService: (settings, name, data) => {
-    const dd = new DD(settings.server);
+    const dd = new DD(settings);
     return dd.putService(name, data);
   },
   postPredict: (settings, postData) => {
-    const dd = new DD(settings.server);
+    const dd = new DD(settings);
     return dd.postPredict(postData);
   }
 };
