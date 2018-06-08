@@ -78,8 +78,8 @@ const Webserver = {
         for (var i = 0; i < aElements.length; i++) {
           const repo = aElements[i].text;
 
-          // Check if folder and if not parent folder
-          if (repo.indexOf("/") !== -1 && repo !== "../") folders.push(repo);
+          // Check if not parent folder
+          if (repo !== "../") folders.push(repo);
         }
 
         return folders;
