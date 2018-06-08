@@ -102,7 +102,7 @@ const Webserver = {
           if (repo.indexOf("/") === -1) files.push(repo);
         }
 
-        return files;
+        return files.slice(0, 20);
       })
 };
 
