@@ -16,6 +16,7 @@ import deepdetectStore from "./stores/deepdetectStore.js";
 import imaginateStore from "./stores/imaginateStore.js";
 import modelRepositoriesStore from "./stores/modelRepositoriesStore.js";
 import dataRepositoriesStore from "./stores/dataRepositoriesStore.js";
+import modalStore from "./stores/modalStore.js";
 
 const stores = {
   commonStore,
@@ -24,7 +25,8 @@ const stores = {
   deepdetectStore,
   imaginateStore,
   modelRepositoriesStore,
-  dataRepositoriesStore
+  dataRepositoriesStore,
+  modalStore
 };
 
 // For easier debugging

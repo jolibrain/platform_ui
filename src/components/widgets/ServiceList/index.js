@@ -12,7 +12,6 @@ export default class ServiceList extends React.Component {
       intervalId: null
     };
 
-    this.setServiceIndex = this.setServiceIndex.bind(this);
     this.timer();
   }
 
@@ -28,10 +27,6 @@ export default class ServiceList extends React.Component {
 
   timer() {
     this.props.deepdetectStore.loadServices(this.props.status);
-  }
-
-  setServiceIndex(index) {
-    this.props.deepdetectStore.setCurrentServiceIndex(index);
   }
 
   render() {
@@ -74,7 +69,7 @@ export default class ServiceList extends React.Component {
               >
                 <span className="nav-item-name">
                   {service.serviceName}
-                  <span class="badge badge-secondary">
+                  <span className="badge badge-secondary float-right">
                     {service.serverName}
                   </span>
                 </span>

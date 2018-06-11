@@ -159,5 +159,6 @@
   "dataRepositories": {
     "nginxPath": "/data/",
     "systemPath": "/opt/platform/data/"
-  }
+  },
+  "modals": ["deleteService"]
 }

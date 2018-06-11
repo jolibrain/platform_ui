@@ -59,9 +59,9 @@ export default class Imaginate extends React.Component {
     const store = this.props.imaginateStore;
     const ddStore = this.props.deepdetectStore;
 
-    if (ddStore.currentServiceIndex === -1) return null;
+    if (ddStore.server.currentServiceIndex === -1) return null;
 
-    const service = ddStore.services[ddStore.currentServiceIndex];
+    const service = ddStore.service;
 
     if (typeof service === "undefined") {
       this.props.history.push(`/predict/new`);

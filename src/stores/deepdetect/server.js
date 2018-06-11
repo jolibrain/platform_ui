@@ -18,12 +18,12 @@ export default class deepdetectServer {
   }
 
   @action
-  setCurrentServiceIndex(currentServiceIndex) {
+  setServiceIndex(currentServiceIndex) {
     this.currentServiceIndex = currentServiceIndex;
   }
 
   @action
-  setCurrentService(serviceName) {
+  setService(serviceName) {
     this.currentServiceIndex = this.services.findIndex(service => {
       return service.name === serviceName;
     });

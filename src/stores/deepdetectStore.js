@@ -11,46 +11,54 @@ export class deepdetectStore {
   @observable refresh = 0;
 
   @computed
-  currentServer() {
+  get server() {
+    if (this.currentServerIndex === -1) return null;
+
     return this.servers[this.currentServerIndex];
   }
 
   @computed
-  currentService() {
-    const server = this.servers[this.currentServerIndex];
+  get service() {
+    if (this.server.currentServiceIndex === -1) return null;
+
+    return this.server.services[this.server.currentServiceIndex];
   }
 
   @action
   setup(configStore) {
     this.settings = configStore.deepdetect;
+
     this.settings.servers.forEach(serverConfig => {
       this.servers.push(new deepdetectServer(serverConfig));
     });
+
+    if (this.servers.length > 0 && this.currentServerIndex === -1) {
+      this.currentServerIndex = 0;
+    }
+
     this.loadServices();
   }
 
   @action
-  setCurrentServerIndex(serverIndex) {
+  setServerIndex(serverIndex) {
     this.currentServerIndex = serverIndex;
   }
 
   @action
-  setCurrentServer(serverName) {
+  setServer(serverName) {
     this.currentServerIndex = this.servers.findIndex(
       server => server.name === serverName
     );
   }
 
   @action
-  setCurrentServiceIndex(serviceIndex) {
-    const server = this.servers[this.currentServerIndex];
-    server.setCurrentServiceIndex(serviceIndex);
+  setServiceIndex(serviceIndex) {
+    this.server.setServiceIndex(serviceIndex);
   }
 
   @action
-  setCurrentService(serviceName) {
-    const server = this.servers[this.currentServerIndex];
-    server.setCurrentService(serviceName);
+  setService(serviceName) {
+    this.server.setService(serviceName);
   }
 
   @action
