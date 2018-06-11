@@ -4,6 +4,7 @@ import { inject, observer } from "mobx-react";
 import ReactTooltip from "react-tooltip";
 
 @inject("imaginateStore")
+@inject("deepdetectStore")
 @observer
 export default class Description extends React.Component {
   constructor(props) {
@@ -23,6 +24,9 @@ export default class Description extends React.Component {
   render() {
     const store = this.props.imaginateStore;
 
+    const ddStore = this.props.deepdetectStore;
+    const service = ddStore.services[ddStore.currentServiceIndex];
+
     if (store.selectedImage === null || store.selectedImage.json === null) {
       return null;
     }
@@ -35,7 +39,13 @@ export default class Description extends React.Component {
 
     if (typeof imageClasses === "undefined") return null;
 
-    switch (store.settings.display.format) {
+    let displayFormat = store.settings.display.format;
+
+    if (service.mltype === "ctc") {
+      displayFormat = "category";
+    }
+
+    switch (displayFormat) {
       case "expectation":
         return (
           <span>
