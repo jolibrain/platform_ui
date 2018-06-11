@@ -98,6 +98,9 @@ export class imaginateStore {
 
     if (service.mltype === "ctc") {
       image.postData.parameters.output.ctc = true;
+      image.postData.parameters.output.bbox = false;
+      image.postData.parameters.output.confidence_threshold = 0;
+      image.postData.parameters.output.blank_label = 0;
     }
 
     if (this.settings.request.blank_label) {
