@@ -13,13 +13,11 @@ export class modelRepositoriesStore {
   }
 
   $reqPublic() {
-    const isPublic = true;
-    return agent.ModelRepositories.getRelativePath(this.settings, isPublic);
+    return agent.Webserver.listFolders(this.settings.nginxPath.public);
   }
 
   $reqPrivate() {
-    const isPublic = false;
-    return agent.ModelRepositories.getRelativePath(this.settings, isPublic);
+    return agent.Webserver.listFolders(this.settings.nginxPath.private);
   }
 
   @action

@@ -15,6 +15,7 @@ import Imaginate from "./widgets/Imaginate";
 @inject("deepdetectStore")
 @inject("imaginateStore")
 @inject("modelRepositoriesStore")
+@inject("dataRepositoriesStore")
 @withRouter
 @observer
 export default class App extends React.Component {
@@ -32,6 +33,10 @@ export default class App extends React.Component {
 
       if (config.modelRepositories) {
         this.props.modelRepositoriesStore.setup(config);
+      }
+
+      if (config.dataRepositories) {
+        this.props.dataRepositoriesStore.setup(config);
       }
     });
   }

@@ -10,7 +10,9 @@ export default class BoundingBoxDisplay extends React.Component {
     const store = this.props.imaginateStore;
     const image = store.selectedImage;
 
-    if (image === null) {
+    if (image === null) return null;
+
+    if (store.isRequesting) {
       return (
         <div className="alert alert-primary" role="alert">
           <i className="fas fa-spinner fa-spin" />&nbsp; Loading...
@@ -25,7 +27,7 @@ export default class BoundingBoxDisplay extends React.Component {
         boxes={toJS(image.boxes)}
         selectedIndex={this.props.selectedBoxIndex}
         onSelected={this.props.onOver}
-        pixelSegmentation={image.pixelSegmentation}
+        pixelSegmentation={toJS(image.pixelSegmentation)}
         separateSegmentation={store.settings.display.separateSegmentation}
         segmentationColors={toJS(store.settings.display.segmentationColors)}
       />

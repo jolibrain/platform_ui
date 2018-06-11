@@ -18,18 +18,25 @@ export class imaginateStore {
     this.settings = configStore.imaginate;
     this.settings.deepdetect = configStore.deepdetect;
 
+    const initImages = this.settings.display.initImages;
+
     // Init image list if available inside config.json
-    if (this.settings.display.initImages) {
-      switch (this.settings.display.initImages.type) {
+    if (typeof initImages !== "undefined") {
+      switch (initImages.type) {
         case "urlList":
         default:
-          this.imgList = this.settings.display.initImages.list.map(img => {
-            return {
-              url: img,
-              boxes: [[10, 10, 10, 10]],
-              json: null
-            };
-          });
+          const list = initImages.list;
+
+          if (typeof list !== "undefined" && list.length > 0) {
+            this.imgList = this.settings.display.initImages.list.map(img => {
+              return {
+                url: img,
+                boxes: [[10, 10, 10, 10]],
+                json: null
+              };
+            });
+          }
+
           break;
       }
     }
@@ -53,15 +60,19 @@ export class imaginateStore {
   }
 
   @action
-  initPredict(serviceName) {
-    this.isRequesting = true;
+  initPredict(service) {
+    if (this.imgList.length === 0) return null;
 
     const image = this.imgList[this.selectedImageIndex];
+
+    if (typeof image === "undefined") return null;
+
+    this.isRequesting = true;
 
     image.json = null;
 
     image.postData = {
-      service: serviceName,
+      service: service.name,
       parameters: {
         output: {
           confidence_threshold: this.confidence
@@ -69,6 +80,10 @@ export class imaginateStore {
       },
       data: [image.url]
     };
+
+    if (typeof image.path !== "undefined") {
+      image.postData.data = [image.path];
+    }
 
     if (this.settings.display.boundingBox) {
       image.postData.parameters.output.bbox = true;
@@ -81,7 +96,7 @@ export class imaginateStore {
       );
     }
 
-    if (this.settings.request.ctc) {
+    if (service.mltype === "ctc") {
       image.postData.parameters.output.ctc = true;
     }
 
@@ -92,9 +107,8 @@ export class imaginateStore {
       );
     }
 
-    if (this.settings.display.segmentation) {
+    if (service.mltype === "segmentation") {
       image.postData.parameters.input = { segmentation: true };
-      image.postData.parameters.mllib = { gpu: true };
       image.postData.parameters.output = {};
     }
 
@@ -110,29 +124,34 @@ export class imaginateStore {
   }
 
   @action
-  async predict(serviceName) {
+  async predict(service) {
+    if (this.imgList.length === 0) return null;
+
     const image = this.imgList[this.selectedImageIndex];
+
+    if (typeof image === "undefined") return null;
+
     image.json = await this.$reqPostPredict(image.postData);
 
     if (typeof image.json.body === "undefined") {
       image.error = true;
     } else {
-      image.boxes = image.json.body.predictions[0].classes.map(
-        predict => predict.bbox
-      );
+      const prediction = image.json.body.predictions[0];
+      const classes = prediction.classes;
+
+      if (typeof classes !== "undefined") {
+        image.boxes = classes.map(predict => predict.bbox);
+      }
 
       if (
         (this.settings.request.objSearch || this.settings.request.imgSearch) &&
         typeof image.json.body.predictions[0].rois !== "undefined"
       ) {
-        image.boxes = image.json.body.predictions[0].rois.map(
-          predict => predict.bbox
-        );
+        image.boxes = prediction.rois.map(predict => predict.bbox);
       }
 
-      image.pixelSegmentation = typeof image.json.body.predictions[0].vals
-        ? []
-        : image.json.body.predictions[0].vals;
+      image.pixelSegmentation =
+        typeof prediction.vals === "undefined" ? [] : prediction.vals;
     }
 
     this.selectedImage = image;
@@ -152,6 +171,27 @@ export class imaginateStore {
       boxes: null
     });
     this.setSelectedImage(this.imgList.length - 1);
+  }
+
+  $reqImgFromPath(path) {
+    return agent.Webserver.listFiles(path);
+  }
+
+  @action
+  async addImageFromPath(nginxPath, systemPath, folderName, callback) {
+    const serverImages = await this.$reqImgFromPath(
+      nginxPath + folderName + "/"
+    );
+    this.imgList = serverImages.map(i => {
+      return {
+        url: nginxPath + folderName + "/" + i,
+        path: systemPath + folderName + "/" + i,
+        json: null,
+        boxes: null
+      };
+    });
+    this.setSelectedImage(0);
+    callback();
   }
 }
 

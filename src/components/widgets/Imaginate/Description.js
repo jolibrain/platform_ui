@@ -15,7 +15,6 @@ export default class Description extends React.Component {
     if (nextProps.selectedBoxIndex === -1) {
       this._nodes.forEach(n => ReactTooltip.hide(findDOMNode(n)));
     } else {
-      console.log(`show ${nextProps.selectedBoxIndex}`);
       const node = findDOMNode(this._nodes.get(nextProps.selectedBoxIndex));
       ReactTooltip.show(node);
     }
@@ -30,11 +29,11 @@ export default class Description extends React.Component {
 
     const image = store.selectedImage;
 
-    if (image.error) {
-      return null;
-    }
+    if (image === null || image.error) return null;
 
     const imageClasses = store.selectedImage.json.body.predictions[0].classes;
+
+    if (typeof imageClasses === "undefined") return null;
 
     switch (store.settings.display.format) {
       case "expectation":

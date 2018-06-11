@@ -63,32 +63,46 @@ const Deepdetect = {
   }
 };
 
-/* ====
- * model repositories
- * ====
- */
-
-const ModelRepositories = {
-  getRelativePath: (settings, isPublic = true) =>
+const Webserver = {
+  listFolders: path =>
     superagent
-      .get(settings.nginxPath[isPublic ? "public" : "private"])
+      .get(path)
       .end(handleErrors)
       .then(res => {
         const parser = new DOMParser();
         const htmlDoc = parser.parseFromString(res.text, "text/html");
         const aElements = htmlDoc.getElementsByTagName("a");
 
-        let relativePath = [];
+        let folders = [];
 
         for (var i = 0; i < aElements.length; i++) {
           const repo = aElements[i].text;
 
-          // Check if folder and if not parent folder
-          if (repo.indexOf("/") !== -1 && repo !== "../")
-            relativePath.push(repo);
+          // Check if not parent folder
+          if (repo !== "../") folders.push(repo);
         }
 
-        return relativePath;
+        return folders;
+      }),
+  listFiles: path =>
+    superagent
+      .get(path)
+      .end(handleErrors)
+      .then(res => {
+        const parser = new DOMParser();
+        const htmlDoc = parser.parseFromString(res.text, "text/html");
+        const aElements = htmlDoc.getElementsByTagName("a");
+
+        let files = [];
+
+        for (var i = 0; i < aElements.length; i++) {
+          const repo = aElements[i].text;
+
+          // Check if files and if not parent folder
+          if (repo.indexOf("/") === -1) files.push(repo);
+        }
+
+        return files.slice(0, 20);
       })
 };
 
@@ -96,5 +110,5 @@ export default {
   Config,
   GpuInfo,
   Deepdetect,
-  ModelRepositories
+  Webserver
 };

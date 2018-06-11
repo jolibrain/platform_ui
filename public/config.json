@@ -36,7 +36,7 @@
           "modelConfig": {
             "description": "object detection service",
             "model": {
-              "repository": "/opt/models/detection_600/"
+              "repository": "/opt/platform/models/detection_600/"
             },
             "mllib": "caffe",
             "type": "supervised",
@@ -59,7 +59,7 @@
           "modelConfig": {
             "description": "object detection service",
             "model": {
-              "repository": "/opt/models/segmentation_150/"
+              "repository": "/opt/platform/models/segmentation_150/"
             },
             "mllib": "caffe",
             "type": "supervised",
@@ -82,7 +82,7 @@
           "modelConfig": {
             "description": "object detection service",
             "model": {
-              "repository": "/opt/models/ggnet/"
+              "repository": "/opt/platform/models/ggnet/"
             },
             "mllib": "caffe",
             "type": "supervised",
@@ -105,7 +105,7 @@
           "modelConfig": {
             "description": "object detection service",
             "model": {
-              "repository": "/opt/models/resnet_50/"
+              "repository": "/opt/platform/models/resnet_50/"
             },
             "mllib": "caffe",
             "type": "supervised",
@@ -128,14 +128,7 @@
   },
   "imaginate": {
     "display": {
-      "initImages": {
-        "type": "urlList",
-        "list": [
-          "https://i.imgur.com/d4QKO0v.jpg",
-          "https://i.imgur.com/VkZiq7B.jpg",
-          "https://i.imgur.com/oBbmiaA.jpg"
-        ]
-      },
+      "initImages": {},
       "mode": "description",
       "okClass": "",
       "boundingBox": true,
@@ -166,8 +159,12 @@
       "private": "/models/private/"
     },
     "systemPath": {
-      "public": "/opt/models/public/",
-      "private": "/opt/models/private/"
+      "public": "/opt/platform/models/public/",
+      "private": "/opt/platform/models/private/"
     }
+  },
+  "dataRepositories": {
+    "nginxPath": "/data/",
+    "systemPath": "/opt/platform/data/"
   }
 }
