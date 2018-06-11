@@ -35,3 +35,9 @@ docker/deepdetect/Dockerfile.*
 !docker/nginx/Dockerfile.dev
 !docker/react/Dockerfile.dev
 !docker/deepdetect/Dockerfile.dev
+!script/00-install-eris.sh
+!config/nginx/nginx.eris.conf
+!docker/docker-compose.eris.yml
+!docker/nginx/Dockerfile.eris
+!docker/react/Dockerfile.eris
+!docker/deepdetect/Dockerfile.eris
