@@ -1,11 +1,23 @@
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
+import { inject, observer } from "mobx-react";
 
 import RightPanel from "./RightPanel";
 import Imaginate from "../widgets/Imaginate";
 
+@inject("imaginateStore")
 @withRouter
+@observer
 export default class MainView extends React.Component {
+  componentWillReceiveProps(nextProps) {
+    const serviceName = this.props.match.params.serviceName;
+    const newServiceName = nextProps.match.params.serviceName;
+
+    if (serviceName !== newServiceName) {
+      this.props.imaginateStore.imgList = [];
+    }
+  }
+
   render() {
     const serviceName = this.props.match.params.serviceName;
 

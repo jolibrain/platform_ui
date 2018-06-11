@@ -152,7 +152,14 @@ export default class Imaginate extends React.Component {
                       }
                       onClick={this.setTab.bind(this, "json")}
                     >
-                      JSON
+                      JSON&nbsp;
+                      {store.selectedImage &&
+                      store.selectedImage.json &&
+                      store.selectedImage.json.status.code === 500 ? (
+                        <i className="fas fa-exclamation-triangle" />
+                      ) : (
+                        ""
+                      )}
                     </a>
                   </li>
                 </ul>

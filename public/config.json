@@ -49,7 +49,7 @@
               "mllib": {
                 "nclasses": 601,
                 "gpu": true,
-                "gpuid": 1
+                "gpuid": 0
               }
             }
           }
@@ -72,7 +72,7 @@
               "mllib": {
                 "nclasses": 150,
                 "gpu": true,
-                "gpuid": 1
+                "gpuid": 0
               }
             }
           }
@@ -95,7 +95,7 @@
               "mllib": {
                 "nclasses": 21,
                 "gpu": true,
-                "gpuid": 1
+                "gpuid": 0
               }
             }
           }
@@ -118,7 +118,7 @@
               "mllib": {
                 "nclasses": 21,
                 "gpu": true,
-                "gpuid": 1
+                "gpuid": 0
               }
             }
           }
