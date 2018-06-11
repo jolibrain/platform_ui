@@ -50,6 +50,10 @@
     "dev:up": "docker-compose -f docker/docker-compose.dev.yml up",
     "dev:down": "docker-compose -f docker/docker-compose.dev.yml down",
     "dev:uninstall": "docker-compose -f docker/docker-compose.dev.yml down --rmi all",
-    "dev:connect:deepdetect": "docker exec -it target_api_1 /bin/sh"
+    "dev:connect:deepdetect": "docker exec -it target_api_1 /bin/sh",
+    "eris:install": "./script/00-install-eris.sh",
+    "eris:up": "docker-compose -f docker/docker-compose.eris.yml up",
+    "eris:down": "docker-compose -f docker/docker-compose.eris.yml down",
+    "eris:uninstall": "docker-compose -f docker/docker-compose.eris.yml down --rmi all"
   }
 }
