@@ -171,7 +171,7 @@ export default class Description extends React.Component {
                 <div key={index} style={{ display: "inline" }}>
                   <span
                     key={`icon-${index}`}
-                    className="fa-stack fa-lg"
+                    className="fa-stack"
                     onMouseOver={this.props.onOver.bind(this, index)}
                     onMouseLeave={this.props.onLeave}
                     data-tip={`${category.cat} - ${category.prob.toFixed(2)}`}
