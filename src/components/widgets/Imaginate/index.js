@@ -155,7 +155,7 @@ export default class Imaginate extends React.Component {
                       JSON&nbsp;
                       {store.selectedImage &&
                       store.selectedImage.json &&
-                      store.selectedImage.json.status.code === "500" ? (
+                      store.selectedImage.json.status.code === 500 ? (
                         <i className="fas fa-exclamation-triangle" />
                       ) : (
                         ""
