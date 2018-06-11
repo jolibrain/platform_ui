@@ -73,6 +73,7 @@ export default class InputData extends React.Component {
     const input = this.inputRef.current;
     input.value = "";
     input.focus();
+    this.typeahead.getInstance().clear();
   }
 
   handleKeyPress(event) {
