@@ -8,13 +8,6 @@
     "infoRefreshRate": 10000,
     "servers": [
       {
-        "name": "public",
-        "settings": {
-          "path": "/api/public",
-          "isWritable": false
-        }
-      },
-      {
         "name": "private",
         "settings": {
           "path": "/api/private",
@@ -22,9 +15,9 @@
         }
       },
       {
-        "name": "training",
+        "name": "public",
         "settings": {
-          "path": "/api/training",
+          "path": "/api/public",
           "isWritable": false
         }
       }
