@@ -96,7 +96,7 @@ export class imaginateStore {
       );
     }
 
-    if (this.settings.request.ctc) {
+    if (service.mltype === "ctc") {
       image.postData.parameters.output.ctc = true;
     }
 
