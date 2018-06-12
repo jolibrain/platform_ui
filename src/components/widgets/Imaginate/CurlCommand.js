@@ -69,7 +69,7 @@ export default class CurlCommand extends React.Component {
           />
         </div>
         <SyntaxHighlighter language="bash" style={docco} className="card-text">
-          {this.curlCommand()}
+          {JSON.stringify(this.curlCommand(), null, 1)}
         </SyntaxHighlighter>
       </div>
     );

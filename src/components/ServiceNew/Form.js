@@ -31,33 +31,17 @@ export default class ServiceNew extends React.Component {
 
     this.handleCurlChange = this.handleCurlChange.bind(this);
 
-    const { repositories } = this.props.modelRepositoriesStore;
-    const defaultRepository = repositories[0];
-
     const ddStore = this.props.deepdetectStore;
 
     let defaultConfig = ddStore.settings.services.defaultConfig.find(config => {
-      return config.modelName === defaultRepository.modelName;
+      return config.modelName === "default";
     });
-
-    let modelConfig = {
-      error: `missing deepdetect.services.defaultConfig.${
-        defaultRepository.modelName
-      }.modelConfig value in config.json`
-    };
-    if (typeof defaultConfig !== "undefined") {
-      modelConfig = defaultConfig.modelConfig;
-    }
-
-    if (modelConfig.model && modelConfig.model.repository) {
-      modelConfig.model.repository = defaultRepository.label;
-    }
 
     this.state = {
       creatingService: false,
       serviceName: "PLEASE_DEFINE",
       defaultConfig: defaultConfig,
-      jsonConfig: JSON.stringify(modelConfig, null, 1),
+      jsonConfig: JSON.stringify(defaultConfig.modelConfig, null, 1),
       copied: false,
       errors: []
     };
@@ -83,11 +67,13 @@ export default class ServiceNew extends React.Component {
       defaultConfig.modelName !== selectedConfig.modelName
     ) {
       const ddStore = this.props.deepdetectStore;
+      console.log(selectedConfig.modelName);
       const newConfig = ddStore.settings.services.defaultConfig.find(config => {
         return config.modelName === selectedConfig.modelName;
       });
+      console.log(toJS(newConfig));
 
-      if (typeof newconfig !== "undefined") {
+      if (typeof newConfig !== "undefined") {
         this.setState({ defaultConfig: newConfig });
         jsonConfig = newConfig.modelConfig;
       }
