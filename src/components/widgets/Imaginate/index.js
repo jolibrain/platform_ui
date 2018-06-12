@@ -33,18 +33,6 @@ export default class Imaginate extends React.Component {
     this.setTab = this.setTab.bind(this);
   }
 
-  componentWillMount() {
-    this.selectImage(0);
-  }
-
-  componentDidMount() {
-    this.selectImage(0);
-  }
-
-  componentWillReceiveProps() {
-    this.selectImage(0);
-  }
-
   setTab(tabName) {
     this.setState({ tab: tabName });
   }
@@ -68,7 +56,7 @@ export default class Imaginate extends React.Component {
     }
 
     store.initPredict(service);
-    store.predict(service);
+    store.predict(ddStore.server.settings);
   }
 
   onOver(index) {
