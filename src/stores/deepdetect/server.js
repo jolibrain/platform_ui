@@ -41,6 +41,10 @@ export default class deepdetectServer {
     return agent.Deepdetect.putService(this.settings, name, data);
   }
 
+  $reqDeleteService(name, data) {
+    return agent.Deepdetect.deleteService(this.settings, name);
+  }
+
   @action
   async loadServices(status = false) {
     let info;
@@ -64,6 +68,12 @@ export default class deepdetectServer {
   @action
   async newService(name, data, callback) {
     const resp = await this.$reqPutService(name, data);
+    callback(resp);
+  }
+
+  @action
+  async deleteService(name, callback) {
+    const resp = await this.$reqDeleteService(name);
     callback(resp);
   }
 }

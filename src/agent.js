@@ -57,6 +57,10 @@ const Deepdetect = {
     const dd = new DD(settings);
     return dd.putService(name, data);
   },
+  deleteService: (settings, name) => {
+    const dd = new DD(settings);
+    return dd.deleteService(name);
+  },
   postPredict: (settings, postData) => {
     const dd = new DD(settings);
     return dd.postPredict(postData);
