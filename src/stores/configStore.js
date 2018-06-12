@@ -50,6 +50,8 @@ export class configStore {
     systemPath: "/opt/platform/data/"
   };
 
+  @observable modals = [];
+
   $req(path) {
     return agent.Config.get();
   }
@@ -65,6 +67,7 @@ export class configStore {
         this.modelRepositories = config.modelRepositories;
         this.dataRepositories = config.dataRepositories;
         this.homeComponent = config.homeComponent;
+        this.modals = config.modals;
         callback(this);
       })
     );

@@ -25,7 +25,10 @@ export default class Description extends React.Component {
     const store = this.props.imaginateStore;
 
     const ddStore = this.props.deepdetectStore;
-    const service = ddStore.services[ddStore.currentServiceIndex];
+
+    if (ddStore.server.currentServiceIndex === -1) return null;
+
+    const service = ddStore.service;
 
     if (store.selectedImage === null || store.selectedImage.json === null) {
       return null;

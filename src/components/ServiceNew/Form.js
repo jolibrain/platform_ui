@@ -119,9 +119,8 @@ export default class ServiceNew extends React.Component {
       errors.push("Service name can't be named 'new'");
     }
 
-    const ddstore = this.props.deepdetectStore;
-    const { services } = ddstore;
-    const serviceNames = services.map(s => s.name);
+    const ddStore = this.props.deepdetectStore;
+    const serviceNames = ddStore.server.services.map(s => s.name);
 
     if (serviceNames.includes(serviceName)) {
       errors.push("Service name already exists");
@@ -183,9 +182,9 @@ export default class ServiceNew extends React.Component {
   }
 
   handleCopyClipboard() {
-    const { settings } = this.props.deepdetectStore;
+    const store = this.props.deepdetectStore;
     const curlCommand = `curl -X PUT '${window.location.origin}${
-      settings.server.path
+      store.server.settings.path
     }/services/${this.state.serviceName}' -d '${this.state.jsonConfig}'`;
 
     copy(curlCommand);
@@ -197,9 +196,9 @@ export default class ServiceNew extends React.Component {
   }
 
   handleCurlChange(editor, data, value) {
-    const { settings } = this.props.deepdetectStore;
+    const store = this.props.deepdetectStore;
     const curlCommand = `curl -X PUT '${window.location.origin}${
-      settings.server.path
+      store.server.settings.path
     }/services/${this.state.serviceName}' -d '`;
 
     const jsonConfig = value.replace(curlCommand, "").slice(0, -1);
@@ -207,12 +206,12 @@ export default class ServiceNew extends React.Component {
   }
 
   render() {
-    const { settings } = this.props.deepdetectStore;
+    const store = this.props.deepdetectStore;
 
-    if (settings == null) return null;
+    if (store.servers.length === 0) return null;
 
     const curlCommand = `curl -X PUT '${window.location.origin}${
-      settings.server.path
+      store.server.settings.path
     }/services/${this.state.serviceName}' -d '${this.state.jsonConfig}'`;
 
     const copiedText = this.state.copied ? "Copied!" : "Copy to clipboard";

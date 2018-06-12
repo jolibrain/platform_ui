@@ -6,9 +6,22 @@
   },
   "deepdetect": {
     "infoRefreshRate": 10000,
-    "server": {
-      "path": "/api"
-    },
+    "servers": [
+      {
+        "name": "private",
+        "settings": {
+          "path": "/api/private",
+          "isWritable": true
+        }
+      },
+      {
+        "name": "public",
+        "settings": {
+          "path": "/api/public",
+          "isWritable": false
+        }
+      }
+    ],
     "services": {
       "defaultConfig": [
         {
@@ -146,5 +159,6 @@
   "dataRepositories": {
     "nginxPath": "/data/",
     "systemPath": "/opt/platform/data/"
-  }
+  },
+  "modals": ["deleteService"]
 }

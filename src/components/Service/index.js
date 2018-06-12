@@ -1,5 +1,6 @@
 import LeftPanel from "./LeftPanel";
 import MainView from "./MainView";
+import Modals from "./Modals";
 import React from "react";
 import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
@@ -12,30 +13,25 @@ export default class Service extends React.Component {
   constructor(props) {
     super(props);
 
-    this.setCurrentService = this.setCurrentService.bind(this);
+    this.setDeepdetectServer = this.setDeepdetectServer.bind(this);
   }
 
-  setCurrentService(serviceName = null) {
-    if (serviceName === null) {
-      this.props.deepdetectStore.setCurrentServiceIndex(0);
-    } else {
-      this.props.deepdetectStore.setCurrentService(serviceName);
-    }
+  setDeepdetectServer(params) {
+    const ddStore = this.props.deepdetectStore;
+    ddStore.setServer(params.serverName);
+    ddStore.setService(params.serviceName);
   }
 
   componentWillMount() {
-    const serviceName = this.props.match.params.serviceName;
-    this.setCurrentService(serviceName);
+    this.setDeepdetectServer(this.props.match.params);
   }
 
   componentWillReceiveProps(props) {
-    const serviceName = props.match.params.serviceName;
-    this.setCurrentService(serviceName);
+    this.setDeepdetectServer(this.props.match.params);
   }
 
   componentWillUpdate(props) {
-    const serviceName = props.match.params.serviceName;
-    this.setCurrentService(serviceName);
+    this.setDeepdetectServer(this.props.match.params);
   }
 
   render() {
@@ -43,6 +39,7 @@ export default class Service extends React.Component {
       <div className="layout-page page-gutter page-with-contextual-sidebar right-sidebar-collapsed page-with-icon-sidebar service-component">
         <LeftPanel />
         <MainView />
+        <Modals />
       </div>
     );
   }

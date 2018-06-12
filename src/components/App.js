@@ -7,7 +7,8 @@ import Home from "./Home";
 import Service from "./Service";
 import ServiceNew from "./ServiceNew";
 
-import Imaginate from "./widgets/Imaginate";
+// TODO: restore light config
+// import Imaginate from "./widgets/Imaginate";
 
 @inject("configStore")
 @inject("commonStore")
@@ -16,6 +17,7 @@ import Imaginate from "./widgets/Imaginate";
 @inject("imaginateStore")
 @inject("modelRepositoriesStore")
 @inject("dataRepositoriesStore")
+@inject("modalStore")
 @withRouter
 @observer
 export default class App extends React.Component {
@@ -30,6 +32,7 @@ export default class App extends React.Component {
 
       this.props.deepdetectStore.setup(config);
       this.props.imaginateStore.setup(config);
+      this.props.modalStore.setup(config);
 
       if (config.modelRepositories) {
         this.props.modelRepositoriesStore.setup(config);
@@ -52,34 +55,51 @@ export default class App extends React.Component {
   render() {
     if (
       this.props.commonStore.appLoaded &&
-      this.props.configStore.configLoaded &&
-      this.props.deepdetectStore.servicesLoaded
+      this.props.configStore.configLoaded
     ) {
-      // Minimal Layout
-      if (
-        this.props.deepdetectStore.settings.services.defaultService &&
-        this.props.deepdetectStore.settings.services.defaultService.length > 0
-      ) {
-        return (
-          <div>
-            <Route exact path="/" component={Imaginate} />
-          </div>
-        );
+      return (
+        <div>
+          <Header />
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/predict/new" component={ServiceNew} />
+            <Route
+              exact
+              path="/predict/:serverName/:serviceName"
+              component={Service}
+            />
+          </Switch>
+        </div>
+      );
 
-        // Full Layout
-      } else {
-        return (
-          <div>
-            <Header />
-            <Switch>
-              <Route exact path="/" component={Home} />
-              <Route path="/predict/new" component={ServiceNew} />
-              <Route path="/predict/:serviceName" component={Service} />
-              <Route path="/predict" component={Service} />
-            </Switch>
-          </div>
-        );
-      }
+      //
+      // TODO : restore minimal layout, not working since multiserver
+      //
+      // Minimal Layout
+      // if (
+      //   this.props.deepdetectStore.settings.services.defaultService &&
+      //   this.props.deepdetectStore.settings.services.defaultService.length > 0
+      // ) {
+      //   return (
+      //     <div>
+      //       <Route exact path="/" component={Imaginate} />
+      //     </div>
+      //   );
+
+      //   // Full Layout
+      // } else {
+      //   return (
+      //     <div>
+      //       <Header />
+      //       <Switch>
+      //         <Route exact path="/" component={Home} />
+      //         <Route path="/predict/new" component={ServiceNew} />
+      //         <Route path="/predict/:server/:serviceName" component={Service} />
+      //       </Switch>
+      //     </div>
+      //   );
+      // }
+      //
     }
     return <Header />;
   }
