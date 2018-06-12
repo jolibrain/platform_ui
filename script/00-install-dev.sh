@@ -2,4 +2,4 @@
 set -e
 
 # Build app and deepdetect containers
-docker-compose -f docker/docker-compose.dev.yml build
+CURRENT_UID=$(id -u):$(id -g) docker-compose -f docker/docker-compose.dev.yml build
