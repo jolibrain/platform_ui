@@ -16,7 +16,6 @@ export class imaginateStore {
   @action
   setup(configStore) {
     this.settings = configStore.imaginate;
-    this.settings.deepdetect = configStore.deepdetect;
 
     const initImages = this.settings.display.initImages;
 
@@ -55,8 +54,8 @@ export class imaginateStore {
     this.selectedImage = null;
   }
 
-  $reqPostPredict(postData) {
-    return agent.Deepdetect.postPredict(this.settings.deepdetect, postData);
+  $reqPostPredict(deepdetectSettings, postData) {
+    return agent.Deepdetect.postPredict(deepdetectSettings, postData);
   }
 
   @action
@@ -127,14 +126,14 @@ export class imaginateStore {
   }
 
   @action
-  async predict(service) {
+  async predict(deepdetectSettings) {
     if (this.imgList.length === 0) return null;
 
     const image = this.imgList[this.selectedImageIndex];
 
     if (typeof image === "undefined") return null;
 
-    image.json = await this.$reqPostPredict(image.postData);
+    image.json = await this.$reqPostPredict(deepdetectSettings, image.postData);
 
     if (typeof image.json.body === "undefined") {
       image.error = true;

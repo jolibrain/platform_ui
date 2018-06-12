@@ -1,9 +1,11 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 
 @inject("deepdetectStore")
 @inject("modalStore")
 @observer
+@withRouter
 export default class DeleteService extends React.Component {
   constructor(props) {
     super(props);
@@ -18,7 +20,12 @@ export default class DeleteService extends React.Component {
   }
 
   handleDeleteService() {
-    this.props.modalStore.setVisible("deleteService", false);
+    const ddStore = this.props.deepdetectStore;
+    const server = ddStore.server;
+
+    server.deleteService(() => {
+      this.props.history.push("/");
+    });
   }
 
   render() {

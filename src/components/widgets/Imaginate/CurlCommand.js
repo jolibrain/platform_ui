@@ -18,6 +18,15 @@ export default class CurlCommand extends React.Component {
     };
 
     this.handleCopyClipboard = this.handleCopyClipboard.bind(this);
+    this.curlCommand = this.curlCommand.bind(this);
+  }
+
+  curlCommand() {
+    const store = this.props.imaginateStore;
+    const ddStore = this.props.deepdetectStore;
+    return `curl -X POST '${window.location.origin}${
+      ddStore.server.settings.path
+    }/predict' -d '${JSON.stringify(store.curlParams)}'`;
   }
 
   componentWillReceiveProps() {
@@ -25,13 +34,7 @@ export default class CurlCommand extends React.Component {
   }
 
   handleCopyClipboard() {
-    const store = this.props.imaginateStore;
-    const { settings } = this.props.deepdetectStore;
-    const curlCommand = `curl -X POST '${window.location.origin}${
-      settings.server.path
-    }/predict' -d '${JSON.stringify(store.curlParams)}'`;
-
-    copy(curlCommand);
+    copy(this.curlCommand());
 
     this.setState({ copied: true });
     setTimeout(() => {
@@ -41,13 +44,8 @@ export default class CurlCommand extends React.Component {
 
   render() {
     const store = this.props.imaginateStore;
-    const { settings } = this.props.deepdetectStore;
 
     if (store.selectedImage === null) return null;
-
-    const curlCommand = `curl -X POST '${window.location.origin}${
-      settings.server.path
-    }/predict' -d '${JSON.stringify(store.curlParams, null, 1)}'`;
 
     const copiedText = this.state.copied ? "Copied!" : "Copy to clipboard";
 
@@ -71,7 +69,7 @@ export default class CurlCommand extends React.Component {
           />
         </div>
         <SyntaxHighlighter language="bash" style={docco} className="card-text">
-          {curlCommand}
+          {this.curlCommand()}
         </SyntaxHighlighter>
       </div>
     );
