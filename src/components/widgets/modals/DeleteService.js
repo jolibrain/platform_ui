@@ -6,7 +6,7 @@ import { inject, observer } from "mobx-react";
 @inject("modalStore")
 @observer
 @withRouter
-export default class DeleteService extends React.Component {
+export default class DeleteServiceModal extends React.Component {
   constructor(props) {
     super(props);
     this.serviceNameRef = React.createRef();
@@ -21,9 +21,8 @@ export default class DeleteService extends React.Component {
 
   handleDeleteService() {
     const ddStore = this.props.deepdetectStore;
-    const server = ddStore.server;
 
-    server.deleteService(() => {
+    ddStore.deleteService(() => {
       this.props.history.push("/");
     });
   }
