@@ -25,6 +25,29 @@
     "services": {
       "defaultConfig": [
         {
+          "modelName": "default",
+          "modelConfig": {
+            "description": "",
+            "model": {
+              "repository": ""
+            },
+            "mllib": "caffe",
+            "type": "supervised",
+            "parameters": {
+              "input": {
+                "connector": "image",
+                "height": 300,
+                "width": 300
+              },
+              "mllib": {
+                "nclasses": 2,
+                "gpu": true,
+                "gpuid": 0
+              }
+            }
+          }
+        },
+        {
           "modelName": "detection_600",
           "modelConfig": {
             "description": "object detection service",
