@@ -117,9 +117,9 @@
       "segmentationColors": ["#1b9e77", "#d95f02"]
     },
     "threshold": {
-      "confidence": 0.5,
+      "confidence": 0.3,
       "controls": true,
-      "controlSteps": [0.8, 0.5, 0.3]
+      "controlSteps": [0.8, 0.3, 0.1]
     },
     "request": {
       "objSearch": false,
