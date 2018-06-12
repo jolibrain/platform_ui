@@ -1,4 +1,4 @@
-import { observable, action } from "mobx";
+import { observable, action, computed } from "mobx";
 import agent from "../../agent";
 
 export default class deepdetectServer {
@@ -15,6 +15,12 @@ export default class deepdetectServer {
   constructor(opts) {
     this.name = opts.name;
     this.settings = opts.settings;
+  }
+
+  @computed
+  get service() {
+    if (this.currentServiceIndex === -1) return null;
+    return this.services[this.currentServiceIndex];
   }
 
   @action
@@ -41,7 +47,7 @@ export default class deepdetectServer {
     return agent.Deepdetect.putService(this.settings, name, data);
   }
 
-  $reqDeleteService(name, data) {
+  $reqDeleteService(name) {
     return agent.Deepdetect.deleteService(this.settings, name);
   }
 
@@ -72,8 +78,8 @@ export default class deepdetectServer {
   }
 
   @action
-  async deleteService(name, callback) {
-    const resp = await this.$reqDeleteService(name);
+  async deleteService(callback) {
+    const resp = await this.$reqDeleteService(this.service.name);
     callback(resp);
   }
 }

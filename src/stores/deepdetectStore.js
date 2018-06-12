@@ -71,8 +71,12 @@ export class deepdetectStore {
 
   @action
   newService(name, data, callback) {
-    const server = this.servers[this.currentServerIndex];
-    server.newService(name, data, callback);
+    this.server.newService(name, data, callback);
+  }
+
+  @action
+  deleteService(callback) {
+    this.server.deleteService(callback);
   }
 }
 

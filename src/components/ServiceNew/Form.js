@@ -67,11 +67,9 @@ export default class ServiceNew extends React.Component {
       defaultConfig.modelName !== selectedConfig.modelName
     ) {
       const ddStore = this.props.deepdetectStore;
-      console.log(selectedConfig.modelName);
       const newConfig = ddStore.settings.services.defaultConfig.find(config => {
         return config.modelName === selectedConfig.modelName;
       });
-      console.log(toJS(newConfig));
 
       if (typeof newConfig !== "undefined") {
         this.setState({ defaultConfig: newConfig });
