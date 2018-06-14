@@ -26,12 +26,8 @@ export default class Service extends React.Component {
     this.setDeepdetectServer(this.props.match.params);
   }
 
-  componentWillReceiveProps(props) {
-    this.setDeepdetectServer(this.props.match.params);
-  }
-
-  componentWillUpdate(props) {
-    this.setDeepdetectServer(this.props.match.params);
+  componentWillReceiveProps(nextProps) {
+    this.setDeepdetectServer(nextProps.match.params);
   }
 
   render() {

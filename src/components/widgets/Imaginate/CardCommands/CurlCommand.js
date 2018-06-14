@@ -26,7 +26,7 @@ export default class CurlCommand extends React.Component {
     const ddStore = this.props.deepdetectStore;
     return `curl -X POST '${window.location.origin}${
       ddStore.server.settings.path
-    }/predict' -d '${JSON.stringify(store.curlParams)}'`;
+    }/predict' -d '${JSON.stringify(store.curlParams, null, 1)}'`;
   }
 
   componentWillReceiveProps() {
@@ -69,7 +69,7 @@ export default class CurlCommand extends React.Component {
           />
         </div>
         <SyntaxHighlighter language="bash" style={docco} className="card-text">
-          {JSON.stringify(this.curlCommand(), null, 1)}
+          {this.curlCommand()}
         </SyntaxHighlighter>
       </div>
     );

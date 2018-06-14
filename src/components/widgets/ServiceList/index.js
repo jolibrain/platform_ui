@@ -30,52 +30,37 @@ export default class ServiceList extends React.Component {
   }
 
   render() {
-    const ddstore = this.props.deepdetectStore;
-    const { servers, currentServerIndex } = ddstore;
+    const ddStore = this.props.deepdetectStore;
 
-    const services = [].concat.apply(
-      [],
-      servers.map((server, serverIndex) => {
-        return server.services.map((service, serviceIndex) => {
-          return {
-            serverName: server.name,
-            serviceName: service.name,
-            isActive:
-              currentServerIndex === serverIndex &&
-              server.currentServiceIndex === serviceIndex
-          };
-        });
-      })
-    );
-
-    if (services.length === 0)
-      return (
-        <ul className="serviceList sidebar-top-level-items">
-          <li />
-        </ul>
-      );
+    const currentServer = ddStore.server;
 
     return (
       <ul className="serviceList sidebar-top-level-items">
-        {services.map((service, index) => {
-          return (
-            <li
-              key={`service-item-${index}`}
-              className={service.isActive ? "active" : ""}
-            >
-              <Link
-                key={`service-link-${index}`}
-                to={`/predict/${service.serverName}/${service.serviceName}`}
+        {ddStore.servers.map((server, serverIndex) => {
+          return server.services.map((service, serviceIndex) => {
+            const isActive =
+              ddStore.currentServerIndex === serverIndex &&
+              currentServer.currentServiceIndex === serviceIndex;
+
+            return (
+              <li
+                key={`service-item-${serverIndex}-${serviceIndex}`}
+                className={isActive ? "active" : ""}
               >
-                <span className="nav-item-name">
-                  {service.serviceName}
-                  <span className="badge badge-secondary float-right">
-                    {service.serverName}
+                <Link
+                  key={`service-link-${serverIndex}-${serviceIndex}`}
+                  to={`/predict/${server.name}/${service.name}`}
+                >
+                  <span className="nav-item-name">
+                    {service.name}
+                    <span className="badge badge-secondary float-right">
+                      {server.name}
+                    </span>
                   </span>
-                </span>
-              </Link>
-            </li>
-          );
+                </Link>
+              </li>
+            );
+          });
         })}
       </ul>
     );

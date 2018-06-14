@@ -4,9 +4,8 @@ import { withRouter } from "react-router-dom";
 
 import ImageList from "./ImageList";
 import BoundingBoxDisplay from "./BoundingBoxDisplay";
-import CurlCommand from "./CurlCommand";
-import JsonResponse from "./JsonResponse";
 import Description from "./Description";
+import CardCommands from "./CardCommands";
 import Threshold from "./Threshold";
 import InputData from "./InputData";
 
@@ -20,8 +19,7 @@ export default class Imaginate extends React.Component {
     super(props);
 
     this.state = {
-      selectedBoxIndex: -1,
-      tab: "curl"
+      selectedBoxIndex: -1
     };
 
     this.selectImage = this.selectImage.bind(this);
@@ -29,12 +27,6 @@ export default class Imaginate extends React.Component {
 
     this.onOver = this.onOver.bind(this);
     this.onLeave = this.onLeave.bind(this);
-
-    this.setTab = this.setTab.bind(this);
-  }
-
-  setTab(tabName) {
-    this.setState({ tab: tabName });
   }
 
   selectImage(index) {
@@ -105,56 +97,11 @@ export default class Imaginate extends React.Component {
                 onLeave={this.onLeave}
               />
             </div>
-            <div
-              className="card commands"
-              style={{
-                display: store.selectedImage === null ? "none" : "flex"
-              }}
-            >
-              <div className="card-header">
-                <ul className="nav nav-tabs card-header-tabs">
-                  <li className="nav-item">
-                    <a
-                      className={
-                        this.state.tab === "curl"
-                          ? "nav-link active"
-                          : "nav-link"
-                      }
-                      onClick={this.setTab.bind(this, "curl")}
-                    >
-                      Curl&nbsp;
-                      {store.isRequesting ? (
-                        <i className="fas fa-spinner fa-spin" />
-                      ) : (
-                        ""
-                      )}
-                    </a>
-                  </li>
-
-                  <li className="nav-item">
-                    <a
-                      className={
-                        this.state.tab === "json"
-                          ? "nav-link active"
-                          : "nav-link"
-                      }
-                      onClick={this.setTab.bind(this, "json")}
-                    >
-                      JSON&nbsp;
-                      {store.selectedImage &&
-                      store.selectedImage.json &&
-                      store.selectedImage.json.status.code === 500 ? (
-                        <i className="fas fa-exclamation-triangle" />
-                      ) : (
-                        ""
-                      )}
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div className="card-body">
-                {this.state.tab === "curl" ? <CurlCommand /> : <JsonResponse />}
-              </div>
+            <div className="row commands">
+              <CardCommands
+                image={store.selectedImage}
+                isRequesting={store.isRequesting}
+              />
             </div>
           </div>
         </div>

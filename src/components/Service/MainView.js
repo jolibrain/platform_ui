@@ -25,7 +25,7 @@ export default class MainView extends React.Component {
     const newServiceName = nextProps.match.params.serviceName;
 
     if (serviceName !== newServiceName) {
-      this.props.imaginateStore.imgList = [];
+      this.props.imaginateStore.init();
     }
   }
 
