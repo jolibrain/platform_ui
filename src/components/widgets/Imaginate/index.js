@@ -87,9 +87,14 @@ export default class Imaginate extends React.Component {
             <div className="row">
               <InputData loadImage={this.loadImage} />
             </div>
-            <div className="row">
-              <Threshold loadImage={this.loadImage} />
-            </div>
+            {store.selectedImage &&
+            store.selectedImage.pixelSegmentation.length > 0 ? (
+              ""
+            ) : (
+              <div className="row">
+                <Threshold loadImage={this.loadImage} />
+              </div>
+            )}
             <div className="row description">
               <Description
                 selectedBoxIndex={this.state.selectedBoxIndex}
