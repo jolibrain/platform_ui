@@ -88,6 +88,7 @@ export default class Imaginate extends React.Component {
               <InputData loadImage={this.loadImage} />
             </div>
             {store.selectedImage &&
+            store.selectedImage.pixelSegmentation &&
             store.selectedImage.pixelSegmentation.length > 0 ? (
               ""
             ) : (
