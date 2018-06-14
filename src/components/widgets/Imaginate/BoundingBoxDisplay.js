@@ -8,9 +8,6 @@ import Boundingbox from "react-bounding-box";
 export default class BoundingBoxDisplay extends React.Component {
   render() {
     const store = this.props.imaginateStore;
-    const image = store.selectedImage;
-
-    if (image === null) return null;
 
     if (store.isRequesting) {
       return (
@@ -19,6 +16,10 @@ export default class BoundingBoxDisplay extends React.Component {
         </div>
       );
     }
+
+    const image = store.selectedImage;
+
+    if (image === null) return null;
 
     return (
       <Boundingbox
