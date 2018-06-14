@@ -49,6 +49,13 @@ export class imaginateStore {
   }
 
   @action
+  init() {
+    this.imgList = [];
+    this.selectedImageIndex = -1;
+    this.selectedImage = null;
+  }
+
+  @action
   setSelectedImage(index) {
     this.selectedImageIndex = index;
     this.selectedImage = null;

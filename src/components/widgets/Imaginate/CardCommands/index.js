@@ -21,23 +21,18 @@ export default class CardCommands extends React.Component {
   }
 
   render() {
-    const store = this.props.imaginateStore;
+    const image = this.props.image;
+
+    if (typeof image === "undefined" || !image) return null;
+
+    const json = image.json;
 
     return (
-      <div
-        className="card commands"
-        style={{
-          display: store.selectedImage === null ? "none" : "flex"
-        }}
-      >
+      <div className="card commands">
         <div className="card-header">
-          {store.selectedImage &&
-          store.selectedImage.json &&
-          store.selectedImage.json.head &&
-          store.selectedImage.json.head.time &&
-          store.selectedImage.json.head.time > 0 ? (
+          {json.head && json.head.time && json.head.time > 0 ? (
             <span className="badge badge-secondary float-right">
-              {store.selectedImage.json.head.time}ms
+              {json.head.time}ms
             </span>
           ) : (
             ""
@@ -51,7 +46,7 @@ export default class CardCommands extends React.Component {
                 onClick={this.setTab.bind(this, "curl")}
               >
                 Curl&nbsp;
-                {store.isRequesting ? (
+                {this.props.isRequesting ? (
                   <i className="fas fa-spinner fa-spin" />
                 ) : (
                   ""
@@ -67,9 +62,7 @@ export default class CardCommands extends React.Component {
                 onClick={this.setTab.bind(this, "json")}
               >
                 JSON&nbsp;
-                {store.selectedImage &&
-                store.selectedImage.json &&
-                store.selectedImage.json.status.code === 500 ? (
+                {json.status.code === 500 ? (
                   <i className="fas fa-exclamation-triangle" />
                 ) : (
                   ""

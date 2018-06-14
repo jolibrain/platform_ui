@@ -98,7 +98,10 @@ export default class Imaginate extends React.Component {
               />
             </div>
             <div className="row commands">
-              <CardCommands />
+              <CardCommands
+                image={store.selectedImage}
+                isRequesting={store.isRequesting}
+              />
             </div>
           </div>
         </div>
