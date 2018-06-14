@@ -181,6 +181,14 @@
 
   .boundingboxdisplay {
     margin: 0 auto;
+
+    canvas {
+      position: absolute;
+      left: 0;
+    }
+    .BoundingSegmentationCanvas {
+      opacity: 0.5;
+    }
   }
 
   .boundingBoxCanvas {
