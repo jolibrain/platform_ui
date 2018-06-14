@@ -27,6 +27,8 @@ export default class CardCommands extends React.Component {
 
     const json = image.json;
 
+    if (typeof json === "undefined" || !json) return null;
+
     return (
       <div className="card commands">
         <div className="card-header">
