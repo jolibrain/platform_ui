@@ -28,7 +28,7 @@
     "react-bootstrap": "^0.32.1",
     "react-bootstrap-typeahead": "^3.1.3",
     "react-bootstrap4-modal": "^1.3.1-pre1",
-    "react-bounding-box": "^0.2.4",
+    "react-bounding-box": "^0.2.5",
     "react-codemirror2": "^5.0.2",
     "react-dom": "^16.3.2",
     "react-router-dom": "^4.2.2",

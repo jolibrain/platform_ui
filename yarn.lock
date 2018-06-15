@@ -6764,9 +6764,9 @@ react-bootstrap@^0.32.1:
     uncontrollable "^4.1.0"
     warning "^3.0.0"
 
-react-bounding-box@^0.2.4:
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/react-bounding-box/-/react-bounding-box-0.2.4.tgz#e16d8d0e6e702c5c93e9d33e2af76df885f9d0f2"
+react-bounding-box@^0.2.5:
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/react-bounding-box/-/react-bounding-box-0.2.5.tgz#9c22c18dfc0fda22a76777f0d4d51d3a319082e6"
   dependencies:
     babel-runtime "^6.11.6"
     prop-types "^15.6.1"
