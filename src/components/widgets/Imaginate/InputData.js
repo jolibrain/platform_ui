@@ -2,7 +2,7 @@ import React from "react";
 import { toJS } from "mobx";
 import { inject, observer } from "mobx-react";
 
-import { Typeahead } from "react-bootstrap-typeahead";
+import { Typeahead, Menu, MenuItem } from "react-bootstrap-typeahead";
 
 import "react-bootstrap-typeahead/css/Typeahead.css";
 import "react-bootstrap-typeahead/css/Typeahead-bs4.css";
@@ -146,6 +146,20 @@ export default class InputData extends React.Component {
                 ref={typeahead => (this.typeahead = typeahead)}
                 options={toJS(this.props.dataRepositoriesStore.repositories)}
                 onChange={this.handleInputChange}
+                renderMenu={(results, menuProps) => (
+                  <Menu {...menuProps}>
+                    {results.map((result, index) => {
+                      return (
+                        <MenuItem key={index} option={result} position={index}>
+                          {result.label
+                            .slice(0, -1)
+                            .split("/")
+                            .pop()}
+                        </MenuItem>
+                      );
+                    })}
+                  </Menu>
+                )}
               />
             ) : (
               ""
