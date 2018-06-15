@@ -150,7 +150,12 @@ export default class InputData extends React.Component {
                   <Menu {...menuProps}>
                     {results.map((result, index) => {
                       return (
-                        <MenuItem key={index} option={result} position={index}>
+                        <MenuItem
+                          key={index}
+                          option={result}
+                          position={index}
+                          title={result.label}
+                        >
                           {result.label
                             .slice(0, -1)
                             .split("/")

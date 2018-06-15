@@ -259,7 +259,12 @@ export default class ServiceNew extends React.Component {
                       }
 
                       return (
-                        <MenuItem key={index} option={result} position={index}>
+                        <MenuItem
+                          key={index}
+                          option={result}
+                          position={index}
+                          title={result.label}
+                        >
                           {result.label
                             .slice(0, -1)
                             .split("/")
