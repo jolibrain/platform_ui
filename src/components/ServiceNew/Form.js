@@ -144,10 +144,10 @@ export default class ServiceNew extends React.Component {
     this.setState({ creatingService: true });
 
     ddStore.newService(serviceName, serviceData, resp => {
-      if (resp instanceof Error) {
+      if (resp instanceof Error || resp.status.code === 500) {
         this.setState({
           creatingService: false,
-          error: resp.message
+          errors: [resp.message || resp.status.msg]
         });
       } else {
         this.setState({
