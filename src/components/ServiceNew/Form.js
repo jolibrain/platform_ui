@@ -260,7 +260,10 @@ export default class ServiceNew extends React.Component {
 
                       return (
                         <MenuItem key={index} option={result} position={index}>
-                          {result.label}
+                          {result.label
+                            .slice(0, -1)
+                            .split("/")
+                            .pop()}
                           <span className={badgeClasses}>{badgeText}</span>
                         </MenuItem>
                       );

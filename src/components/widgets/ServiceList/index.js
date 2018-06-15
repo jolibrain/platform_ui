@@ -1,8 +1,10 @@
 import React from "react";
 import { inject, observer } from "mobx-react";
 import { Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 @inject("deepdetectStore")
+@withRouter
 @observer
 export default class ServiceList extends React.Component {
   constructor(props) {
@@ -32,7 +34,7 @@ export default class ServiceList extends React.Component {
   render() {
     const ddStore = this.props.deepdetectStore;
 
-    const currentServer = ddStore.server;
+    if (!ddStore.isReady || !ddStore.server || !ddStore.service) return null;
 
     return (
       <ul className="serviceList sidebar-top-level-items">
@@ -40,7 +42,7 @@ export default class ServiceList extends React.Component {
           return server.services.map((service, serviceIndex) => {
             const isActive =
               ddStore.currentServerIndex === serverIndex &&
-              currentServer.currentServiceIndex === serviceIndex;
+              ddStore.server.currentServiceIndex === serviceIndex;
 
             return (
               <li

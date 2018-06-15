@@ -3,6 +3,7 @@ import { inject } from "mobx-react";
 
 import CurlCommand from "./CurlCommand";
 import JsonResponse from "./JsonResponse";
+import PythonCode from "./PythonCode";
 
 @inject("imaginateStore")
 export default class CardCommands extends React.Component {
@@ -28,6 +29,21 @@ export default class CardCommands extends React.Component {
     const json = image.json;
 
     if (typeof json === "undefined" || !json) return null;
+
+    let cardBody = null;
+
+    switch (this.state.tab) {
+      default:
+      case "curl":
+        cardBody = <CurlCommand />;
+        break;
+      case "json":
+        cardBody = <JsonResponse />;
+        break;
+      case "python":
+        cardBody = <PythonCode />;
+        break;
+    }
 
     return (
       <div className="card commands">
@@ -71,11 +87,20 @@ export default class CardCommands extends React.Component {
                 )}
               </a>
             </li>
+
+            <li className="nav-item">
+              <a
+                className={
+                  this.state.tab === "python" ? "nav-link active" : "nav-link"
+                }
+                onClick={this.setTab.bind(this, "python")}
+              >
+                Python
+              </a>
+            </li>
           </ul>
         </div>
-        <div className="card-body">
-          {this.state.tab === "curl" ? <CurlCommand /> : <JsonResponse />}
-        </div>
+        <div className="card-body">{cardBody}</div>
       </div>
     );
   }

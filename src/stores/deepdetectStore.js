@@ -9,6 +9,7 @@ export class deepdetectStore {
   @observable currentServerIndex = -1;
 
   @observable refresh = 0;
+  @observable isReady = false;
 
   @computed
   get server() {
@@ -40,6 +41,14 @@ export class deepdetectStore {
   }
 
   @action
+  init(params) {
+    this.currentServerIndex = this.servers.findIndex(
+      server => server.name === params.serverName
+    );
+    this.server.setService(params.serviceName);
+  }
+
+  @action
   setServerIndex(serverIndex) {
     this.currentServerIndex = serverIndex;
   }
@@ -63,9 +72,13 @@ export class deepdetectStore {
 
   @action
   loadServices(status) {
-    this.servers.forEach(server => {
-      server.loadServices(status);
-      this.refresh = Math.random();
+    const promises = [];
+    this.servers.forEach(async server => {
+      const promise = server.loadServices(status);
+      promises.push(promise);
+    });
+    Promise.all(promises).then(results => {
+      this.isReady = true;
     });
   }
 
