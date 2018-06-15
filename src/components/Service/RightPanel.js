@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import { parse as qsParse } from "query-string";
 
 import GpuInfo from "../widgets/GpuInfo";
+import ServiceInfo from "../widgets/ServiceInfo";
 
 @inject("commonStore")
 @withRouter
@@ -61,6 +62,7 @@ export default class RightPanel extends React.Component {
       <aside className="right-sidebar right-sidebar right-sidebar-expanded">
         <div className="issuable-sidebar">
           <GpuInfo />
+          <ServiceInfo />
         </div>
       </aside>
     );
