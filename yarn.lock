@@ -6764,9 +6764,9 @@ react-bootstrap@^0.32.1:
     uncontrollable "^4.1.0"
     warning "^3.0.0"
 
-react-bounding-box@^0.2.5:
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/react-bounding-box/-/react-bounding-box-0.2.5.tgz#9c22c18dfc0fda22a76777f0d4d51d3a319082e6"
+react-bounding-box@^0.2.6:
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/react-bounding-box/-/react-bounding-box-0.2.6.tgz#a486acde6884595ca6c4922b22575a27eb000650"
   dependencies:
     babel-runtime "^6.11.6"
     prop-types "^15.6.1"
@@ -6823,6 +6823,10 @@ react-error-overlay@^1.0.10:
 react-is@^16.3.2:
   version "16.3.2"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.3.2.tgz#f4d3d0e2f5fbb6ac46450641eb2e25bf05d36b22"
+
+react-json-table@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/react-json-table/-/react-json-table-0.1.1.tgz#712beb9a729167c2d6651987f42c73143217a1d6"
 
 react-lifecycles-compat@^3.0.2:
   version "3.0.4"
