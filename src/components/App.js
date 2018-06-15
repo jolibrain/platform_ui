@@ -55,7 +55,8 @@ export default class App extends React.Component {
   render() {
     if (
       this.props.commonStore.appLoaded &&
-      this.props.configStore.configLoaded
+      this.props.configStore.configLoaded &&
+      this.props.deepdetectStore.isReady
     ) {
       return (
         <div>

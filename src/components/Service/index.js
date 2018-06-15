@@ -18,8 +18,7 @@ export default class Service extends React.Component {
 
   setDeepdetectServer(params) {
     const ddStore = this.props.deepdetectStore;
-    ddStore.setServer(params.serverName);
-    ddStore.setService(params.serviceName);
+    ddStore.init(params);
   }
 
   componentWillMount() {
