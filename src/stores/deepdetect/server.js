@@ -87,6 +87,7 @@ export default class deepdetectServer {
 
   @action
   async deleteService(callback) {
+    this.service.removeStore();
     const resp = await this.$reqDeleteService(this.service.name);
     await this.loadServices();
     callback(resp);
