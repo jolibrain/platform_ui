@@ -89,6 +89,7 @@ export class deepdetectStore {
     });
     Promise.all(promises).then(results => {
       this.isReady = true;
+      this.refresh = Math.random();
     });
   }
 
@@ -100,6 +101,7 @@ export class deepdetectStore {
   @action
   deleteService(callback) {
     this.server.deleteService(callback);
+    this.loadServices();
   }
 }
 

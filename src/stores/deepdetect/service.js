@@ -1,7 +1,9 @@
 import { observable } from "mobx";
+import store from "store";
 import autoSave from "../autoSave";
 
 export default class deepdetectService {
+  @observable serverName = "";
   @observable name = "";
   @observable settings = null;
   @observable imgList = [];
@@ -9,8 +11,14 @@ export default class deepdetectService {
   @observable isLoading = false;
 
   constructor(serverName, opts) {
+    this.serverName = serverName;
     this.name = opts.name;
     this.settings = opts;
     autoSave(this, `${serverName}_${this.name}`);
+  }
+
+  removeStore() {
+    console.log("removeStore");
+    store.remove(`${this.serverName}_${this.name}`);
   }
 }

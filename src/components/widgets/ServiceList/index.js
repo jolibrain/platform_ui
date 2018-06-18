@@ -37,7 +37,10 @@ export default class ServiceList extends React.Component {
     if (!ddStore.isReady || !ddStore.server || !ddStore.service) return null;
 
     return (
-      <ul className="serviceList sidebar-top-level-items">
+      <ul
+        className="serviceList sidebar-top-level-items"
+        key={`serviceList-${ddStore.refresh}`}
+      >
         {ddStore.servers.map((server, serverIndex) => {
           return server.services.map((service, serviceIndex) => {
             const isActive =
