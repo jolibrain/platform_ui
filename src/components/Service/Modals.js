@@ -20,8 +20,6 @@ export default class Modals extends React.Component {
     store.setVisible(modalName, false);
   }
 
-  componentDidMount() {}
-
   render() {
     const store = this.props.modalStore;
     const modal = store.getModal("deleteService");

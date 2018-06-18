@@ -7,9 +7,12 @@ import { inject, observer } from "mobx-react";
 export default class ImageList extends React.Component {
   render() {
     const store = this.props.imaginateStore;
+
+    if (!store.service) return null;
+
     return (
       <div id="carousel">
-        {store.imgList.map((img, index) => {
+        {store.service.imgList.map((img, index) => {
           return (
             <div key={`img-${index}`} className="slide">
               <img

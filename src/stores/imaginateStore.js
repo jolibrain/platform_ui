@@ -1,4 +1,4 @@
-import { toJS, observable, action } from "mobx";
+import { observable, action } from "mobx";
 import agent from "../agent";
 
 export class imaginateStore {
@@ -57,11 +57,8 @@ export class imaginateStore {
     this.service = service;
     this.selectedImageIndex = -1;
     this.selectedImage = null;
-    this.imgList = service.imgList;
 
-    console.log(toJS(this.imgList));
-
-    if (this.imgList.length > 0) {
+    if (this.service.imgList.length > 0) {
       this.selectedImageIndex = 0;
       this.initPredict();
       this.predict();
@@ -80,9 +77,9 @@ export class imaginateStore {
 
   @action
   initPredict() {
-    if (this.imgList.length === 0) return null;
+    if (this.service.imgList.length === 0) return null;
 
-    const image = this.imgList[this.selectedImageIndex];
+    const image = this.service.imgList[this.selectedImageIndex];
 
     if (typeof image === "undefined") return null;
 
@@ -147,9 +144,9 @@ export class imaginateStore {
 
   @action
   async predict() {
-    if (this.imgList.length === 0) return null;
+    if (this.service.imgList.length === 0) return null;
 
-    const image = this.imgList[this.selectedImageIndex];
+    const image = this.service.imgList[this.selectedImageIndex];
 
     if (typeof image === "undefined") return null;
 
@@ -187,12 +184,12 @@ export class imaginateStore {
 
   @action
   addImageFromUrl(url) {
-    this.imgList.push({
+    this.service.imgList.push({
       url: url,
       json: null,
       boxes: null
     });
-    this.setSelectedImage(this.imgList.length - 1);
+    this.setSelectedImage(this.service.imgList.length - 1);
   }
 
   $reqImgFromPath(path) {
@@ -204,7 +201,7 @@ export class imaginateStore {
     const serverImages = await this.$reqImgFromPath(
       nginxPath + folderName + "/"
     );
-    this.imgList = serverImages.map(i => {
+    this.service.imgList = serverImages.map(i => {
       return {
         url: nginxPath + folderName + "/" + i,
         path: systemPath + folderName + "/" + i,
