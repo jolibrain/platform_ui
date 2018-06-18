@@ -155,8 +155,7 @@ export default class ServiceNew extends React.Component {
 
         const store = this.props.imaginateStore;
 
-        store.initPredict(serviceName);
-        store.predict(ddStore.server.settings);
+        store.init(ddStore.server, ddStore.service);
 
         this.props.history.push(`/predict/private/${serviceName}`);
       }

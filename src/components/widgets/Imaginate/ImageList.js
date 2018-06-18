@@ -2,6 +2,7 @@ import React from "react";
 import { inject, observer } from "mobx-react";
 
 @inject("imaginateStore")
+@inject("deepdetectStore")
 @observer
 export default class ImageList extends React.Component {
   render() {

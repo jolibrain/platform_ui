@@ -47,8 +47,7 @@ export default class Imaginate extends React.Component {
       this.props.history.push(`/predict/new`);
     }
 
-    store.initPredict(service);
-    store.predict(ddStore.server.settings);
+    store.init(ddStore.server, service);
   }
 
   onOver(index) {

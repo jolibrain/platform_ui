@@ -1,6 +1,8 @@
 import { observable, action, computed } from "mobx";
 import agent from "../../agent";
 
+import deepdetectService from "./service";
+
 export default class deepdetectServer {
   @observable name = "";
   @observable settings = {};
@@ -62,7 +64,12 @@ export default class deepdetectServer {
     }
 
     if (info.head && info.head.services) {
-      this.services = info.head.services;
+      info.head.services.forEach(service => {
+        const exists = this.services.some(s => s.name === service.name);
+        if (!exists) {
+          this.services.push(new deepdetectService(this.name, service));
+        }
+      });
     }
 
     if (this.services.length > 0 && this.currentServiceIndex === -1)
@@ -81,6 +88,7 @@ export default class deepdetectServer {
   @action
   async deleteService(callback) {
     const resp = await this.$reqDeleteService(this.service.name);
+    await this.loadServices();
     callback(resp);
   }
 }
