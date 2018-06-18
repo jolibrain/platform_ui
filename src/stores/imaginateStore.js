@@ -56,8 +56,6 @@ export class imaginateStore {
     this.server = server;
     this.service = service;
     this.selectedImageIndex = -1;
-    this.initPredict();
-    this.predict();
   }
 
   @action
