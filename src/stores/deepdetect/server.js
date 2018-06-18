@@ -64,11 +64,8 @@ export default class deepdetectServer {
     }
 
     if (info.head && info.head.services) {
-      info.head.services.forEach(service => {
-        const exists = this.services.some(s => s.name === service.name);
-        if (!exists) {
-          this.services.push(new deepdetectService(this.name, service));
-        }
+      this.services = info.head.services.map(service => {
+        return new deepdetectService(this.name, service);
       });
     }
 
