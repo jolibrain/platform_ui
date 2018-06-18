@@ -18,7 +18,11 @@ export default class Service extends React.Component {
 
   setDeepdetectServer(params) {
     const ddStore = this.props.deepdetectStore;
-    ddStore.init(params);
+    const found = ddStore.init(params);
+
+    if (!found) {
+      this.props.history.push("/404");
+    }
   }
 
   componentWillMount() {
