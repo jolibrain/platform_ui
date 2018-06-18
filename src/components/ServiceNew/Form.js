@@ -75,8 +75,6 @@ export default class ServiceNew extends React.Component {
         this.setState({ defaultConfig: newConfig });
         jsonConfig = newConfig.modelConfig;
       }
-    } else {
-      return null;
     }
 
     if (serviceName.length > 0) this.setState({ serviceName: serviceName });
@@ -218,7 +216,7 @@ export default class ServiceNew extends React.Component {
                 id="inlineFormInputName"
                 placeholder="Service Name"
                 ref={this.serviceNameRef}
-                onChange={this.handleInputChange}
+                onKeyPress={this.handleInputChange}
               />
             </div>
 
