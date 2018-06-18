@@ -55,6 +55,7 @@ export class imaginateStore {
   init(server, service) {
     this.server = server;
     this.service = service;
+    this.selectedImageIndex = -1;
   }
 
   @action
@@ -69,7 +70,11 @@ export class imaginateStore {
 
   @action
   initPredict() {
-    if (this.service.imgList.length === 0) return null;
+    if (this.service.imgList.length === 0) {
+      return null;
+    } else if (this.selectedImageIndex === -1) {
+      this.selectedImageIndex = 0;
+    }
 
     const image = this.service.imgList[this.selectedImageIndex];
 
