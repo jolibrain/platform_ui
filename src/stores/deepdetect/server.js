@@ -74,6 +74,7 @@ export default class deepdetectServer {
   @action
   async newService(name, data, callback) {
     const resp = await this.$reqPutService(name, data);
+    await this.loadServices();
     callback(resp);
   }
 
