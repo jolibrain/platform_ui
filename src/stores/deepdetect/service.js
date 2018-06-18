@@ -18,7 +18,6 @@ export default class deepdetectService {
   }
 
   removeStore() {
-    console.log("removeStore");
     store.remove(`${this.serverName}_${this.name}`);
   }
 }
