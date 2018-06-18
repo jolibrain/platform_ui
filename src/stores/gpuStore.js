@@ -5,6 +5,8 @@ export class GpuStore {
   @observable gpuInfo = null;
   @observable settings = {};
 
+  @observable error = false;
+
   @action
   setup(configStore) {
     this.settings = configStore.gpuInfo;
@@ -18,7 +20,12 @@ export class GpuStore {
   loadGpuInfo() {
     this.$req().then(
       action(gpuInfo => {
-        this.gpuInfo = gpuInfo;
+        if (typeof gpuinfo === "undefined") {
+          this.error = false;
+          this.gpuInfo = gpuInfo;
+        } else {
+          this.error = true;
+        }
       })
     );
   }

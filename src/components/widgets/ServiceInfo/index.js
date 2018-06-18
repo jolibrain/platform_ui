@@ -9,6 +9,8 @@ export default class ServiceInfo extends React.Component {
 
     if (service == null) return null;
 
+    const settings = service.settings;
+
     return (
       <div className="serviceinfo">
         <h5>
@@ -17,8 +19,8 @@ export default class ServiceInfo extends React.Component {
         <div className="block">
           <table className="table table-sm">
             <tbody>
-              {Object.keys(service).map((key, index) => {
-                let value = service[key];
+              {Object.keys(settings).map((key, index) => {
+                let value = settings[key];
 
                 if (typeof value === "boolean") {
                   value = value ? "True" : "False";

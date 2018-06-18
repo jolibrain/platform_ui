@@ -6,6 +6,7 @@ import { inject, observer } from "mobx-react";
 import Home from "./Home";
 import Service from "./Service";
 import ServiceNew from "./ServiceNew";
+import GenericNotFound from "./GenericNotFound";
 
 // TODO: restore light config
 // import Imaginate from "./widgets/Imaginate";
@@ -63,12 +64,14 @@ export default class App extends React.Component {
           <Header />
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route path="/predict/new" component={ServiceNew} />
+            <Route exact path="/predict/new" component={ServiceNew} />
             <Route
               exact
               path="/predict/:serverName/:serviceName"
               component={Service}
             />
+            <Route exact path="/404" component={GenericNotFound} />
+            <Route component={GenericNotFound} />
           </Switch>
         </div>
       );

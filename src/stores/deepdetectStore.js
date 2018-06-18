@@ -42,10 +42,20 @@ export class deepdetectStore {
 
   @action
   init(params) {
+    this.currentServerIndex = -1;
+
     this.currentServerIndex = this.servers.findIndex(
       server => server.name === params.serverName
     );
-    this.server.setService(params.serviceName);
+
+    if (this.currentServerIndex !== -1) {
+      this.server.currentServerIndex = -1;
+      this.server.setService(params.serviceName);
+    }
+
+    return (
+      this.currentServerIndex !== -1 && this.server.currentServiceIndex !== -1
+    );
   }
 
   @action

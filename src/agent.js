@@ -37,6 +37,7 @@ const GpuInfo = {
       .get(settings.gpuStatServer)
       .end(handleErrors)
       .then(responseBody)
+      .catch(() => {})
 };
 
 /* ====

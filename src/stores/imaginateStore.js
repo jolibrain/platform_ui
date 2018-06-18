@@ -1,4 +1,4 @@
-import { observable, action } from "mobx";
+import { toJS, observable, action } from "mobx";
 import agent from "../agent";
 
 export class imaginateStore {
@@ -12,6 +12,9 @@ export class imaginateStore {
 
   @observable curlParams = null;
   @observable confidence = null;
+
+  @observable server = null;
+  @observable service = null;
 
   @action
   setup(configStore) {
@@ -49,10 +52,20 @@ export class imaginateStore {
   }
 
   @action
-  init() {
-    this.imgList = [];
+  init(server, service) {
+    this.server = server;
+    this.service = service;
     this.selectedImageIndex = -1;
     this.selectedImage = null;
+    this.imgList = service.imgList;
+
+    console.log(toJS(this.imgList));
+
+    if (this.imgList.length > 0) {
+      this.selectedImageIndex = 0;
+      this.initPredict();
+      this.predict();
+    }
   }
 
   @action
@@ -61,12 +74,12 @@ export class imaginateStore {
     this.selectedImage = null;
   }
 
-  $reqPostPredict(deepdetectSettings, postData) {
-    return agent.Deepdetect.postPredict(deepdetectSettings, postData);
+  $reqPostPredict(postData) {
+    return agent.Deepdetect.postPredict(this.server.settings, postData);
   }
 
   @action
-  initPredict(service) {
+  initPredict() {
     if (this.imgList.length === 0) return null;
 
     const image = this.imgList[this.selectedImageIndex];
@@ -78,7 +91,7 @@ export class imaginateStore {
     image.json = null;
 
     image.postData = {
-      service: service.name,
+      service: this.service.name,
       parameters: {
         output: {
           confidence_threshold: this.confidence
@@ -102,7 +115,7 @@ export class imaginateStore {
       );
     }
 
-    if (service.mltype === "ctc") {
+    if (this.service.settings.mltype === "ctc") {
       image.postData.parameters.output.ctc = true;
       image.postData.parameters.output.confidence_threshold = 0;
       image.postData.parameters.output.blank_label = 0;
@@ -116,7 +129,7 @@ export class imaginateStore {
       );
     }
 
-    if (service.mltype === "segmentation") {
+    if (this.service.settings.mltype === "segmentation") {
       image.postData.parameters.input = { segmentation: true };
       image.postData.parameters.output = {};
     }
@@ -133,14 +146,14 @@ export class imaginateStore {
   }
 
   @action
-  async predict(deepdetectSettings) {
+  async predict() {
     if (this.imgList.length === 0) return null;
 
     const image = this.imgList[this.selectedImageIndex];
 
     if (typeof image === "undefined") return null;
 
-    image.json = await this.$reqPostPredict(deepdetectSettings, image.postData);
+    image.json = await this.$reqPostPredict(image.postData);
 
     if (typeof image.json.body === "undefined") {
       image.error = true;

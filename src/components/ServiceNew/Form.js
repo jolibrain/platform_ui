@@ -75,8 +75,6 @@ export default class ServiceNew extends React.Component {
         this.setState({ defaultConfig: newConfig });
         jsonConfig = newConfig.modelConfig;
       }
-    } else {
-      return null;
     }
 
     if (serviceName.length > 0) this.setState({ serviceName: serviceName });
@@ -157,8 +155,7 @@ export default class ServiceNew extends React.Component {
 
         const store = this.props.imaginateStore;
 
-        store.initPredict(serviceName);
-        store.predict(ddStore.server.settings);
+        store.init(ddStore.server, ddStore.service);
 
         this.props.history.push(`/predict/private/${serviceName}`);
       }
@@ -218,7 +215,7 @@ export default class ServiceNew extends React.Component {
                 id="inlineFormInputName"
                 placeholder="Service Name"
                 ref={this.serviceNameRef}
-                onChange={this.handleInputChange}
+                onKeyPress={this.handleInputChange}
               />
             </div>
 
