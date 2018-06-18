@@ -55,14 +55,6 @@ export class imaginateStore {
   init(server, service) {
     this.server = server;
     this.service = service;
-    this.selectedImageIndex = -1;
-    this.selectedImage = null;
-
-    if (this.service.imgList.length > 0) {
-      this.selectedImageIndex = 0;
-      this.initPredict();
-      this.predict();
-    }
   }
 
   @action
@@ -201,6 +193,9 @@ export class imaginateStore {
     const serverImages = await this.$reqImgFromPath(
       nginxPath + folderName + "/"
     );
+
+    this.service.imgList = [];
+
     this.service.imgList = serverImages.map(i => {
       return {
         url: nginxPath + folderName + "/" + i,
@@ -209,7 +204,9 @@ export class imaginateStore {
         boxes: null
       };
     });
-    this.setSelectedImage(0);
+
+    if (this.service.imgList.length > 0) this.setSelectedImage(0);
+
     callback();
   }
 }
