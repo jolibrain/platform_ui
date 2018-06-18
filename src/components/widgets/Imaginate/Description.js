@@ -44,7 +44,7 @@ export default class Description extends React.Component {
 
     let displayFormat = store.settings.display.format;
 
-    if (service.mltype === "ctc") {
+    if (service.settings.mltype === "ctc") {
       displayFormat = "category";
     }
 
