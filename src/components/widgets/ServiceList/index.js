@@ -36,6 +36,8 @@ export default class ServiceList extends React.Component {
 
     if (!ddStore.isReady || !ddStore.server || !ddStore.service) return null;
 
+    console.log(ddStore.refresh);
+
     return (
       <ul
         className="serviceList sidebar-top-level-items"
