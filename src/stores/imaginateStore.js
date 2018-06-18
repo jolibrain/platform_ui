@@ -1,4 +1,4 @@
-import { toJS, observable, action } from "mobx";
+import { observable, action } from "mobx";
 import agent from "../agent";
 
 export class imaginateStore {
@@ -58,8 +58,6 @@ export class imaginateStore {
     this.selectedImageIndex = -1;
     this.selectedImage = null;
     this.imgList = service.imgList;
-
-    console.log(toJS(this.imgList));
 
     if (this.imgList.length > 0) {
       this.selectedImageIndex = 0;

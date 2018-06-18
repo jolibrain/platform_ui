@@ -51,7 +51,6 @@ export default class Pythoncode extends React.Component {
       pythonCode += `parameters_output = {}\n`;
     }
 
-    console.log(store.curlParams);
     pythonCode += `data = ${JSON.stringify(store.curlParams.data)}\n`;
     pythonCode += `sname = '${ddStore.service.name}'\n`;
     pythonCode += `classif = dd.post_predict(sname,data,parameters_input,parameters_mllib,parameters_output)`;
