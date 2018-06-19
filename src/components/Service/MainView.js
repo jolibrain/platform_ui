@@ -20,21 +20,6 @@ export default class MainView extends React.Component {
     this.props.modalStore.setVisible("deleteService");
   }
 
-  componentDidMount() {
-    const ddStore = this.props.deepdetectStore;
-    this.props.imaginateStore.init(ddStore.server, ddStore.service);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const serviceName = this.props.match.params.serviceName;
-    const newServiceName = nextProps.match.params.serviceName;
-
-    if (serviceName !== newServiceName) {
-      const ddStore = this.props.deepdetectStore;
-      this.props.imaginateStore.init(ddStore.server, ddStore.service);
-    }
-  }
-
   render() {
     const ddStore = this.props.deepdetectStore;
 

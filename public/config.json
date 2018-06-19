@@ -152,7 +152,6 @@
               "input": {
                 "connector": "txt",
                 "characters": true,
-                "alphabet": "abcdefghijklmnopqrstuvwxyz0123456789,;.!?'",
                 "sequence": 150
               },
               "mllib": {
