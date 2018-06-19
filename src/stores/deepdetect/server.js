@@ -10,6 +10,8 @@ export default class deepdetectServer {
   @observable isLoading = false;
   @observable servicesLoaded = false;
 
+  @observable serverDown = false;
+
   @observable services = [];
   @observable creatingService = false;
   @observable currentServiceIndex = -1;
@@ -67,6 +69,8 @@ export default class deepdetectServer {
       this.services = info.head.services.map(service => {
         return new deepdetectService(this.name, service);
       });
+    } else {
+      this.serverDown = true;
     }
 
     if (this.services.length > 0 && this.currentServiceIndex === -1)

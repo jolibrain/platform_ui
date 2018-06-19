@@ -101,6 +101,29 @@
     color: $light-color !important;
   }
 
+  li.server {
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 8px;
+    margin: 4px 2px;
+    border-radius: 4px;
+    height: 32px;
+    font-weight: 600;
+    color: $light-color !important;
+
+    .fa-circle {
+      color: green;
+      top: 1px;
+      position: relative;
+    }
+
+    .fa-circle.serverDown {
+      color: red;
+    }
+  }
+
   .navbar-nav {
     float: left;
     margin: 0;
