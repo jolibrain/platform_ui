@@ -138,6 +138,30 @@
               }
             }
           }
+        },
+        {
+          "modelName": "url_ads_mini",
+          "modelConfig": {
+            "description": "advertizing link classification",
+            "model": {
+              "repository": "/opt/platform/models/url_ads_mini/"
+            },
+            "mllib": "caffe",
+            "type": "supervised",
+            "parameters": {
+              "input": {
+                "connector": "txt",
+                "characters": true,
+                "alphabet": "abcdefghijklmnopqrstuvwxyz0123456789,;.!?'",
+                "sequence": 150
+              },
+              "mllib": {
+                "nclasses": 2,
+                "gpu": true,
+                "gpuid": 0
+              }
+            }
+          }
         }
       ]
     }
