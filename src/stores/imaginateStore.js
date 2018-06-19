@@ -30,6 +30,7 @@ export class imaginateStore {
     this.server = server;
     this.service = service;
     this.selectedInputIndex = -1;
+    this.selectedInput = null;
   }
 
   @action

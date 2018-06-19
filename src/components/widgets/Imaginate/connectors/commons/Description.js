@@ -24,19 +24,12 @@ export default class Description extends React.Component {
   render() {
     const store = this.props.imaginateStore;
 
-    const ddStore = this.props.deepdetectStore;
-
-    if (ddStore.server.currentServiceIndex === -1) return null;
-
-    const service = ddStore.service;
-
-    if (store.selectedInput === null || store.selectedInput.json === null) {
+    if (!store.service || !store.selectedInput || !store.selectedInput.json)
       return null;
-    }
 
     const input = store.selectedInput;
 
-    if (input === null || input.error) return null;
+    if (input.error) return null;
 
     const inputClasses = input.json.body.predictions[0].classes;
 
@@ -44,7 +37,11 @@ export default class Description extends React.Component {
 
     let displayFormat = store.settings.display.format;
 
-    if (service.settings.mltype === "ctc") {
+    if (store.settings.display.boundingBox) {
+      displayFormat = "icons";
+    }
+
+    if (store.service.settings.mltype === "ctc") {
       displayFormat = "category";
     }
 

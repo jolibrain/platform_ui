@@ -1,5 +1,4 @@
 import React from "react";
-import { toJS } from "mobx";
 import { inject, observer } from "mobx-react";
 
 @inject("imaginateStore")
