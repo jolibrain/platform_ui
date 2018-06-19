@@ -1,10 +1,10 @@
 import React from "react";
-import { findDOMNode } from "react-dom";
 import { inject, observer } from "mobx-react";
+
+import { findDOMNode } from "react-dom";
 import ReactTooltip from "react-tooltip";
 
 @inject("imaginateStore")
-@inject("deepdetectStore")
 @observer
 export default class Description extends React.Component {
   constructor(props) {
