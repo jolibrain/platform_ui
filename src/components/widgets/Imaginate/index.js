@@ -5,25 +5,8 @@ import ImageConnector from "./connectors/Image";
 import TxtConnector from "./connectors/Txt";
 
 @inject("imaginateStore")
-@inject("deepdetectStore")
 @observer
 export default class Imaginate extends React.Component {
-  constructor(props) {
-    super(props);
-    this.initStore();
-  }
-
-  initStore() {
-    const store = this.props.imaginateStore;
-    const ddStore = this.props.deepdetectStore;
-
-    if (typeof ddStore.service === "undefined") {
-      this.props.history.push("/404");
-    }
-
-    store.connectToDeepdetect(ddStore);
-  }
-
   render() {
     const store = this.props.imaginateStore;
 

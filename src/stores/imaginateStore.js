@@ -25,7 +25,7 @@ export class imaginateStore {
   }
 
   @action
-  connectToDeepdetect(deepdetectStore) {
+  connectToDdStore(deepdetectStore) {
     const { server, service } = deepdetectStore;
     this.server = server;
     this.service = service;
