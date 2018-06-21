@@ -43,7 +43,7 @@ export default class deepdetectService {
     );
   }
 
-  async trainMetrics(job = 1, timeout = 0, history = false) {
+  async fetchTrainMetrics(job = 1, timeout = 0, history = false) {
     this.trainMetrics = await this.$reqTrainMetrics(job, timeout, history);
   }
 }
