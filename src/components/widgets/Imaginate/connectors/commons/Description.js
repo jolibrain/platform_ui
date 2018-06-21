@@ -39,14 +39,14 @@ export default class Description extends React.Component {
 
     if (this.props.displayFormat) {
       displayFormat = this.props.displayFormat;
-    }
+    } else {
+      if (store.settings.display.boundingBox) {
+        displayFormat = "icons";
+      }
 
-    if (store.settings.display.boundingBox) {
-      displayFormat = "icons";
-    }
-
-    if (store.service.settings.mltype === "ctc") {
-      displayFormat = "category";
+      if (store.service.settings.mltype === "ctc") {
+        displayFormat = "category";
+      }
     }
 
     switch (displayFormat) {
