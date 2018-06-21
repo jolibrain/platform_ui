@@ -1,10 +1,10 @@
 import React from "react";
-import { findDOMNode } from "react-dom";
 import { inject, observer } from "mobx-react";
+
+import { findDOMNode } from "react-dom";
 import ReactTooltip from "react-tooltip";
 
 @inject("imaginateStore")
-@inject("deepdetectStore")
 @observer
 export default class Description extends React.Component {
   constructor(props) {
@@ -24,36 +24,50 @@ export default class Description extends React.Component {
   render() {
     const store = this.props.imaginateStore;
 
-    const ddStore = this.props.deepdetectStore;
-
-    if (ddStore.server.currentServiceIndex === -1) return null;
-
-    const service = ddStore.service;
-
-    if (store.selectedImage === null || store.selectedImage.json === null) {
+    if (!store.service || !store.selectedInput || !store.selectedInput.json)
       return null;
-    }
 
-    const image = store.selectedImage;
+    const input = store.selectedInput;
 
-    if (image === null || image.error) return null;
+    if (input.error) return null;
 
-    const imageClasses = store.selectedImage.json.body.predictions[0].classes;
+    const inputClasses = input.json.body.predictions[0].classes;
 
-    if (typeof imageClasses === "undefined") return null;
+    if (typeof inputClasses === "undefined") return null;
 
     let displayFormat = store.settings.display.format;
 
-    if (service.settings.mltype === "ctc") {
+    if (this.props.displayFormat) {
+      displayFormat = this.props.displayFormat;
+    }
+
+    if (store.settings.display.boundingBox) {
+      displayFormat = "icons";
+    }
+
+    if (store.service.settings.mltype === "ctc") {
       displayFormat = "category";
     }
 
     switch (displayFormat) {
+      default:
+      case "simple":
+        return (
+          <div>
+            {inputClasses.map((category, index) => {
+              return (
+                <div className="predictDisplay">
+                  {category.cat} - {category.prob}
+                </div>
+              );
+            })}
+          </div>
+        );
       case "expectation":
         return (
           <span>
             {Math.ceil(
-              imageClasses.reduce((acc, current) => {
+              inputClasses.reduce((acc, current) => {
                 return acc + parseInt(current.cat, 10) * current.prob;
               }, 0)
             )}
@@ -62,7 +76,7 @@ export default class Description extends React.Component {
       case "list":
         return (
           <div>
-            {imageClasses.map((category, index) => {
+            {inputClasses.map((category, index) => {
               const percent = parseInt(category.prob * 100, 10);
               const progressStyle = { width: `${percent}%` };
               let progressBg = "bg-success";
@@ -101,7 +115,7 @@ export default class Description extends React.Component {
       case "list-url":
         return (
           <div>
-            {imageClasses.map((category, index) => {
+            {inputClasses.map((category, index) => {
               return (
                 <div className="predictDisplay">
                   <img src={category.uri} alt="category" />
@@ -114,7 +128,7 @@ export default class Description extends React.Component {
       case "category":
         return (
           <div>
-            {imageClasses.map((category, index) => {
+            {inputClasses.map((category, index) => {
               let styles = {
                 color: ""
               };
@@ -139,10 +153,9 @@ export default class Description extends React.Component {
           </div>
         );
       case "icons":
-      default:
         return (
           <div>
-            {imageClasses.map((category, index) => {
+            {inputClasses.map((category, index) => {
               let styles = {
                 color: ""
               };

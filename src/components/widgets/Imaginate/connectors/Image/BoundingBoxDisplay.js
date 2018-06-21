@@ -17,14 +17,14 @@ export default class BoundingBoxDisplay extends React.Component {
       );
     }
 
-    const image = store.selectedImage;
+    const image = store.selectedInput;
 
-    if (image === null) return null;
+    if (!image) return null;
 
     return (
       <Boundingbox
         className="boundingboxdisplay"
-        image={image.url}
+        image={image.content}
         boxes={toJS(image.boxes)}
         selectedIndex={this.props.selectedBoxIndex}
         onSelected={this.props.onOver}

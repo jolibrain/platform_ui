@@ -10,7 +10,7 @@ import "react-bootstrap-typeahead/css/Typeahead-bs4.css";
 @inject("imaginateStore")
 @inject("dataRepositoriesStore")
 @observer
-export default class InputData extends React.Component {
+export default class InputForm extends React.Component {
   constructor(props) {
     super(props);
 
@@ -48,8 +48,8 @@ export default class InputData extends React.Component {
       const folderName = selected.folderName;
 
       const store = this.props.imaginateStore;
-      store.addImageFromPath(nginxPath, systemPath, folderName, () => {
-        this.props.loadImage();
+      store.addInputFromPath(nginxPath, systemPath, folderName, () => {
+        store.predict();
       });
     }
   }
@@ -90,8 +90,8 @@ export default class InputData extends React.Component {
 
   addUrl(url) {
     const store = this.props.imaginateStore;
-    store.addImageFromUrl(url);
-    this.props.loadImage();
+    store.addInput(url);
+    store.predict();
   }
 
   render() {

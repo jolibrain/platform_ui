@@ -7,9 +7,8 @@ import ReactTooltip from "react-tooltip";
 import copy from "copy-to-clipboard";
 
 @inject("imaginateStore")
-@inject("deepdetectStore")
 @observer
-export default class CurlCommand extends React.Component {
+export default class JsonResponse extends React.Component {
   constructor(props) {
     super(props);
 
@@ -18,34 +17,25 @@ export default class CurlCommand extends React.Component {
     };
 
     this.handleCopyClipboard = this.handleCopyClipboard.bind(this);
-    this.curlCommand = this.curlCommand.bind(this);
-  }
-
-  curlCommand() {
-    const store = this.props.imaginateStore;
-    const ddStore = this.props.deepdetectStore;
-    return `curl -X POST '${window.location.origin}${
-      ddStore.server.settings.path
-    }/predict' -d '${JSON.stringify(store.curlParams, null, 1)}'`;
-  }
-
-  componentWillReceiveProps() {
-    ReactTooltip.rebuild();
   }
 
   handleCopyClipboard() {
-    copy(this.curlCommand());
+    const store = this.props.imaginateStore;
+
+    copy(JSON.stringify(store.selectedInput.json));
 
     this.setState({ copied: true });
     setTimeout(() => {
       this.setState({ copied: false });
-    }, 500);
+    }, 2000);
   }
 
   render() {
-    const store = this.props.imaginateStore;
+    const { selectedInput } = this.props.imaginateStore;
 
-    if (store.selectedImage === null) return null;
+    if (selectedInput === null || selectedInput.json === null) {
+      return null;
+    }
 
     const copiedText = this.state.copied ? "Copied!" : "Copy to clipboard";
 
@@ -68,8 +58,8 @@ export default class CurlCommand extends React.Component {
             getContent={() => copiedText}
           />
         </div>
-        <SyntaxHighlighter language="bash" style={docco} className="card-text">
-          {this.curlCommand()}
+        <SyntaxHighlighter language="json" style={docco} className="card-text">
+          {JSON.stringify(selectedInput.json, null, 1)}
         </SyntaxHighlighter>
       </div>
     );

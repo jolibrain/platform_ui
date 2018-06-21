@@ -2,9 +2,19 @@ import React from "react";
 import { inject, observer } from "mobx-react";
 
 @inject("imaginateStore")
-@inject("deepdetectStore")
 @observer
 export default class ImageList extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.selectInput = this.selectInput.bind(this);
+  }
+
+  selectInput(index) {
+    const store = this.props.imaginateStore;
+    store.setSelectedInput(index);
+  }
+
   render() {
     const store = this.props.imaginateStore;
 
@@ -12,15 +22,15 @@ export default class ImageList extends React.Component {
 
     return (
       <div id="carousel">
-        {store.service.imgList.map((img, index) => {
+        {store.service.inputs.reverse().map((input, index) => {
           return (
             <div key={`img-${index}`} className="slide">
               <img
-                src={img.url}
+                src={input.content}
                 key={`img-${index}`}
                 className="img-block"
                 alt=""
-                onClick={this.props.selectImage.bind(this, index)}
+                onClick={this.selectInput.bind(this, index)}
               />
             </div>
           );

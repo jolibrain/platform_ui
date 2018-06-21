@@ -20,6 +20,7 @@ export default class DeleteServiceModal extends React.Component {
   }
 
   handleDeleteService() {
+    this.props.modalStore.setVisible("deleteService", false);
     const ddStore = this.props.deepdetectStore;
 
     ddStore.deleteService(() => {

@@ -3,17 +3,17 @@ import store from "store";
 import autoSave from "../autoSave";
 
 export default class deepdetectService {
-  @observable serverName = "";
   @observable name = "";
+  @observable inputs = [];
   @observable settings = null;
-  @observable imgList = [];
+  @observable serverName = "";
 
   @observable isLoading = false;
 
   constructor(serverName, opts) {
-    this.serverName = serverName;
     this.name = opts.name;
     this.settings = opts;
+    this.serverName = serverName;
     autoSave(this, `${serverName}_${this.name}`);
   }
 

@@ -13,13 +13,13 @@ export default class Threshold extends React.Component {
   handleClick(thresholdValue) {
     const store = this.props.imaginateStore;
     store.setThreshold(thresholdValue);
-    this.props.loadImage();
+    store.predict();
   }
 
   render() {
     const store = this.props.imaginateStore;
 
-    if (store.selectedImage === null || !store.settings.threshold.controls) {
+    if (!store.selectedInput || !store.settings.threshold.controls) {
       return null;
     }
 

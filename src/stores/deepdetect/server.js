@@ -73,8 +73,14 @@ export default class deepdetectServer {
       this.serverDown = true;
     }
 
-    if (this.services.length > 0 && this.currentServiceIndex === -1)
+    if (this.services.length === 0) {
+      this.currentServiceIndex = -1;
+    } else if (
+      this.currentServiceIndex >= this.services.length ||
+      this.currentServiceIndex === -1
+    ) {
       this.currentServiceIndex = 0;
+    }
 
     this.servicesLoaded = true;
   }
