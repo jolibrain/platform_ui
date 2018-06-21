@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { inject, observer } from "mobx-react";
+import ReactTooltip from "react-tooltip";
 
 @inject("commonStore")
 @inject("deepdetectStore")
@@ -58,8 +59,14 @@ class Header extends React.Component {
             <div className="navbar-collapse d-flex justify-content-end">
               <ul className="nav nabar-nav">
                 {servers.map((server, index) => {
+                  const tooltipId = `server-${index}-status-tooltip`;
                   return (
-                    <li className="nav-item server" key={index}>
+                    <li
+                      className="nav-item server"
+                      key={index}
+                      data-tip
+                      data-for={tooltipId}
+                    >
                       <span className="badge badge-primary">
                         {server.name + " "}
                         <i
@@ -70,6 +77,13 @@ class Header extends React.Component {
                           }
                         />
                       </span>
+                      <ReactTooltip
+                        id={tooltipId}
+                        place="bottom"
+                        effect="solid"
+                      >
+                        {server.serverDown ? "Server Error" : "Server OK"}
+                      </ReactTooltip>
                     </li>
                   );
                 })}
