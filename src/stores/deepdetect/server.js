@@ -66,8 +66,12 @@ export default class deepdetectServer {
     }
 
     if (info.head && info.head.services) {
-      this.services = info.head.services.map(service => {
-        return new deepdetectService(this.name, service);
+      this.services = info.head.services.map(serviceSettings => {
+        return new deepdetectService({
+          serviceSettings: serviceSettings,
+          serverName: this.name,
+          serverSettings: this.settings
+        });
       });
     } else {
       this.serverDown = true;

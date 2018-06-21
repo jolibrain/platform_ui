@@ -12,7 +12,7 @@ export default class LeftPanel extends React.Component {
     return (
       <div className="nav-sidebar left-sidebar">
         <div className="nav-sidebar-inner-scroll">
-          <ServiceList status={true} />
+          <ServiceList />
         </div>
       </div>
     );

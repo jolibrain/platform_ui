@@ -65,6 +65,10 @@ const Deepdetect = {
   postPredict: (settings, postData) => {
     const dd = new DD(settings);
     return dd.postPredict(postData);
+  },
+  getTrain: (settings, serviceName, job = 1, timeout = 0, history = false) => {
+    const dd = new DD(settings);
+    return dd.getTrain(serviceName, job, timeout, history);
   }
 };
 
