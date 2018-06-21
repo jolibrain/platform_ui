@@ -22,11 +22,10 @@ export default class CurlCommand extends React.Component {
   }
 
   curlCommand() {
-    const store = this.props.imaginateStore;
-    const ddStore = this.props.deepdetectStore;
+    const { service } = this.props.imaginateStore;
     return `curl -X POST '${window.location.origin}${
-      ddStore.server.settings.path
-    }/predict' -d '${JSON.stringify(store.curlParams, null, 1)}'`;
+      service.serverSettings.path
+    }/predict' -d '${JSON.stringify(service.selectedInput.postData, null, 1)}'`;
   }
 
   componentWillReceiveProps() {
@@ -43,9 +42,9 @@ export default class CurlCommand extends React.Component {
   }
 
   render() {
-    const store = this.props.imaginateStore;
+    const { service } = this.props.imaginateStore;
 
-    if (store.selectedInput === null) return null;
+    if (service.selectedInput === null) return null;
 
     const copiedText = this.state.copied ? "Copied!" : "Copy to clipboard";
 

@@ -23,13 +23,13 @@ export default class Description extends React.Component {
 
   render() {
     const store = this.props.imaginateStore;
+    const service = store.service;
 
-    if (!store.service || !store.selectedInput || !store.selectedInput.json)
-      return null;
+    if (!service || !service.selectedInput) return null;
 
-    const input = store.selectedInput;
+    const input = service.selectedInput;
 
-    if (input.error) return null;
+    if (!input.json || input.error) return null;
 
     const inputClasses = input.json.body.predictions[0].classes;
 
@@ -56,7 +56,7 @@ export default class Description extends React.Component {
           <div>
             {inputClasses.map((category, index) => {
               return (
-                <div className="predictDisplay">
+                <div className="predictDisplay" key={index}>
                   {category.cat} - {category.prob}
                 </div>
               );

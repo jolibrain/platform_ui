@@ -12,26 +12,30 @@ export default class InputList extends React.Component {
 
   selectInput(index) {
     const store = this.props.imaginateStore;
-    store.setSelectedInput(index);
+    store.service.selectedInputIndex = index;
+    store.predict();
   }
 
   render() {
-    const store = this.props.imaginateStore;
+    const { service } = this.props.imaginateStore;
 
-    if (!store.service) return null;
+    if (!service) return null;
+
+    const inputs = service.inputs;
 
     return (
       <ul className="list-group">
-        {store.service.inputs.reverse().map((input, index) => {
+        {inputs.reverse().map((input, index) => {
+          const inputIndex = inputs.length - index - 1;
           return (
             <li
               key={`input-${index}`}
               className={
-                index === store.selectedInputIndex
+                inputIndex === service.selectedInputIndex
                   ? "list-group-item active"
                   : "list-group-item"
               }
-              onClick={this.selectInput.bind(this, index)}
+              onClick={this.selectInput.bind(this, inputIndex)}
             >
               {input.content}
             </li>

@@ -25,8 +25,8 @@ export default class CardCommands extends React.Component {
   }
 
   render() {
-    const store = this.props.imaginateStore;
-    const input = store.selectedInput;
+    const { service } = this.props.imaginateStore;
+    const input = service.selectedInput;
 
     if (typeof input === "undefined" || !input) return null;
 

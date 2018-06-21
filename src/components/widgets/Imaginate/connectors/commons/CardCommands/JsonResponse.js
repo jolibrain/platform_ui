@@ -20,9 +20,9 @@ export default class JsonResponse extends React.Component {
   }
 
   handleCopyClipboard() {
-    const store = this.props.imaginateStore;
+    const { service } = this.props.imaginateStore;
 
-    copy(JSON.stringify(store.selectedInput.json));
+    copy(JSON.stringify(service.selectedInput.json, null, 2));
 
     this.setState({ copied: true });
     setTimeout(() => {
@@ -31,9 +31,10 @@ export default class JsonResponse extends React.Component {
   }
 
   render() {
-    const { selectedInput } = this.props.imaginateStore;
+    const { service } = this.props.imaginateStore;
+    const selectedInput = service.selectedInput;
 
-    if (selectedInput === null || selectedInput.json === null) {
+    if (!selectedInput || !selectedInput.json) {
       return null;
     }
 

@@ -59,7 +59,7 @@ export default class InputForm extends React.Component {
 
   addUrl(url) {
     const store = this.props.imaginateStore;
-    store.addInput(url);
+    store.service.addInput(url);
     store.predict();
   }
 

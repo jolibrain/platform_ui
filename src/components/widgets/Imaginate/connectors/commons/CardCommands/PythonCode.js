@@ -7,7 +7,6 @@ import ReactTooltip from "react-tooltip";
 import copy from "copy-to-clipboard";
 
 @inject("imaginateStore")
-@inject("deepdetectStore")
 @observer
 export default class Pythoncode extends React.Component {
   constructor(props) {
@@ -22,37 +21,38 @@ export default class Pythoncode extends React.Component {
   }
 
   pythonCode() {
-    const store = this.props.imaginateStore;
-    const ddStore = this.props.deepdetectStore;
+    const { service } = this.props.imaginateStore;
+
+    const postData = service.selectedInput.postData;
 
     let pythonCode = "";
 
-    if (store.curlParams.parameters.input) {
+    if (postData.parameters.input) {
       pythonCode += `parameters_input = ${JSON.stringify(
-        store.curlParams.parameters.input
+        postData.parameters.input
       )}\n`;
     } else {
       pythonCode += `parameters_input = {}\n`;
     }
 
-    if (store.curlParams.parameters.mlllib) {
+    if (postData.parameters.mlllib) {
       pythonCode += `parameters_mllib = ${JSON.stringify(
-        store.curlParams.parameters.mllib
+        postData.parameters.mllib
       )}\n`;
     } else {
       pythonCode += `parameters_mllib = {}\n`;
     }
 
-    if (store.curlParams.parameters.output) {
+    if (postData.parameters.output) {
       pythonCode += `parameters_output = ${JSON.stringify(
-        store.curlParams.parameters.output
+        postData.parameters.output
       )}\n`;
     } else {
       pythonCode += `parameters_output = {}\n`;
     }
 
-    pythonCode += `data = ${JSON.stringify(store.curlParams.data)}\n`;
-    pythonCode += `sname = '${ddStore.service.name}'\n`;
+    pythonCode += `data = ${JSON.stringify(postData.data)}\n`;
+    pythonCode += `sname = '${service.name}'\n`;
     pythonCode += `classif = dd.post_predict(sname,data,parameters_input,parameters_mllib,parameters_output)`;
 
     return pythonCode;
@@ -72,10 +72,6 @@ export default class Pythoncode extends React.Component {
   }
 
   render() {
-    const store = this.props.imaginateStore;
-
-    if (store.selectedImage === null) return null;
-
     const copiedText = this.state.copied ? "Copied!" : "Copy to clipboard";
 
     return (

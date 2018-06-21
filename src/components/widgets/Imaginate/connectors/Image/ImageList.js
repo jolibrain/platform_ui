@@ -12,25 +12,33 @@ export default class ImageList extends React.Component {
 
   selectInput(index) {
     const store = this.props.imaginateStore;
-    store.setSelectedInput(index);
+    store.service.selectedInputIndex = index;
+    store.predict();
   }
 
   render() {
-    const store = this.props.imaginateStore;
+    const { service } = this.props.imaginateStore;
 
-    if (!store.service) return null;
+    if (!service) return null;
+
+    const inputs = service.inputs;
 
     return (
       <div id="carousel">
-        {store.service.inputs.reverse().map((input, index) => {
+        {inputs.reverse().map((input, index) => {
+          const inputIndex = inputs.length - index - 1;
           return (
             <div key={`img-${index}`} className="slide">
               <img
                 src={input.content}
                 key={`img-${index}`}
-                className="img-block"
+                className={
+                  inputIndex === service.selectedInputIndex
+                    ? "img-block active"
+                    : "img-block"
+                }
                 alt=""
-                onClick={this.selectInput.bind(this, index)}
+                onClick={this.selectInput.bind(this, inputIndex)}
               />
             </div>
           );
