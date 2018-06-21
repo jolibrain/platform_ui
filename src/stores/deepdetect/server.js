@@ -69,6 +69,9 @@ export default class deepdetectServer {
       });
     }
 
+    if (this.currentServiceIndex >= this.services.length)
+      this.currentServiceIndex = 0;
+
     if (this.services.length > 0 && this.currentServiceIndex === -1)
       this.currentServiceIndex = 0;
 
