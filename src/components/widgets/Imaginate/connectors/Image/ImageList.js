@@ -22,7 +22,7 @@ export default class ImageList extends React.Component {
 
     return (
       <div id="carousel">
-        {store.service.inputs.map((input, index) => {
+        {store.service.inputs.reverse().map((input, index) => {
           return (
             <div key={`img-${index}`} className="slide">
               <img

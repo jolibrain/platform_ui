@@ -22,7 +22,7 @@ export default class InputList extends React.Component {
 
     return (
       <ul className="list-group">
-        {store.service.inputs.map((input, index) => {
+        {store.service.inputs.reverse().map((input, index) => {
           return (
             <li
               key={`input-${index}`}
