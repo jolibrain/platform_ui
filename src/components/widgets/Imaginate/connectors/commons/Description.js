@@ -37,6 +37,10 @@ export default class Description extends React.Component {
 
     let displayFormat = store.settings.display.format;
 
+    if (this.props.displayFormat) {
+      displayFormat = this.props.displayFormat;
+    }
+
     if (store.settings.display.boundingBox) {
       displayFormat = "icons";
     }
@@ -47,6 +51,7 @@ export default class Description extends React.Component {
 
     switch (displayFormat) {
       default:
+      case "simple":
         return (
           <div>
             {inputClasses.map((category, index) => {

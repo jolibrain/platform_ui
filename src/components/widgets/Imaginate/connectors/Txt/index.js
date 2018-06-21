@@ -21,7 +21,7 @@ export default class TxtConnector extends React.Component {
               <InputForm />
             </div>
             <div className="row description">
-              <Description />
+              <Description displayFormat="simple" />
             </div>
             <div className="row commands">
               <CardCommands />
