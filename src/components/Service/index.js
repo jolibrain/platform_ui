@@ -5,8 +5,8 @@ import React from "react";
 import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
-@inject("commonStore")
 @inject("deepdetectStore")
+@inject("imaginateStore")
 @withRouter
 @observer
 export default class Service extends React.Component {
@@ -17,12 +17,14 @@ export default class Service extends React.Component {
   }
 
   setDeepdetectServer(params) {
+    const imaginateStore = this.props.imaginateStore;
     const ddStore = this.props.deepdetectStore;
-    const found = ddStore.init(params);
 
-    if (!found) {
+    if (!ddStore.init(params)) {
       this.props.history.push("/404");
     }
+
+    imaginateStore.connectToDdStore(ddStore);
   }
 
   componentWillMount() {

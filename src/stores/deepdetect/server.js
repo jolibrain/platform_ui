@@ -10,6 +10,8 @@ export default class deepdetectServer {
   @observable isLoading = false;
   @observable servicesLoaded = false;
 
+  @observable serverDown = false;
+
   @observable services = [];
   @observable creatingService = false;
   @observable currentServiceIndex = -1;
@@ -64,13 +66,25 @@ export default class deepdetectServer {
     }
 
     if (info.head && info.head.services) {
-      this.services = info.head.services.map(service => {
-        return new deepdetectService(this.name, service);
+      this.services = info.head.services.map(serviceSettings => {
+        return new deepdetectService({
+          serviceSettings: serviceSettings,
+          serverName: this.name,
+          serverSettings: this.settings
+        });
       });
+    } else {
+      this.serverDown = true;
     }
 
-    if (this.services.length > 0 && this.currentServiceIndex === -1)
+    if (this.services.length === 0) {
+      this.currentServiceIndex = -1;
+    } else if (
+      this.currentServiceIndex >= this.services.length ||
+      this.currentServiceIndex === -1
+    ) {
       this.currentServiceIndex = 0;
+    }
 
     this.servicesLoaded = true;
   }

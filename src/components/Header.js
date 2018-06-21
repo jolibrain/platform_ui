@@ -34,6 +34,7 @@ class Header extends React.Component {
   }
 
   render() {
+    const servers = this.props.deepdetectStore.servers;
     return (
       <header className="header navbar navbar-dark bg-dark" id="header">
         <div className="container-fluid">
@@ -56,6 +57,22 @@ class Header extends React.Component {
 
             <div className="navbar-collapse d-flex justify-content-end">
               <ul className="nav nabar-nav">
+                {servers.map((server, index) => {
+                  return (
+                    <li className="nav-item server" key={index}>
+                      <span className="badge badge-primary">
+                        {server.name + " "}
+                        <i
+                          className={
+                            server.serverDown
+                              ? "fas fa-circle serverDown"
+                              : "fas fa-circle"
+                          }
+                        />
+                      </span>
+                    </li>
+                  );
+                })}
                 <li className="nav-item dropdown">
                   <a
                     className="nav-link dropdown-toggle"

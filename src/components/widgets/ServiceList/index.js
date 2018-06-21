@@ -28,7 +28,8 @@ export default class ServiceList extends React.Component {
   }
 
   timer() {
-    this.props.deepdetectStore.loadServices(this.props.status);
+    const status = true;
+    this.props.deepdetectStore.loadServices(status);
   }
 
   render() {
@@ -61,6 +62,13 @@ export default class ServiceList extends React.Component {
                     <span className="badge badge-secondary float-right">
                       {server.name}
                     </span>
+                    {service.training ? (
+                      <span className="badge badge-warning float-right badge-training">
+                        Training
+                      </span>
+                    ) : (
+                      ""
+                    )}
                   </span>
                 </Link>
               </li>

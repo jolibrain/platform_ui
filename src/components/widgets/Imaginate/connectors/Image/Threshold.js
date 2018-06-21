@@ -12,14 +12,14 @@ export default class Threshold extends React.Component {
 
   handleClick(thresholdValue) {
     const store = this.props.imaginateStore;
-    store.setThreshold(thresholdValue);
-    this.props.loadImage();
+    store.settings.threshold.confidence = thresholdValue;
+    store.predict();
   }
 
   render() {
     const store = this.props.imaginateStore;
 
-    if (store.selectedImage === null || !store.settings.threshold.controls) {
+    if (!store.service.selectedInput || !store.settings.threshold.controls) {
       return null;
     }
 
@@ -42,7 +42,7 @@ export default class Threshold extends React.Component {
     ];
 
     thresholds.forEach(config => {
-      if (config.value === store.confidence) {
+      if (config.value === store.settings.threshold.confidence) {
         config.classNames = "btn btn-primary";
       }
     });

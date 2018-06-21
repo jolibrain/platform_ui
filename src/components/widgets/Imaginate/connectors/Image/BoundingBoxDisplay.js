@@ -9,7 +9,7 @@ export default class BoundingBoxDisplay extends React.Component {
   render() {
     const store = this.props.imaginateStore;
 
-    if (store.isRequesting) {
+    if (store.service.isRequesting) {
       return (
         <div className="alert alert-primary" role="alert">
           <i className="fas fa-spinner fa-spin" />&nbsp; Loading...
@@ -17,14 +17,14 @@ export default class BoundingBoxDisplay extends React.Component {
       );
     }
 
-    const image = store.selectedImage;
+    const image = store.service.selectedInput;
 
-    if (image === null) return null;
+    if (!image) return null;
 
     return (
       <Boundingbox
         className="boundingboxdisplay"
-        image={image.url}
+        image={image.content}
         boxes={toJS(image.boxes)}
         selectedIndex={this.props.selectedBoxIndex}
         onSelected={this.props.onOver}
