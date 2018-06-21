@@ -29,11 +29,18 @@ export default class Description extends React.Component {
 
     const input = service.selectedInput;
 
-    if (!input.json || input.error) return null;
+    if (
+      input.error ||
+      !input.json ||
+      !input.json.body ||
+      !input.json.body.predictions ||
+      input.json.body.predictions.length === 0 ||
+      !input.json.body.predictions[0] ||
+      !input.json.body.predictions[0].classes
+    )
+      return null;
 
     const inputClasses = input.json.body.predictions[0].classes;
-
-    if (typeof inputClasses === "undefined") return null;
 
     let displayFormat = store.settings.display.format;
 
