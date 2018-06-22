@@ -23,7 +23,15 @@ export class imaginateStore {
 
   @action
   predict() {
-    this.service.predict(this.settings);
+    let settings = this.settings.default;
+
+    const serviceSettings = this.settings.services.some(service => {
+      return service.name === this.service.name;
+    });
+
+    if (serviceSettings) settings = serviceSettings;
+
+    this.service.predict(settings);
   }
 }
 
