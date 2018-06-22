@@ -102,9 +102,9 @@ export default class ServiceNew extends React.Component {
     }
 
     const ddStore = this.props.deepdetectStore;
-    const serviceNames = ddStore.server.services.map(s => s.name);
+    const serviceNames = ddStore.server.services.map(s => s.name.toLowerCase());
 
-    if (serviceNames.includes(serviceName)) {
+    if (serviceNames.includes(serviceName.toLowerCase())) {
       errors.push("Service name already exists");
     }
 
