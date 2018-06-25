@@ -3,6 +3,7 @@ import { inject, observer } from "mobx-react";
 import { Link, withRouter } from "react-router-dom";
 
 import RightPanel from "./RightPanel";
+import ServiceList from "./ServiceList";
 
 @inject("configStore")
 @withRouter
@@ -10,6 +11,7 @@ import RightPanel from "./RightPanel";
 export default class MainView extends React.Component {
   render() {
     const { homeComponent } = this.props.configStore;
+
     return (
       <div className="main-view content-wrapper">
         <div className="container-fluid">
@@ -19,6 +21,7 @@ export default class MainView extends React.Component {
             <Link to="/predict/new" className="btn btn-outline-primary">
               New Service
             </Link>
+            <ServiceList />
             <RightPanel />
           </div>
         </div>
