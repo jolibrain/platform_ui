@@ -9,7 +9,7 @@ import CardCommands from "../commons/CardCommands";
 export default class TxtConnector extends React.Component {
   render() {
     return (
-      <div className="imaginate">
+      <div className="imaginate txtConnector">
         <div className="row">
           <div className="col-md-7">
             <div className="row">

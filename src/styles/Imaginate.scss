@@ -1,6 +1,16 @@
 @import "./CurlCommand.scss";
 @import "./JsonResponse.scss";
 
+.imaginate.txtConnector {
+  .inputForm {
+    border: 0;
+
+    .btn-primary {
+      margin-top: 5px;
+    }
+  }
+}
+
 .imaginate {
   .threshold.card,
   .inputUrl.card {
