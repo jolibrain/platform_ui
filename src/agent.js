@@ -54,6 +54,10 @@ const Deepdetect = {
     const dd = new DD(settings);
     return dd.info({ status: true });
   },
+  getService: (settings, name) => {
+    const dd = new DD(settings);
+    return dd.getService(name);
+  },
   putService: (settings, name, data) => {
     const dd = new DD(settings);
     return dd.putService(name, data);
