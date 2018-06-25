@@ -34,7 +34,9 @@ export default class BoundingBoxDisplay extends React.Component {
         separateSegmentation={
           image.pixelSegmentation ? image.pixelSegmentation.length > 0 : false
         }
-        segmentationColors={toJS(store.settings.display.segmentationColors)}
+        segmentationColors={toJS(
+          store.serviceSettings.display.segmentationColors
+        )}
       />
     );
   }

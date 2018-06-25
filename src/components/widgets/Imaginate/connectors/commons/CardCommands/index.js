@@ -42,7 +42,7 @@ export default class CardCommands extends React.Component {
         cardBody = <CurlCommand />;
         break;
       case "json":
-        cardBody = <JsonResponse />;
+        cardBody = <JsonResponse isError={json.status.code === 500} />;
         break;
       case "python":
         cardBody = <PythonCode />;

@@ -79,7 +79,7 @@ export default class deepdetectService {
 
   @action
   removeStore() {
-    store.remove(`${this.serverName}_${this.name}`);
+    store.remove(`autosave_service_${this.serverName}_${this.name}`);
   }
 
   @action

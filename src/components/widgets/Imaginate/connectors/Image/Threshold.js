@@ -12,37 +12,40 @@ export default class Threshold extends React.Component {
 
   handleClick(thresholdValue) {
     const store = this.props.imaginateStore;
-    store.settings.threshold.confidence = thresholdValue;
+    store.serviceSettings.threshold.confidence = thresholdValue;
     store.predict();
   }
 
   render() {
     const store = this.props.imaginateStore;
 
-    if (!store.service.selectedInput || !store.settings.threshold.controls) {
+    if (
+      !store.service.selectedInput ||
+      !store.serviceSettings.threshold.controls
+    ) {
       return null;
     }
 
     let thresholds = [
       {
         name: "Salient",
-        value: store.settings.threshold.controlSteps[0],
+        value: store.serviceSettings.threshold.controlSteps[0],
         classNames: "btn btn-secondary"
       },
       {
         name: "Medium",
-        value: store.settings.threshold.controlSteps[1],
+        value: store.serviceSettings.threshold.controlSteps[1],
         classNames: "btn btn-secondary"
       },
       {
         name: "Detailed",
-        value: store.settings.threshold.controlSteps[2],
+        value: store.serviceSettings.threshold.controlSteps[2],
         classNames: "btn btn-secondary"
       }
     ];
 
     thresholds.forEach(config => {
-      if (config.value === store.settings.threshold.confidence) {
+      if (config.value === store.serviceSettings.threshold.confidence) {
         config.classNames = "btn btn-primary";
       }
     });

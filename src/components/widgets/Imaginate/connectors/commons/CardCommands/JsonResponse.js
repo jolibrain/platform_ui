@@ -59,7 +59,11 @@ export default class JsonResponse extends React.Component {
             getContent={() => copiedText}
           />
         </div>
-        <SyntaxHighlighter language="json" style={docco} className="card-text">
+        <SyntaxHighlighter
+          language="json"
+          style={docco}
+          className={this.props.isError ? "card-text card-error" : "card-text"}
+        >
           {JSON.stringify(selectedInput.json, null, 1)}
         </SyntaxHighlighter>
       </div>

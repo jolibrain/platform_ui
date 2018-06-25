@@ -9,7 +9,7 @@ import { withRouter } from "react-router-dom";
 @inject("deepdetectStore")
 @withRouter
 @observer
-export default class ServiceNew extends React.Component {
+export default class TrainingNew extends React.Component {
   render() {
     const {
       isLoaded,

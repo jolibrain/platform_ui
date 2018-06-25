@@ -52,7 +52,7 @@
           "modelConfig": {
             "description": "object detection service",
             "model": {
-              "repository": "/opt/platform/models/detection_600/"
+              "repository": "/opt/platform/models/public/detection_600/"
             },
             "mllib": "caffe",
             "type": "supervised",
@@ -75,7 +75,7 @@
           "modelConfig": {
             "description": "object detection service",
             "model": {
-              "repository": "/opt/platform/models/segmentation_150/"
+              "repository": "/opt/platform/models/public/segmentation_150/"
             },
             "mllib": "caffe",
             "type": "supervised",
@@ -98,7 +98,7 @@
           "modelConfig": {
             "description": "object detection service",
             "model": {
-              "repository": "/opt/platform/models/ggnet/"
+              "repository": "/opt/platform/models/public/ggnet/"
             },
             "mllib": "caffe",
             "type": "supervised",
@@ -121,7 +121,7 @@
           "modelConfig": {
             "description": "object detection service",
             "model": {
-              "repository": "/opt/platform/models/resnet_50/"
+              "repository": "/opt/platform/models/public/resnet_50/"
             },
             "mllib": "caffe",
             "type": "supervised",
@@ -140,11 +140,35 @@
           }
         },
         {
+          "modelName": "sent_en_char",
+          "modelConfig": {
+            "description": "sentiment - english",
+            "model": {
+              "repository": "/opt/platform/models/public/sent_en_char/"
+            },
+            "mllib": "caffe",
+            "type": "supervised",
+            "parameters": {
+              "input": {
+                "connector": "txt",
+                "characters": true,
+                "alphabet": "abcdefghijklmnopqrstuvwxyz0123456789,;.!?'",
+                "sequence": 140
+              },
+              "mllib": {
+                "nclasses": 2,
+                "gpu": true,
+                "gpuid": 0
+              }
+            }
+          }
+        },
+        {
           "modelName": "url_ads_mini",
           "modelConfig": {
             "description": "advertizing link classification",
             "model": {
-              "repository": "/opt/platform/models/url_ads_mini/"
+              "repository": "/opt/platform/models/public/url_ads_mini/"
             },
             "mllib": "caffe",
             "type": "supervised",
@@ -167,27 +191,57 @@
     }
   },
   "imaginate": {
-    "display": {
-      "initImages": {},
-      "mode": "description",
-      "okClass": "",
-      "boundingBox": true,
-      "segmentation": false,
-      "separateSegmentation": false,
-      "segmentationColors": ["#1b9e77", "#d95f02"]
+    "default": {
+      "display": {
+        "initImages": {},
+        "mode": "description",
+        "okClass": "",
+        "boundingBox": true,
+        "segmentation": false,
+        "separateSegmentation": false,
+        "segmentationColors": ["#1b9e77", "#d95f02"]
+      },
+      "threshold": {
+        "confidence": 0.5,
+        "controls": true,
+        "controlSteps": [0.8, 0.5, 0.3]
+      },
+      "request": {
+        "objSearch": false,
+        "imgSearch": false,
+        "best": false,
+        "ctc": false,
+        "blank_label": false
+      }
     },
-    "threshold": {
-      "confidence": 0.3,
-      "controls": true,
-      "controlSteps": [0.8, 0.3, 0.1]
-    },
-    "request": {
-      "objSearch": false,
-      "imgSearch": false,
-      "best": false,
-      "ctc": false,
-      "blank_label": false
-    }
+    "services": [
+      {
+        "name": "testService",
+        "settings": {
+          "display": {
+            "initImages": {},
+            "mode": "description",
+            "okClass": "",
+            "boundingBox": true,
+            "segmentation": false,
+            "separateSegmentation": false,
+            "segmentationColors": ["#1b9e77", "#d95f02"]
+          },
+          "threshold": {
+            "confidence": 0.5,
+            "controls": true,
+            "controlSteps": [0.8, 0.5, 0.3]
+          },
+          "request": {
+            "objSearch": false,
+            "imgSearch": false,
+            "best": false,
+            "ctc": false,
+            "blank_label": false
+          }
+        }
+      }
+    ]
   },
   "gpuInfo": {
     "gpuStatServer": "http://10.10.77.61:12345",
