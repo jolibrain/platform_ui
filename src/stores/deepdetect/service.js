@@ -28,6 +28,10 @@ export default class deepdetectService {
     autoSave(this, `autosave_service_${this.serverName}_${this.settings.name}`);
   }
 
+  async serviceInfo() {
+    return await this.$reqServiceInfo();
+  }
+
   @computed
   get name() {
     return this.settings.name;
@@ -110,6 +114,10 @@ export default class deepdetectService {
       timeout,
       history
     );
+  }
+
+  $reqServiceInfo() {
+    return agent.Deepdetect.getService(this.serverSettings, this.name);
   }
 
   _initPredictRequest(settings) {
