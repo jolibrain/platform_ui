@@ -1,4 +1,4 @@
-import { observable, action } from "mobx";
+import { observable, action, computed } from "mobx";
 
 export class imaginateStore {
   @observable isLoaded = false;
@@ -23,6 +23,11 @@ export class imaginateStore {
 
   @action
   predict() {
+    this.service.predict(this.serviceSettings);
+  }
+
+  @computed
+  get serviceSettings() {
     let settings = this.settings.default;
 
     const serviceSettings = this.settings.services.some(service => {
@@ -31,7 +36,7 @@ export class imaginateStore {
 
     if (serviceSettings) settings = serviceSettings;
 
-    this.service.predict(settings);
+    return settings;
   }
 }
 

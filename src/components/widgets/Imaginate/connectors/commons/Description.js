@@ -42,12 +42,12 @@ export default class Description extends React.Component {
 
     const inputClasses = input.json.body.predictions[0].classes;
 
-    let displayFormat = store.settings.display.format;
+    let displayFormat = store.serviceSettings.display.format;
 
     if (this.props.displayFormat) {
       displayFormat = this.props.displayFormat;
     } else {
-      if (store.settings.display.boundingBox) {
+      if (store.serviceSettings.display.boundingBox) {
         displayFormat = "icons";
       }
 
@@ -142,11 +142,11 @@ export default class Description extends React.Component {
 
               // okClass settings
               if (
-                store.settings.display.okClass &&
-                store.settings.display.okClass.length > 0
+                store.serviceSettings.display.okClass &&
+                store.serviceSettings.display.okClass.length > 0
               ) {
                 styles.color =
-                  store.settings.display.okClass === category.cat
+                  store.serviceSettings.display.okClass === category.cat
                     ? "#0C0"
                     : "#C00";
               }
@@ -169,11 +169,11 @@ export default class Description extends React.Component {
 
               // okClass settings
               if (
-                store.settings.display.okClass &&
-                store.settings.display.okClass.length > 0
+                store.serviceSettings.display.okClass &&
+                store.serviceSettings.display.okClass.length > 0
               ) {
                 styles.color =
-                  store.settings.display.okClass === category.cat
+                  store.serviceSettings.display.okClass === category.cat
                     ? "#0C0"
                     : "#C00";
               }
