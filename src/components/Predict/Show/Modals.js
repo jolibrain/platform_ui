@@ -3,7 +3,7 @@ import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 import Modal from "react-bootstrap4-modal";
 
-import DeleteServiceModal from "../widgets/modals/DeleteService";
+import DeleteServiceModal from "../../widgets/modals/DeleteService";
 
 @inject("modalStore")
 @withRouter

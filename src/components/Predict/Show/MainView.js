@@ -3,7 +3,7 @@ import { Link, withRouter } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 
 import RightPanel from "./RightPanel";
-import Imaginate from "../widgets/Imaginate";
+import Imaginate from "../../widgets/Imaginate";
 
 @inject("imaginateStore")
 @inject("deepdetectStore")

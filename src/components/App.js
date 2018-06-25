@@ -4,8 +4,15 @@ import { Switch, Route, withRouter } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 
 import Home from "./Home";
-import Service from "./Service";
-import ServiceNew from "./ServiceNew";
+
+import PredictHome from "./Predict/Home";
+import PredictNew from "./Predict/New";
+import PredictShow from "./Predict/Show";
+
+import TrainingHome from "./Training/Home";
+import TrainingNew from "./Training/New";
+import TrainingShow from "./Training/Show";
+
 import GenericNotFound from "./GenericNotFound";
 
 // TODO: restore light config
@@ -64,14 +71,24 @@ export default class App extends React.Component {
           <Header />
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route exact path="/predict/new" component={ServiceNew} />
+
+            <Route exact path="/predict" component={PredictHome} />
+            <Route exact path="/predict/new" component={PredictNew} />
             <Route
               exact
               path="/predict/:serverName/:serviceName"
-              component={Service}
+              component={PredictShow}
             />
+
+            <Route exact path="/training" component={TrainingHome} />
+            <Route exact path="/training/new" component={TrainingNew} />
+            <Route
+              exact
+              path="/training/:serverName/:serviceName"
+              component={TrainingShow}
+            />
+
             <Route exact path="/404" component={GenericNotFound} />
-            <Route component={GenericNotFound} />
           </Switch>
         </div>
       );
@@ -92,16 +109,6 @@ export default class App extends React.Component {
 
       //   // Full Layout
       // } else {
-      //   return (
-      //     <div>
-      //       <Header />
-      //       <Switch>
-      //         <Route exact path="/" component={Home} />
-      //         <Route path="/predict/new" component={ServiceNew} />
-      //         <Route path="/predict/:server/:serviceName" component={Service} />
-      //       </Switch>
-      //     </div>
-      //   );
       // }
       //
     }

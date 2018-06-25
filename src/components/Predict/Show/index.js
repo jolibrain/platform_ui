@@ -9,7 +9,7 @@ import { withRouter } from "react-router-dom";
 @inject("imaginateStore")
 @withRouter
 @observer
-export default class Service extends React.Component {
+export default class PredictShow extends React.Component {
   constructor(props) {
     super(props);
 
