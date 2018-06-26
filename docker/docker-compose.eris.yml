@@ -38,6 +38,8 @@ services:
       - /data1:/data1
       - /data2:/data2
   deepdetect_private:
+    environment:
+      - CUDA_VISIBLE_DEVICES=1
     build:
       context: ../.
       dockerfile: docker/deepdetect/Dockerfile.eris
