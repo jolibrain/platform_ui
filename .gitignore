@@ -20,7 +20,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-src/styles/*.css
+src/styles/**/*.css
 
 # docker files: just keep dev setup
 script/00-install-*.sh
