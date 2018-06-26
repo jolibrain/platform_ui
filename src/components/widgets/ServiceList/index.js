@@ -35,7 +35,7 @@ export default class ServiceList extends React.Component {
   render() {
     const ddStore = this.props.deepdetectStore;
 
-    if (!ddStore.isReady || !ddStore.server || !ddStore.service) return null;
+    if (!ddStore.isReady || ddStore.servers.length === 0) return null;
 
     return (
       <ul
