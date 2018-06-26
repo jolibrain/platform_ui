@@ -52,7 +52,12 @@
   }
 }
 .main-view {
-  .serviceList {
+  .serviceList,
+  .serviceQuickCreate {
     margin-top: 20px;
+
+    .card {
+      margin: 5px;
+    }
   }
 }

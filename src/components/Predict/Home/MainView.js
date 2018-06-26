@@ -3,7 +3,8 @@ import { inject, observer } from "mobx-react";
 import { Link, withRouter } from "react-router-dom";
 
 import RightPanel from "./RightPanel";
-import ServiceList from "./ServiceList";
+import ServiceCardList from "../../widgets/ServiceCardList";
+import ServiceCardCreate from "../../widgets/ServiceCardCreate";
 
 @inject("configStore")
 @withRouter
@@ -21,7 +22,14 @@ export default class MainView extends React.Component {
             <Link to="/predict/new" className="btn btn-outline-primary">
               New Service
             </Link>
-            <ServiceList />
+            <div className="serviceList">
+              <h4>Current Predict Service</h4>
+              <ServiceCardList />
+            </div>
+            <div className="serviceCreate">
+              <h4>Available Predict Service</h4>
+              <ServiceCardCreate />
+            </div>
             <RightPanel />
           </div>
         </div>

@@ -5,7 +5,7 @@ import { Link, withRouter } from "react-router-dom";
 @inject("deepdetectStore")
 @withRouter
 @observer
-export default class ServiceList extends React.Component {
+export default class ServiceCardList extends React.Component {
   constructor(props) {
     super(props);
 
@@ -35,12 +35,11 @@ export default class ServiceList extends React.Component {
     const ddStore = this.props.deepdetectStore;
 
     return (
-      <div className="serviceList">
-        <h4>Current Predict Service</h4>
+      <div className="serviceCardList">
         {ddStore.servers.map((server, serverIndex) => {
           return server.services.map((service, serviceIndex) => {
             return (
-              <div className="card w-25">
+              <div className="card w-25" key={`${serverIndex}-${serviceIndex}`}>
                 <div className="card-body">
                   <h5 className="card-title">{service.name}</h5>
                   <p className="card-text">{service.settings.description}</p>
