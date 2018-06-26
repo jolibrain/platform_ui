@@ -12,10 +12,26 @@ export default class ServiceCardCreate extends React.Component {
     const repositories = this.props.modelRepositoriesStore.repositories;
 
     return (
-      <div className="serviceQuickCreate card-columns">
-        {repositories.map((repository, index) => {
-          return <CreateCard key={index} repository={repository} />;
-        })};
+      <div>
+        <div className="serviceQuickCreate card-columns">
+          {repositories
+            .filter(repository => {
+              return repository.label.indexOf("/public/") !== -1;
+            })
+            .map((repository, index) => {
+              return <CreateCard key={index} repository={repository} />;
+            })}
+        </div>
+        <hr />
+        <div className="serviceQuickCreate card-columns">
+          {repositories
+            .filter(repository => {
+              return repository.label.indexOf("/public/") === -1;
+            })
+            .map((repository, index) => {
+              return <CreateCard key={index} repository={repository} />;
+            })}
+        </div>
       </div>
     );
   }

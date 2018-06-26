@@ -47,17 +47,25 @@ export default class CreateCard extends React.Component {
   }
 
   handleClickCreate() {
-    if (!this.validateBeforeSubmit()) {
+    const repository = this.props.repository;
+
+    if (!repository.jsonConfig) {
+      this.props.history.push({
+        pathname: "/predict/new",
+        state: { repository: repository }
+      });
       return null;
     }
 
-    const repository = this.props.repository;
+    if (!this.validateBeforeSubmit()) {
+      return null;
+    }
 
     let serviceName = this.serviceNameRef.current.value;
 
     if (serviceName.length === 0) serviceName = repository.label;
 
-    const serviceData = JSON.parse(repository.jsonConfig);
+    const serviceData = repository.jsonConfig;
     const ddStore = this.props.deepdetectStore;
 
     this.setState({ creatingService: true });
@@ -105,12 +113,11 @@ export default class CreateCard extends React.Component {
       <div className="card">
         <div className="card-body">
           <span className={badgeClasses}>{badgeText}</span>
-          <h5 className="card-title">{name}</h5>
           <input
             type="text"
             className="form-control mb-2"
             id="inlineFormInputName"
-            placeholder={`default name: ${name}`}
+            defaultValue={name}
             ref={this.serviceNameRef}
           />
           <button

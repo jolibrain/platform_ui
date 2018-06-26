@@ -49,6 +49,33 @@ export default class ServiceNew extends React.Component {
     this.handleCopyClipboard = this.handleCopyClipboard.bind(this);
   }
 
+  componentWillMount() {
+    if (this.props.location.state && this.props.location.state.repository) {
+      const repository = this.props.modelRepositoriesStore.repositories.find(
+        r => r.modelName === this.props.location.state.repository.modelName
+      );
+
+      const ddStore = this.props.deepdetectStore;
+
+      let defaultConfig = ddStore.settings.services.defaultConfig.find(
+        config => {
+          return config.modelName === repository.modelName;
+        }
+      );
+
+      if (defaultConfig) {
+        defaultConfig.modelConfig.model.repository = repository.label;
+        this.setState({
+          jsonConfig: JSON.stringify(defaultConfig.modelConfig, null, 1)
+        });
+      } else {
+        let jsonConfig = JSON.parse(this.state.jsonConfig);
+        jsonConfig.model.repository = repository.label;
+        this.setState({ jsonConfig: JSON.stringify(jsonConfig, null, 1) });
+      }
+    }
+  }
+
   handleInputChange() {
     const typeahead = this.typeahead.getInstance();
 
@@ -142,7 +169,7 @@ export default class ServiceNew extends React.Component {
     this.setState({ creatingService: true });
 
     ddStore.newService(serviceName, serviceData, resp => {
-      if (resp instanceof Error || resp.status.code === 500) {
+      if (resp instanceof Error || resp.status.code !== 201) {
         this.setState({
           creatingService: false,
           errors: [resp.message || resp.status.msg]
@@ -227,7 +254,7 @@ export default class ServiceNew extends React.Component {
                 id="inlineFormInputDescription"
                 placeholder="Service Description"
                 ref={this.serviceDescriptionRef}
-                onChange={this.handleInputChange}
+                onKeyPress={this.handleInputChange}
               />
             </div>
 
@@ -241,6 +268,18 @@ export default class ServiceNew extends React.Component {
                 options={toJS(this.props.modelRepositoriesStore.repositories)}
                 placeholder="Model Repository location"
                 onChange={this.handleInputChange}
+                defaultSelected={
+                  this.props.location.state &&
+                  this.props.location.state.repository
+                    ? [
+                        this.props.modelRepositoriesStore.repositories.find(
+                          r =>
+                            r.modelName ===
+                            this.props.location.state.repository.modelName
+                        )
+                      ]
+                    : []
+                }
                 renderMenu={(results, menuProps) => (
                   <Menu {...menuProps}>
                     {results.map((result, index) => {

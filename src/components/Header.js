@@ -53,6 +53,11 @@ class Header extends React.Component {
                     <i className="fas fa-cube" />&nbsp; Predict
                   </Link>
                 </li>
+                <li>
+                  <Link to="/training" style={{ textDecoration: "none" }}>
+                    <i className="fas fa-braille" />&nbsp; Training
+                  </Link>
+                </li>
               </ul>
             </div>
 

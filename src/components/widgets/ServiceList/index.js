@@ -43,37 +43,52 @@ export default class ServiceList extends React.Component {
         key={`serviceList-${ddStore.refresh}`}
       >
         {ddStore.servers.map((server, serverIndex) => {
-          return server.services.map((service, serviceIndex) => {
-            const isActive =
-              ddStore.currentServerIndex === serverIndex &&
-              ddStore.server.currentServiceIndex === serviceIndex;
+          return server.services
+            .filter(service => {
+              if (this.props.only) {
+                switch (this.props.only) {
+                  case "predict":
+                    return !service.settings.training;
+                  case "training":
+                    return service.settings.training;
+                  default:
+                    return true;
+                }
+              } else {
+                return true;
+              }
+            })
+            .map((service, serviceIndex) => {
+              const isActive =
+                ddStore.currentServerIndex === serverIndex &&
+                ddStore.server.currentServiceIndex === serviceIndex;
 
-            return (
-              <li
-                key={`service-item-${serverIndex}-${serviceIndex}`}
-                className={isActive ? "active" : ""}
-              >
-                <Link
-                  key={`service-link-${serverIndex}-${serviceIndex}`}
-                  to={`/predict/${server.name}/${service.name}`}
+              return (
+                <li
+                  key={`service-item-${serverIndex}-${serviceIndex}`}
+                  className={isActive ? "active" : ""}
                 >
-                  <span className="nav-item-name">
-                    {service.name}
-                    <span className="badge badge-secondary float-right">
-                      {server.name}
-                    </span>
-                    {service.training ? (
-                      <span className="badge badge-warning float-right badge-training">
-                        Training
+                  <Link
+                    key={`service-link-${serverIndex}-${serviceIndex}`}
+                    to={`/predict/${server.name}/${service.name}`}
+                  >
+                    <span className="nav-item-name">
+                      {service.name}
+                      <span className="badge badge-secondary float-right">
+                        {server.name}
                       </span>
-                    ) : (
-                      ""
-                    )}
-                  </span>
-                </Link>
-              </li>
-            );
-          });
+                      {service.training ? (
+                        <span className="badge badge-warning float-right badge-training">
+                          Training
+                        </span>
+                      ) : (
+                        ""
+                      )}
+                    </span>
+                  </Link>
+                </li>
+              );
+            });
         })}
       </ul>
     );

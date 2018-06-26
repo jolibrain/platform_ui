@@ -12,6 +12,10 @@ export class modelRepositoriesStore {
     this.load();
   }
 
+  $reqJsonConfig(path) {
+    return agent.Webserver.getFile(path + "config.json");
+  }
+
   $reqPublic() {
     return agent.Webserver.listFolders(this.settings.nginxPath.public);
   }
@@ -20,29 +24,35 @@ export class modelRepositoriesStore {
     return agent.Webserver.listFolders(this.settings.nginxPath.private);
   }
 
+  async _addRepository(repo, isPublic = true) {
+    const systemPath = isPublic
+      ? this.settings.systemPath.public + repo
+      : this.settings.systemPath.private + repo;
+
+    const nginxPath = isPublic
+      ? this.settings.nginxPath.public + repo
+      : this.settings.nginxPath.private + repo;
+
+    const jsonConfig = await this.$reqJsonConfig(nginxPath);
+
+    this.repositories.push({
+      id: this.repositories.length,
+      modelName: repo.replace("/", ""),
+      label: systemPath,
+      isPublic: isPublic,
+      jsonConfig: jsonConfig
+    });
+  }
+
   @action
   load() {
     this.$reqPublic().then(
       action(publicRepo => {
-        this.repositories = publicRepo.map((repo, index) => {
-          return {
-            id: index,
-            modelName: repo.replace("/", ""),
-            label: this.settings.systemPath.public + repo,
-            isPublic: true
-          };
-        });
+        publicRepo.forEach(repo => this._addRepository(repo));
 
         this.$reqPrivate().then(
           action(privateRepo => {
-            privateRepo.forEach((repo, index) => {
-              this.repositories.push({
-                id: index,
-                modelName: repo.replace("/", ""),
-                label: this.settings.systemPath.private + repo,
-                isPublic: false
-              });
-            });
+            privateRepo.forEach(repo => this._addRepository(repo, false));
             this.isLoaded = true;
           })
         );

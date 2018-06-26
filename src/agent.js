@@ -116,7 +116,13 @@ const Webserver = {
         }
 
         return files.slice(0, 40);
-      })
+      }),
+  getFile: path =>
+    superagent
+      .get(path)
+      .end(handleErrors)
+      .then(responseBody)
+      .catch(() => {})
 };
 
 export default {
