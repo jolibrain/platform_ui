@@ -33,7 +33,14 @@ export class modelRepositoriesStore {
       ? this.settings.nginxPath.public + repo
       : this.settings.nginxPath.private + repo;
 
-    const jsonConfig = await this.$reqJsonConfig(nginxPath);
+    let jsonConfig = null;
+
+    try {
+      jsonConfig = await this.$reqJsonConfig(nginxPath);
+      // TODO : remove this line when config.json editable
+      jsonConfig.parameters.mllib.gpuid = 0;
+      console.log(jsonConfig);
+    } catch (e) {}
 
     this.repositories.push({
       id: this.repositories.length,

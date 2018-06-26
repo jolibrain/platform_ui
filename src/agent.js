@@ -121,8 +121,7 @@ const Webserver = {
     superagent
       .get(path)
       .end(handleErrors)
-      .then(responseBody)
-      .catch(() => {})
+      .then(res => JSON.parse(res.text))
 };
 
 export default {

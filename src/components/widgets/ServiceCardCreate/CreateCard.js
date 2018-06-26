@@ -65,13 +65,15 @@ export default class CreateCard extends React.Component {
 
     if (serviceName.length === 0) serviceName = repository.label;
 
+    serviceName = serviceName.toLowerCase();
+
     const serviceData = repository.jsonConfig;
     const ddStore = this.props.deepdetectStore;
 
     this.setState({ creatingService: true });
 
     ddStore.newService(serviceName, serviceData, resp => {
-      if (resp instanceof Error || resp.status.code === 500) {
+      if (resp instanceof Error || resp.status.code !== 201) {
         this.setState({
           creatingService: false,
           errors: [resp.message || resp.status.msg]
@@ -84,6 +86,7 @@ export default class CreateCard extends React.Component {
 
         ddStore.setService(serviceName);
 
+        console.log(`/predict/private/${serviceName}`);
         this.props.history.push(`/predict/private/${serviceName}`);
       }
     });
@@ -120,6 +123,21 @@ export default class CreateCard extends React.Component {
             defaultValue={name}
             ref={this.serviceNameRef}
           />
+
+          <div
+            className="alert alert-danger"
+            role="alert"
+            style={{
+              marginTop: "10px",
+              display: this.state.errors.length > 0 ? "" : "none"
+            }}
+          >
+            <b>Error while creating service</b>
+            <ul>
+              {this.state.errors.map((error, i) => <li key={i}>{error}</li>)}
+            </ul>
+          </div>
+
           <button
             className="btn btn-outline-primary"
             onClick={this.handleClickCreate.bind(this, name)}
