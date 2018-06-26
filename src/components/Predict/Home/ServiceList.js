@@ -46,7 +46,7 @@ export default class ServiceList extends React.Component {
                   <p className="card-text">{service.settings.description}</p>
                   <Link
                     to={`/predict/${server.name}/${service.name}`}
-                    className="btn btn-outline-primary"
+                    className="btn btn-outline-primary float-right"
                   >
                     Predict
                   </Link>

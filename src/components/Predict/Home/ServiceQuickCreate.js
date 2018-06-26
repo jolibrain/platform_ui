@@ -32,31 +32,24 @@ export default class ServiceList extends React.Component {
   }
 
   render() {
-    const { homeComponent } = this.props.configStore;
     const ddStore = this.props.deepdetectStore;
 
-    // list currently running services in the same array
-    let currentServices = [].concat.apply(
-      [],
-      ddStore.servers.map(server => server.services)
-    );
-
     return (
-      <div>
-        <h2>Current Predict Service</h2>
+      <div className="serviceList">
+        <h4>Current Predict Service</h4>
         {ddStore.servers.map((server, serverIndex) => {
           return server.services.map((service, serviceIndex) => {
             return (
-              <div className="card" style="width: 18rem;">
+              <div className="card w-25">
                 <div className="card-body">
                   <h5 className="card-title">{service.name}</h5>
                   <p className="card-text">{service.settings.description}</p>
-                  <a href="#" className="btn btn-primary">
+                  <Link
+                    to={`/predict/${server.name}/${service.name}`}
+                    className="btn btn-outline-primary float-right"
+                  >
                     Predict
-                  </a>
-                  <a href="#" className="btn btn-warning">
-                    Delete
-                  </a>
+                  </Link>
                 </div>
               </div>
             );
