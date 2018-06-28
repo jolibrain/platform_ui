@@ -8,7 +8,12 @@ import { Controlled as CodeMirror } from "react-codemirror2";
 import "codemirror/lib/codemirror.css";
 import "codemirror/mode/javascript/javascript";
 
-import { Typeahead, Menu, MenuItem } from "react-bootstrap-typeahead";
+import {
+  asyncContainer,
+  Typeahead,
+  Menu,
+  MenuItem
+} from "react-bootstrap-typeahead";
 
 import "react-bootstrap-typeahead/css/Typeahead.css";
 import "react-bootstrap-typeahead/css/Typeahead-bs4.css";
@@ -31,6 +36,8 @@ export default class ServiceNew extends React.Component {
 
     this.handleCurlChange = this.handleCurlChange.bind(this);
 
+    this.asyncModelLocation = this.asyncModelLocation.bind(this);
+
     const ddStore = this.props.deepdetectStore;
 
     let defaultConfig = ddStore.settings.services.defaultConfig.find(config => {
@@ -43,7 +50,8 @@ export default class ServiceNew extends React.Component {
       defaultConfig: defaultConfig,
       jsonConfig: JSON.stringify(defaultConfig.modelConfig, null, 1),
       copied: false,
-      errors: []
+      errors: [],
+      selectedLocation: []
     };
 
     this.handleCopyClipboard = this.handleCopyClipboard.bind(this);
@@ -54,6 +62,8 @@ export default class ServiceNew extends React.Component {
       const repository = this.props.modelRepositoriesStore.repositories.find(
         r => r.modelName === this.props.location.state.repository.modelName
       );
+
+      this.setState({ selectedLocation: repository ? [repository] : [] });
 
       const ddStore = this.props.deepdetectStore;
 
@@ -82,6 +92,11 @@ export default class ServiceNew extends React.Component {
     const serviceName = this.serviceNameRef.current.value;
     const serviceDescription = this.serviceDescriptionRef.current.value;
     const serviceModelLocation = typeahead.getInput().value;
+
+    const repository = this.props.modelRepositoriesStore.repositories.find(
+      r => r.label === serviceModelLocation
+    );
+    this.setState({ selectedLocation: repository ? [repository] : [] });
 
     let jsonConfig = JSON.parse(this.state.jsonConfig);
 
@@ -211,6 +226,10 @@ export default class ServiceNew extends React.Component {
     this.setState({ jsonConfig: jsonConfig });
   }
 
+  asyncModelLocation() {
+    this.props.modelRepositoriesStore.load();
+  }
+
   render() {
     const store = this.props.deepdetectStore;
 
@@ -221,6 +240,7 @@ export default class ServiceNew extends React.Component {
     }/services/${this.state.serviceName}' -d '${this.state.jsonConfig}'`;
 
     const copiedText = this.state.copied ? "Copied!" : "Copy to clipboard";
+    const AsyncTypeahead = asyncContainer(Typeahead);
 
     return (
       <div className="widget-service-new">
@@ -262,24 +282,15 @@ export default class ServiceNew extends React.Component {
               <label className="sr-only" htmlFor="inlineFormInputModelLocation">
                 Model Location
               </label>
-              <Typeahead
+              <AsyncTypeahead
                 id="inlineFormInputModelLocation"
                 ref={typeahead => (this.typeahead = typeahead)}
                 options={toJS(this.props.modelRepositoriesStore.repositories)}
                 placeholder="Model Repository location"
                 onChange={this.handleInputChange}
-                defaultSelected={
-                  this.props.location.state &&
-                  this.props.location.state.repository
-                    ? [
-                        this.props.modelRepositoriesStore.repositories.find(
-                          r =>
-                            r.modelName ===
-                            this.props.location.state.repository.modelName
-                        )
-                      ]
-                    : []
-                }
+                onSearch={this.asyncModelLocation}
+                isLoading={this.props.modelRepositoriesStore.isLoading}
+                defaultSelected={this.state.selectedLocation}
                 renderMenu={(results, menuProps) => (
                   <Menu {...menuProps}>
                     {results.map((result, index) => {

@@ -2,7 +2,7 @@ import { observable, action } from "mobx";
 import agent from "../agent";
 
 export class modelRepositoriesStore {
-  @observable isLoaded = false;
+  @observable isLoading = false;
   @observable settings = {};
   @observable repositories = [];
 
@@ -46,6 +46,7 @@ export class modelRepositoriesStore {
       id: this.repositories.length,
       modelName: repo.replace("/", ""),
       label: systemPath,
+      labelKey: `item-${this.repositories.length}`,
       isPublic: isPublic,
       jsonConfig: jsonConfig
     });
@@ -53,14 +54,31 @@ export class modelRepositoriesStore {
 
   @action
   load() {
+    this.isLoading = true;
     this.$reqPublic().then(
       action(publicRepo => {
-        publicRepo.forEach(repo => this._addRepository(repo));
+        publicRepo
+          .filter(repo => {
+            return !this.repositories
+              .map(r => r.modelName)
+              .some(name => name === repo.replace("/", ""));
+          })
+          .forEach(repo => {
+            this._addRepository(repo);
+          });
 
         this.$reqPrivate().then(
           action(privateRepo => {
-            privateRepo.forEach(repo => this._addRepository(repo, false));
-            this.isLoaded = true;
+            privateRepo
+              .filter(repo => {
+                return !this.repositories
+                  .map(r => r.modelName)
+                  .some(name => name === repo.replace("/", ""));
+              })
+              .forEach(repo => {
+                this._addRepository(repo, false);
+              });
+            this.isLoading = false;
           })
         );
       })

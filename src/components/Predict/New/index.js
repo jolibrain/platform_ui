@@ -11,11 +11,7 @@ import { withRouter } from "react-router-dom";
 @observer
 export default class PredictNew extends React.Component {
   render() {
-    const {
-      isLoaded,
-      repositories,
-      settings
-    } = this.props.modelRepositoriesStore;
+    const { repositories, settings } = this.props.modelRepositoriesStore;
 
     const { services } = this.props.deepdetectStore.settings;
 
@@ -29,7 +25,7 @@ export default class PredictNew extends React.Component {
           </div>
         </div>
       );
-    } else if (!isLoaded || typeof repositories === "undefined") {
+    } else if (typeof repositories === "undefined") {
       return (
         <div className="layout-page page-gutter page-with-contextual-sidebar right-sidebar-collapsed page-with-icon-sidebar service-new">
           <div className="loading alert alert-primary" role="alert">
@@ -41,7 +37,7 @@ export default class PredictNew extends React.Component {
       return (
         <div className="layout-page page-gutter page-with-contextual-sidebar right-sidebar-collapsed page-with-icon-sidebar service-new">
           <div className="loading alert alert-danger" role="alert">
-            <i class="fas fa-times" /> No models repository found in :{" "}
+            <i className="fas fa-times" /> No models repository found in :{" "}
             <code>{settings.systemPath.public}</code> or{" "}
             <code>{settings.systemPath.public}</code>
           </div>
