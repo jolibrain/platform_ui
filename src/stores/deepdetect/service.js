@@ -82,6 +82,23 @@ export default class deepdetectService {
   }
 
   @action
+  clearAllInputs() {
+    this.inputs = [];
+    this.selectedInputIndex = -1;
+  }
+
+  @action
+  clearInput(index) {
+    if (index > -1 && this.inputs.length > index - 1) {
+      this.inputs.splice(index, 1);
+    }
+
+    if (this.inputs.length === 0) {
+      this.selectedInputIndex = -1;
+    }
+  }
+
+  @action
   removeStore() {
     store.remove(`autosave_service_${this.serverName}_${this.name}`);
   }

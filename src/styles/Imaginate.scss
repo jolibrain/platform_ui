@@ -226,6 +226,23 @@
           padding: 5px;
           width: 80px;
         }
+
+        .deleteImg {
+          opacity: 0;
+        }
+      }
+
+      .slide:hover {
+        .deleteImg {
+          opacity: 1;
+          position: relative;
+          top: 5px;
+          right: 15px;
+          color: #dd0000;
+          float: right;
+          cursor: pointer;
+          background: white;
+        }
       }
     }
   }

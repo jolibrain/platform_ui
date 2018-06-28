@@ -8,12 +8,24 @@ export default class ImageList extends React.Component {
     super(props);
 
     this.selectInput = this.selectInput.bind(this);
+    this.handleClearAll = this.handleClearAll.bind(this);
+    this.handleClearInput = this.handleClearInput.bind(this);
   }
 
   selectInput(index) {
     const store = this.props.imaginateStore;
     store.service.selectedInputIndex = index;
     store.predict();
+  }
+
+  handleClearAll() {
+    const { service } = this.props.imaginateStore;
+    service.clearAllInputs();
+  }
+
+  handleClearInput(index) {
+    const { service } = this.props.imaginateStore;
+    service.clearInput(index);
   }
 
   render() {
@@ -39,6 +51,10 @@ export default class ImageList extends React.Component {
                 }
                 alt=""
                 onClick={this.selectInput.bind(this, inputIndex)}
+              />
+              <i
+                onClick={this.handleClearInput.bind(this, inputIndex)}
+                className="deleteImg fas fa-times-circle"
               />
             </div>
           );
