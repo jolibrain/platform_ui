@@ -20,6 +20,13 @@
           "path": "/api/public",
           "isWritable": false
         }
+      },
+      {
+        "name": "training",
+        "settings": {
+          "path": "/api/training",
+          "isWritable": false
+        }
       }
     ],
     "services": {

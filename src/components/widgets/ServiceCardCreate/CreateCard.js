@@ -124,6 +124,14 @@ export default class CreateCard extends React.Component {
             ref={this.serviceNameRef}
           />
 
+          {repository.jsonConfig &&
+          repository.jsonConfig.description &&
+          repository.jsonConfig.description.length > 0 ? (
+            <p>{repository.jsonConfig.description}</p>
+          ) : (
+            ""
+          )}
+
           <div
             className="alert alert-danger"
             role="alert"
