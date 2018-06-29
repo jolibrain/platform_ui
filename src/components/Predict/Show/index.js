@@ -1,4 +1,4 @@
-import LeftPanel from "./LeftPanel";
+import LeftPanel from "../commons/LeftPanel";
 import MainView from "./MainView";
 import Modals from "./Modals";
 import React from "react";
