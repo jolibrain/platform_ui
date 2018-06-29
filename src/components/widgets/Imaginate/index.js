@@ -33,7 +33,7 @@ export default class Imaginate extends React.Component {
   render() {
     const store = this.props.imaginateStore;
 
-    if (!store.isLoaded || !store.service || this.state.connector) return null;
+    if (!store.service || this.state.connector) return null;
 
     let connector = null;
 

@@ -8,12 +8,7 @@ import { Controlled as CodeMirror } from "react-codemirror2";
 import "codemirror/lib/codemirror.css";
 import "codemirror/mode/javascript/javascript";
 
-import {
-  asyncContainer,
-  Typeahead,
-  Menu,
-  MenuItem
-} from "react-bootstrap-typeahead";
+import { Typeahead, Menu, MenuItem } from "react-bootstrap-typeahead";
 
 import "react-bootstrap-typeahead/css/Typeahead.css";
 import "react-bootstrap-typeahead/css/Typeahead-bs4.css";
@@ -35,8 +30,6 @@ export default class ServiceNew extends React.Component {
     this.handleInputChange = this.handleInputChange.bind(this);
 
     this.handleCurlChange = this.handleCurlChange.bind(this);
-
-    this.asyncModelLocation = this.asyncModelLocation.bind(this);
 
     const ddStore = this.props.deepdetectStore;
 
@@ -87,6 +80,7 @@ export default class ServiceNew extends React.Component {
   }
 
   handleInputChange() {
+    this.props.modelRepositoriesStore.load();
     const typeahead = this.typeahead.getInstance();
 
     const serviceName = this.serviceNameRef.current.value;
@@ -226,10 +220,6 @@ export default class ServiceNew extends React.Component {
     this.setState({ jsonConfig: jsonConfig });
   }
 
-  asyncModelLocation() {
-    this.props.modelRepositoriesStore.load();
-  }
-
   render() {
     const store = this.props.deepdetectStore;
 
@@ -240,7 +230,6 @@ export default class ServiceNew extends React.Component {
     }/services/${this.state.serviceName}' -d '${this.state.jsonConfig}'`;
 
     const copiedText = this.state.copied ? "Copied!" : "Copy to clipboard";
-    const AsyncTypeahead = asyncContainer(Typeahead);
 
     return (
       <div className="widget-service-new">
@@ -282,14 +271,12 @@ export default class ServiceNew extends React.Component {
               <label className="sr-only" htmlFor="inlineFormInputModelLocation">
                 Model Location
               </label>
-              <AsyncTypeahead
+              <Typeahead
                 id="inlineFormInputModelLocation"
                 ref={typeahead => (this.typeahead = typeahead)}
                 options={toJS(this.props.modelRepositoriesStore.repositories)}
                 placeholder="Model Repository location"
                 onChange={this.handleInputChange}
-                onSearch={this.asyncModelLocation}
-                isLoading={this.props.modelRepositoriesStore.isLoading}
                 defaultSelected={this.state.selectedLocation}
                 renderMenu={(results, menuProps) => (
                   <Menu {...menuProps}>

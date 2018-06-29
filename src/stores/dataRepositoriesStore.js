@@ -2,7 +2,7 @@ import { observable, action } from "mobx";
 import agent from "../agent";
 
 export class dataRepositoriesStore {
-  @observable isLoaded = false;
+  @observable isLoading = false;
   @observable settings = {};
   @observable repositories = [];
 
@@ -18,6 +18,7 @@ export class dataRepositoriesStore {
 
   @action
   load() {
+    this.isLoading = true;
     this.$req().then(
       action(publicRepo => {
         this.repositories = publicRepo.map((repo, index) => {
@@ -27,7 +28,7 @@ export class dataRepositoriesStore {
             label: this.settings.systemPath + repo
           };
         });
-        this.isLoaded = true;
+        this.isLoading = false;
       })
     );
   }

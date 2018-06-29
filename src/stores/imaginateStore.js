@@ -1,7 +1,6 @@
 import { observable, action, computed } from "mobx";
 
 export class imaginateStore {
-  @observable isLoaded = false;
   @observable settings = {};
 
   @observable server = null;
@@ -10,7 +9,6 @@ export class imaginateStore {
   @action
   setup(configStore) {
     this.settings = configStore.imaginate;
-    this.isLoaded = true;
   }
 
   @action

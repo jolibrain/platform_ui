@@ -20,7 +20,8 @@ export default class InputForm extends React.Component {
       availableMethods: [
         { id: 0, label: "Image URL" },
         { id: 1, label: "Path" }
-      ]
+      ],
+      selectedData: []
     };
 
     this.inputRef = React.createRef();
@@ -37,10 +38,16 @@ export default class InputForm extends React.Component {
   }
 
   handleInputChange() {
+    this.props.dataRepositoriesStore.load();
     const typeahead = this.typeahead.getInstance();
-    const selected = typeahead.state.selected[0];
+    const selected = typeahead.getInput().value;
 
     if (typeof selected !== "undefined") {
+      const repository = this.props.dataRepositoriesStore.repositories.find(
+        r => r.label === selected.label
+      );
+      this.setState({ selectedData: repository ? [repository] : [] });
+
       const {
         nginxPath,
         systemPath
