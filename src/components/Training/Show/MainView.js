@@ -11,11 +11,11 @@ import RightPanel from "../commons/RightPanel";
 export default class Training extends React.Component {
   constructor(props) {
     super(props);
-    this.openDeleteServiceModal = this.openDeleteServiceModal.bind(this);
+    this.openStopTrainingModal = this.openStopTrainingModal.bind(this);
   }
 
-  openDeleteServiceModal() {
-    this.props.modalStore.setVisible("deleteService");
+  openStopTrainingModal() {
+    this.props.modalStore.setVisible("stopTraining");
   }
 
   render() {
@@ -45,22 +45,13 @@ export default class Training extends React.Component {
               className="nav navbar-nav ml-auto"
               style={{ flexDirection: "row" }}
             >
-              {server.settings.isWritable ? (
-                <li className="nav-item">
-                  <button
-                    className="btn btn-outline-danger"
-                    onClick={this.openDeleteServiceModal}
-                  >
-                    Delete Service
-                  </button>
-                </li>
-              ) : (
-                ""
-              )}
               <li className="nav-item">
-                <Link to="/training/new" className="btn btn-outline-primary">
-                  New Service
-                </Link>
+                <button
+                  className="btn btn-outline-danger"
+                  onClick={this.openStopTrainingModal}
+                >
+                  Stop training
+                </button>
               </li>
             </ul>
           </nav>

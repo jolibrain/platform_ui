@@ -73,6 +73,10 @@ const Deepdetect = {
   getTrain: (settings, serviceName, job = 1, timeout = 0, history = false) => {
     const dd = new DD(settings);
     return dd.getTrain(serviceName, job, timeout, history);
+  },
+  stopTraining: (settings, serviceName) => {
+    const dd = new DD(settings);
+    return dd.deleteTrain(serviceName);
   }
 };
 

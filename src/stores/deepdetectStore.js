@@ -110,6 +110,12 @@ export class deepdetectStore {
     this.server.deleteService(callback);
     this.loadServices();
   }
+
+  @action
+  stopTraining(callback) {
+    this.service.stopTraining(callback);
+    this.loadServices();
+  }
 }
 
 export default new deepdetectStore();

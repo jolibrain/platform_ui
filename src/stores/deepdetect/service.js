@@ -112,6 +112,13 @@ export default class deepdetectService {
     this._predictRequest(widgetSettings);
   }
 
+  @action
+  stopTraining(callback) {
+    if (this.settings.training) {
+      this.$reqServiceInfo().then(callback);
+    }
+  }
+
   $reqImgFromPath(path) {
     return agent.Webserver.listFiles(path);
   }
@@ -135,6 +142,10 @@ export default class deepdetectService {
 
   $reqServiceInfo() {
     return agent.Deepdetect.getService(this.serverSettings, this.name);
+  }
+
+  $reqStopTraining() {
+    return agent.Deepdetect.stopTraining(this.serverSettings, this.name);
   }
 
   _initPredictRequest(settings) {

@@ -3,7 +3,7 @@ import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 import Modal from "react-bootstrap4-modal";
 
-import DeleteServiceModal from "../../widgets/modals/DeleteService";
+import StopTrainingModal from "../../widgets/modals/StopTrainingModal";
 
 @inject("modalStore")
 @withRouter
@@ -22,16 +22,16 @@ export default class Modals extends React.Component {
 
   render() {
     const store = this.props.modalStore;
-    const modal = store.getModal("deleteService");
+    const modal = store.getModal("stopTraining");
 
     if (!modal.visible) return null;
 
     return (
       <Modal
         visible={modal.visible}
-        onClickBackdrop={this.modalBackdropClicked.bind(this, "deleteService")}
+        onClickBackdrop={this.modalBackdropClicked.bind(this, "stopTraining")}
       >
-        <DeleteServiceModal />
+        <StopTrainingModal />
       </Modal>
     );
   }
