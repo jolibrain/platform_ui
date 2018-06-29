@@ -1,4 +1,4 @@
-import LeftPanel from "./LeftPanel";
+import LeftPanel from "../commons/LeftPanel";
 import MainView from "./MainView";
 import React from "react";
 import { inject, observer } from "mobx-react";

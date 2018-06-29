@@ -63,6 +63,7 @@ export default class ServiceList extends React.Component {
                 ddStore.currentServerIndex === serverIndex &&
                 ddStore.server.currentServiceIndex === serviceIndex;
 
+              console.log(service.training);
               return (
                 <li
                   key={`service-item-${serverIndex}-${serviceIndex}`}
@@ -70,20 +71,15 @@ export default class ServiceList extends React.Component {
                 >
                   <Link
                     key={`service-link-${serverIndex}-${serviceIndex}`}
-                    to={`/predict/${server.name}/${service.name}`}
+                    to={`/${
+                      service.settings.training ? "training" : "predict"
+                    }/${server.name}/${service.name}`}
                   >
                     <span className="nav-item-name">
                       {service.name}
                       <span className="badge badge-secondary float-right">
                         {server.name}
                       </span>
-                      {service.training ? (
-                        <span className="badge badge-warning float-right badge-training">
-                          Training
-                        </span>
-                      ) : (
-                        ""
-                      )}
                     </span>
                   </Link>
                 </li>

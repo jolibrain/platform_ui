@@ -2,7 +2,7 @@ import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 
-import RightPanel from "./RightPanel";
+import RightPanel from "../commons/RightPanel";
 
 @inject("deepdetectStore")
 @inject("modalStore")
