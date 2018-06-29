@@ -5,7 +5,7 @@ import Header from "./Header";
 
 import CurlCommand from "./CurlCommand";
 import JsonResponse from "./JsonResponse";
-import PythonCode from "./PythonCode";
+import Code from "./Code";
 
 @inject("imaginateStore")
 @observer
@@ -44,8 +44,8 @@ export default class CardCommands extends React.Component {
       case "json":
         cardBody = <JsonResponse isError={json.status.code === 500} />;
         break;
-      case "python":
-        cardBody = <PythonCode />;
+      case "code":
+        cardBody = <Code />;
         break;
     }
 

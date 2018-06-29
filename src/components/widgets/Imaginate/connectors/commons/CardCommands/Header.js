@@ -47,11 +47,11 @@ export default class Header extends React.Component {
           <li className="nav-item">
             <a
               className={
-                this.props.tab === "python" ? "nav-link active" : "nav-link"
+                this.props.tab === "code" ? "nav-link active" : "nav-link"
               }
-              onClick={this.props.onTabClick.bind(this, "python")}
+              onClick={this.props.onTabClick.bind(this, "code")}
             >
-              Python
+              Code
             </a>
           </li>
         </ul>
