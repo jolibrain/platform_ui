@@ -2,7 +2,7 @@ import React from "react";
 import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
-import RightPanel from "./RightPanel";
+import RightPanel from "../commons/RightPanel";
 import Form from "./Form";
 
 @inject("commonStore")

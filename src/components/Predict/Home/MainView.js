@@ -2,7 +2,7 @@ import React from "react";
 import { observer } from "mobx-react";
 import { Link, withRouter } from "react-router-dom";
 
-import RightPanel from "./RightPanel";
+import RightPanel from "../commons/RightPanel";
 import ServiceCardList from "../../widgets/ServiceCardList";
 import ServiceCardCreate from "../../widgets/ServiceCardCreate";
 
