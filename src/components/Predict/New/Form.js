@@ -22,11 +22,16 @@ import "react-bootstrap-typeahead/css/Typeahead-bs4.css";
 export default class ServiceNew extends React.Component {
   constructor(props) {
     super(props);
-    this.serviceNameRef = React.createRef();
-    this.serviceDescriptionRef = React.createRef();
 
     this.validateBeforeSubmit = this.validateBeforeSubmit.bind(this);
     this.submitService = this.submitService.bind(this);
+
+    this.handleInputServiceNameChange = this.handleInputServiceNameChange.bind(
+      this
+    );
+    this.handleInputDescriptionChange = this.handleInputDescriptionChange.bind(
+      this
+    );
     this.handleInputChange = this.handleInputChange.bind(this);
 
     this.handleCurlChange = this.handleCurlChange.bind(this);
@@ -39,7 +44,8 @@ export default class ServiceNew extends React.Component {
 
     this.state = {
       creatingService: false,
-      serviceName: "PLEASE_DEFINE",
+      serviceName: "",
+      description: "",
       defaultConfig: defaultConfig,
       jsonConfig: JSON.stringify(defaultConfig.modelConfig, null, 1),
       copied: false,
@@ -79,11 +85,27 @@ export default class ServiceNew extends React.Component {
     }
   }
 
+  handleInputServiceNameChange(evt) {
+    this.setState({ serviceName: evt.target.value });
+  }
+
+  handleInputDescriptionChange(evt) {
+    const description = evt.target.value;
+
+    let jsonConfig = JSON.parse(this.state.jsonConfig);
+
+    if (description.length > 0) jsonConfig.description = description;
+
+    this.setState({
+      description: description,
+      jsonConfig: JSON.stringify(jsonConfig, null, 1)
+    });
+  }
+
   handleInputChange() {
     this.props.modelRepositoriesStore.load();
     const typeahead = this.typeahead.getInstance();
 
-    const serviceName = this.serviceNameRef.current.value;
     const serviceDescription = this.serviceDescriptionRef.current.value;
     const serviceModelLocation = typeahead.getInput().value;
 
@@ -113,10 +135,8 @@ export default class ServiceNew extends React.Component {
       }
     }
 
-    if (serviceName.length > 0) this.setState({ serviceName: serviceName });
-
-    if (serviceDescription.length > 0)
-      jsonConfig.description = serviceDescription;
+    if (this.state.description.length > 0)
+      jsonConfig.description = this.state.serviceDescription;
 
     if (serviceModelLocation.length > 0)
       jsonConfig.model.repository = serviceModelLocation;
@@ -127,7 +147,7 @@ export default class ServiceNew extends React.Component {
   validateBeforeSubmit() {
     let errors = [];
 
-    const serviceName = this.serviceNameRef.current.value;
+    const serviceName = this.state.serviceName;
 
     if (serviceName.length === 0) {
       errors.push("Service name can't be empty");
@@ -171,7 +191,7 @@ export default class ServiceNew extends React.Component {
       return null;
     }
 
-    const serviceName = this.serviceNameRef.current.value;
+    const serviceName = this.state.serviceName;
     const serviceData = JSON.parse(this.state.jsonConfig);
     const ddStore = this.props.deepdetectStore;
 
@@ -250,8 +270,8 @@ export default class ServiceNew extends React.Component {
                 className="form-control mb-2"
                 id="inlineFormInputName"
                 placeholder="Service Name"
-                ref={this.serviceNameRef}
-                onKeyPress={this.handleInputChange}
+                value={this.state.serviceName}
+                onChange={this.handleInputServiceNameChange}
               />
             </div>
 
@@ -264,8 +284,8 @@ export default class ServiceNew extends React.Component {
                 className="form-control mb-2"
                 id="inlineFormInputDescription"
                 placeholder="Service Description"
-                ref={this.serviceDescriptionRef}
-                onKeyPress={this.handleInputChange}
+                value={this.state.description}
+                onChange={this.handleInputDescriptionChange}
               />
             </div>
 
