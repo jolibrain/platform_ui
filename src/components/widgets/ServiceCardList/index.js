@@ -41,7 +41,6 @@ export default class ServiceCardList extends React.Component {
   }
 
   _mapServices(server, serverIndex, service, serviceIndex) {
-    console.log(service.settings.training);
     if (
       (this.props.onlyPredict && service.settings.training) ||
       (this.props.onlyTraining && !service.settings.training)
