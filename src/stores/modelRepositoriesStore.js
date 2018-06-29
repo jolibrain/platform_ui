@@ -39,7 +39,6 @@ export class modelRepositoriesStore {
       jsonConfig = await this.$reqJsonConfig(nginxPath);
       // TODO : remove this line when config.json editable
       jsonConfig.parameters.mllib.gpuid = 0;
-      console.log(jsonConfig);
     } catch (e) {}
 
     this.repositories.push({

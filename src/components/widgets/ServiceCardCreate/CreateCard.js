@@ -86,8 +86,9 @@ export default class CreateCard extends React.Component {
 
         ddStore.setService(serviceName);
 
-        console.log(`/predict/private/${serviceName}`);
-        this.props.history.push(`/predict/private/${serviceName}`);
+        this.props.history.push(
+          `/predict/${ddStore.writableServer.name}/${serviceName}`
+        );
       }
     });
   }

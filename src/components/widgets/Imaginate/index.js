@@ -25,7 +25,6 @@ export default class Imaginate extends React.Component {
     const store = this.props.imaginateStore;
     const serviceInfo = await store.service.serviceInfo();
     if (serviceInfo.body) {
-      console.log(serviceInfo.body.parameters.input.connector);
       this.setState({ connector: serviceInfo.body.parameters.input.connector });
     }
   }

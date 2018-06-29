@@ -19,6 +19,13 @@ export class deepdetectStore {
   }
 
   @computed
+  get writableServer() {
+    if (this.currentServerIndex === -1) return null;
+
+    return this.servers.find(s => s.settings.isWritable);
+  }
+
+  @computed
   get service() {
     if (this.server.currentServiceIndex === -1) return null;
 
