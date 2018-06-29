@@ -20,7 +20,7 @@ export default class MainView extends React.Component {
             <hr />
             <div className="serviceList">
               <h4>Current Predict Service</h4>
-              <ServiceCardList />
+              <ServiceCardList onlyPredict={true} />
             </div>
             <hr />
             <div className="serviceCreate">

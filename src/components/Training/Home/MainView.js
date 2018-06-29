@@ -1,8 +1,9 @@
 import React from "react";
 import { observer } from "mobx-react";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 import RightPanel from "../commons/RightPanel";
+import ServiceCardList from "../../widgets/ServiceCardList";
 
 @withRouter
 @observer
@@ -12,9 +13,10 @@ export default class MainView extends React.Component {
       <div className="main-view content-wrapper">
         <div className="container-fluid">
           <div className="content">
-            <Link to="/training/new" className="btn btn-outline-primary">
-              New Service
-            </Link>
+            <div className="serviceList">
+              <h4>Current Training Service</h4>
+              <ServiceCardList onlyTraining={true} />
+            </div>
             <RightPanel />
           </div>
         </div>
