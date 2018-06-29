@@ -13,11 +13,73 @@ export default class Code extends React.Component {
     super(props);
 
     this.state = {
-      copied: false
+      copied: false,
+      selectedLang: "python",
+      configuration: {
+        importLib: true,
+        ddConfig: true,
+        importData: true,
+        postPredict: true
+      }
     };
 
     this.handleCopyClipboard = this.handleCopyClipboard.bind(this);
+    this.code = this.code.bind(this);
     this.pythonCode = this.pythonCode.bind(this);
+    this.javascriptCode = this.javascriptCode.bind(this);
+  }
+
+  code() {
+    let code = "";
+
+    switch (this.state.selectedLang) {
+      case "javascript":
+        code = this.javascriptCode();
+        break;
+      case "python":
+        code = this.pythonCode();
+        break;
+      default:
+        break;
+    }
+
+    return code;
+  }
+
+  javascriptCode() {
+    const { service } = this.props.imaginateStore;
+
+    const postData = service.selectedInput.postData;
+
+    let javascriptCode = "";
+
+    if (this.state.configuration.importLib) {
+      javascriptCode += `var DD = require('deepdetect-js');\n\n`;
+    }
+
+    if (this.state.configuration.ddConfig) {
+      javascriptCode += `const dd = new DD({
+  host: '${window.location.hostname}',
+  port: ${window.location.port},
+  path: '${service.serverSettings.path}'
+})\n\n`;
+    }
+
+    if (this.state.configuration.postPredict) {
+      javascriptCode += `const postData = ${JSON.stringify(
+        postData,
+        null,
+        2
+      )}\n\n`;
+      javascriptCode += `async function run() {
+  const predict = await dd.postPredict(postData);
+  console.log(predict);
+}
+
+run()`;
+    }
+
+    return javascriptCode;
   }
 
   pythonCode() {
@@ -63,7 +125,7 @@ export default class Code extends React.Component {
   }
 
   handleCopyClipboard() {
-    copy(this.pythonCode());
+    copy(this.code());
 
     this.setState({ copied: true });
     setTimeout(() => {
@@ -76,6 +138,30 @@ export default class Code extends React.Component {
 
     return (
       <div>
+        <div className="btn-group" role="group" aria-label="Lang selection">
+          <button
+            type="button"
+            className={
+              this.state.selectedLang === "python"
+                ? "btn btn-primary"
+                : "btn btn-secondary"
+            }
+            onClick={() => this.setState({ selectedLang: "python" })}
+          >
+            Python
+          </button>
+          <button
+            type="button"
+            className={
+              this.state.selectedLang === "javascript"
+                ? "btn btn-primary"
+                : "btn btn-secondary"
+            }
+            onClick={() => this.setState({ selectedLang: "javascript" })}
+          >
+            Javascript
+          </button>
+        </div>
         <div className="bd-clipboard">
           <button
             className="btn-clipboard"
@@ -94,11 +180,11 @@ export default class Code extends React.Component {
           />
         </div>
         <SyntaxHighlighter
-          language="python"
+          language={this.state.selectedLang}
           style={docco}
           className="card-text"
         >
-          {this.pythonCode()}
+          {this.code()}
         </SyntaxHighlighter>
       </div>
     );
