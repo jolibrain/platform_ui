@@ -3,6 +3,7 @@ import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
 import GpuInfo from "../../widgets/GpuInfo";
+import ServiceInfo from "../../widgets/ServiceInfo";
 
 @inject("configStore")
 @withRouter
@@ -17,6 +18,7 @@ export default class RightPanel extends React.Component {
       <aside className="right-sidebar right-sidebar right-sidebar-expanded">
         <div className="issuable-sidebar">
           <GpuInfo />
+          {this.props.serviceInfo ? <ServiceInfo /> : ""}
         </div>
       </aside>
     );

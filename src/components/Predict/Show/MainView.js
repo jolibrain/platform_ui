@@ -2,7 +2,7 @@ import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 
-import RightPanel from "./RightPanel";
+import RightPanel from "../commons/RightPanel";
 import Imaginate from "../../widgets/Imaginate";
 
 @inject("imaginateStore")
@@ -68,7 +68,7 @@ export default class MainView extends React.Component {
           </nav>
           <div className="content">
             <Imaginate />
-            <RightPanel />
+            <RightPanel serviceInfo={true} />
           </div>
         </div>
       </div>
