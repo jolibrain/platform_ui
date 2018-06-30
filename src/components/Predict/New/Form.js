@@ -106,7 +106,6 @@ export default class ServiceNew extends React.Component {
     this.props.modelRepositoriesStore.load();
     const typeahead = this.typeahead.getInstance();
 
-    const serviceDescription = this.serviceDescriptionRef.current.value;
     const serviceModelLocation = typeahead.getInput().value;
 
     const repository = this.props.modelRepositoriesStore.repositories.find(
