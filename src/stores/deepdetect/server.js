@@ -63,7 +63,8 @@ export default class deepdetectServer {
       if (!status) {
         info = await this.$reqInfo();
       } else {
-        info = await this.$reqInfoStatus();
+        info = await this.$reqInfo();
+        //info = await this.$reqInfoStatus();
       }
 
       if (info.head && info.head.services) {

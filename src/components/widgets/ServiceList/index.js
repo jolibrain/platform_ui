@@ -1,7 +1,8 @@
 import React from "react";
 import { inject, observer } from "mobx-react";
-import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
+
+import ServiceItem from "./Items/Service.js";
 
 @inject("deepdetectStore")
 @withRouter
@@ -15,6 +16,9 @@ export default class ServiceList extends React.Component {
     };
 
     this.timer();
+
+    this._mapServers = this._mapServers.bind(this);
+    this._mapServices = this._mapServices.bind(this);
   }
 
   componentDidMount() {
@@ -28,9 +32,47 @@ export default class ServiceList extends React.Component {
   }
 
   timer() {
-    //const status = true;
-    const status = false;
-    this.props.deepdetectStore.loadServices(status);
+    this.props.deepdetectStore.loadServices(true);
+  }
+
+  _mapServers(server, serverIndex) {
+    const serviceLength = server.services.filter(service => {
+      if (this.props.only) {
+        if (this.props.only === "training") {
+          return service.settings.training;
+        } else {
+          return !service.settings.training;
+        }
+      } else {
+        return true;
+      }
+    }).length;
+    console.log(serviceLength);
+    return server.services
+      .filter(service => {
+        if (this.props.only) {
+          if (this.props.only === "training") {
+            return service.settings.training;
+          } else {
+            return !service.settings.training;
+          }
+        } else {
+          return true;
+        }
+      })
+      .map(this._mapServices.bind(this, server, serverIndex));
+  }
+
+  _mapServices(server, serverIndex, service, serviceIndex) {
+    return (
+      <ServiceItem
+        key={`service-item-${serverIndex}-${serviceIndex}`}
+        server={server}
+        serverIndex={serverIndex}
+        service={service}
+        serviceIndex={serviceIndex}
+      />
+    );
   }
 
   render() {
@@ -43,49 +85,7 @@ export default class ServiceList extends React.Component {
         className="serviceList sidebar-top-level-items"
         key={`serviceList-${ddStore.refresh}`}
       >
-        {ddStore.servers.map((server, serverIndex) => {
-          return server.services
-            .filter(service => {
-              if (this.props.only) {
-                switch (this.props.only) {
-                  case "predict":
-                    return !service.settings.training;
-                  case "training":
-                    return service.settings.training;
-                  default:
-                    return true;
-                }
-              } else {
-                return true;
-              }
-            })
-            .map((service, serviceIndex) => {
-              const isActive =
-                ddStore.currentServerIndex === serverIndex &&
-                ddStore.server.currentServiceIndex === serviceIndex;
-
-              return (
-                <li
-                  key={`service-item-${serverIndex}-${serviceIndex}`}
-                  className={isActive ? "active" : ""}
-                >
-                  <Link
-                    key={`service-link-${serverIndex}-${serviceIndex}`}
-                    to={`/${
-                      service.settings.training ? "training" : "predict"
-                    }/${server.name}/${service.name}`}
-                  >
-                    <span className="nav-item-name">
-                      {service.name}
-                      <span className="badge badge-secondary float-right">
-                        {server.name}
-                      </span>
-                    </span>
-                  </Link>
-                </li>
-              );
-            });
-        })}
+        {ddStore.servers.map(this._mapServers)}
       </ul>
     );
   }

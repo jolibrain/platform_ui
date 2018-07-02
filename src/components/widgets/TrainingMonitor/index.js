@@ -40,7 +40,7 @@ export default class TrainingMonitor extends React.Component {
 
     return (
       <div className="trainingmonitor">
-        <table class="table">
+        <table className="table">
           <tbody>
             <tr>
               <th scope="row">Train Loss</th>
