@@ -38,6 +38,10 @@ export default class TrainingMonitor extends React.Component {
 
     const measures = service.trainMetrics.body.measure;
 
+    const claccKeys = Object.keys(measures).filter(
+      key => key.indexOf("clacc_") > -1
+    );
+
     return (
       <div className="trainingmonitor">
         <table className="table">
@@ -60,6 +64,26 @@ export default class TrainingMonitor extends React.Component {
             </tr>
           </tbody>
         </table>
+        <div className="row">
+          {claccKeys.map((key, index) => {
+            let className = "col-md-1";
+
+            if (measures[key] > 0) className = "col-md-1 clacc-level-0";
+
+            if (measures[key] > 0.55)
+              className = "col-md-1 clacc-level-warning";
+
+            if (measures[key] > 0.9) className = "col-md-1 clacc-level-success";
+
+            return (
+              <div key={`clacc-${key}`} className={className}>
+                {measures[key] > 0 ? <b>#{index}</b> : <span>#{index}</span>}
+                <br />
+                {measures[key] > 0 ? measures[key].toFixed(3) : "--"}
+              </div>
+            );
+          })}
+        </div>
       </div>
     );
   }

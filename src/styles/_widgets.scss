@@ -119,3 +119,25 @@ ul.serviceList {
     margin-bottom: 0;
   }
 }
+
+/*
+ * ====
+ * Training Monitor
+ * ====
+ */
+
+.trainingmonitor {
+  .clacc-level-0 {
+    background-color: #eee;
+  }
+
+  .clacc-level-warning {
+    color: #212529;
+    background-color: #ffc107;
+  }
+
+  .clacc-level-success {
+    color: #fff;
+    background-color: #28a745;
+  }
+}
