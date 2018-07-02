@@ -51,13 +51,15 @@ export default class ServiceCardList extends React.Component {
       ? `/training/${server.name}/${service.name}`
       : `/predict/${server.name}/${service.name}`;
 
+    const linkText = service.settings.training ? `Monitor` : `Predict`;
+
     return (
       <div className="card" key={`${serverIndex}-${serviceIndex}`}>
         <div className="card-body">
           <h5 className="card-title">{service.name}</h5>
           <p className="card-text">{service.settings.description}</p>
           <Link to={serviceUrl} className="btn btn-outline-primary">
-            {service.settings.training ? "Training" : "Predict"}
+            {linkText}
           </Link>
         </div>
       </div>
