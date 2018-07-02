@@ -59,31 +59,35 @@ export default class deepdetectServer {
   async loadServices(status = false) {
     let info;
 
-    if (!status) {
-      info = await this.$reqInfo();
-    } else {
-      info = await this.$reqInfoStatus();
-    }
+    try {
+      if (!status) {
+        info = await this.$reqInfo();
+      } else {
+        info = await this.$reqInfoStatus();
+      }
 
-    if (info.head && info.head.services) {
-      this.services = info.head.services.map(serviceSettings => {
-        return new deepdetectService({
-          serviceSettings: serviceSettings,
-          serverName: this.name,
-          serverSettings: this.settings
+      if (info.head && info.head.services) {
+        this.services = info.head.services.map(serviceSettings => {
+          return new deepdetectService({
+            serviceSettings: serviceSettings,
+            serverName: this.name,
+            serverSettings: this.settings
+          });
         });
-      });
-    } else {
-      this.serverDown = true;
-    }
+      } else {
+        this.serverDown = true;
+      }
 
-    if (this.services.length === 0) {
-      this.currentServiceIndex = -1;
-    } else if (
-      this.currentServiceIndex >= this.services.length ||
-      this.currentServiceIndex === -1
-    ) {
-      this.currentServiceIndex = 0;
+      if (this.services.length === 0) {
+        this.currentServiceIndex = -1;
+      } else if (
+        this.currentServiceIndex >= this.services.length ||
+        this.currentServiceIndex === -1
+      ) {
+        this.currentServiceIndex = 0;
+      }
+    } catch (e) {
+      this.serverDown = true;
     }
 
     this.servicesLoaded = true;
