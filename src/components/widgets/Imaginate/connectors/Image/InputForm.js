@@ -44,7 +44,7 @@ export default class InputForm extends React.Component {
 
     if (typeof selected !== "undefined") {
       const repository = this.props.dataRepositoriesStore.repositories.find(
-        r => r.label === selected.label
+        r => r.label === selected
       );
       this.setState({ selectedData: repository ? [repository] : [] });
 
@@ -52,7 +52,7 @@ export default class InputForm extends React.Component {
         nginxPath,
         systemPath
       } = this.props.dataRepositoriesStore.settings;
-      const folderName = selected.folderName;
+      const folderName = repository.folderName;
 
       const store = this.props.imaginateStore;
       store.service.addInputFromPath(nginxPath, systemPath, folderName, () => {
