@@ -36,7 +36,7 @@ export default class InputList extends React.Component {
     const inputs = service.inputs;
 
     return (
-      <div>
+      <div className="col-md-12">
         <button
           type="button"
           className="btn btn-secondary btn-sm"
