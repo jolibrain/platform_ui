@@ -24,15 +24,22 @@ export default class Imaginate extends React.Component {
   async getServiceConnector() {
     const store = this.props.imaginateStore;
     const serviceInfo = await store.service.serviceInfo();
-    if (serviceInfo.body) {
-      this.setState({ connector: serviceInfo.body.parameters.input.connector });
+    if (
+      serviceInfo.body &&
+      serviceInfo.body.parameters &&
+      serviceInfo.body.parameters.input &&
+      serviceInfo.body.parameters.input.length === 1 &&
+      serviceInfo.body.parameters.input[0].connector
+    ) {
+      const connector = serviceInfo.body.parameters.input[0].connector;
+      this.setState({ connector: connector });
     }
   }
 
   render() {
     const store = this.props.imaginateStore;
 
-    if (!store.service || this.state.connector) return null;
+    if (!store.service || !this.state.connector) return null;
 
     let connector = null;
 
