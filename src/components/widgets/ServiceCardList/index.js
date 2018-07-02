@@ -47,15 +47,16 @@ export default class ServiceCardList extends React.Component {
     )
       return null;
 
+    const serviceUrl = service.settings.training
+      ? `/training/${server.name}/${service.name}`
+      : `/predict/${server.name}/${service.name}`;
+
     return (
       <div className="card" key={`${serverIndex}-${serviceIndex}`}>
         <div className="card-body">
           <h5 className="card-title">{service.name}</h5>
           <p className="card-text">{service.settings.description}</p>
-          <Link
-            to={`/predict/${server.name}/${service.name}`}
-            className="btn btn-outline-primary"
-          >
+          <Link to={serviceUrl} className="btn btn-outline-primary">
             {service.settings.training ? "Training" : "Predict"}
           </Link>
         </div>
