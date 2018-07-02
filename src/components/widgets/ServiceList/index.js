@@ -28,7 +28,8 @@ export default class ServiceList extends React.Component {
   }
 
   timer() {
-    const status = true;
+    //const status = true;
+    const status = false;
     this.props.deepdetectStore.loadServices(status);
   }
 
