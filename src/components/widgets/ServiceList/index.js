@@ -63,7 +63,6 @@ export default class ServiceList extends React.Component {
                 ddStore.currentServerIndex === serverIndex &&
                 ddStore.server.currentServiceIndex === serviceIndex;
 
-              console.log(service.training);
               return (
                 <li
                   key={`service-item-${serverIndex}-${serviceIndex}`}
