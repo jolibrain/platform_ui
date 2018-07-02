@@ -36,18 +36,6 @@ export default class ServiceList extends React.Component {
   }
 
   _mapServers(server, serverIndex) {
-    const serviceLength = server.services.filter(service => {
-      if (this.props.only) {
-        if (this.props.only === "training") {
-          return service.settings.training;
-        } else {
-          return !service.settings.training;
-        }
-      } else {
-        return true;
-      }
-    }).length;
-    console.log(serviceLength);
     return server.services
       .filter(service => {
         if (this.props.only) {
