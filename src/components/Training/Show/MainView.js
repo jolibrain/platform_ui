@@ -3,6 +3,7 @@ import { Link, withRouter } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 
 import RightPanel from "../commons/RightPanel";
+import TrainingMonitor from "../../widgets/TrainingMonitor";
 
 @inject("deepdetectStore")
 @inject("modalStore")
@@ -56,6 +57,7 @@ export default class Training extends React.Component {
             </ul>
           </nav>
           <div className="content">
+            <TrainingMonitor />
             <RightPanel />
           </div>
         </div>
