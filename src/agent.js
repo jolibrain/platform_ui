@@ -163,7 +163,11 @@ const Webserver = {
     superagent
       .get(path)
       .end(handleErrors)
-      .then(res => JSON.parse(res.text))
+      .then(res => {
+        if (res && res.text) {
+          return JSON.parse(res.text);
+        }
+      })
 };
 
 export default {
