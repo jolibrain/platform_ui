@@ -23,9 +23,9 @@ export default class ServiceItem extends React.Component {
           <span className="nav-item-name">
             {service.name}
             {service.settings.training ? (
-              <i class="fas fa-braille float-right" />
+              <i className="fas fa-braille float-right" />
             ) : (
-              <i class="fas fa-cube float-right" />
+              <i className="fas fa-cube float-right" />
             )}
           </span>
         </Link>
