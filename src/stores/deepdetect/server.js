@@ -68,6 +68,7 @@ export default class deepdetectServer {
       }
 
       if (info.head && info.head.services) {
+        this.serverDown = false;
         this.services = info.head.services.map(serviceSettings => {
           return new deepdetectService({
             serviceSettings: serviceSettings,
@@ -77,6 +78,7 @@ export default class deepdetectServer {
         });
       } else {
         this.serverDown = true;
+        this.services = [];
       }
 
       if (this.services.length === 0) {
@@ -89,6 +91,7 @@ export default class deepdetectServer {
       }
     } catch (e) {
       this.serverDown = true;
+      this.services = [];
     }
 
     this.servicesLoaded = true;
