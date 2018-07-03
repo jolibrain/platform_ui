@@ -13,7 +13,10 @@ export class modelRepositoriesStore {
   }
 
   $reqJsonConfig(path) {
-    return agent.Webserver.getFile(path + "config.json");
+    const jsonPath = path.match("/$")
+      ? `${path}config.json`
+      : `${path}/config.json`;
+    return agent.Webserver.getFile(jsonPath);
   }
 
   $reqPublic() {
