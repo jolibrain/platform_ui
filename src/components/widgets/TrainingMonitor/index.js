@@ -95,24 +95,33 @@ export default class TrainingMonitor extends React.Component {
           </div>
         </div>
         <div className="row">
-          {claccKeys.map((key, index) => {
-            let className = "col-md-1";
+          {claccKeys
+            .sort((a, b) => {
+              return (
+                parseInt(a.split("_").pop()) - parseInt(b.split("_").pop())
+              );
+            })
+            .map((key, index) => {
+              let className = "col-md-1";
 
-            if (measures[key] > 0) className = "col-md-1 clacc-level-0";
+              if (measures[key] > 0) className = "col-md-1 clacc-level-0";
 
-            if (measures[key] > 0.55)
-              className = "col-md-1 clacc-level-warning";
+              if (measures[key] > 0.55)
+                className = "col-md-1 clacc-level-warning";
 
-            if (measures[key] > 0.9) className = "col-md-1 clacc-level-success";
+              if (measures[key] > 0.9)
+                className = "col-md-1 clacc-level-success";
 
-            return (
-              <div key={`clacc-${key}`} className={className}>
-                {measures[key] > 0 ? <b>#{index}</b> : <span>#{index}</span>}
-                <br />
-                {measures[key] > 0 ? measures[key].toFixed(3) : "--"}
-              </div>
-            );
-          })}
+              const title = key.split("_").pop();
+
+              return (
+                <div key={`clacc-${key}`} className={className}>
+                  {measures[key] > 0 ? <b>#{title}</b> : <span>#{title}</span>}
+                  <br />
+                  {measures[key] > 0 ? measures[key].toFixed(3) : "--"}
+                </div>
+              );
+            })}
         </div>
       </div>
     );
