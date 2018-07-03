@@ -55,9 +55,14 @@ export default class ImageConnector extends React.Component {
             <div className="row">
               <InputForm />
             </div>
-            {store.service.selectedInput &&
-            store.service.selectedInput.pixelSegmentation &&
-            store.service.selectedInput.pixelSegmentation.length > 0 ? (
+            {(store.service.selectedInput &&
+              store.service.selectedInput.pixelSegmentation &&
+              store.service.selectedInput.pixelSegmentation.length > 0) ||
+            (store.service.selectedInput &&
+              store.service.selectedInput.postData &&
+              store.service.selectedInput.postData.parameters &&
+              store.service.selectedInput.postData.parameters.output &&
+              store.service.selectedInput.postData.parameters.output.ctc) ? (
               ""
             ) : (
               <div className="row">
