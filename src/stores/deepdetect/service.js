@@ -48,6 +48,12 @@ export default class deepdetectService {
     return `${serverPath}/train?service=${this.name}&job=1`;
   }
 
+  @computed
+  get trainingStatus() {
+    const info = this.serviceInfo();
+    return info.body.jobs[0].status;
+  }
+
   @action
   async fetchTrainMetrics(job = 1, timeout = 0, history = false) {
     if (this.settings.training) {
