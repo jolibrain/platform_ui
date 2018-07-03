@@ -108,10 +108,10 @@ const Deepdetect = {
       return err;
     }
   },
-  stopTraining: (settings, serviceName) => {
+  stopTraining: async (settings, serviceName) => {
     const dd = new DD(settings);
     try {
-      return dd.deleteTrain(serviceName);
+      return await dd.deleteTrain(serviceName);
     } catch (err) {
       return err;
     }
