@@ -94,10 +94,16 @@ const Deepdetect = {
       return err;
     }
   },
-  getTrain: (settings, serviceName, job = 1, timeout = 0, history = false) => {
+  getTrain: async (
+    settings,
+    serviceName,
+    job = 1,
+    timeout = 0,
+    history = false
+  ) => {
     const dd = new DD(settings);
     try {
-      return dd.getTrain(serviceName, job, timeout, history);
+      return await dd.getTrain(serviceName, job, timeout, history);
     } catch (err) {
       return err;
     }
