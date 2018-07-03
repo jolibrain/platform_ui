@@ -46,37 +46,69 @@ const GpuInfo = {
  */
 
 const Deepdetect = {
-  info: settings => {
+  info: async settings => {
     const dd = new DD(settings);
-    return dd.info();
+    try {
+      return await dd.info();
+    } catch (err) {
+      return err;
+    }
   },
-  infoStatus: settings => {
+  infoStatus: async settings => {
     const dd = new DD(settings);
-    return dd.info({ status: true });
+    try {
+      return await dd.info({ status: true });
+    } catch (err) {
+      return err;
+    }
   },
-  getService: (settings, name) => {
+  getService: async (settings, name) => {
     const dd = new DD(settings);
-    return dd.getService(name);
+    try {
+      return await dd.getService(name);
+    } catch (err) {
+      return err;
+    }
   },
-  putService: (settings, name, data) => {
+  putService: async (settings, name, data) => {
     const dd = new DD(settings);
-    return dd.putService(name, data);
+    try {
+      return await dd.putService(name, data);
+    } catch (err) {
+      return err;
+    }
   },
-  deleteService: (settings, name) => {
+  deleteService: async (settings, name) => {
     const dd = new DD(settings);
-    return dd.deleteService(name);
+    try {
+      return await dd.deleteService(name);
+    } catch (err) {
+      return err;
+    }
   },
-  postPredict: (settings, postData) => {
+  postPredict: async (settings, postData) => {
     const dd = new DD(settings);
-    return dd.postPredict(postData);
+    try {
+      return await dd.postPredict(postData);
+    } catch (err) {
+      return err;
+    }
   },
   getTrain: (settings, serviceName, job = 1, timeout = 0, history = false) => {
     const dd = new DD(settings);
-    return dd.getTrain(serviceName, job, timeout, history);
+    try {
+      return dd.getTrain(serviceName, job, timeout, history);
+    } catch (err) {
+      return err;
+    }
   },
   stopTraining: (settings, serviceName) => {
     const dd = new DD(settings);
-    return dd.deleteTrain(serviceName);
+    try {
+      return dd.deleteTrain(serviceName);
+    } catch (err) {
+      return err;
+    }
   }
 };
 

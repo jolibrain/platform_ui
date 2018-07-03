@@ -102,12 +102,12 @@ export class deepdetectStore {
 
   @action
   newService(name, data, callback) {
-    this.server.newService(name, data, callback);
+    this.writableServer.newService(name, data, callback);
   }
 
   @action
   deleteService(callback) {
-    this.server.deleteService(callback);
+    this.writableServer.deleteService(callback);
     this.loadServices();
   }
 
