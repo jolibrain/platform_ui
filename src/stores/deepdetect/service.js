@@ -42,6 +42,12 @@ export default class deepdetectService {
     return this.inputs[this.selectedInputIndex];
   }
 
+  @computed
+  get urlTraining() {
+    const serverPath = this.serverSettings.path;
+    return `${serverPath}/train?service=${this.name}&job=1`;
+  }
+
   @action
   async fetchTrainMetrics(job = 1, timeout = 0, history = false) {
     if (this.settings.training) {

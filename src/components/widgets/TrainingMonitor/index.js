@@ -44,26 +44,56 @@ export default class TrainingMonitor extends React.Component {
 
     return (
       <div className="trainingmonitor">
-        <table className="table">
-          <tbody>
-            <tr>
-              <th scope="row">Train Loss</th>
-              <td>{measures.train_loss}</td>
-            </tr>
-            <tr>
-              <th scope="row"># Iteration</th>
-              <td>{measures.iteration}</td>
-            </tr>
-            <tr>
-              <th scope="row">Iteration Time</th>
-              <td>{measures.iter_time}</td>
-            </tr>
-            <tr>
-              <th scope="row">Remaining time</th>
-              <td>{measures.remain_time_str}</td>
-            </tr>
-          </tbody>
-        </table>
+        <div className="row">
+          <div className="col-md-6 col-sm-12">
+            <table className="table">
+              <tbody>
+                <tr>
+                  <th scope="row">Train Loss</th>
+                  <td>{measures.train_loss}</td>
+                </tr>
+                <tr>
+                  <th scope="row"># Iteration</th>
+                  <td>{measures.iteration}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Iteration Time</th>
+                  <td>{measures.iter_time}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Remaining time</th>
+                  <td>{measures.remain_time_str}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div className="col-md-6 col-sm-12">
+            <table className="table">
+              <tbody>
+                <tr>
+                  <th scope="row">Accuracy</th>
+                  <td>{measures.acc ? measures.acc : "--"}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Mean Accuracy</th>
+                  <td>{measures.meanacc ? measures.meanacc : "--"}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Mean IOU</th>
+                  <td>{measures.meaniou ? measures.meaniou : "--"}</td>
+                </tr>
+                <tr>
+                  <th scope="row" />
+                  <td>
+                    <a className="btn btn-primary" href={service.urlTraining}>
+                      Open JSON
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
         <div className="row">
           {claccKeys.map((key, index) => {
             let className = "col-md-1";
