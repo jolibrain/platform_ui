@@ -98,7 +98,8 @@ export default class TrainingMonitor extends React.Component {
           {claccKeys
             .sort((a, b) => {
               return (
-                parseInt(a.split("_").pop()) - parseInt(b.split("_").pop())
+                parseInt(a.split("_").pop(), 10) -
+                parseInt(b.split("_").pop(), 10)
               );
             })
             .map((key, index) => {
