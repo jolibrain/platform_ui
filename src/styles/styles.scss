@@ -28,3 +28,18 @@ body {
   box-shadow: none !important;
   -webkit-box-shadow: none !important;
 }
+
+.card-columns {
+  @include media-breakpoint-only(xl) {
+    column-count: 3;
+  }
+  @include media-breakpoint-only(lg) {
+    column-count: 2;
+  }
+  @include media-breakpoint-only(md) {
+    column-count: 1;
+  }
+  @include media-breakpoint-only(sm) {
+    column-count: 1;
+  }
+}
