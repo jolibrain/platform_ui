@@ -65,7 +65,11 @@ export default class deepdetectService {
   @action
   async fetchTrainMetrics() {
     this.trainingStatus();
-    if (this.settings.training && this.jobStatus.status === "running") {
+    if (
+      this.settings.training &&
+      this.jobStatus &&
+      this.jobStatus.status === "running"
+    ) {
       const trainMetrics = await this.$reqTrainMetrics(
         this.jobStatus.job,
         0,
