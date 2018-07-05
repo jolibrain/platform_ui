@@ -37,11 +37,11 @@ export default class TrainingCard extends React.Component {
     if (!server || !service || !service.trainMetrics.hasOwnProperty("body"))
       return null;
 
+    console.log(service.jobStatus);
     let trainStatusBadgeClasses = "badge badge-danger";
-    if (service.jobStatus === "running") {
+    if (service.jobStatus.status === "running") {
       trainStatusBadgeClasses = "badge badge-success";
     }
-    console.log(service.settings);
 
     const measures = service.trainMetrics.body.measure;
     const serviceUrl = `/training/${server.name}/${service.name}`;
@@ -89,6 +89,8 @@ export default class TrainingCard extends React.Component {
           val: measures.eucll ? measures.eucll.toFixed(2) : "--"
         });
         break;
+      default:
+        break;
     }
 
     info.push({ text: "Time remaining", val: measures.remain_time_str });
@@ -101,7 +103,9 @@ export default class TrainingCard extends React.Component {
             <span className="badge badge-secondary">
               {service.settings.mltype}
             </span>&nbsp;
-            <span className={trainStatusBadgeClasses}>{service.jobStatus}</span>
+            <span className={trainStatusBadgeClasses}>
+              {service.jobStatus.status}
+            </span>
           </h5>
           <p className="card-text">{service.settings.description}</p>
           <ul>
