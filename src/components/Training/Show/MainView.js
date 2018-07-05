@@ -30,7 +30,7 @@ export default class Training extends React.Component {
 
     if (!service) return null;
 
-    if (!service.trainMetrics.hasOwnProperty("body")) {
+    if (!service.trainMeasure) {
       return (
         <div className="main-view content-wrapper">
           <div className="container">
