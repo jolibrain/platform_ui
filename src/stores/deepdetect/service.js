@@ -17,6 +17,7 @@ export default class deepdetectService {
   @observable isLoading = false;
   @observable isRequesting = false;
 
+  @observable jobStatus = null;
   @observable trainMetrics = {};
 
   constructor(opts) {
@@ -48,10 +49,10 @@ export default class deepdetectService {
     return `${serverPath}/train?service=${this.name}&job=1`;
   }
 
-  @computed
-  get trainingStatus() {
-    const info = this.serviceInfo();
-    return info.body.jobs[0].status;
+  @action
+  async trainingStatus() {
+    const info = await this.serviceInfo();
+    this.jobStatus = info.body.jobs[0].status;
   }
 
   @action
