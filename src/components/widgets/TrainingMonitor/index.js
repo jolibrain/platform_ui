@@ -34,9 +34,9 @@ export default class TrainingMonitor extends React.Component {
   render() {
     const { service } = this.props.deepdetectStore;
 
-    if (!service || !service.trainMetrics.hasOwnProperty("body")) return null;
+    if (!service) return null;
 
-    const measures = service.trainMetrics.body.measure;
+    const measures = service.trainMeasure;
 
     const claccKeys = Object.keys(measures).filter(
       key => key.indexOf("clacc_") > -1

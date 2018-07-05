@@ -18,7 +18,8 @@ export default class deepdetectService {
   @observable isRequesting = false;
 
   @observable jobStatus = null;
-  @observable trainMetrics = {};
+  @observable trainMeasure = null;
+  @observable trainMeasureHist = null;
 
   constructor(opts) {
     this.settings = opts.serviceSettings;
@@ -46,7 +47,9 @@ export default class deepdetectService {
   @computed
   get urlTraining() {
     const serverPath = this.serverSettings.path;
-    return `${serverPath}/train?service=${this.name}&job=${this.jobStatus.job}`;
+    return `${serverPath}/train?service=${this.name}&job=${
+      this.jobStatus.job
+    }&parameters.output.measure_hist=true`;
   }
 
   @action
@@ -60,10 +63,21 @@ export default class deepdetectService {
   }
 
   @action
-  async fetchTrainMetrics(job = 1, timeout = 0, history = false) {
+  async fetchTrainMetrics() {
     this.trainingStatus();
-    if (this.settings.training) {
-      this.trainMetrics = await this.$reqTrainMetrics(job, timeout, history);
+    if (this.settings.training && this.jobStatus.status === "running") {
+      const trainMetrics = await this.$reqTrainMetrics(
+        this.jobStatus.job,
+        0,
+        true
+      );
+      if (trainMetrics.hasOwnProperty("body")) {
+        this.trainMeasure = trainMetrics.body.measure;
+        this.trainMeasureHist = trainMetrics.body.measure_hist;
+      }
+    } else {
+      this.trainMeasure = null;
+      this.trainMeasureHist = null;
     }
   }
 
