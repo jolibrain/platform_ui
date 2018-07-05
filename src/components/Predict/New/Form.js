@@ -370,6 +370,9 @@ export default class ServiceNew extends React.Component {
                   value={curlCommand}
                   onBeforeChange={this.handleCurlChange}
                   onChange={this.handleCurlChange}
+                  options={{
+                    smartIndent: false
+                  }}
                 />
               </div>
             </pre>
