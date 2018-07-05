@@ -2324,9 +2324,9 @@ deep-is@~0.1.3:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/deep-is/-/deep-is-0.1.3.tgz#b369d6fb5dbc13eecf524f91b070feedc357cf34"
 
-deepdetect-js@^1.5.2:
-  version "1.5.2"
-  resolved "https://registry.yarnpkg.com/deepdetect-js/-/deepdetect-js-1.5.2.tgz#569c089d837ca9d56c13b44c1336f986ca7c8ba9"
+deepdetect-js@^1.5.5:
+  version "1.5.5"
+  resolved "https://registry.yarnpkg.com/deepdetect-js/-/deepdetect-js-1.5.5.tgz#cdba266681c8bd7d53011d3eccda14f6bb72b3d9"
   dependencies:
     isomorphic-fetch "^2.2.1"
     superagent "^3.8.3"
