@@ -46,24 +46,48 @@ export default class TrainingCard extends React.Component {
     const measures = service.trainMetrics.body.measure;
     const serviceUrl = `/training/${server.name}/${service.name}`;
 
-    let info = [{ text: "Train Loss", val: measures.train_loss.toFixed(2) }];
+    let info = [
+      {
+        text: "Train Loss",
+        val: measures.train_loss ? measures.train_loss.toFixed(2) : "--"
+      }
+    ];
 
     switch (service.settings.mltype) {
       case "segmentation":
-        info.push({ text: "Mean IOU", val: measures.meaniou || "--" });
+        info.push({
+          text: "Mean IOU",
+          val: measures.meaniou ? measures.meaniou.toFixed(2) : "--"
+        });
         break;
       case "detection":
-        info.push({ text: "map", val: measures.map || "--" });
+        info.push({
+          text: "MAP",
+          val: measures.map ? measures.map.toFixed(2) : "--"
+        });
         break;
       case "ctc":
-        info.push({ text: "Accuracy", val: measures.acc || "--" });
+        info.push({
+          text: "Accuracy",
+          val: measures.acc ? measures.acc.toFixed(2) : "--"
+        });
         break;
       case "classification":
         info.push({ text: "Accuracy", val: measures.acc || "--" });
-        info.push({ text: "F1", val: measures.f1 || "--" });
+        info.push({
+          text: "Accuracy",
+          val: measures.acc ? measures.acc.toFixed(2) : "--"
+        });
+        info.push({
+          text: "F1",
+          val: measures.f1 ? measures.f1.toFixed(2) : "--"
+        });
         break;
       case "regression":
-        info.push({ text: "Eucll", val: measures.eucll || "--" });
+        info.push({
+          text: "Eucll",
+          val: measures.eucll ? measures.eucll.toFixed(2) : "--"
+        });
         break;
     }
 
