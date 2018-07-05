@@ -50,3 +50,16 @@ services:
       - /data1/core_ui:/opt/platform
       - /data1:/data1
       - /data2:/data2
+  deepdetect_training:
+    environment:
+      - CUDA_VISIBLE_DEVICES=2
+    build:
+      context: ../.
+      dockerfile: docker/deepdetect/Dockerfile.eris
+    restart: always
+    ports:
+      - '8911:8080'
+    volumes:
+      - /data1/core_ui:/opt/platform
+      - /data1:/data1
+      - /data2:/data2
