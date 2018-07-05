@@ -10,7 +10,6 @@ import PredictNew from "./Predict/New";
 import PredictShow from "./Predict/Show";
 
 import TrainingHome from "./Training/Home";
-import TrainingNew from "./Training/New";
 import TrainingShow from "./Training/Show";
 
 import GenericNotFound from "./GenericNotFound";
@@ -81,7 +80,6 @@ export default class App extends React.Component {
             />
 
             <Route exact path="/training" component={TrainingHome} />
-            <Route exact path="/training/new" component={TrainingNew} />
             <Route
               exact
               path="/training/:serverName/:serviceName"

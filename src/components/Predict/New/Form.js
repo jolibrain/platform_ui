@@ -19,7 +19,7 @@ import "react-bootstrap-typeahead/css/Typeahead-bs4.css";
 @inject("modelRepositoriesStore")
 @observer
 @withRouter
-export default class ServiceNew extends React.Component {
+export default class Form extends React.Component {
   constructor(props) {
     super(props);
 
