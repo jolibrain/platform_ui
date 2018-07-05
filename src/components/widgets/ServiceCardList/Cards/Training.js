@@ -34,16 +34,14 @@ export default class TrainingCard extends React.Component {
   render() {
     const { server, service } = this.props;
 
-    if (!server || !service || !service.trainMetrics.hasOwnProperty("body"))
-      return null;
+    if (!server || !service || !service.trainMeasure) return null;
 
-    console.log(service.jobStatus);
     let trainStatusBadgeClasses = "badge badge-danger";
     if (service.jobStatus.status === "running") {
       trainStatusBadgeClasses = "badge badge-success";
     }
 
-    const measures = service.trainMetrics.body.measure;
+    const measures = service.trainMeasure;
     const serviceUrl = `/training/${server.name}/${service.name}`;
 
     let info = [
