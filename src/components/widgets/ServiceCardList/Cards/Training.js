@@ -37,29 +37,58 @@ export default class TrainingCard extends React.Component {
     if (!server || !service || !service.trainMetrics.hasOwnProperty("body"))
       return null;
 
+    let trainStatusBadgeClasses = "badge badge-danger";
+    if (service.jobStatus === "running") {
+      trainStatusBadgeClasses = "badge badge-success";
+    }
+    console.log(service.settings);
+
     const measures = service.trainMetrics.body.measure;
     const serviceUrl = `/training/${server.name}/${service.name}`;
 
-    const trainLoss = measures.train_loss.toFixed(2);
-    let lossBadgeClasses = "badge badge-danger";
-    if (trainLoss > 0.8) {
-      lossBadgeClasses = "badge badge-warning";
+    let info = [{ text: "Train Loss", val: measures.train_loss.toFixed(2) }];
+
+    switch (service.settings.mltype) {
+      case "segmentation":
+        info.push({ text: "Mean IOU", val: measures.meaniou || "--" });
+        break;
+      case "detection":
+        info.push({ text: "map", val: measures.map || "--" });
+        break;
+      case "ctc":
+        info.push({ text: "Accuracy", val: measures.acc || "--" });
+        break;
+      case "classification":
+        info.push({ text: "Accuracy", val: measures.acc || "--" });
+        info.push({ text: "F1", val: measures.f1 || "--" });
+        break;
+      case "regression":
+        info.push({ text: "Eucll", val: measures.eucll || "--" });
+        break;
     }
-    if (trainLoss > 0.95) {
-      lossBadgeClasses = "badge badge-success";
-    }
+
+    info.push({ text: "Time remaining", val: measures.remain_time_str });
 
     return (
       <div className="card">
         <div className="card-body">
           <h5 className="card-title">
             {service.name}&nbsp;
-            <span className={lossBadgeClasses}>Train Loss: {trainLoss}</span>
+            <span className="badge badge-secondary">
+              {service.settings.mltype}
+            </span>&nbsp;
+            <span className={trainStatusBadgeClasses}>{service.jobStatus}</span>
           </h5>
           <p className="card-text">{service.settings.description}</p>
-          <p className="card-text">
-            Time remaining: <b>{measures.remain_time_str}</b>
-          </p>
+          <ul>
+            {info.map((i, index) => {
+              return (
+                <li key={index}>
+                  {i.text}: <b>{i.val}</b>
+                </li>
+              );
+            })}
+          </ul>
           <Link to={serviceUrl} className="btn btn-outline-primary">
             Monitor
           </Link>
