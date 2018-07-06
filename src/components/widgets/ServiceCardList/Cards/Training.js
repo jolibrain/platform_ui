@@ -91,13 +91,18 @@ export default class TrainingCard extends React.Component {
         break;
     }
 
-    info.push({ text: "Time remaining", val: measures.remain_time_str });
+    info.push({
+      text: "Time remaining",
+      val: measures.remain_time_str,
+      breakline: true
+    });
 
     return (
       <div className="card">
         <div className="card-body">
           <h5 className="card-title">
-            {service.name}&nbsp;
+            {service.name}
+            <br />
             <span className="badge badge-secondary">
               {service.settings.mltype}
             </span>&nbsp;
@@ -110,7 +115,8 @@ export default class TrainingCard extends React.Component {
             {info.map((i, index) => {
               return (
                 <li key={index}>
-                  {i.text}: <b>{i.val}</b>
+                  {i.text}: {i.breakline ? <br /> : ""}
+                  <b>{i.val}</b>
                 </li>
               );
             })}
