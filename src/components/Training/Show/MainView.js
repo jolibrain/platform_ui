@@ -1,15 +1,14 @@
 import React from "react";
-import { Link, withRouter } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 
 import RightPanel from "../commons/RightPanel";
 import TrainingMonitor from "../../widgets/TrainingMonitor";
+import Breadcrumb from "../../widgets/Breadcrumb";
 
 @inject("deepdetectStore")
 @inject("modalStore")
-@withRouter
 @observer
-export default class Training extends React.Component {
+export default class MainView extends React.Component {
   constructor(props) {
     super(props);
     this.openStopTrainingModal = this.openStopTrainingModal.bind(this);
@@ -34,14 +33,7 @@ export default class Training extends React.Component {
       return (
         <div className="main-view content-wrapper">
           <div className="container">
-            <div className="breadcrumbs">
-              <Link to="/">DeepDetect</Link> >&nbsp;
-              <Link to="/training">Training</Link> >&nbsp;
-              <Link to={`/training/${server.name}`}>{server.name}</Link> >&nbsp;
-              <Link to={`/training/${server.name}/${service.name}`}>
-                {service.name}
-              </Link>
-            </div>
+            <Breadcrumb server={server} service={service} isTraining={true} />
             <div className="content">
               <div className="loading alert alert-primary" role="alert">
                 This job is not currently training.
@@ -55,29 +47,12 @@ export default class Training extends React.Component {
       return (
         <div className="main-view content-wrapper">
           <div className="container">
-            <div className="breadcrumbs">
-              <Link to="/">DeepDetect</Link> >&nbsp;
-              <Link to="/training">Training</Link> >&nbsp;
-              <Link to={`/training/${server.name}`}>{server.name}</Link> >&nbsp;
-              <Link to={`/training/${server.name}/${service.name}`}>
-                {service.name}
-              </Link>
-            </div>
+            <Breadcrumb service={service} server={server} isTraining={true} />
             <nav className="navbar navbar-expand-lg">
               <ul
                 className="nav navbar-nav ml-auto"
                 style={{ flexDirection: "row" }}
               >
-                <li className="nav-item">
-                  <a className="btn btn-secondary" href={service.urlGetService}>
-                    Service JSON
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a className="btn btn-secondary" href={service.urlTraining}>
-                    Training JSON
-                  </a>
-                </li>
                 <li className="nav-item">
                   <button
                     className="btn btn-outline-danger"

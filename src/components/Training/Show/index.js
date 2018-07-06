@@ -9,7 +9,7 @@ import { withRouter } from "react-router-dom";
 @inject("imaginateStore")
 @withRouter
 @observer
-export default class Service extends React.Component {
+export default class TrainingShow extends React.Component {
   constructor(props) {
     super(props);
 
@@ -37,7 +37,7 @@ export default class Service extends React.Component {
 
   render() {
     return (
-      <div className="layout-page page-gutter page-with-contextual-sidebar right-sidebar-collapsed page-with-icon-sidebar service-component">
+      <div className="layout-page page-gutter page-with-contextual-sidebar right-sidebar-collapsed page-with-icon-sidebar training-show-component">
         <LeftPanel />
         <MainView />
         <Modals />

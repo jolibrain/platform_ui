@@ -4,6 +4,7 @@ import { inject, observer } from "mobx-react";
 
 import RightPanel from "../commons/RightPanel";
 import Imaginate from "../../widgets/Imaginate";
+import Breadcrumb from "../../widgets/Breadcrumb";
 
 @inject("imaginateStore")
 @inject("deepdetectStore")
@@ -34,14 +35,7 @@ export default class MainView extends React.Component {
     return (
       <div className="main-view content-wrapper">
         <div className="container">
-          <div className="breadcrumbs">
-            <Link to="/">DeepDetect</Link> >&nbsp;
-            <Link to="/predict">Predict</Link> >&nbsp;
-            <Link to={`/predict/${server.name}`}>{server.name}</Link> >&nbsp;
-            <Link to={`/predict/${server.name}/${service.name}`}>
-              {service.name}
-            </Link>
-          </div>
+          <Breadcrumb server={server} service={service} />
           <nav className="navbar navbar-expand-lg">
             <ul
               className="nav navbar-nav ml-auto"
