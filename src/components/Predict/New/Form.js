@@ -331,16 +331,21 @@ export default class Form extends React.Component {
               />
             </div>
 
-            <button
-              type="submit"
-              className="btn btn-primary"
-              onClick={this.submitService}
-            >
-              <i
-                className="fas fa-spinner fa-spin"
-                style={this.state.creatingService ? {} : { display: "none" }}
-              />&nbsp; Add Service
-            </button>
+            <div className="form-row">
+              <button
+                type="submit"
+                className="btn btn-primary"
+                onClick={this.submitService}
+              >
+                <i
+                  className={
+                    this.state.creatingService
+                      ? "fas fa-spinner fa-spin"
+                      : "fas fa-angle-right"
+                  }
+                />&nbsp; Add Service
+              </button>
+            </div>
 
             <div
               className="alert alert-danger"

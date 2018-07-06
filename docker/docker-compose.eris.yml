@@ -27,9 +27,7 @@ services:
     ports:
       - '3000:3000' # For docker to now where to redirect HMR queries
   deepdetect_public:
-    build:
-      context: ../.
-      dockerfile: docker/deepdetect/Dockerfile.eris
+    image: 'beniz/deepdetect_gpu'
     restart: always
     ports:
       - '8900:8080'
@@ -40,9 +38,7 @@ services:
   deepdetect_private:
     environment:
       - CUDA_VISIBLE_DEVICES=1
-    build:
-      context: ../.
-      dockerfile: docker/deepdetect/Dockerfile.eris
+    image: 'beniz/deepdetect_gpu'
     restart: always
     ports:
       - '8910:8080'
@@ -53,9 +49,7 @@ services:
   deepdetect_training:
     environment:
       - CUDA_VISIBLE_DEVICES=2
-    build:
-      context: ../.
-      dockerfile: docker/deepdetect/Dockerfile.eris
+    image: 'beniz/deepdetect_gpu'
     restart: always
     ports:
       - '8911:8080'
