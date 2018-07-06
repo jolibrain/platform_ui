@@ -42,8 +42,10 @@ export default class Training extends React.Component {
                 {service.name}
               </Link>
             </div>
-            <div className="content float-right">
-              <p>This job is not currently training.</p>
+            <div className="content">
+              <div className="loading alert alert-primary" role="alert">
+                This job is not currently training.
+              </div>
               <RightPanel />
             </div>
           </div>

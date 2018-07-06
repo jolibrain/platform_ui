@@ -1,5 +1,7 @@
 import React from "react";
+import { toJS } from "mobx";
 import { observer, inject } from "mobx-react";
+import { Sparklines, SparklinesLine } from "react-sparklines";
 
 @inject("deepdetectStore")
 @observer
@@ -9,11 +11,12 @@ export default class PerClassArray extends React.Component {
 
     if (!service) return null;
 
-    const measures = service.trainMeasure;
+    const measure = service.trainMeasure;
+    const measureHist = service.trainMeasureHist;
 
-    if (!measures) return null;
+    if (!measure) return null;
 
-    const claccKeys = Object.keys(measures).filter(
+    const claccKeys = Object.keys(measure).filter(
       key => key.indexOf("clacc_") > -1
     );
 
@@ -29,20 +32,32 @@ export default class PerClassArray extends React.Component {
           .map((key, index) => {
             let className = "col-md-1";
 
-            if (measures[key] > 0) className = "col-md-1 clacc-level-0";
+            if (measure[key] > 0) className = "col-md-1 clacc-level-0";
 
-            if (measures[key] > 0.55)
-              className = "col-md-1 clacc-level-warning";
+            if (measure[key] > 0.55) className = "col-md-1 clacc-level-warning";
 
-            if (measures[key] > 0.9) className = "col-md-1 clacc-level-success";
+            if (measure[key] > 0.9) className = "col-md-1 clacc-level-success";
 
             const title = key.split("_").pop();
 
             return (
               <div key={`clacc-${key}`} className={className}>
-                {measures[key] > 0 ? <b>#{title}</b> : <span>#{title}</span>}
+                {measure[key] > 0 ? <b>#{title}</b> : <span>#{title}</span>}
                 <br />
-                {measures[key] > 0 ? measures[key].toFixed(3) : "--"}
+                {measure[key] > 0 ? measure[key].toFixed(3) : "--"}
+                <br />
+                {measureHist[`${key}_hist`] &&
+                measureHist[`${key}_hist`].length > 0 ? (
+                  <Sparklines
+                    data={toJS(measureHist[`${key}_hist`]).map(x =>
+                      parseInt(x * 100, 10)
+                    )}
+                  >
+                    <SparklinesLine color="black" />
+                  </Sparklines>
+                ) : (
+                  ""
+                )}
               </div>
             );
           })}
