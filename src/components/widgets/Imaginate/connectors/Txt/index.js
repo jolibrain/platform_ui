@@ -12,18 +12,14 @@ export default class TxtConnector extends React.Component {
       <div className="imaginate txtConnector">
         <div className="row">
           <div className="col-md-7">
-            <div className="row">
-              <InputList />
-            </div>
+            <InputList />
           </div>
           <div className="col-md-5">
-            <div className="row">
-              <InputForm />
-            </div>
-            <div className="row description">
+            <InputForm />
+            <div className="description">
               <Description displayFormat="simple" />
             </div>
-            <div className="row commands">
+            <div className="commands">
               <CardCommands />
             </div>
           </div>

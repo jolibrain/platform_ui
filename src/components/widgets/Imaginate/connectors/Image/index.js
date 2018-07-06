@@ -52,9 +52,7 @@ export default class ImageConnector extends React.Component {
             </div>
           </div>
           <div className="col-md-5">
-            <div className="row">
-              <InputForm />
-            </div>
+            <InputForm />
             {(store.service.selectedInput &&
               store.service.selectedInput.pixelSegmentation &&
               store.service.selectedInput.pixelSegmentation.length > 0) ||
@@ -65,18 +63,16 @@ export default class ImageConnector extends React.Component {
               store.service.selectedInput.postData.parameters.output.ctc) ? (
               ""
             ) : (
-              <div className="row">
-                <Threshold />
-              </div>
+              <Threshold />
             )}
-            <div className="row description">
+            <div className="description">
               <Description
                 selectedBoxIndex={this.state.selectedBoxIndex}
                 onOver={this.onOver}
                 onLeave={this.onLeave}
               />
             </div>
-            <div className="row commands">
+            <div className="commands">
               <CardCommands />
             </div>
           </div>
