@@ -32,8 +32,6 @@ export default class MeasureChart extends React.Component {
       };
     }
 
-    console.log(attribute + ": " + chartData.datasets[0].data.length);
-
     const chartOptions = {
       tooltips: {
         callbacks: {
