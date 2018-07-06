@@ -52,6 +52,8 @@ export default class PerClassArray extends React.Component {
                     data={toJS(measureHist[`${key}_hist`]).map(x =>
                       parseInt(x * 100, 10)
                     )}
+                    min={0}
+                    max={100}
                   >
                     <SparklinesLine color="black" />
                   </Sparklines>
