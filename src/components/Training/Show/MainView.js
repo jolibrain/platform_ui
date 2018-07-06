@@ -67,6 +67,16 @@ export default class Training extends React.Component {
                 style={{ flexDirection: "row" }}
               >
                 <li className="nav-item">
+                  <a className="btn btn-secondary" href={service.urlGetService}>
+                    Service JSON
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a className="btn btn-secondary" href={service.urlTraining}>
+                    Training JSON
+                  </a>
+                </li>
+                <li className="nav-item">
                   <button
                     className="btn btn-outline-danger"
                     onClick={this.openStopTrainingModal}

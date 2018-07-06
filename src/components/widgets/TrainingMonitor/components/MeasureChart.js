@@ -18,15 +18,42 @@ export default class MeasureChart extends React.Component {
 
     let chartData = {};
     if (measureHist && measureHist[`${attribute}_hist`]) {
+      const measures = measureHist[`${attribute}_hist`];
       chartData = {
+        labels: Array.apply(null, Array(measures.length)),
         datasets: [
           {
-            data: toJS(measureHist[`${attribute}_hist`]),
-            fill: false
+            data: toJS(measures).map(x => x.toFixed(3)),
+            fill: false,
+            lineTension: 0,
+            steppedLine: this.props.steppedLine
           }
         ]
       };
     }
+
+    console.log(attribute + ": " + chartData.datasets[0].data.length);
+
+    const chartOptions = {
+      tooltips: {
+        callbacks: {
+          title: (tooltipItem, data) => {},
+          beforeLabel: (tooltipItem, data) => {},
+          label: (tooltipItem, data) => {
+            return data.datasets[tooltipItem.datasetIndex].data[
+              tooltipItem.index
+            ];
+          }
+        }
+      },
+      scales: {
+        xAxes: [
+          {
+            display: false
+          }
+        ]
+      }
+    };
 
     return (
       <div>
@@ -35,7 +62,11 @@ export default class MeasureChart extends React.Component {
           {measure[attribute] ? measure[attribute].toFixed(3) : "--"}
         </span>
         {chartData.datasets ? (
-          <Line data={chartData} legend={{ display: false }} />
+          <Line
+            data={chartData}
+            legend={{ display: false }}
+            options={chartOptions}
+          />
         ) : (
           ""
         )}

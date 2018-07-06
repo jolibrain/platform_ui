@@ -45,6 +45,12 @@ export default class deepdetectService {
   }
 
   @computed
+  get urlGetService() {
+    const serverPath = this.serverSettings.path;
+    return `${serverPath}/services/${this.name}`;
+  }
+
+  @computed
   get urlTraining() {
     const serverPath = this.serverSettings.path;
     return `${serverPath}/train?service=${this.name}&job=${

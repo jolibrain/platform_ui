@@ -15,7 +15,8 @@
 @import "./Predict/Home.scss";
 @import "./Training/Home.scss";
 
-@import "./Imaginate.scss";
+@import "./widgets/Imaginate/styles.scss";
+@import "./widgets/TrainingMonitor/styles.scss";
 
 body {
   margin: 0;

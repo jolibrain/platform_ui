@@ -14,33 +14,41 @@ export default class PerClassArray extends React.Component {
     const measure = service.trainMeasure;
 
     return (
-      <div>
+      <div className="trainingmonitor-generalinfo">
         <div className="row">
           <div className="col-md-3">
             <MeasureChart title="Train Loss" attribute="train_loss" />
           </div>
           <div className="col-md-3">
-            <MeasureChart title="Accuracy" attribute="acc" />
+            <MeasureChart title="Accuracy" attribute="acc" steppedLine={true} />
           </div>
           <div className="col-md-3">
-            <MeasureChart title="Mean Accuracy" attribute="meanacc" />
+            <MeasureChart
+              title="Mean Accuracy"
+              attribute="meanacc"
+              steppedLine={true}
+            />
           </div>
           <div className="col-md-3">
-            <MeasureChart title="Mean IOU" attribute="meaniou" />
+            <MeasureChart
+              title="Mean IOU"
+              attribute="meaniou"
+              steppedLine={true}
+            />
           </div>
         </div>
         <div className="row">
-          <div className="col-md-4">
+          <div className="col-md-3">
             <span>
               <b># Iteration</b>: {measure.iteration}
             </span>
           </div>
-          <div className="col-md-4">
+          <div className="col-md-3">
             <span>
               <b>Iteration Time</b>: {measure.iter_time}
             </span>
           </div>
-          <div className="col-md-4">
+          <div className="col-md-6">
             <span>
               <b>Remaining Time</b>: {measure.remain_time_str}
             </span>
