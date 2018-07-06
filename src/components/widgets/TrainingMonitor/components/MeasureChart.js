@@ -26,13 +26,27 @@ export default class MeasureChart extends React.Component {
             data: toJS(measures).map(x => (x ? x.toFixed(3) : null)),
             fill: false,
             lineTension: 0,
-            steppedLine: this.props.steppedLine
+            steppedLine: this.props.steppedLine,
+            backgroundColor: "rgba(60, 69, 125, 0)",
+            borderColor: "rgba(60, 69, 125, 0.5)",
+            showLine: this.props.steppedLine ? true : false,
+            radius: this.props.steppedLine ? 0 : 2
           }
         ]
       };
     }
 
+    // Add dummy data at the end of array to clearly see stepped line
+    if (this.props.steppedLine && chartData.datasets) {
+      const data = chartData.datasets[0].data;
+      chartData.labels.push(null);
+      chartData.datasets[0].data.push(data[data.length - 1]);
+    }
+
     const chartOptions = {
+      animation: {
+        duration: 0
+      },
       tooltips: {
         callbacks: {
           title: (tooltipItem, data) => {},
