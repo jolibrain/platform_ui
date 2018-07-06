@@ -87,7 +87,7 @@ export default class InputForm extends React.Component {
     if (event.key === "Enter") {
       const input = this.inputRef.current;
 
-      if (this.state.method.label === "Image URL") {
+      if (this.state.method.label === "Image URL" && input.value.length > 0) {
         this.addUrl(input.value);
       }
 
