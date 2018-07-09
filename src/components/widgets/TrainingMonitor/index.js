@@ -1,6 +1,7 @@
 import React from "react";
 import { observer, inject } from "mobx-react";
 
+import TrainingAlerts from "./components/TrainingAlerts";
 import GeneralInfo from "./components/GeneralInfo";
 import PerClassArray from "./components/PerClassArray";
 
@@ -18,9 +19,15 @@ export default class TrainingMonitor extends React.Component {
   }
 
   componentDidMount() {
-    const refreshRate = this.props.deepdetectStore.settings.infoRefreshRate;
-    var intervalId = setInterval(this.timer.bind(this), refreshRate);
+    const { settings, service } = this.props.deepdetectStore;
+
+    var intervalId = setInterval(
+      this.timer.bind(this),
+      settings.infoRefreshRate
+    );
     this.setState({ intervalId: intervalId });
+
+    service.serviceInfo();
   }
 
   componentWillUnmount() {
@@ -41,6 +48,7 @@ export default class TrainingMonitor extends React.Component {
       <div className="trainingmonitor">
         <GeneralInfo />
         <PerClassArray />
+        <TrainingAlerts />{" "}
       </div>
     );
   }

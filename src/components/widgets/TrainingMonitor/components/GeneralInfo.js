@@ -9,7 +9,7 @@ export default class PerClassArray extends React.Component {
   render() {
     const { service } = this.props.deepdetectStore;
 
-    if (!service) return null;
+    if (!service || !service.trainMeasure) return null;
 
     const measure = service.trainMeasure;
 

@@ -46,7 +46,8 @@ export default class PerClassArray extends React.Component {
                 <br />
                 {measure[key] > 0 ? measure[key].toFixed(3) : "--"}
                 <br />
-                {measureHist[`${key}_hist`] &&
+                {measureHist &&
+                measureHist[`${key}_hist`] &&
                 measureHist[`${key}_hist`].length > 0 ? (
                   <Sparklines
                     data={toJS(measureHist[`${key}_hist`]).map(x =>

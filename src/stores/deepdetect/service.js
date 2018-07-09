@@ -3,7 +3,15 @@ import store from "store";
 import autoSave from "../autoSave";
 import agent from "../../agent";
 
+import ServiceConstants from "../../constants/ServiceConstants";
+
 export default class deepdetectService {
+  @observable
+  status = {
+    client: ServiceConstants.CLIENT_STATUS.NONE,
+    server: ServiceConstants.SERVER_STATUS.NONE
+  };
+
   @observable settings = {};
 
   @observable serverName = "";
@@ -14,10 +22,7 @@ export default class deepdetectService {
 
   @observable confidence = null;
 
-  @observable isLoading = false;
-  @observable isRequesting = false;
-
-  @observable jobStatus = null;
+  @observable jobId = null;
   @observable trainMeasure = null;
   @observable trainMeasureHist = null;
 
@@ -31,7 +36,69 @@ export default class deepdetectService {
   }
 
   async serviceInfo() {
-    return await this.$reqServiceInfo();
+    const info = await this.$reqServiceInfo();
+
+    if (info.body.jobs.length > 0) {
+      const job = info.body.jobs[0];
+      switch (job.status) {
+        case "running":
+          this.status.server = ServiceConstants.SERVER_STATUS.TRAINING_RUNNING;
+          this.jobId = job.job;
+
+          if (!this.trainMeasure) {
+            this.fetchTrainMetrics();
+          }
+
+          break;
+        default:
+          this.status.server = ServiceConstants.SERVER_STATUS.TRAINING;
+          break;
+      }
+    }
+
+    return info;
+  }
+
+  @computed
+  get isRequesting() {
+    return this.status.client === ServiceConstants.CLIENT_STATUS.REQUESTING;
+  }
+
+  @computed
+  get isTraining() {
+    return (
+      this.status.server === ServiceConstants.SERVER_STATUS.TRAINING_RUNNING
+    );
+  }
+
+  @computed
+  get requestType() {
+    let requestType = null;
+
+    switch (this.status.client) {
+      case ServiceConstants.CLIENT_STATUS.REQUESTING:
+        requestType = "requesting";
+        break;
+      case ServiceConstants.CLIENT_STATUS.REQUESTING_SERVICE_INFO:
+        requestType = "serviceInfo";
+        break;
+      case ServiceConstants.CLIENT_STATUS.REQUESTING_STOP_TRAINING:
+        requestType = "stopTraining";
+        break;
+      case ServiceConstants.CLIENT_STATUS.REQUESTING_FILES:
+        requestType = "files";
+        break;
+      case ServiceConstants.CLIENT_STATUS.REQUESTING_PREDICT:
+        requestType = "predict";
+        break;
+      case ServiceConstants.CLIENT_STATUS.REQUESTING_TRAINING:
+        requestType = "training";
+        break;
+      default:
+        break;
+    }
+
+    return requestType;
   }
 
   @computed
@@ -52,39 +119,27 @@ export default class deepdetectService {
 
   @computed
   get urlTraining() {
+    if (!this.jobId) {
+      return null;
+    }
+
     const serverPath = this.serverSettings.path;
     return `${serverPath}/train?service=${this.name}&job=${
-      this.jobStatus.job
+      this.jobId
     }&parameters.output.measure_hist=true`;
   }
 
   @action
-  async trainingStatus() {
-    const info = await this.serviceInfo();
-    if (info.body.jobs.length > 0) {
-      this.jobStatus = info.body.jobs[0];
-    } else {
-      this.jobStatus = null;
-    }
-  }
-
-  @action
   async fetchTrainMetrics() {
-    this.trainingStatus();
-    if (
-      this.settings.training &&
-      this.jobStatus &&
-      this.jobStatus.status === "running"
-    ) {
-      const trainMetrics = await this.$reqTrainMetrics(
-        this.jobStatus.job,
-        0,
-        true
-      );
-      if (trainMetrics.hasOwnProperty("body")) {
-        this.trainMeasure = trainMetrics.body.measure;
-        this.trainMeasureHist = trainMetrics.body.measure_hist;
-      }
+    if (!this.jobId) {
+      return null;
+    }
+
+    const trainMetrics = await this.$reqTrainMetrics();
+
+    if (trainMetrics.hasOwnProperty("body")) {
+      this.trainMeasure = trainMetrics.body.measure;
+      this.trainMeasureHist = trainMetrics.body.measure_hist;
     } else {
       this.trainMeasure = null;
       this.trainMeasureHist = null;
@@ -161,33 +216,55 @@ export default class deepdetectService {
     }
   }
 
-  $reqImgFromPath(path) {
-    return agent.Webserver.listFiles(path);
+  async $reqImgFromPath(path) {
+    this.status.client = ServiceConstants.CLIENT_STATUS.REQUESTING_FILES;
+    const info = await agent.Webserver.listFiles(path);
+    this.status.client = ServiceConstants.CLIENT_STATUS.NONE;
+    return info;
   }
 
-  $reqPostPredict() {
-    return agent.Deepdetect.postPredict(
+  async $reqPostPredict() {
+    this.status.client = ServiceConstants.CLIENT_STATUS.REQUESTING_PREDICT;
+    const info = await agent.Deepdetect.postPredict(
       this.serverSettings,
       this.selectedInput.postData
     );
+    this.status.client = ServiceConstants.CLIENT_STATUS.NONE;
+    return info;
   }
 
-  $reqTrainMetrics(job = 1, timeout = 0, history = false) {
-    return agent.Deepdetect.getTrain(
+  async $reqTrainMetrics(job = 1, timeout = 0, history = false) {
+    this.status.client = ServiceConstants.CLIENT_STATUS.REQUESTING_TRAINING;
+    const info = await agent.Deepdetect.getTrain(
       this.serverSettings,
       this.name,
-      job,
-      timeout,
-      history
+      this.jobId, // job id
+      0, // timeout
+      true // history
     );
+    this.status.client = ServiceConstants.CLIENT_STATUS.NONE;
+    return info;
   }
 
-  $reqServiceInfo() {
-    return agent.Deepdetect.getService(this.serverSettings, this.name);
+  async $reqServiceInfo() {
+    this.status.client = ServiceConstants.CLIENT_STATUS.REQUESTING_SERVICE_INFO;
+    const info = await agent.Deepdetect.getService(
+      this.serverSettings,
+      this.name
+    );
+    this.status.client = ServiceConstants.CLIENT_STATUS.NONE;
+    return info;
   }
 
-  $reqStopTraining() {
-    return agent.Deepdetect.stopTraining(this.serverSettings, this.name);
+  async $reqStopTraining() {
+    this.status.client =
+      ServiceConstants.CLIENT_STATUS.REQUESTING_STOP_TRAINING;
+    const info = await agent.Deepdetect.stopTraining(
+      this.serverSettings,
+      this.name
+    );
+    this.status.client = ServiceConstants.CLIENT_STATUS.NONE;
+    return info;
   }
 
   _initPredictRequest(settings) {
@@ -199,7 +276,7 @@ export default class deepdetectService {
 
     if (typeof input === "undefined") return null;
 
-    this.isRequesting = true;
+    this.status.client = ServiceConstants.CLIENT_STATUS.REQUESTING;
 
     input.json = null;
 
@@ -296,6 +373,6 @@ export default class deepdetectService {
       }
     }
 
-    this.isRequesting = false;
+    this.status.client = ServiceConstants.CLIENT_STATUS.NONE;
   }
 }

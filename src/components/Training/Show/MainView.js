@@ -29,47 +29,31 @@ export default class MainView extends React.Component {
 
     if (!service) return null;
 
-    if (!service.trainMeasure) {
-      return (
-        <div className="main-view content-wrapper">
-          <div className="container">
-            <Breadcrumb server={server} service={service} isTraining={true} />
-            <div className="content">
-              <div className="loading alert alert-primary" role="alert">
-                This job is not currently training.
-              </div>
-              <RightPanel />
-            </div>
+    return (
+      <div className="main-view content-wrapper">
+        <div className="container">
+          <Breadcrumb service={service} server={server} isTraining={true} />
+          <nav className="navbar navbar-expand-lg">
+            <ul
+              className="nav navbar-nav ml-auto"
+              style={{ flexDirection: "row" }}
+            >
+              <li className="nav-item">
+                <button
+                  className="btn btn-outline-danger"
+                  onClick={this.openStopTrainingModal}
+                >
+                  Stop training
+                </button>
+              </li>
+            </ul>
+          </nav>
+          <div className="content">
+            <TrainingMonitor />
+            <RightPanel />
           </div>
         </div>
-      );
-    } else {
-      return (
-        <div className="main-view content-wrapper">
-          <div className="container">
-            <Breadcrumb service={service} server={server} isTraining={true} />
-            <nav className="navbar navbar-expand-lg">
-              <ul
-                className="nav navbar-nav ml-auto"
-                style={{ flexDirection: "row" }}
-              >
-                <li className="nav-item">
-                  <button
-                    className="btn btn-outline-danger"
-                    onClick={this.openStopTrainingModal}
-                  >
-                    Stop training
-                  </button>
-                </li>
-              </ul>
-            </nav>
-            <div className="content">
-              <TrainingMonitor />
-              <RightPanel />
-            </div>
-          </div>
-        </div>
-      );
-    }
+      </div>
+    );
   }
 }

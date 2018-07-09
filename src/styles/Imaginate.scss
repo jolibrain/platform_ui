@@ -221,6 +221,7 @@
       margin-bottom: 5px;
 
       .slide {
+        position: relative;
         display: inline-block;
 
         img {
@@ -236,11 +237,10 @@
       .slide:hover {
         .deleteImg {
           opacity: 1;
-          position: relative;
-          top: 5px;
-          right: 15px;
+          position: absolute;
+          top: 0px;
+          right: 0px;
           color: #dd0000;
-          float: right;
           cursor: pointer;
           background: white;
         }
