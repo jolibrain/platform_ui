@@ -21,7 +21,11 @@ export default class Threshold extends React.Component {
 
     if (
       !store.service.selectedInput ||
-      !store.serviceSettings.threshold.controls
+      !store.serviceSettings.threshold.controls ||
+      (store.service.selectedInput.postData &&
+        store.service.selectedInput.postData.parameters &&
+        store.service.selectedInput.postData.parameters.input &&
+        store.service.selectedInput.postData.parameters.input.segmentation)
     ) {
       return null;
     }
