@@ -17,6 +17,9 @@ export default class Breadcrumb extends React.Component {
           label: "Predict"
         };
 
+    const serviceJsonUrl = service.urlGetService;
+    const trainingJsonUrl = service.urlTraining;
+
     return (
       <div className="breadcrumbs clearfix">
         <Link to="/">DeepDetect</Link> >&nbsp;
@@ -25,11 +28,11 @@ export default class Breadcrumb extends React.Component {
         <Link to={`${root.path}/${server.name}/${service.name}`}>
           {service.name}
         </Link>
-        <a href={service.urlGetService} className="badge badge-secondary">
+        <a href={serviceJsonUrl} className="badge badge-secondary">
           Service JSON
         </a>
-        {isTraining ? (
-          <a href={service.urlTraining} className="badge badge-secondary">
+        {trainingJsonUrl ? (
+          <a href={trainingJsonUrl} className="badge badge-secondary">
             Training JSON
           </a>
         ) : (
