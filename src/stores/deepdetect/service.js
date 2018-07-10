@@ -5,6 +5,14 @@ import agent from "../../agent";
 
 import ServiceConstants from "../../constants/ServiceConstants";
 
+export class Input {
+  @observable content = {};
+  @observable path = null;
+  @observable json = null;
+  @observable error = false;
+  @observable boxes = [];
+}
+
 export default class deepdetectService {
   @observable
   status = {
@@ -148,11 +156,9 @@ export default class deepdetectService {
 
   @action
   addInput(content) {
-    this.inputs.push({
-      content: content,
-      json: null,
-      boxes: null
-    });
+    const input = new Input();
+    input.content = content;
+    this.inputs.push(input);
     this.selectedInputIndex = this.inputs.length - 1;
   }
 
@@ -165,12 +171,10 @@ export default class deepdetectService {
     this.inputs = [];
 
     this.inputs = serverInputs.map(i => {
-      return {
-        content: nginxPath + folderName + "/" + i,
-        path: systemPath + folderName + "/" + i,
-        json: null,
-        boxes: null
-      };
+      let input = new Input();
+      input.content = nginxPath + folderName + "/" + i;
+      input.path = systemPath + folderName + "/" + i;
+      return input;
     });
 
     if (this.inputs.length > 0) this.selectedInputIndex = 0;
@@ -205,8 +209,13 @@ export default class deepdetectService {
     if (this.inputs.length === 0) {
       return null;
     }
+
+    this.status.client = ServiceConstants.CLIENT_STATUS.REQUESTING;
+
     this._initPredictRequest(widgetSettings);
     this._predictRequest(widgetSettings);
+
+    this.status.client = ServiceConstants.CLIENT_STATUS.NONE;
   }
 
   @action
@@ -275,8 +284,6 @@ export default class deepdetectService {
     let input = this.inputs[this.selectedInputIndex];
 
     if (typeof input === "undefined") return null;
-
-    this.status.client = ServiceConstants.CLIENT_STATUS.REQUESTING;
 
     input.json = null;
 
@@ -366,13 +373,6 @@ export default class deepdetectService {
       ) {
         input.boxes = prediction.rois.map(predict => predict.bbox);
       }
-
-      input.pixelSegmentation = [];
-      if (typeof prediction.vals !== "undefined") {
-        input.pixelSegmentation = prediction.vals;
-      }
     }
-
-    this.status.client = ServiceConstants.CLIENT_STATUS.NONE;
   }
 }

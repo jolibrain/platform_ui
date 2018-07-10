@@ -17,23 +17,30 @@ export default class BoundingBoxDisplay extends React.Component {
       );
     }
 
-    const image = store.service.selectedInput;
+    const input = store.service.selectedInput;
 
-    if (!image) return null;
+    if (
+      !input ||
+      !input.content ||
+      !input.json ||
+      !input.json.body ||
+      !input.json.body.predictions ||
+      !input.json.body.predictions[0]
+    )
+      return null;
+
+    const inputVals = input.json.body.predictions[0].vals;
+    const pixelSegmentation = inputVals !== "undefined";
 
     return (
       <Boundingbox
         className="boundingboxdisplay"
-        image={image.content}
-        boxes={toJS(image.boxes)}
+        image={input.content}
+        boxes={toJS(input.boxes)}
         selectedIndex={this.props.selectedBoxIndex}
         onSelected={this.props.onOver}
-        pixelSegmentation={
-          image.pixelSegmentation ? toJS(image.pixelSegmentation) : null
-        }
-        separateSegmentation={
-          image.pixelSegmentation ? image.pixelSegmentation.length > 0 : false
-        }
+        pixelSegmentation={pixelSegmentation ? toJS(inputVals) : null}
+        separateSegmentation={pixelSegmentation ? inputVals.length > 0 : false}
         segmentationColors={toJS(
           store.serviceSettings.display.segmentationColors
         )}
