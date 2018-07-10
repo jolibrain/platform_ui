@@ -59,7 +59,7 @@ export default class ImageConnector extends React.Component {
               store.service.selectedInput.json.body.predictions &&
               store.service.selectedInput.json.body.predictions[0] &&
               typeof store.service.selectedInput.json.body.predictions[0]
-                .vals === "undefined") ||
+                .vals !== "undefined") ||
             (store.service.selectedInput &&
               store.service.selectedInput.postData &&
               store.service.selectedInput.postData.parameters &&

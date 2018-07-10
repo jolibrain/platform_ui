@@ -1,4 +1,4 @@
-import { action, observable, computed } from "mobx";
+import { action, observable, computed, toJS } from "mobx";
 import store from "store";
 import autoSave from "../autoSave";
 import agent from "../../agent";
@@ -7,6 +7,7 @@ import ServiceConstants from "../../constants/ServiceConstants";
 
 export class Input {
   @observable content = {};
+  @observable postData = {};
   @observable path = null;
   @observable json = null;
   @observable error = false;
@@ -236,7 +237,7 @@ export default class deepdetectService {
     this.status.client = ServiceConstants.CLIENT_STATUS.REQUESTING_PREDICT;
     const info = await agent.Deepdetect.postPredict(
       this.serverSettings,
-      this.selectedInput.postData
+      toJS(this.selectedInput.postData)
     );
     this.status.client = ServiceConstants.CLIENT_STATUS.NONE;
     return info;
@@ -277,11 +278,7 @@ export default class deepdetectService {
   }
 
   _initPredictRequest(settings) {
-    if (this.selectedInputIndex === -1) {
-      this.selectedInputIndex = 0;
-    }
-
-    let input = this.inputs[this.selectedInputIndex];
+    let input = this.selectedInput;
 
     if (typeof input === "undefined") return null;
 
@@ -297,7 +294,7 @@ export default class deepdetectService {
       data: [input.content]
     };
 
-    if (typeof input.path !== "undefined") {
+    if (input.path) {
       input.postData.data = [input.path];
     }
 
@@ -344,8 +341,10 @@ export default class deepdetectService {
       input.postData.parameters.output.search = true;
     }
 
-    if (settings.request.objSearch) {
+    if (settings.request.objSearch || this.settings.mltype === "rois") {
+      input.postData.parameters.output.search = true;
       input.postData.parameters.output.rois = "rois";
+      delete input.postData.parameters.output.bbox;
     }
   }
 
@@ -368,7 +367,9 @@ export default class deepdetectService {
       }
 
       if (
-        (settings.request.objSearch || settings.request.imgSearch) &&
+        (settings.request.objSearch ||
+          settings.request.imgSearch ||
+          this.settings.mltype === "rois") &&
         typeof input.json.body.predictions[0].rois !== "undefined"
       ) {
         input.boxes = prediction.rois.map(predict => predict.bbox);

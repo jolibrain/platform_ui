@@ -30,7 +30,6 @@ export default class BoundingBoxDisplay extends React.Component {
       return null;
 
     const inputVals = input.json.body.predictions[0].vals;
-    const pixelSegmentation = inputVals !== "undefined";
 
     return (
       <Boundingbox
@@ -39,8 +38,8 @@ export default class BoundingBoxDisplay extends React.Component {
         boxes={toJS(input.boxes)}
         selectedIndex={this.props.selectedBoxIndex}
         onSelected={this.props.onOver}
-        pixelSegmentation={pixelSegmentation ? toJS(inputVals) : null}
-        separateSegmentation={pixelSegmentation ? inputVals.length > 0 : false}
+        pixelSegmentation={inputVals ? toJS(inputVals) : null}
+        separateSegmentation={inputVals ? inputVals.length > 0 : false}
         segmentationColors={toJS(
           store.serviceSettings.display.segmentationColors
         )}

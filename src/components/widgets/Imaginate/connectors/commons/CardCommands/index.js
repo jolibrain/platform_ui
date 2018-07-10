@@ -29,10 +29,7 @@ export default class CardCommands extends React.Component {
     const input = service.selectedInput;
 
     if (typeof input === "undefined" || !input) return null;
-
     const json = input.json;
-
-    if (typeof json === "undefined" || !json) return null;
 
     let cardBody = null;
 
@@ -42,7 +39,7 @@ export default class CardCommands extends React.Component {
         cardBody = <CurlCommand />;
         break;
       case "json":
-        cardBody = <JsonResponse isError={json.status.code === 500} />;
+        cardBody = <JsonResponse isError={!json || json.status.code === 500} />;
         break;
       case "code":
         cardBody = <Code />;
@@ -60,7 +57,7 @@ export default class CardCommands extends React.Component {
           requestTime={requestTime}
           tab={this.state.tab}
           onTabClick={this.setTab}
-          isError={json.status.code === 500}
+          isError={json ? json.status.code === 500 : false}
         />
         <div className="card-body">{cardBody}</div>
       </div>

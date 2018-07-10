@@ -45,29 +45,32 @@ export default class InputList extends React.Component {
           Delete All
         </button>
         <ul className="list-group">
-          {inputs.reverse().map((input, index) => {
-            const inputIndex = inputs.length - index - 1;
-            return (
-              <li
-                key={`input-${index}`}
-                className={
-                  inputIndex === service.selectedInputIndex
-                    ? "list-group-item active"
-                    : "list-group-item"
-                }
-                onClick={this.selectInput.bind(this, inputIndex)}
-              >
-                {input.content}
-                <button
-                  type="button"
-                  className="btn btn-secondary btn-sm"
-                  onClick={this.handleClearInput.bind(this, inputIndex)}
+          {inputs
+            .slice()
+            .reverse()
+            .map((input, index) => {
+              const inputIndex = inputs.length - index - 1;
+              return (
+                <li
+                  key={`input-${index}`}
+                  className={
+                    inputIndex === service.selectedInputIndex
+                      ? "list-group-item active"
+                      : "list-group-item"
+                  }
+                  onClick={this.selectInput.bind(this, inputIndex)}
                 >
-                  Delete
-                </button>
-              </li>
-            );
-          })}
+                  {input.content}
+                  <button
+                    type="button"
+                    className="btn btn-secondary btn-sm"
+                    onClick={this.handleClearInput.bind(this, inputIndex)}
+                  >
+                    Delete
+                  </button>
+                </li>
+              );
+            })}
         </ul>
       </div>
     );

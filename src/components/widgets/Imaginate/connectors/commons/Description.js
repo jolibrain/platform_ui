@@ -35,10 +35,10 @@ export default class Description extends React.Component {
       !input.json.body ||
       !input.json.body.predictions ||
       input.json.body.predictions.length === 0 ||
-      !input.json.body.predictions[0] ||
-      !input.json.body.predictions[0].classes
-    )
+      !input.json.body.predictions[0]
+    ) {
       return null;
+    }
 
     const inputClasses = input.json.body.predictions[0].classes;
 
@@ -56,10 +56,15 @@ export default class Description extends React.Component {
       }
     }
 
+    if (service.settings.mltype === "rois") {
+      displayFormat = "nns";
+    }
+
+    let output = "";
     switch (displayFormat) {
       default:
       case "simple":
-        return (
+        output = (
           <div>
             {inputClasses.map((category, index) => {
               return (
@@ -70,8 +75,10 @@ export default class Description extends React.Component {
             })}
           </div>
         );
+        break;
+
       case "expectation":
-        return (
+        output = (
           <span>
             {Math.ceil(
               inputClasses.reduce((acc, current) => {
@@ -80,8 +87,10 @@ export default class Description extends React.Component {
             )}
           </span>
         );
+        break;
+
       case "list":
-        return (
+        output = (
           <div>
             {inputClasses.map((category, index) => {
               const percent = parseInt(category.prob * 100, 10);
@@ -119,8 +128,63 @@ export default class Description extends React.Component {
             })}
           </div>
         );
+        break;
+
+      case "nns":
+        output = (
+          <div className="row">
+            {input.json.body.predictions[0].rois[
+              this.props.selectedBoxIndex !== -1
+                ? this.props.selectedBoxIndex
+                : 0
+            ].nns
+              .sort((a, b) => b.prob - a.prob)
+              .map((category, index) => {
+                const percent = parseInt(category.prob * 100, 10);
+                const progressStyle = { width: `${percent}%` };
+                let progressBg = "bg-success";
+
+                if (percent < 60) {
+                  progressBg = "bg-warning";
+                }
+
+                if (percent < 30) {
+                  progressBg = "bg-danger";
+                }
+
+                if (this.props.selectedBoxIndex === index) {
+                  progressBg = "bg-info";
+                }
+
+                return (
+                  <div style={{ display: "contents" }} key={index}>
+                    <div className="col-6 progress-nns">
+                      <img
+                        src={category.uri}
+                        alt={category.cat}
+                        className="img-fluid"
+                      />
+                      <div
+                        className={`progress-bar ${progressBg}`}
+                        role="progressbar"
+                        style={progressStyle}
+                        aria-valuenow={percent}
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                      >
+                        {percent}
+                      </div>
+                    </div>
+                    {(index + 1) % 2 === 0 ? <div className="w-100" /> : ""}
+                  </div>
+                );
+              })}
+          </div>
+        );
+        break;
+
       case "list-url":
-        return (
+        output = (
           <div>
             {inputClasses.map((category, index) => {
               return (
@@ -132,8 +196,10 @@ export default class Description extends React.Component {
             })}
           </div>
         );
+        break;
+
       case "category":
-        return (
+        output = (
           <div>
             {inputClasses.map((category, index) => {
               let styles = {
@@ -159,56 +225,63 @@ export default class Description extends React.Component {
             })}
           </div>
         );
+        break;
+
       case "icons":
-        return (
-          <div>
-            {inputClasses.map((category, index) => {
-              let styles = {
-                color: ""
-              };
+        if (inputClasses) {
+          output = (
+            <div>
+              {inputClasses.map((category, index) => {
+                let styles = {
+                  color: ""
+                };
 
-              // okClass settings
-              if (
-                store.serviceSettings.display.okClass &&
-                store.serviceSettings.display.okClass.length > 0
-              ) {
-                styles.color =
-                  store.serviceSettings.display.okClass === category.cat
-                    ? "#0C0"
-                    : "#C00";
-              }
+                // okClass settings
+                if (
+                  store.serviceSettings.display.okClass &&
+                  store.serviceSettings.display.okClass.length > 0
+                ) {
+                  styles.color =
+                    store.serviceSettings.display.okClass === category.cat
+                      ? "#0C0"
+                      : "#C00";
+                }
 
-              let bottomClass = "fa fa-stack-2x " + category.cat;
-              bottomClass +=
-                this.props.selectedBoxIndex === index
-                  ? " fa-square"
-                  : " fa-circle";
+                let bottomClass = "fa fa-stack-2x " + category.cat;
+                bottomClass +=
+                  this.props.selectedBoxIndex === index
+                    ? " fa-square"
+                    : " fa-circle";
 
-              const opacity =
-                this.props.selectedBoxIndex === index ? 1 : category.prob;
-              styles.opacity = opacity;
+                const opacity =
+                  this.props.selectedBoxIndex === index ? 1 : category.prob;
+                styles.opacity = opacity;
 
-              let topClass = "fa fa-stack-1x fa-inverse fa-" + category.cat;
+                let topClass = "fa fa-stack-1x fa-inverse fa-" + category.cat;
 
-              return (
-                <div key={index} style={{ display: "inline" }}>
-                  <span
-                    key={`icon-${index}`}
-                    className="fa-stack"
-                    onMouseOver={this.props.onOver.bind(this, index)}
-                    onMouseLeave={this.props.onLeave}
-                    data-tip={`${category.cat} - ${category.prob.toFixed(2)}`}
-                    ref={c => this._nodes.set(index, c)}
-                  >
-                    <i className={bottomClass} style={styles} />
-                    <i className={topClass} style={{ opacity: opacity }} />
-                  </span>
-                </div>
-              );
-            })}
-            <ReactTooltip effect="solid" />
-          </div>
-        );
+                return (
+                  <div key={index} style={{ display: "inline" }}>
+                    <span
+                      key={`icon-${index}`}
+                      className="fa-stack"
+                      onMouseOver={this.props.onOver.bind(this, index)}
+                      onMouseLeave={this.props.onLeave}
+                      data-tip={`${category.cat} - ${category.prob.toFixed(2)}`}
+                      ref={c => this._nodes.set(index, c)}
+                    >
+                      <i className={bottomClass} style={styles} />
+                      <i className={topClass} style={{ opacity: opacity }} />
+                    </span>
+                  </div>
+                );
+              })}
+              <ReactTooltip effect="solid" />
+            </div>
+          );
+        }
+        break;
     }
+
+    return output;
   }
 }
