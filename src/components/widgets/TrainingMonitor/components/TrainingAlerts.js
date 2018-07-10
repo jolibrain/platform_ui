@@ -29,7 +29,7 @@ export default class TrainingAlerts extends React.Component {
         }
         break;
       default:
-        if (!service.training) {
+        if (!service.isTraining) {
           trainingAlert = (
             <div className="loading alert alert-primary" role="alert">
               This job is not currently training.
