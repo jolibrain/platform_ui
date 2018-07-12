@@ -2,8 +2,6 @@ import React from "react";
 import { inject, observer } from "mobx-react";
 import { Link, withRouter } from "react-router-dom";
 
-import ServiceConstants from "../../../../constants/ServiceConstants";
-
 @inject("deepdetectStore")
 @withRouter
 @observer
@@ -47,13 +45,41 @@ export default class TrainingCard extends React.Component {
       status: "unknown"
     };
 
-    if (
-      service.status.server === ServiceConstants.SERVER_STATUS.TRAINING_RUNNING
-    ) {
-      trainStatusBadge = {
-        classNames: "badge badge-success",
-        status: "running"
-      };
+    console.log(service.settings.name + " - " + service.requestType);
+
+    switch (service.requestType) {
+      case "serviceInfo":
+        trainStatusBadge = {
+          classNames: "badge badge-info",
+          status: "Loading service info..."
+        };
+        break;
+      case "training":
+        if (!service.trainMeasure) {
+          trainStatusBadge = {
+            classNames: "badge badge-info",
+            status: "Loading data..."
+          };
+        } else if (service.isTraining) {
+          trainStatusBadge = {
+            classNames: "badge badge-success",
+            status: "training"
+          };
+        }
+        break;
+      default:
+        if (service.isTraining) {
+          trainStatusBadge = {
+            classNames: "badge badge-success",
+            status: "training"
+          };
+        } else {
+          trainStatusBadge = {
+            classNames: "badge badge-error",
+            status: "not training"
+          };
+        }
+        break;
     }
 
     const measures = service.trainMeasure;
