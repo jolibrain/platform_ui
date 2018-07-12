@@ -45,8 +45,6 @@ export default class TrainingCard extends React.Component {
       status: "unknown"
     };
 
-    console.log(service.settings.name + " - " + service.requestType);
-
     switch (service.requestType) {
       case "serviceInfo":
         trainStatusBadge = {
