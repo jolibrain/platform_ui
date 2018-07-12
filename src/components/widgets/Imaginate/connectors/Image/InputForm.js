@@ -42,7 +42,7 @@ export default class InputForm extends React.Component {
     const typeahead = this.typeahead.getInstance();
     const selected = typeahead.getInput().value;
 
-    if (typeof selected !== "undefined") {
+    if (typeof selected !== "undefined" && selected.length > 0) {
       const repository = this.props.dataRepositoriesStore.repositories.find(
         r => r.label === selected
       );
