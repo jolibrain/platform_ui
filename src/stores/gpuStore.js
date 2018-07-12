@@ -5,6 +5,8 @@ export class GpuStore {
   @observable gpuInfo = null;
   @observable settings = {};
 
+  @observable recommendedGpuIndex = -1;
+
   @observable error = false;
 
   @action
@@ -12,22 +14,35 @@ export class GpuStore {
     this.settings = configStore.gpuInfo;
   }
 
-  $req() {
-    return agent.GpuInfo.get(this.settings);
-  }
-
   @action
   loadGpuInfo() {
-    this.$req().then(
+    this.$reqGpuInfo().then(
       action(gpuInfo => {
         if (typeof gpuinfo === "undefined") {
           this.error = false;
           this.gpuInfo = gpuInfo;
+
+          const sortedMemoryGpus = gpuInfo.gpus
+            .map(g => {
+              return {
+                index: g.index,
+                memoryAvailable: g["memory.total"] - g["memory.used"]
+              };
+            })
+            .sort((a, b) => {
+              return b.memoryAvailable - a.memoryAvailable;
+            });
+
+          this.recommendedGpuIndex = sortedMemoryGpus[0].index;
         } else {
           this.error = true;
         }
       })
     );
+  }
+
+  $reqGpuInfo() {
+    return agent.GpuInfo.get(this.settings);
   }
 }
 
