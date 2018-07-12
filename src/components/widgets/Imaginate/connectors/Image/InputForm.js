@@ -63,17 +63,28 @@ export default class InputForm extends React.Component {
 
   handleOpenDropdown() {
     this.setState({
-      dropdown: true
+      dropdown: true,
+      focusInput: false
     });
   }
 
   handleMethodChange(index) {
     this.setState({
       dropdown: false,
-      method: this.state.availableMethods[index]
+      method: this.state.availableMethods[index],
+      focusInput: true
     });
-    const input = this.inputRef.current;
-    input.focus();
+  }
+
+  componentDidUpdate() {
+    if (this.state.focusInput) {
+      if (this.state.method.label === "Path") {
+        this.typeahead.getInstance().focus();
+      } else {
+        const input = this.inputRef.current;
+        input.focus();
+      }
+    }
   }
 
   handleButtonClean() {
@@ -144,38 +155,32 @@ export default class InputForm extends React.Component {
               aria-label={this.state.method.label}
               onKeyPress={this.handleKeyPress}
             />
-            {this.state.method.id === 1 ? (
-              <Typeahead
-                style={{
-                  display: this.state.method.id === 1 ? "none" : "block"
-                }}
-                id="inlineFormInputModelLocation"
-                ref={typeahead => (this.typeahead = typeahead)}
-                options={toJS(this.props.dataRepositoriesStore.repositories)}
-                onChange={this.handleInputChange}
-                renderMenu={(results, menuProps) => (
-                  <Menu {...menuProps}>
-                    {results.map((result, index) => {
-                      return (
-                        <MenuItem
-                          key={index}
-                          option={result}
-                          position={index}
-                          title={result.label}
-                        >
-                          {result.label
-                            .slice(0, -1)
-                            .split("/")
-                            .pop()}
-                        </MenuItem>
-                      );
-                    })}
-                  </Menu>
-                )}
-              />
-            ) : (
-              ""
-            )}
+            <Typeahead
+              className={this.state.method.label === "Path" ? "" : "hidden"}
+              id="inlineFormInputModelLocation"
+              ref={typeahead => (this.typeahead = typeahead)}
+              options={toJS(this.props.dataRepositoriesStore.repositories)}
+              onChange={this.handleInputChange}
+              renderMenu={(results, menuProps) => (
+                <Menu {...menuProps}>
+                  {results.map((result, index) => {
+                    return (
+                      <MenuItem
+                        key={index}
+                        option={result}
+                        position={index}
+                        title={result.label}
+                      >
+                        {result.label
+                          .slice(0, -1)
+                          .split("/")
+                          .pop()}
+                      </MenuItem>
+                    );
+                  })}
+                </Menu>
+              )}
+            />
             <div className="input-group-append input-group-text">
               <button
                 className="btn"
