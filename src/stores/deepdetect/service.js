@@ -250,8 +250,8 @@ export default class deepdetectService {
       this.name,
       this.jobId, // job id
       0, // timeout
-      true, // history
-      1000 // max history points
+      false, // history
+      10000 // max history points
     );
     this.status.client = ServiceConstants.CLIENT_STATUS.NONE;
     return info;

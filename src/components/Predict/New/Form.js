@@ -17,7 +17,6 @@ import "react-bootstrap-typeahead/css/Typeahead-bs4.css";
 @inject("imaginateStore")
 @inject("deepdetectStore")
 @inject("modelRepositoriesStore")
-@inject("gpuStore")
 @observer
 @withRouter
 export default class Form extends React.Component {
@@ -242,6 +241,7 @@ export default class Form extends React.Component {
     this.setState({ jsonConfig: jsonConfig });
   }
 
+  //const { recommendedGpuIndex } = this.props.gpuStore;
   // <div className="form-row">
   //            <div className="form-check">
   //              <input className="form-check-input" type="checkbox" value="" id="checkRecommendedGpu"/>
@@ -253,7 +253,6 @@ export default class Form extends React.Component {
 
   render() {
     const store = this.props.deepdetectStore;
-    const { recommendedGpuIndex } = this.props.gpuStore;
 
     if (store.servers.length === 0) return null;
 
