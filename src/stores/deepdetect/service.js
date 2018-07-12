@@ -135,7 +135,7 @@ export default class deepdetectService {
     const serverPath = this.serverSettings.path;
     return `${serverPath}/train?service=${this.name}&job=${
       this.jobId
-    }&parameters.output.measure_hist=true`;
+    }&parameters.output.measure_hist=true&parameters.output.max_hist_points=1000`;
   }
 
   @action
@@ -250,7 +250,8 @@ export default class deepdetectService {
       this.name,
       this.jobId, // job id
       0, // timeout
-      true // history
+      true, // history
+      1000 // max history points
     );
     this.status.client = ServiceConstants.CLIENT_STATUS.NONE;
     return info;

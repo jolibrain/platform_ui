@@ -99,11 +99,18 @@ const Deepdetect = {
     serviceName,
     job = 1,
     timeout = 0,
-    history = false
+    history = false,
+    maxHistPoints = null
   ) => {
     const dd = new DD(settings);
     try {
-      return await dd.getTrain(serviceName, job, timeout, history);
+      return await dd.getTrain(
+        serviceName,
+        job,
+        timeout,
+        history,
+        maxHistPoints
+      );
     } catch (err) {
       return err;
     }
