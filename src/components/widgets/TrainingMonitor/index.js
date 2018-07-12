@@ -23,7 +23,7 @@ export default class TrainingMonitor extends React.Component {
 
     var intervalId = setInterval(
       this.timer.bind(this),
-      settings.infoRefreshRate
+      settings.refreshRate.training
     );
     this.setState({ intervalId: intervalId });
 

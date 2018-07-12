@@ -5,7 +5,10 @@
     "description": "Welcome to deepdetect"
   },
   "deepdetect": {
-    "infoRefreshRate": 10000,
+    "refreshRate": {
+      "info": 10000,
+      "training": 30000
+    },
     "servers": [
       {
         "name": "private",

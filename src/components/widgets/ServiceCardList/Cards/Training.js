@@ -17,7 +17,8 @@ export default class TrainingCard extends React.Component {
   }
 
   componentDidMount() {
-    const refreshRate = this.props.deepdetectStore.settings.infoRefreshRate;
+    const refreshRate = this.props.deepdetectStore.settings.refreshRate
+      .training;
     const { service } = this.props;
 
     var intervalId = setInterval(this.timer.bind(this), refreshRate);

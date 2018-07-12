@@ -22,7 +22,7 @@ export default class ServiceList extends React.Component {
   }
 
   componentDidMount() {
-    const refreshRate = this.props.deepdetectStore.settings.infoRefreshRate;
+    const refreshRate = this.props.deepdetectStore.settings.refreshRate.info;
     var intervalId = setInterval(this.timer.bind(this), refreshRate);
     this.setState({ intervalId: intervalId });
   }
