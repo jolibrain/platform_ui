@@ -27,7 +27,10 @@ export default class MainView extends React.Component {
 
     const service = ddStore.service;
 
-    if (!service) return null;
+    if (!service) {
+      this.props.history.push("/");
+      return null;
+    }
 
     return (
       <div className="main-view content-wrapper">
