@@ -27,7 +27,12 @@ export class modelRepositoriesStore {
     return agent.Webserver.listFolders(this.settings.nginxPath.private);
   }
 
-  async _addRepository(repo, isPublic = true) {
+  $reqPrivateFiles(path) {
+    console.log(this.settings.nginxPath.private + path);
+    return agent.Webserver.listFiles(this.settings.nginxPath.private + path);
+  }
+
+  async _addRepository(repo, isPublic = true, files = []) {
     const systemPath = isPublic
       ? this.settings.systemPath.public + repo
       : this.settings.systemPath.private + repo;
@@ -50,7 +55,17 @@ export class modelRepositoriesStore {
       label: systemPath,
       labelKey: `item-${this.repositories.length}`,
       isPublic: isPublic,
-      jsonConfig: jsonConfig
+      jsonConfig: jsonConfig,
+      files: files
+        .filter(f => {
+          return f.includes("caffemodel") || f.includes("prototxt");
+        })
+        .map(f => {
+          return {
+            filename: f,
+            url: this.settings.nginxPath.private + repo + f
+          };
+        })
     });
   }
 
@@ -77,8 +92,9 @@ export class modelRepositoriesStore {
                   .map(r => r.modelName)
                   .some(name => name === repo.replace("/", ""));
               })
-              .forEach(repo => {
-                this._addRepository(repo, false);
+              .forEach(async repo => {
+                const files = await this.$reqPrivateFiles(repo);
+                this._addRepository(repo, false, files);
               });
             this.isLoading = false;
           })

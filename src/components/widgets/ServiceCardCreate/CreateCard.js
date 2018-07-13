@@ -104,6 +104,22 @@ export default class CreateCard extends React.Component {
       .split("/")
       .pop();
 
+    let downloableFiles = [];
+    if (!isPublic) {
+      downloableFiles = repository.files.map(f => {
+        return (
+          <a
+            href={f.url}
+            className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+            download
+          >
+            {f.filename}
+            <i className="fas fa-download" />
+          </a>
+        );
+      });
+    }
+
     let badgeClasses = "badge float-right";
     let badgeText = "Public";
     if (isPublic) {
@@ -117,45 +133,59 @@ export default class CreateCard extends React.Component {
       <div className="card">
         <div className="card-body">
           <span className={badgeClasses}>{badgeText}</span>
-          <input
-            type="text"
-            className="form-control mb-2"
-            id="inlineFormInputName"
-            defaultValue={name}
-            ref={this.serviceNameRef}
-          />
+          <div className="row">
+            <input
+              type="text"
+              className="form-control mb-2"
+              id="inlineFormInputName"
+              defaultValue={name}
+              ref={this.serviceNameRef}
+            />
 
-          {repository.jsonConfig &&
-          repository.jsonConfig.description &&
-          repository.jsonConfig.description.length > 0 ? (
-            <p>{repository.jsonConfig.description}</p>
+            {repository.jsonConfig &&
+            repository.jsonConfig.description &&
+            repository.jsonConfig.description.length > 0 ? (
+              <p>{repository.jsonConfig.description}</p>
+            ) : (
+              ""
+            )}
+
+            <div
+              className="alert alert-danger"
+              role="alert"
+              style={{
+                marginBottom: "10px",
+                marginTop: "10px",
+                display: this.state.errors.length > 0 ? "" : "none"
+              }}
+            >
+              <b>Error while creating service</b>
+              <ul>
+                {this.state.errors.map((error, i) => <li key={i}>{error}</li>)}
+              </ul>
+            </div>
+
+            <button
+              className="btn btn-outline-primary"
+              onClick={this.handleClickCreate.bind(this, name)}
+              style={{
+                marginBottom: "10px"
+              }}
+            >
+              <i
+                className="fas fa-spinner fa-spin"
+                style={this.state.creatingService ? {} : { display: "none" }}
+              />&nbsp; Add Service
+            </button>
+          </div>
+
+          {downloableFiles.length > 0 ? (
+            <div className="row">
+              <div className="list-group">{downloableFiles}</div>
+            </div>
           ) : (
             ""
           )}
-
-          <div
-            className="alert alert-danger"
-            role="alert"
-            style={{
-              marginTop: "10px",
-              display: this.state.errors.length > 0 ? "" : "none"
-            }}
-          >
-            <b>Error while creating service</b>
-            <ul>
-              {this.state.errors.map((error, i) => <li key={i}>{error}</li>)}
-            </ul>
-          </div>
-
-          <button
-            className="btn btn-outline-primary"
-            onClick={this.handleClickCreate.bind(this, name)}
-          >
-            <i
-              className="fas fa-spinner fa-spin"
-              style={this.state.creatingService ? {} : { display: "none" }}
-            />&nbsp; Add Service
-          </button>
         </div>
       </div>
     );
