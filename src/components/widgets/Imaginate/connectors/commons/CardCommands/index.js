@@ -55,10 +55,6 @@ export default class CardCommands extends React.Component {
       !service.isRequesting &&
       (!json || !json.status || json.status.code === 500);
 
-    console.log(service.isRequesting);
-
-    const test = service.isRequesting;
-
     return (
       <div className="card commands">
         <Header
