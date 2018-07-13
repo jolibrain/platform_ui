@@ -48,6 +48,16 @@ export class modelRepositoriesStore {
       jsonConfig.parameters.mllib.gpuid = 0;
     } catch (e) {}
 
+    let protoTxtFiles = files.filter(f => f.includes("prototxt"));
+    let caffemodelFile = files
+      .filter(f => f.includes("caffemodel"))
+      .sort((a, b) => {
+        return parseInt(b.match(/\d+/), 10) - parseInt(a.match(/\d+/), 10);
+      })
+      .slice(0, 1);
+
+    const filteredFiles = protoTxtFiles.concat(caffemodelFile);
+
     this.repositories.push({
       id: this.repositories.length,
       modelName: repo.replace("/", ""),
@@ -55,16 +65,12 @@ export class modelRepositoriesStore {
       labelKey: `item-${this.repositories.length}`,
       isPublic: isPublic,
       jsonConfig: jsonConfig,
-      files: files
-        .filter(f => {
-          return f.includes("caffemodel") || f.includes("prototxt");
-        })
-        .map(f => {
-          return {
-            filename: f,
-            url: this.settings.nginxPath.private + repo + f
-          };
-        })
+      files: filteredFiles.map(f => {
+        return {
+          filename: f,
+          url: this.settings.nginxPath.private + repo + f
+        };
+      })
     });
   }
 
