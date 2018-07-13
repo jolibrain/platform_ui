@@ -51,13 +51,22 @@ export default class CardCommands extends React.Component {
       requestTime = json.head.time;
     }
 
+    const isError =
+      !service.isRequesting &&
+      (!json || !json.status || json.status.code === 500);
+
+    console.log(service.isRequesting);
+
+    const test = service.isRequesting;
+
     return (
       <div className="card commands">
         <Header
           requestTime={requestTime}
           tab={this.state.tab}
           onTabClick={this.setTab}
-          isError={json ? json.status.code === 500 : false}
+          isError={isError}
+          isRequesting={service.isRequesting}
         />
         <div className="card-body">{cardBody}</div>
       </div>

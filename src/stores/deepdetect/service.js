@@ -70,7 +70,13 @@ export default class deepdetectService {
 
   @computed
   get isRequesting() {
-    return this.status.client === ServiceConstants.CLIENT_STATUS.REQUESTING;
+    return (
+      this.status.client === ServiceConstants.CLIENT_STATUS.REQUESTING ||
+      this.status.client === ServiceConstants.CLIENT_STATUS.REQUESTING_FILES ||
+      this.status.client ===
+        ServiceConstants.CLIENT_STATUS.REQUESTING_PREDICT ||
+      this.status.client === ServiceConstants.CLIENT_STATUS.REQUESTING_TRAINING
+    );
   }
 
   @computed
@@ -211,12 +217,8 @@ export default class deepdetectService {
       return null;
     }
 
-    this.status.client = ServiceConstants.CLIENT_STATUS.REQUESTING;
-
     this._initPredictRequest(widgetSettings);
     this._predictRequest(widgetSettings);
-
-    this.status.client = ServiceConstants.CLIENT_STATUS.NONE;
   }
 
   @action
