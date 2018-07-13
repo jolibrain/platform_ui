@@ -16,13 +16,25 @@ export default class PerClassArray extends React.Component {
 
     if (!measure) return null;
 
-    const claccKeys = Object.keys(measure).filter(key =>
-      key.includes("clacc_")
-    );
+    const measureKeys = Object.keys(measure).filter(k => {
+      return (
+        k !== "iteration" &&
+        k !== "remain_time" &&
+        k !== "remain_time_str" &&
+        k !== "train_loss" &&
+        k !== "eucll" &&
+        k !== "iter_time" &&
+        k !== "acc" &&
+        k !== "meaniou" &&
+        k !== "meanacc" &&
+        k !== "map" &&
+        k !== "f1"
+      );
+    });
 
     return (
       <div className="row">
-        {claccKeys
+        {measureKeys
           .sort((a, b) => {
             return (
               parseInt(a.split("_").pop(), 10) -
@@ -32,17 +44,23 @@ export default class PerClassArray extends React.Component {
           .map((key, index) => {
             let className = "col-md-1";
 
-            if (measure[key] > 0) className = "col-md-1 clacc-level-0";
+            let title = key;
+            if (title.includes("clacc")) {
+              title = title.split("_").pop();
+              if (measure[key] > 0) className = "col-md-1 clacc-level-0";
 
-            if (measure[key] > 0.55) className = "col-md-1 clacc-level-warning";
+              if (measure[key] > 0.55)
+                className = "col-md-1 clacc-level-warning";
 
-            if (measure[key] > 0.9) className = "col-md-1 clacc-level-success";
+              if (measure[key] > 0.9)
+                className = "col-md-1 clacc-level-success";
+            }
 
-            const title = key.split("_").pop();
+            title = title.slice(title.length - 7, title.length);
 
             return (
-              <div key={`clacc-${key}`} className={className}>
-                {measure[key] > 0 ? <b>#{title}</b> : <span>#{title}</span>}
+              <div key={`measureKey-${key}`} className={className}>
+                {measure[key] > 0 ? <b>{title}</b> : <span>{title}</span>}
                 <br />
                 {measure[key] > 0 ? measure[key].toFixed(3) : "--"}
                 <br />
