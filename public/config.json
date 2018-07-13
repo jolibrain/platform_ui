@@ -30,6 +30,13 @@
           "path": "/api/training",
           "isWritable": false
         }
+      },
+      {
+        "name": "training_test",
+        "settings": {
+          "path": "/api/training_test",
+          "isWritable": false
+        }
       }
     ],
     "services": {
