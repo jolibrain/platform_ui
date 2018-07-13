@@ -13,22 +13,33 @@ export default class PerClassArray extends React.Component {
 
     const measure = service.trainMeasure;
 
-    return (
-      <div className="trainingmonitor-generalinfo">
-        <div className="row">
-          <div className="col-md-3">
-            <MeasureChart title="Train Loss" attribute="train_loss" />
-          </div>
-          <div className="col-md-3">
-            <MeasureChart title="Accuracy" attribute="acc" steppedLine={true} />
-          </div>
-          <div className="col-md-3">
-            <MeasureChart
-              title="Mean Accuracy"
-              attribute="meanacc"
-              steppedLine={true}
-            />
-          </div>
+    let infoCharts = [];
+
+    infoCharts.push(
+      <div className="col-md-3">
+        <MeasureChart title="Train Loss" attribute="train_loss" />
+      </div>
+    );
+
+    infoCharts.push(
+      <div className="col-md-3">
+        <MeasureChart title="Accuracy" attribute="acc" steppedLine={true} />
+      </div>
+    );
+
+    infoCharts.push(
+      <div className="col-md-3">
+        <MeasureChart
+          title="Mean Accuracy"
+          attribute="meanacc"
+          steppedLine={true}
+        />
+      </div>
+    );
+
+    switch (service.settings.mltype) {
+      case "segmentation":
+        infoCharts.push(
           <div className="col-md-3">
             <MeasureChart
               title="Mean IOU"
@@ -36,7 +47,36 @@ export default class PerClassArray extends React.Component {
               steppedLine={true}
             />
           </div>
-        </div>
+        );
+        break;
+      case "detection":
+        infoCharts.push(
+          <div className="col-md-3">
+            <MeasureChart title="MAP" attribute="map" steppedLine={true} />
+          </div>
+        );
+        break;
+      case "classification":
+        infoCharts.push(
+          <div className="col-md-3">
+            <MeasureChart title="F1" attribute="f1" steppedLine={true} />
+          </div>
+        );
+        break;
+      case "regression":
+        infoCharts.push(
+          <div className="col-md-3">
+            <MeasureChart title="Eucll" attribute="eucll" steppedLine={true} />
+          </div>
+        );
+        break;
+      default:
+        break;
+    }
+
+    return (
+      <div className="trainingmonitor-generalinfo">
+        <div className="row">{infoCharts}</div>
         <div className="row">
           <div className="col-md-3">
             <span>
