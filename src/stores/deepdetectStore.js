@@ -13,7 +13,8 @@ export class deepdetectStore {
 
   @computed
   get server() {
-    if (this.currentServerIndex === -1) return null;
+    if (this.currentServerIndex === -1 || this.servers.length === 0)
+      return null;
 
     return this.servers[this.currentServerIndex];
   }
@@ -27,7 +28,11 @@ export class deepdetectStore {
 
   @computed
   get service() {
-    if (this.server.currentServiceIndex === -1) return null;
+    if (
+      this.server.currentServiceIndex === -1 ||
+      this.server.services.length === 0
+    )
+      return null;
 
     return this.server.services[this.server.currentServiceIndex];
   }

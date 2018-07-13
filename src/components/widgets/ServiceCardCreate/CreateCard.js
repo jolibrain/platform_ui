@@ -106,9 +106,10 @@ export default class CreateCard extends React.Component {
 
     let downloableFiles = [];
     if (!isPublic) {
-      downloableFiles = repository.files.map(f => {
+      downloableFiles = repository.files.map((f, index) => {
         return (
           <a
+            key={index}
             href={f.url}
             className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
             download
@@ -145,7 +146,9 @@ export default class CreateCard extends React.Component {
             {repository.jsonConfig &&
             repository.jsonConfig.description &&
             repository.jsonConfig.description.length > 0 ? (
-              <p>{repository.jsonConfig.description}</p>
+              <p style={{ width: "100%" }}>
+                {repository.jsonConfig.description}
+              </p>
             ) : (
               ""
             )}

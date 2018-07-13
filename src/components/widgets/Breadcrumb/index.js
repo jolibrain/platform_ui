@@ -1,8 +1,7 @@
 import React from "react";
-import { Link, withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
-@withRouter
 export default class Breadcrumb extends React.Component {
   render() {
     const { server, service, isTraining } = this.props;
@@ -32,8 +31,7 @@ export default class Breadcrumb extends React.Component {
           href={serviceJsonUrl}
           className="badge badge-secondary"
           target="_blank"
-          rel="noreferrer"
-          rel="noopener"
+          rel="noreferrer noopener"
         >
           Service JSON
         </a>
@@ -42,8 +40,7 @@ export default class Breadcrumb extends React.Component {
             href={trainingJsonUrl}
             className="badge badge-secondary"
             target="_blank"
-            rel="noreferrer"
-            rel="noopener"
+            rel="noreferrer noopener"
           >
             Training JSON
           </a>
