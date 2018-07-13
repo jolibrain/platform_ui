@@ -28,11 +28,23 @@ export default class Breadcrumb extends React.Component {
         <Link to={`${root.path}/${server.name}/${service.name}`}>
           {service.name}
         </Link>
-        <a href={serviceJsonUrl} className="badge badge-secondary">
+        <a
+          href={serviceJsonUrl}
+          className="badge badge-secondary"
+          target="_blank"
+          rel="noreferrer"
+          rel="noopener"
+        >
           Service JSON
         </a>
         {trainingJsonUrl ? (
-          <a href={trainingJsonUrl} className="badge badge-secondary">
+          <a
+            href={trainingJsonUrl}
+            className="badge badge-secondary"
+            target="_blank"
+            rel="noreferrer"
+            rel="noopener"
+          >
             Training JSON
           </a>
         ) : (
