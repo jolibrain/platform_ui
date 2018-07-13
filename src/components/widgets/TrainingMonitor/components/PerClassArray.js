@@ -16,8 +16,8 @@ export default class PerClassArray extends React.Component {
 
     if (!measure) return null;
 
-    const claccKeys = Object.keys(measure).filter(
-      key => key.indexOf("clacc_") > -1
+    const claccKeys = Object.keys(measure).filter(key =>
+      key.includes("clacc_")
     );
 
     return (

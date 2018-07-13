@@ -4,6 +4,7 @@ import { observer, inject } from "mobx-react";
 import TrainingAlerts from "./components/TrainingAlerts";
 import GeneralInfo from "./components/GeneralInfo";
 import PerClassArray from "./components/PerClassArray";
+import MeasureInfo from "./components/MeasureInfo";
 
 @inject("deepdetectStore")
 @observer
@@ -48,7 +49,8 @@ export default class TrainingMonitor extends React.Component {
       <div className="trainingmonitor">
         <GeneralInfo />
         <PerClassArray />
-        <TrainingAlerts />{" "}
+        <MeasureInfo />
+        <TrainingAlerts />
       </div>
     );
   }

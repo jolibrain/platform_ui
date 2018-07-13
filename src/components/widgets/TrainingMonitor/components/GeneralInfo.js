@@ -21,24 +21,22 @@ export default class PerClassArray extends React.Component {
       </div>
     );
 
-    infoCharts.push(
-      <div className="col-md-3">
-        <MeasureChart title="Accuracy" attribute="acc" steppedLine={true} />
-      </div>
-    );
-
-    infoCharts.push(
-      <div className="col-md-3">
-        <MeasureChart
-          title="Mean Accuracy"
-          attribute="meanacc"
-          steppedLine={true}
-        />
-      </div>
-    );
-
     switch (service.settings.mltype) {
       case "segmentation":
+        infoCharts.push(
+          <div className="col-md-3">
+            <MeasureChart title="Accuracy" attribute="acc" steppedLine={true} />
+          </div>
+        );
+        infoCharts.push(
+          <div className="col-md-3">
+            <MeasureChart
+              title="Mean Accuracy"
+              attribute="meanacc"
+              steppedLine={true}
+            />
+          </div>
+        );
         infoCharts.push(
           <div className="col-md-3">
             <MeasureChart
@@ -52,11 +50,39 @@ export default class PerClassArray extends React.Component {
       case "detection":
         infoCharts.push(
           <div className="col-md-3">
+            <MeasureChart title="Accuracy" attribute="acc" steppedLine={true} />
+          </div>
+        );
+        infoCharts.push(
+          <div className="col-md-3">
+            <MeasureChart
+              title="Mean Accuracy"
+              attribute="meanacc"
+              steppedLine={true}
+            />
+          </div>
+        );
+        infoCharts.push(
+          <div className="col-md-3">
             <MeasureChart title="MAP" attribute="map" steppedLine={true} />
           </div>
         );
         break;
       case "classification":
+        infoCharts.push(
+          <div className="col-md-3">
+            <MeasureChart title="Accuracy" attribute="acc" steppedLine={true} />
+          </div>
+        );
+        infoCharts.push(
+          <div className="col-md-3">
+            <MeasureChart
+              title="Mean Accuracy"
+              attribute="meanacc"
+              steppedLine={true}
+            />
+          </div>
+        );
         infoCharts.push(
           <div className="col-md-3">
             <MeasureChart title="F1" attribute="f1" steppedLine={true} />
