@@ -50,7 +50,7 @@ export default class MainView extends React.Component {
           </nav>
           <div className="content">
             <TrainingMonitor />
-            <RightPanel />
+            <RightPanel trainingMeasure />
           </div>
         </div>
       </div>

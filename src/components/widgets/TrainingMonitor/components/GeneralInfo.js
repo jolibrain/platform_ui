@@ -5,7 +5,7 @@ import MeasureChart from "./MeasureChart";
 
 @inject("deepdetectStore")
 @observer
-export default class PerClassArray extends React.Component {
+export default class GeneralInfo extends React.Component {
   render() {
     const { service } = this.props.deepdetectStore;
 
@@ -15,85 +15,61 @@ export default class PerClassArray extends React.Component {
 
     let infoCharts = [];
 
-    infoCharts.push(
-      <div className="col-md-3">
-        <MeasureChart title="Train Loss" attribute="train_loss" />
-      </div>
-    );
+    infoCharts.push(<MeasureChart title="Train Loss" attribute="train_loss" />);
 
     switch (service.settings.mltype) {
       case "segmentation":
         infoCharts.push(
-          <div className="col-md-3">
-            <MeasureChart title="Accuracy" attribute="acc" steppedLine={true} />
-          </div>
+          <MeasureChart title="Accuracy" attribute="acc" steppedLine={true} />
         );
         infoCharts.push(
-          <div className="col-md-3">
-            <MeasureChart
-              title="Mean Accuracy"
-              attribute="meanacc"
-              steppedLine={true}
-            />
-          </div>
+          <MeasureChart
+            title="Mean Accuracy"
+            attribute="meanacc"
+            steppedLine={true}
+          />
         );
         infoCharts.push(
-          <div className="col-md-3">
-            <MeasureChart
-              title="Mean IOU"
-              attribute="meaniou"
-              steppedLine={true}
-            />
-          </div>
+          <MeasureChart
+            title="Mean IOU"
+            attribute="meaniou"
+            steppedLine={true}
+          />
         );
         break;
       case "detection":
         infoCharts.push(
-          <div className="col-md-3">
-            <MeasureChart title="Accuracy" attribute="acc" steppedLine={true} />
-          </div>
+          <MeasureChart title="Accuracy" attribute="acc" steppedLine={true} />
         );
         infoCharts.push(
-          <div className="col-md-3">
-            <MeasureChart
-              title="Mean Accuracy"
-              attribute="meanacc"
-              steppedLine={true}
-            />
-          </div>
+          <MeasureChart
+            title="Mean Accuracy"
+            attribute="meanacc"
+            steppedLine={true}
+          />
         );
         infoCharts.push(
-          <div className="col-md-3">
-            <MeasureChart title="MAP" attribute="map" steppedLine={true} />
-          </div>
+          <MeasureChart title="MAP" attribute="map" steppedLine={true} />
         );
         break;
       case "classification":
         infoCharts.push(
-          <div className="col-md-3">
-            <MeasureChart title="Accuracy" attribute="acc" steppedLine={true} />
-          </div>
+          <MeasureChart title="Accuracy" attribute="acc" steppedLine={true} />
         );
         infoCharts.push(
-          <div className="col-md-3">
-            <MeasureChart
-              title="Mean Accuracy"
-              attribute="meanacc"
-              steppedLine={true}
-            />
-          </div>
+          <MeasureChart
+            title="Mean Accuracy"
+            attribute="meanacc"
+            steppedLine={true}
+          />
         );
         infoCharts.push(
-          <div className="col-md-3">
-            <MeasureChart title="F1" attribute="f1" steppedLine={true} />
-          </div>
+          <MeasureChart title="F1" attribute="f1" steppedLine={true} />
         );
         break;
       case "regression":
         infoCharts.push(
-          <div className="col-md-3">
-            <MeasureChart title="Eucll" attribute="eucll" steppedLine={true} />
-          </div>
+          <MeasureChart title="Eucll" attribute="eucll" steppedLine={true} />
         );
         break;
       default:
@@ -102,7 +78,15 @@ export default class PerClassArray extends React.Component {
 
     return (
       <div className="trainingmonitor-generalinfo">
-        <div className="row">{infoCharts}</div>
+        <div className="row">
+          {infoCharts.map((chart, index) => {
+            return (
+              <div className="col-md-3" key={index}>
+                {chart}
+              </div>
+            );
+          })}
+        </div>
         <div className="row">
           <div className="col-md-3">
             <span>

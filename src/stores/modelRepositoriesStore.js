@@ -28,7 +28,6 @@ export class modelRepositoriesStore {
   }
 
   $reqPrivateFiles(path) {
-    console.log(this.settings.nginxPath.private + path);
     return agent.Webserver.listFiles(this.settings.nginxPath.private + path);
   }
 
