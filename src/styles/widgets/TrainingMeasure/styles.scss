@@ -1,7 +1,8 @@
 .trainingmeasure {
   margin-top: 20px;
 
-  p {
-    margin-bottom: 5px;
+  .row {
+    display: inline;
+    overflow: hidden;
   }
 }
