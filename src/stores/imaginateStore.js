@@ -28,11 +28,11 @@ export class imaginateStore {
   get serviceSettings() {
     let settings = this.settings.default;
 
-    const serviceSettings = this.settings.services.some(service => {
+    const existingService = this.settings.services.find(service => {
       return service.name === this.service.name;
     });
 
-    if (serviceSettings) settings = serviceSettings;
+    if (existingService) settings = existingService.settings;
 
     return settings;
   }
