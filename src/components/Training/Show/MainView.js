@@ -1,4 +1,5 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 
 import RightPanel from "../commons/RightPanel";
@@ -8,6 +9,7 @@ import Breadcrumb from "../../widgets/Breadcrumb";
 @inject("deepdetectStore")
 @inject("modalStore")
 @observer
+@withRouter
 export default class MainView extends React.Component {
   constructor(props) {
     super(props);
