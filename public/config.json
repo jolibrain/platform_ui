@@ -221,7 +221,7 @@
       "threshold": {
         "confidence": 0.5,
         "controls": true,
-        "controlSteps": [0.8, 0.5, 0.3]
+        "controlSteps": [0.8, 0.5, 0.1]
       },
       "request": {
         "objSearch": false,
