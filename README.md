@@ -4,10 +4,10 @@ Web interface to control DeepDetect processus.
 
 ## Requirements
 
-* Yarn : https://yarnpkg.com/lang/en/docs/install/
-* Docker : https://docs.docker.com/install/
-* Docker Compose : https://docs.docker.com/compose/install/
-* Node v10 : https://github.com/creationix/nvm
+- Yarn : https://yarnpkg.com/lang/en/docs/install/
+- Docker : https://docs.docker.com/install/
+- Docker Compose : https://docs.docker.com/compose/install/
+- Node v10 : https://github.com/creationix/nvm
 
 Correctly using `/data1/core_ui/models` as models repository on the machine hosting docker.
 
@@ -198,3 +198,37 @@ When creating a new service, the app is pre-loading repositories path and user i
 - `docker/react/Dockerfile.[env]` : react container Dockerfile for **[env]**
 - `docker/deepdetect/Dockerfile.[env]` : deepdetect container Dockerfile for **[env]**
 - `config/nginx/nginx.[env].conf` : nginx config file for **[env]** docker container
+
+### Running docker
+
+Docker-compose commands can be found in the `scripts` section of `package.json`.
+
+Usually, you can run shortcuts like these ones to quickly launch service:
+
+```
+yarn run eris:install
+yarn run eris:up
+yarn run eris:down
+```
+
+But it can be helpful to run full `docker-compose` commands to have finer access on each docker container:
+
+```
+docker-compose -f docker/docker-compose.eris.yml up server
+```
+
+### Accessing docker container bash console
+
+It can be helpful to access to a docker container bash console.
+
+First, fetch the container id with the following command:
+
+```
+docker ps
+```
+
+Then launch a bash console inside this container:
+
+```
+docker exec -t -i __Container_ID__ /bin/bash
+```

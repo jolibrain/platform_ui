@@ -14,7 +14,7 @@ services:
       - /data1/core_ui:/opt/platform
       - /data1:/data1
       - /data2:/data2
-      - /home/alx/code/jolibrain/platform_docs/public:/var/www/html/docs
+      - /opt/platform/platform_docs/public:/var/www/html/docs
   react:
     build:
       context: ../.
