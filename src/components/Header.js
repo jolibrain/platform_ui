@@ -92,6 +92,16 @@ class Header extends React.Component {
                     </li>
                   );
                 })}
+                <li className="nav-item">
+                  <a
+                    href="/docs/"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="nav-link"
+                  >
+                    <i className="fas fa-book" />&nbsp; Documentation
+                  </a>
+                </li>
                 <li className="nav-item dropdown">
                   <a
                     className="nav-link dropdown-toggle"
