@@ -77,6 +77,22 @@
   .navbar-sub-nav {
     display: flex;
     margin: 0 0 0 6px;
+
+    .separator {
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-align: center;
+      align-items: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      padding: 6px 8px;
+      margin: 4px 2px;
+      font-size: 12px;
+      border-radius: 4px;
+      height: 32px;
+      font-weight: 600;
+      color: #e6e8f4 !important;
+    }
   }
 
   .navbar-collapse {
