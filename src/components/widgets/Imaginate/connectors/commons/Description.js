@@ -3,6 +3,7 @@ import { inject, observer } from "mobx-react";
 
 import { findDOMNode } from "react-dom";
 import ReactTooltip from "react-tooltip";
+import Boundingbox from "react-bounding-box";
 
 @inject("imaginateStore")
 @observer
@@ -131,13 +132,15 @@ export default class Description extends React.Component {
         break;
 
       case "nns":
+        const rois = input.json.body.predictions[0].rois;
+        const roisIndex =
+          this.props.selectedBoxIndex !== -1 ? this.props.selectedBoxIndex : 0;
+
+        if (rois.length === 0 || !rois[roisIndex]) break;
+
         output = (
           <div className="row">
-            {input.json.body.predictions[0].rois[
-              this.props.selectedBoxIndex !== -1
-                ? this.props.selectedBoxIndex
-                : 0
-            ].nns
+            {rois[roisIndex].nns
               .sort((a, b) => b.prob - a.prob)
               .map((category, index) => {
                 const percent = parseInt(category.prob * 100, 10);
@@ -159,10 +162,9 @@ export default class Description extends React.Component {
                 return (
                   <div style={{ display: "contents" }} key={index}>
                     <div className="col-6 progress-nns">
-                      <img
-                        src={category.uri}
-                        alt={category.cat}
-                        className="img-fluid"
+                      <Boundingbox
+                        image={category.uri}
+                        boxes={[category.bbox]}
                       />
                       <div
                         className={`progress-bar ${progressBg}`}
