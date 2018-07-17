@@ -58,3 +58,19 @@ services:
       - /data1/core_ui:/opt/platform
       - /data1:/data1
       - /data2:/data2
+  jupyter:
+    environment:
+      - JUPYTER_LAB_ENABLE=yes
+    image: 'jupyter/datascience-notebook'
+    ports:
+      - '8920:8888'
+    volumes:
+      - /opt/platform/notebooks:/home/jovyan/work
+      - /data1:/data1
+      - /data2:/data2
+      - ../config/jupyter:/home/jovyan/.jupyter
+  seafile:
+    image: 'seafileltd/seafile:latest'
+    volumes:
+      - /data1/core_ui/seafile-data:/shared
+
