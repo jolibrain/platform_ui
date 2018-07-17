@@ -138,51 +138,90 @@ export default class Description extends React.Component {
 
         if (rois.length === 0 || !rois[roisIndex]) break;
 
-        output = (
-          <div className="row">
-            {rois[roisIndex].nns
-              .sort((a, b) => b.prob - a.prob)
-              .map((category, index) => {
-                const percent = parseInt(category.prob * 100, 10);
-                const progressStyle = { width: `${percent}%` };
-                let progressBg = "bg-success";
+        const cells = rois[roisIndex].nns
+          .sort((a, b) => b.prob - a.prob)
+          .map((category, index) => {
+            const percent = parseInt(category.prob * 100, 10);
+            const progressStyle = { width: `${percent}%` };
 
-                if (percent < 60) {
-                  progressBg = "bg-warning";
-                }
+            let progressBg = "bg-success";
+            let selectedBoxColor = "#31a354";
 
-                if (percent < 30) {
-                  progressBg = "bg-danger";
-                }
+            if (percent < 60) {
+              progressBg = "bg-warning";
+              selectedBoxColor = "#a1d99b";
+            }
 
-                if (this.props.selectedBoxIndex === index) {
-                  progressBg = "bg-info";
-                }
+            if (percent < 30) {
+              progressBg = "bg-danger";
+              selectedBoxColor = "#e5f5e0";
+            }
 
-                return (
-                  <div style={{ display: "contents" }} key={index}>
-                    <div className="col-6 progress-nns">
-                      <Boundingbox
-                        image={category.uri}
-                        boxes={[category.bbox]}
-                      />
-                      <div
-                        className={`progress-bar ${progressBg}`}
-                        role="progressbar"
-                        style={progressStyle}
-                        aria-valuenow={percent}
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                      >
-                        {percent}
-                      </div>
-                    </div>
-                    {(index + 1) % 2 === 0 ? <div className="w-100" /> : ""}
-                  </div>
-                );
-              })}
-          </div>
-        );
+            if (this.props.selectedBoxIndex === index) {
+              progressBg = "bg-info";
+            }
+
+            return (
+              <div key={index} className="col progress-nns">
+                <Boundingbox
+                  key={`category-${Math.random()}`}
+                  image={category.uri}
+                  boxes={[
+                    {
+                      coord: [
+                        category.bbox.xmin,
+                        category.bbox.ymax,
+                        category.bbox.xmax - category.bbox.xmin,
+                        category.bbox.ymin - category.bbox.ymax
+                      ]
+                    }
+                  ]}
+                  options={{
+                    colors: {
+                      normal: "#ffffff",
+                      selected: selectedBoxColor
+                    }
+                  }}
+                  drawBox={(canvas, box, color) => {
+                    const ctx = canvas.getContext("2d");
+
+                    const coord = box.coord ? box.coord : box;
+                    let [x, y, width, height] = coord;
+
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 5;
+                    ctx.beginPath();
+                    ctx.lineTo(x, y);
+                    ctx.lineTo(x, y + height);
+                    ctx.lineTo(x + width, y + height);
+                    ctx.lineTo(x + width, y);
+                    ctx.lineTo(x, y);
+                    ctx.stroke();
+                  }}
+                />
+                <div
+                  className={`progress-bar ${progressBg}`}
+                  role="progressbar"
+                  style={progressStyle}
+                  aria-valuenow={percent}
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  {percent}
+                </div>
+              </div>
+            );
+          })
+          .reduce((result, element, index, array) => {
+            // Add separators
+            result.push(element);
+            if ((index + 1) % 2 === 0) {
+              result.push(<div key={`sep-${index}`} className="w-100" />);
+            }
+            return result;
+          }, []);
+
+        output = <div className="row">{cells}</div>;
         break;
 
       case "list-url":
