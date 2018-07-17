@@ -58,6 +58,19 @@ class Header extends React.Component {
                     <i className="fas fa-braille" />&nbsp; Training
                   </Link>
                 </li>
+                <li>
+                  <span className="separator">|</span>
+                </li>
+                <li>
+                  <a
+                    href="/code/lab"
+                    style={{ textDecoration: "none" }}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    <i className="fas fa-circle-notch" />&nbsp; Jupyter
+                  </a>
+                </li>
               </ul>
             </div>
 
