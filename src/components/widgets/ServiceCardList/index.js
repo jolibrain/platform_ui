@@ -6,6 +6,7 @@ import PredictCard from "./Cards/Predict.js";
 import TrainingCard from "./Cards/Training.js";
 
 @inject("deepdetectStore")
+@inject("configStore")
 @withRouter
 @observer
 export default class ServiceCardList extends React.Component {
@@ -70,6 +71,9 @@ export default class ServiceCardList extends React.Component {
   }
 
   render() {
+    if (this.props.configStore.isComponentBlacklisted("ServiceCardList"))
+      return null;
+
     const ddStore = this.props.deepdetectStore;
 
     return (

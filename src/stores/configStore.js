@@ -52,6 +52,8 @@ export class configStore {
 
   @observable modals = [];
 
+  @observable componentBlacklist = [];
+
   $req(path) {
     return agent.Config.get();
   }
@@ -68,9 +70,16 @@ export class configStore {
         this.dataRepositories = config.dataRepositories;
         this.homeComponent = config.homeComponent;
         this.modals = config.modals;
+        this.componentBlacklist = config.componentBlacklist
+          ? config.componentBlacklist
+          : [];
         callback(this);
       })
     );
+  }
+
+  isComponentBlacklisted(componentName) {
+    return this.componentBlacklist.includes(componentName);
   }
 }
 

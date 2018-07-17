@@ -32,6 +32,8 @@ export default class GpuInfo extends React.Component {
   }
 
   render() {
+    if (this.props.configStore.isComponentBlacklisted("GpuInfo")) return null;
+
     const { gpuInfo } = this.props.gpuStore;
 
     if (gpuInfo == null) return null;

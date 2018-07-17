@@ -1,9 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import { inject } from "mobx-react";
 
+@inject("configStore")
 export default class Breadcrumb extends React.Component {
   render() {
+    if (this.props.configStore.isComponentBlacklisted("Breadcrumb"))
+      return null;
+
     const { server, service, isTraining } = this.props;
 
     const root = isTraining

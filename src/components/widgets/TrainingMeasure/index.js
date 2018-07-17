@@ -2,9 +2,13 @@ import React from "react";
 import { inject, observer } from "mobx-react";
 
 @inject("deepdetectStore")
+@inject("configStore")
 @observer
 export default class TrainingMeasure extends React.Component {
   render() {
+    if (this.props.configStore.isComponentBlacklisted("TrainingMeasure"))
+      return null;
+
     const { service } = this.props.deepdetectStore;
 
     if (!service) return null;

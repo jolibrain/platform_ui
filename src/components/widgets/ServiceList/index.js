@@ -5,6 +5,7 @@ import { withRouter } from "react-router-dom";
 import ServiceItem from "./Items/Service.js";
 
 @inject("deepdetectStore")
+@inject("configStore")
 @withRouter
 @observer
 export default class ServiceList extends React.Component {
@@ -64,6 +65,9 @@ export default class ServiceList extends React.Component {
   }
 
   render() {
+    if (this.props.configStore.isComponentBlacklisted("ServiceList"))
+      return null;
+
     const ddStore = this.props.deepdetectStore;
 
     if (!ddStore.isReady || ddStore.servers.length === 0) return null;

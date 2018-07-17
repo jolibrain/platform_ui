@@ -187,6 +187,36 @@ When creating a new service, the app is pre-loading repositories path and user i
   }
 ```
 
+### Blacklisting components
+
+It's possible to blacklist some components from the `public/config.json` file.
+
+To do so, fill the following array with these possible component names:
+
+```
+"componentBlacklist": [
+  "Predict",
+  "PredictHome",
+  "PredictNew",
+  "PredictShow",
+  "Training",
+  "TrainingHome",
+  "TrainingShow",
+  "Breadcrumb",
+  "GpuInfo",
+  "Imaginate",
+  "ServiceCardCreate",
+  "ServiceCardList",
+  "ServiceInfo",
+  "ServiceList",
+  "ServiceTraining",
+  "TrainingMeasure",
+  "TrainingMonitor",
+  "LinkJupyter",
+  "LinkData"
+]
+```
+
 ## Docker Files
 
 `[env]` should be replaced by correct environnement (dev/production/product_name/...).

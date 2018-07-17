@@ -5,6 +5,7 @@ import ImageConnector from "./connectors/Image";
 import TxtConnector from "./connectors/Txt";
 
 @inject("imaginateStore")
+@inject("configStore")
 @observer
 export default class Imaginate extends React.Component {
   constructor(props) {
@@ -37,6 +38,8 @@ export default class Imaginate extends React.Component {
   }
 
   render() {
+    if (this.props.configStore.isComponentBlacklisted("Imaginate")) return null;
+
     const store = this.props.imaginateStore;
 
     if (!store.service || !this.state.connector) return null;

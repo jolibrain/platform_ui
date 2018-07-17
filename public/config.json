@@ -278,5 +278,6 @@
     "nginxPath": "/data/",
     "systemPath": "/opt/platform/data/"
   },
-  "modals": ["deleteService", "stopTraining"]
+  "modals": ["deleteService", "stopTraining"],
+  "componentBlacklist": []
 }

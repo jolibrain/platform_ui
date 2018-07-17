@@ -6,6 +6,7 @@ import GeneralInfo from "./components/GeneralInfo";
 import PerClassArray from "./components/PerClassArray";
 
 @inject("deepdetectStore")
+@inject("configStore")
 @observer
 export default class TrainingMonitor extends React.Component {
   constructor(props) {
@@ -40,6 +41,9 @@ export default class TrainingMonitor extends React.Component {
   }
 
   render() {
+    if (this.props.configStore.isComponentBlacklisted("TrainingMonitor"))
+      return null;
+
     const { service } = this.props.deepdetectStore;
 
     if (!service) return null;

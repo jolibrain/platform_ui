@@ -5,10 +5,14 @@ import { withRouter } from "react-router-dom";
 import CreateCard from "./CreateCard";
 
 @inject("modelRepositoriesStore")
+@inject("configStore")
 @withRouter
 @observer
 export default class ServiceCardCreate extends React.Component {
   render() {
+    if (this.props.configStore.isComponentBlacklisted("ServiceCardCreate"))
+      return null;
+
     const repositories = this.props.modelRepositoriesStore.repositories;
 
     return (

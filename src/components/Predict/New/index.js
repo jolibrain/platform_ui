@@ -7,10 +7,17 @@ import { withRouter } from "react-router-dom";
 @inject("commonStore")
 @inject("modelRepositoriesStore")
 @inject("deepdetectStore")
+@inject("configStore")
 @withRouter
 @observer
 export default class PredictNew extends React.Component {
   render() {
+    if (
+      this.props.configStore.isComponentBlacklisted("Predict") ||
+      this.props.configStore.isComponentBlacklisted("PredictNew")
+    )
+      return null;
+
     const { repositories, settings } = this.props.modelRepositoriesStore;
 
     const { services } = this.props.deepdetectStore.settings;

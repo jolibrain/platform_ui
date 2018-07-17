@@ -4,6 +4,7 @@ import { inject, observer } from "mobx-react";
 import ReactTooltip from "react-tooltip";
 
 @inject("commonStore")
+@inject("configStore")
 @inject("deepdetectStore")
 @observer
 class Header extends React.Component {
@@ -48,29 +49,61 @@ class Header extends React.Component {
               </h1>
 
               <ul className="list-unstyled navbar-sub-nav">
-                <li>
-                  <Link to="/predict" style={{ textDecoration: "none" }}>
-                    <i className="fas fa-cube" />&nbsp; Predict
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/training" style={{ textDecoration: "none" }}>
-                    <i className="fas fa-braille" />&nbsp; Training
-                  </Link>
-                </li>
+                {this.props.configStore.isComponentBlacklisted("Predict") ? (
+                  ""
+                ) : (
+                  <li>
+                    <Link to="/predict" style={{ textDecoration: "none" }}>
+                      <i className="fas fa-cube" />&nbsp; Predict
+                    </Link>
+                  </li>
+                )}
+
+                {this.props.configStore.isComponentBlacklisted("Training") ? (
+                  ""
+                ) : (
+                  <li>
+                    <Link to="/training" style={{ textDecoration: "none" }}>
+                      <i className="fas fa-braille" />&nbsp; Training
+                    </Link>
+                  </li>
+                )}
+
                 <li>
                   <span className="separator">|</span>
                 </li>
-                <li>
-                  <a
-                    href="/code/lab"
-                    style={{ textDecoration: "none" }}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                  >
-                    <i className="fas fa-circle-notch" />&nbsp; Jupyter
-                  </a>
-                </li>
+
+                {this.props.configStore.isComponentBlacklisted(
+                  "LinkJupyter"
+                ) ? (
+                  ""
+                ) : (
+                  <li>
+                    <a
+                      href="/code/lab"
+                      style={{ textDecoration: "none" }}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
+                      <i className="fas fa-circle-notch" />&nbsp; Jupyter
+                    </a>
+                  </li>
+                )}
+
+                {this.props.configStore.isComponentBlacklisted("LinkData") ? (
+                  ""
+                ) : (
+                  <li>
+                    <a
+                      href="/data"
+                      style={{ textDecoration: "none" }}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
+                      <i className="fas fa-save" />&nbsp; Data
+                    </a>
+                  </li>
+                )}
               </ul>
             </div>
 
