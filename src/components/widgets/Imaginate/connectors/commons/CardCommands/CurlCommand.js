@@ -4,6 +4,10 @@ import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/styles/hljs";
 import ReactTooltip from "react-tooltip";
 
+import { Controlled as CodeMirror } from "react-codemirror2";
+import "codemirror/lib/codemirror.css";
+import "codemirror/mode/javascript/javascript";
+
 import copy from "copy-to-clipboard";
 
 @inject("imaginateStore")
@@ -13,11 +17,15 @@ export default class CurlCommand extends React.Component {
   constructor(props) {
     super(props);
 
+    const { service } = this.props.imaginateStore;
+
     this.state = {
-      copied: false
+      copied: false,
+      jsonConfig: service.selectedInput.postData
     };
 
     this.handleCopyClipboard = this.handleCopyClipboard.bind(this);
+    this.handleCurlChange = this.handleCurlChange.bind(this);
     this.curlCommand = this.curlCommand.bind(this);
   }
 
@@ -25,11 +33,23 @@ export default class CurlCommand extends React.Component {
     const { service } = this.props.imaginateStore;
     return `curl -X POST '${window.location.origin}${
       service.serverSettings.path
-    }/predict' -d '${JSON.stringify(service.selectedInput.postData, null, 1)}'`;
+    }/predict' -d '${JSON.stringify(this.state.jsonConfig, null, 1)}'`;
   }
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps(nextProps) {
+    const { service } = this.props.imaginateStore;
+    this.setState({ jsonConfig: service.selectedInput.postData });
     ReactTooltip.rebuild();
+  }
+
+  handleCurlChange(editor, data, value) {
+    const { service } = this.props.imaginateStore;
+    const curlCommand = `curl -X POST '${window.location.origin}${
+      service.serverSettings.path
+    }/predict' -d '`;
+
+    const jsonConfig = value.replace(curlCommand, "").slice(0, -1);
+    this.setState({ jsonConfig: jsonConfig });
   }
 
   handleCopyClipboard() {
@@ -47,6 +67,14 @@ export default class CurlCommand extends React.Component {
     if (service.selectedInput === null) return null;
 
     const copiedText = this.state.copied ? "Copied!" : "Copy to clipboard";
+    //<CodeMirror
+    //      value={this.curlCommand()}
+    //      onBeforeChange={this.handleCurlChange}
+    //      onChange={this.handleCurlChange}
+    //      options={{
+    //        smartIndent: false
+    //      }}
+    //    />
 
     return (
       <div>
