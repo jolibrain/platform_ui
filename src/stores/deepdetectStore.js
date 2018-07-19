@@ -6,35 +6,23 @@ export class deepdetectStore {
   @observable settings = {};
 
   @observable servers = [];
-  @observable currentServerIndex = -1;
 
   @observable refresh = 0;
   @observable isReady = false;
 
   @computed
   get server() {
-    if (this.currentServerIndex === -1 || this.servers.length === 0)
-      return null;
-
-    return this.servers[this.currentServerIndex];
+    return this.servers.find(s => s.isActive);
   }
 
   @computed
   get writableServer() {
-    if (this.currentServerIndex === -1) return null;
-
     return this.servers.find(s => s.settings.isWritable);
   }
 
   @computed
-  get service() {
-    if (
-      this.server.currentServiceIndex === -1 ||
-      this.server.services.length === 0
-    )
-      return null;
-
-    return this.server.services[this.server.currentServiceIndex];
+  get services() {
+    return [].concat.apply([], this.servers.map(s => s.services));
   }
 
   @action
@@ -45,8 +33,8 @@ export class deepdetectStore {
       this.servers.push(new deepdetectServer(serverConfig));
     });
 
-    if (this.servers.length > 0 && this.currentServerIndex === -1) {
-      this.currentServerIndex = 0;
+    if (this.servers.length > 0 && !this.server) {
+      this.servers[0].isActive = true;
     }
 
     this.loadServices();
@@ -54,32 +42,28 @@ export class deepdetectStore {
 
   @action
   init(params) {
-    this.currentServerIndex = -1;
+    let server = this.servers.find(server => server.name === params.serverName);
 
-    this.currentServerIndex = this.servers.findIndex(
-      server => server.name === params.serverName
-    );
-
-    if (this.currentServerIndex !== -1) {
-      this.server.currentServerIndex = -1;
-      this.server.setService(params.serviceName);
+    if (server) {
+      this.servers.forEach(s => (s.isActive = false));
+      server.isActive = true;
+      server.setService(params.serviceName);
     }
 
-    return (
-      this.currentServerIndex !== -1 && this.server.currentServiceIndex !== -1
-    );
+    return server && server.service;
   }
 
   @action
   setServerIndex(serverIndex) {
-    this.currentServerIndex = serverIndex;
+    this.servers.forEach(s => (s.isActive = false));
+    this.servers[serverIndex].isActive = true;
   }
 
   @action
   setServer(serverName) {
-    this.currentServerIndex = this.servers.findIndex(
-      server => server.name === serverName
-    );
+    this.servers.forEach(s => (s.isActive = false));
+    let server = this.servers.find(s => s.name === serverName);
+    if (server) server.isActive = true;
   }
 
   @action

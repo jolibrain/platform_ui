@@ -9,7 +9,10 @@ export default class Breadcrumb extends React.Component {
     if (this.props.configStore.isComponentBlacklisted("Breadcrumb"))
       return null;
 
-    const { server, service, isTraining } = this.props;
+    const { server, isTraining } = this.props;
+    const service = server.service;
+
+    if (!service) return null;
 
     const root = isTraining
       ? {
@@ -59,6 +62,5 @@ export default class Breadcrumb extends React.Component {
 
 Breadcrumb.propTypes = {
   server: PropTypes.object.isRequired,
-  service: PropTypes.object.isRequired,
   isTraining: PropTypes.bool
 };

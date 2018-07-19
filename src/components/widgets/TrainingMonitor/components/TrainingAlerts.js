@@ -5,11 +5,11 @@ import { observer, inject } from "mobx-react";
 @observer
 export default class TrainingAlerts extends React.Component {
   render() {
-    const { service } = this.props.deepdetectStore;
+    const { server } = this.props.deepdetectStore;
 
     let trainingAlert = null;
 
-    switch (service.requestType) {
+    switch (server.service.requestType) {
       case "serviceInfo":
         trainingAlert = (
           <div className="loading alert alert-primary" role="alert">
@@ -19,7 +19,7 @@ export default class TrainingAlerts extends React.Component {
         );
         break;
       case "training":
-        if (!service.trainMeasure) {
+        if (!server.service.trainMeasure) {
           trainingAlert = (
             <div className="loading alert alert-primary" role="alert">
               <i className="fas fa-spinner fa-spin" />&nbsp; Loading training
@@ -29,7 +29,7 @@ export default class TrainingAlerts extends React.Component {
         }
         break;
       default:
-        if (!service.isTraining) {
+        if (!server.service.isTraining) {
           trainingAlert = (
             <div className="loading alert alert-primary" role="alert">
               This job is not currently training.

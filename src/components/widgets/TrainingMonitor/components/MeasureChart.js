@@ -7,12 +7,12 @@ import { Line } from "react-chartjs-2";
 @observer
 export default class MeasureChart extends React.Component {
   render() {
-    const { service } = this.props.deepdetectStore;
+    const { server } = this.props.deepdetectStore;
 
-    if (!service) return null;
+    if (!server.service) return null;
 
-    const measure = service.trainMeasure;
-    const measureHist = service.trainMeasureHist;
+    const measure = server.service.trainMeasure;
+    const measureHist = server.service.trainMeasureHist;
 
     const { title, attribute } = this.props;
 

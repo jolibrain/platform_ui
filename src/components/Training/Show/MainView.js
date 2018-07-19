@@ -21,13 +21,10 @@ export default class MainView extends React.Component {
   }
 
   render() {
-    const ddStore = this.props.deepdetectStore;
-
-    const server = ddStore.server;
-
+    const { server } = this.props.deepdetectStore;
     if (!server) return null;
 
-    const service = ddStore.service;
+    const service = server.service;
 
     if (!service) {
       this.props.history.push("/");

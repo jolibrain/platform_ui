@@ -21,24 +21,25 @@ export default class MainView extends React.Component {
     this.props.modalStore.setVisible("deleteService");
   }
 
+  componentWillMount() {
+    const { server } = this.props.deepdetectStore;
+    const service = server.service;
+
+    if (!server || !service) {
+      this.props.history.push("/");
+    }
+  }
+
   render() {
-    const ddStore = this.props.deepdetectStore;
-
-    const server = ddStore.server;
-
+    const { server } = this.props.deepdetectStore;
     if (!server) return null;
 
-    const service = ddStore.service;
-
-    if (!service) {
-      this.props.history.push("/");
-      return null;
-    }
+    const service = server.service;
 
     return (
       <div className="main-view content-wrapper">
         <div className="container">
-          <Breadcrumb server={server} service={service} />
+          <Breadcrumb server={server} />
           <nav className="navbar navbar-expand-lg">
             <ul
               className="nav navbar-nav ml-auto"

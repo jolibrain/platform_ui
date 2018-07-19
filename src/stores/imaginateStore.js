@@ -4,7 +4,6 @@ export class imaginateStore {
   @observable settings = {};
 
   @observable server = null;
-  @observable service = null;
 
   @action
   setup(configStore) {
@@ -13,15 +12,13 @@ export class imaginateStore {
 
   @action
   connectToDdStore(deepdetectStore) {
-    const { server, service } = deepdetectStore;
+    const { server } = deepdetectStore;
     this.server = server;
-    this.service = service;
-    this.service.selectedInputIndex = -1;
   }
 
   @action
   predict() {
-    this.service.predict(this.serviceSettings);
+    this.server.service.predict(this.serviceSettings);
   }
 
   @computed
@@ -29,12 +26,17 @@ export class imaginateStore {
     let settings = this.settings.default;
 
     const existingService = this.settings.services.find(service => {
-      return service.name === this.service.name;
+      return service.name === this.server.service.name;
     });
 
     if (existingService) settings = existingService.settings;
 
     return settings;
+  }
+
+  @computed
+  get service() {
+    return this.server.service;
   }
 }
 

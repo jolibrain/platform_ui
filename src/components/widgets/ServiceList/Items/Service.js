@@ -1,23 +1,18 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { Link, withRouter } from "react-router-dom";
 
-@inject("deepdetectStore")
 @withRouter
 @observer
 export default class ServiceItem extends React.Component {
   render() {
-    const { server, serverIndex, service, serviceIndex } = this.props;
-    const ddStore = this.props.deepdetectStore;
-    const isActive =
-      ddStore.currentServerIndex === serverIndex &&
-      ddStore.server.currentServiceIndex === serviceIndex;
+    const { service } = this.props;
 
     return (
-      <li className={isActive ? "active" : ""}>
+      <li>
         <Link
           to={`/${service.settings.training ? "training" : "predict"}/${
-            server.name
+            service.serverName
           }/${service.name}`}
         >
           <span className="nav-item-name">

@@ -7,17 +7,17 @@ import MeasureChart from "./MeasureChart";
 @observer
 export default class GeneralInfo extends React.Component {
   render() {
-    const { service } = this.props.deepdetectStore;
+    const { server } = this.props.deepdetectStore;
 
-    if (!service || !service.trainMeasure) return null;
+    if (!server.service || !server.service.trainMeasure) return null;
 
-    const measure = service.trainMeasure;
+    const measure = server.service.trainMeasure;
 
     let infoCharts = [];
 
     infoCharts.push(<MeasureChart title="Train Loss" attribute="train_loss" />);
 
-    switch (service.settings.mltype) {
+    switch (server.service.settings.mltype) {
       case "segmentation":
         infoCharts.push(
           <MeasureChart title="Accuracy" attribute="acc" steppedLine={true} />

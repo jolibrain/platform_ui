@@ -32,7 +32,9 @@ export default class ImageConnector extends React.Component {
   }
 
   render() {
-    const store = this.props.imaginateStore;
+    const { server, service } = this.props.imaginateStore;
+
+    if (!service) return null;
 
     return (
       <div className="imaginate">
@@ -53,18 +55,18 @@ export default class ImageConnector extends React.Component {
           </div>
           <div className="col-md-5">
             <InputForm />
-            {(store.service.selectedInput &&
-              store.service.selectedInput.json &&
-              store.service.selectedInput.json.body &&
-              store.service.selectedInput.json.body.predictions &&
-              store.service.selectedInput.json.body.predictions[0] &&
-              typeof store.service.selectedInput.json.body.predictions[0]
-                .vals !== "undefined") ||
-            (store.service.selectedInput &&
-              store.service.selectedInput.postData &&
-              store.service.selectedInput.postData.parameters &&
-              store.service.selectedInput.postData.parameters.output &&
-              store.service.selectedInput.postData.parameters.output.ctc) ? (
+            {(service.selectedInput &&
+              service.selectedInput.json &&
+              service.selectedInput.json.body &&
+              service.selectedInput.json.body.predictions &&
+              service.selectedInput.json.body.predictions[0] &&
+              typeof service.selectedInput.json.body.predictions[0].vals !==
+                "undefined") ||
+            (service.selectedInput &&
+              service.selectedInput.postData &&
+              service.selectedInput.postData.parameters &&
+              service.selectedInput.postData.parameters.output &&
+              service.selectedInput.postData.parameters.output.ctc) ? (
               ""
             ) : (
               <Threshold />

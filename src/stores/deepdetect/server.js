@@ -7,6 +7,8 @@ export default class deepdetectServer {
   @observable name = "";
   @observable settings = {};
 
+  @observable isActive = false;
+
   @observable isLoading = false;
   @observable servicesLoaded = false;
 
@@ -14,7 +16,6 @@ export default class deepdetectServer {
 
   @observable services = [];
   @observable creatingService = false;
-  @observable currentServiceIndex = -1;
 
   constructor(opts) {
     this.name = opts.name;
@@ -23,20 +24,20 @@ export default class deepdetectServer {
 
   @computed
   get service() {
-    if (this.currentServiceIndex === -1) return null;
-    return this.services[this.currentServiceIndex];
+    return this.services.find(s => s.isActive);
   }
 
   @action
-  setServiceIndex(currentServiceIndex) {
-    this.currentServiceIndex = currentServiceIndex;
+  setServiceIndex(serviceIndex) {
+    this.services.forEach(s => (s.isActive = false));
+    this.services[serviceIndex].isActive = true;
   }
 
   @action
   setService(serviceName) {
-    this.currentServiceIndex = this.services.findIndex(service => {
-      return service.name === serviceName;
-    });
+    this.services.forEach(s => (s.isActive = false));
+    let service = this.services.find(s => s.name === serviceName);
+    if (service) service.isActive = true;
   }
 
   $reqInfo() {
@@ -76,12 +77,9 @@ export default class deepdetectServer {
       }
 
       if (currentServiceName) {
-        const serviceNames = this.services.map(s => s.name);
-        if (serviceNames.includes(currentServiceName)) {
-          this.currentServiceIndex = serviceNames.indexOf(currentServiceName);
-        } else {
-          this.currentServiceIndex = -1;
-        }
+        this.services.forEach(s => (s.isActive = false));
+        let service = this.services.find(s => s.name === currentServiceName);
+        if (service) service.isActive = true;
       }
     } catch (e) {
       this.serverDown = true;

@@ -17,9 +17,6 @@ export default class ServiceList extends React.Component {
     };
 
     this.timer();
-
-    this._mapServers = this._mapServers.bind(this);
-    this._mapServices = this._mapServices.bind(this);
   }
 
   componentDidMount() {
@@ -36,34 +33,6 @@ export default class ServiceList extends React.Component {
     this.props.deepdetectStore.loadServices(true);
   }
 
-  _mapServers(server, serverIndex) {
-    return server.services
-      .filter(service => {
-        if (this.props.only) {
-          if (this.props.only === "training") {
-            return service.settings.training;
-          } else {
-            return !service.settings.training;
-          }
-        } else {
-          return true;
-        }
-      })
-      .map(this._mapServices.bind(this, server, serverIndex));
-  }
-
-  _mapServices(server, serverIndex, service, serviceIndex) {
-    return (
-      <ServiceItem
-        key={`service-item-${serverIndex}-${serviceIndex}`}
-        server={server}
-        serverIndex={serverIndex}
-        service={service}
-        serviceIndex={serviceIndex}
-      />
-    );
-  }
-
   render() {
     if (this.props.configStore.isComponentBlacklisted("ServiceList"))
       return null;
@@ -72,12 +41,26 @@ export default class ServiceList extends React.Component {
 
     if (!ddStore.isReady || ddStore.servers.length === 0) return null;
 
+    const services = ddStore.services.filter(service => {
+      if (this.props.only) {
+        if (this.props.only === "training") {
+          return service.settings.training;
+        } else {
+          return !service.settings.training;
+        }
+      } else {
+        return true;
+      }
+    });
+
     return (
       <ul
         className="serviceList sidebar-top-level-items"
         key={`serviceList-${ddStore.refresh}`}
       >
-        {ddStore.servers.map(this._mapServers)}
+        {services.map((service, index) => {
+          return <ServiceItem key={index} service={service} />;
+        })}
       </ul>
     );
   }

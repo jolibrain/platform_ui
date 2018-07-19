@@ -20,7 +20,7 @@ export default class TrainingMonitor extends React.Component {
   }
 
   componentDidMount() {
-    const { settings, service } = this.props.deepdetectStore;
+    const { settings, server } = this.props.deepdetectStore;
 
     var intervalId = setInterval(
       this.timer.bind(this),
@@ -28,7 +28,7 @@ export default class TrainingMonitor extends React.Component {
     );
     this.setState({ intervalId: intervalId });
 
-    service.serviceInfo();
+    server.service.serviceInfo();
   }
 
   componentWillUnmount() {
@@ -36,17 +36,17 @@ export default class TrainingMonitor extends React.Component {
   }
 
   timer() {
-    const { service } = this.props.deepdetectStore;
-    service.fetchTrainMetrics();
+    const { server } = this.props.deepdetectStore;
+    server.service.fetchTrainMetrics();
   }
 
   render() {
     if (this.props.configStore.isComponentBlacklisted("TrainingMonitor"))
       return null;
 
-    const { service } = this.props.deepdetectStore;
+    const { server } = this.props.deepdetectStore;
 
-    if (!service) return null;
+    if (!server.service) return null;
 
     return (
       <div className="trainingmonitor">

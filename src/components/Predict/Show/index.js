@@ -23,7 +23,7 @@ export default class PredictShow extends React.Component {
 
     if (!ddStore.init(params)) {
       this.props.history.push("/404");
-    } else if (ddStore.server.currentServiceIndex === -1) {
+    } else if (!ddStore.server.service) {
       this.props.history.push("/");
     } else {
       imaginateStore.connectToDdStore(ddStore);

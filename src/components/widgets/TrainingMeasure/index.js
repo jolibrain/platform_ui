@@ -9,11 +9,11 @@ export default class TrainingMeasure extends React.Component {
     if (this.props.configStore.isComponentBlacklisted("TrainingMeasure"))
       return null;
 
-    const { service } = this.props.deepdetectStore;
+    const { server } = this.props.deepdetectStore;
 
-    if (!service) return null;
+    if (!server.service) return null;
 
-    const measure = service.trainMeasure;
+    const measure = server.service.trainMeasure;
 
     if (!measure) return null;
 

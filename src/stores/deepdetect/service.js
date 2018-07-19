@@ -15,6 +15,8 @@ export class Input {
 }
 
 export default class deepdetectService {
+  @observable isActive = false;
+
   @observable
   status = {
     client: ServiceConstants.CLIENT_STATUS.NONE,
