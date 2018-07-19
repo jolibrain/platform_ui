@@ -14,7 +14,7 @@ export default class ImageList extends React.Component {
 
   selectInput(index) {
     const store = this.props.imaginateStore;
-    store.service.selectedInputIndex = index;
+    store.service.selectInput(index);
     store.predict();
   }
 
@@ -47,11 +47,7 @@ export default class ImageList extends React.Component {
                 <img
                   src={input.content}
                   key={`img-${index}`}
-                  className={
-                    inputIndex === service.selectedInputIndex
-                      ? "img-block active"
-                      : "img-block"
-                  }
+                  className={input.isActive ? "img-block active" : "img-block"}
                   alt=""
                   onClick={this.selectInput.bind(this, inputIndex)}
                 />

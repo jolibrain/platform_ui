@@ -14,7 +14,7 @@ export default class InputList extends React.Component {
 
   selectInput(index) {
     const store = this.props.imaginateStore;
-    store.service.selectedInputIndex = index;
+    store.service.selectInput(index);
     store.predict();
   }
 
@@ -54,7 +54,7 @@ export default class InputList extends React.Component {
                 <li
                   key={`input-${index}`}
                   className={
-                    inputIndex === service.selectedInputIndex
+                    input.isActive
                       ? "list-group-item active"
                       : "list-group-item"
                   }

@@ -23,7 +23,6 @@ export default class deepdetectService {
   @observable serverSettings = {};
 
   @observable inputs = [];
-  @observable selectedInputIndex = -1;
 
   @observable confidence = null;
 
@@ -142,7 +141,7 @@ export default class deepdetectService {
 
   @computed
   get selectedInput() {
-    return this.inputs[this.selectedInputIndex];
+    return this.inputs.find(i => i.isActive);
   }
 
   @computed
@@ -164,6 +163,15 @@ export default class deepdetectService {
   }
 
   @action
+  selectInput(index) {
+    let input = this.inputs.find(i => i.isActive);
+    if (input) {
+      input.isActive = false;
+    }
+    this.inputs[index].isActive = true;
+  }
+
+  @action
   async fetchTrainMetrics() {
     if (!this.jobId) {
       return null;
@@ -182,10 +190,15 @@ export default class deepdetectService {
 
   @action
   addInput(content) {
+    let activeInput = this.inputs.find(i => i.isActive);
+    if (activeInput) {
+      activeInput.isActive = false;
+    }
+
     const input = new Input();
     input.content = content;
+    input.isActive = true;
     this.inputs.push(input);
-    this.selectedInputIndex = this.inputs.length - 1;
   }
 
   @action
@@ -203,7 +216,7 @@ export default class deepdetectService {
       return input;
     });
 
-    if (this.inputs.length > 0) this.selectedInputIndex = 0;
+    if (this.inputs.length > 0) this.inputs[0].isActive = true;
 
     callback();
   }
@@ -211,17 +224,12 @@ export default class deepdetectService {
   @action
   clearAllInputs() {
     this.inputs = [];
-    this.selectedInputIndex = -1;
   }
 
   @action
   clearInput(index) {
     if (index > -1 && this.inputs.length > index - 1) {
       this.inputs.splice(index, 1);
-    }
-
-    if (this.inputs.length === 0) {
-      this.selectedInputIndex = -1;
     }
   }
 
@@ -372,9 +380,9 @@ export default class deepdetectService {
 
   @action
   async _predictRequest(settings) {
-    let input = this.inputs[this.selectedInputIndex];
+    let input = this.inputs.find(i => i.isActive);
 
-    if (typeof input === "undefined") return null;
+    if (!input) return null;
 
     input.json = await this.$reqPostPredict(input.postData);
 
