@@ -44,11 +44,11 @@ export default class deepdetectServer {
   @action
   setService(serviceName) {
     const currentService = this.services.find(s => s.isActive);
-    let service = this.services.find(s => s.name === serviceName);
-    if (currentService.name !== serviceName && service) {
+    if (currentService && currentService.name !== serviceName) {
       currentService.isActive = false;
-      service.isActive = true;
     }
+    let service = this.services.find(s => s.name === serviceName);
+    service.isActive = true;
   }
 
   $reqInfo() {

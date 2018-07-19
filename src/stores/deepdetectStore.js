@@ -45,7 +45,11 @@ export class deepdetectStore {
     let server = this.servers.find(server => server.name === params.serverName);
 
     if (server) {
-      this.servers.forEach(s => (s.isActive = false));
+      let activeServer = this.servers.find(s => s.isActive);
+      if (activeServer && activeServer.name !== params.serverName) {
+        activeServer.isActive = false;
+      }
+
       server.isActive = true;
       server.setService(params.serviceName);
     }
