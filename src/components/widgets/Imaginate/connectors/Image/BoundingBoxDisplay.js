@@ -1,23 +1,9 @@
 import React from "react";
-import { toJS } from "mobx";
-import { inject, observer } from "mobx-react";
 import Boundingbox from "react-bounding-box";
 
-@inject("imaginateStore")
-@observer
 export default class BoundingBoxDisplay extends React.Component {
   render() {
-    const store = this.props.imaginateStore;
-
-    if (store.service.isRequesting) {
-      return (
-        <div className="alert alert-primary" role="alert">
-          <i className="fas fa-spinner fa-spin" />&nbsp; Loading...
-        </div>
-      );
-    }
-
-    const input = store.service.selectedInput;
+    const input = this.props.input;
 
     if (
       !input ||
@@ -35,14 +21,12 @@ export default class BoundingBoxDisplay extends React.Component {
       <Boundingbox
         className="boundingboxdisplay"
         image={input.content}
-        boxes={toJS(input.boxes)}
+        boxes={input.boxes}
         selectedIndex={this.props.selectedBoxIndex}
         onSelected={this.props.onOver}
-        pixelSegmentation={inputVals ? toJS(inputVals) : null}
+        pixelSegmentation={inputVals ? inputVals : null}
         separateSegmentation={inputVals ? inputVals.length > 0 : false}
-        segmentationColors={toJS(
-          store.serviceSettings.display.segmentationColors
-        )}
+        segmentationColors={this.props.displaySettings.segmentationColors}
       />
     );
   }

@@ -1,4 +1,5 @@
 import React from "react";
+import { toJS } from "mobx";
 import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
@@ -32,7 +33,7 @@ export default class ImageConnector extends React.Component {
   }
 
   render() {
-    const { server, service } = this.props.imaginateStore;
+    const { server, service, serviceSettings } = this.props.imaginateStore;
 
     if (!service) return null;
 
@@ -46,10 +47,20 @@ export default class ImageConnector extends React.Component {
               </div>
             </div>
 
+            {service.isRequesting ? (
+              <div className="alert alert-primary" role="alert">
+                <i className="fas fa-spinner fa-spin" />&nbsp; Loading...
+              </div>
+            ) : (
+              ""
+            )}
+
             <div className="row">
               <BoundingBoxDisplay
                 selectedBoxIndex={this.state.selectedBoxIndex}
                 onOver={this.onOver}
+                input={toJS(service.selectedInput)}
+                displaySettings={toJS(serviceSettings.display)}
               />
             </div>
           </div>
