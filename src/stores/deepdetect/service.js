@@ -44,26 +44,49 @@ export default class deepdetectService {
     autoSave(this, `autosave_service_${this.serverName}_${this.settings.name}`);
   }
 
-  async serviceInfo() {
-    const info = await this.$reqServiceInfo();
+  trainingServiceStatus(info) {
+    if (!info || !info.body || !info.body.jobs || info.body.jobs.length === 0)
+      return null;
 
-    if (info.body.jobs.length > 0) {
-      const job = info.body.jobs[0];
-      switch (job.status) {
+    const hasJobs = info.body.jobs.length > 0;
+
+    if (hasJobs) {
+      const currentJob = info.body.jobs[0];
+
+      switch (currentJob.status) {
         case "running":
           this.status.server = ServiceConstants.SERVER_STATUS.TRAINING_RUNNING;
-          this.jobId = job.job;
+          this.jobId = currentJob.job;
 
           if (!this.trainMeasure) {
             this.fetchTrainMetrics();
           }
 
           break;
+
+        case "finished":
+        case "terminated":
+          this.status.server = ServiceConstants.SERVER_STATUS.TRAINING_FINISHED;
+          break;
+
         default:
-          this.status.server = ServiceConstants.SERVER_STATUS.TRAINING;
           break;
       }
+    } else {
+      // !hasJobs
+
+      if (
+        this.status.server !== ServiceConstants.SERVER_STATUS.TRAINING_FINISHED
+      ) {
+        this.status.server = ServiceConstants.SERVER_STATUS.TRAINING_STOPPED;
+      }
     }
+  }
+
+  async serviceInfo() {
+    const info = await this.$reqServiceInfo();
+
+    if (this.settings.training) this.trainingServiceStatus(info);
 
     return info;
   }
