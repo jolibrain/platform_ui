@@ -2,6 +2,8 @@ import React from "react";
 import { inject, observer } from "mobx-react";
 import { Link, withRouter } from "react-router-dom";
 
+import ServiceConstants from "../../../../constants/ServiceConstants.js";
+
 @inject("deepdetectStore")
 @withRouter
 @observer
@@ -71,6 +73,22 @@ export default class TrainingCard extends React.Component {
           trainStatusBadge = {
             classNames: "badge badge-success",
             status: "training"
+          };
+        } else if (
+          service.status.server ===
+          ServiceConstants.SERVER_STATUS.TRAINING_FINISHED
+        ) {
+          trainStatusBadge = {
+            classNames: "badge badge-warning",
+            status: "Finished"
+          };
+        } else if (
+          service.status.server ===
+          ServiceConstants.SERVER_STATUS.TRAINING_STOPPED
+        ) {
+          trainStatusBadge = {
+            classNames: "badge badge-error",
+            status: "Stopped"
           };
         } else {
           trainStatusBadge = {
