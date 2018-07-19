@@ -1,18 +1,12 @@
 import { action, observable, computed, toJS } from "mobx";
 import store from "store";
+
+import Input from "./input";
+
 import autoSave from "../autoSave";
 import agent from "../../agent";
 
 import ServiceConstants from "../../constants/ServiceConstants";
-
-export class Input {
-  @observable content = {};
-  @observable postData = {};
-  @observable path = null;
-  @observable json = null;
-  @observable error = false;
-  @observable boxes = [];
-}
 
 export default class deepdetectService {
   @observable isActive = false;
