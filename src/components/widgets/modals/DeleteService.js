@@ -9,8 +9,6 @@ import { inject, observer } from "mobx-react";
 export default class DeleteServiceModal extends React.Component {
   constructor(props) {
     super(props);
-    this.serviceNameRef = React.createRef();
-
     this.handleDeleteService = this.handleDeleteService.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
   }
@@ -29,15 +27,9 @@ export default class DeleteServiceModal extends React.Component {
   }
 
   render() {
-    const ddStore = this.props.deepdetectStore;
+    const { server } = this.props.deepdetectStore;
 
-    const server = ddStore.server;
-
-    if (!server) return null;
-
-    const service = ddStore.service;
-
-    if (!service) return null;
+    if (!server || !server.service) return null;
 
     return (
       <div id="modal-deleteService">
@@ -46,8 +38,8 @@ export default class DeleteServiceModal extends React.Component {
         </div>
 
         <div className="modal-body">
-          Do you really want to delete service <pre>{service.name}</pre> on
-          DeepDetect server <pre>{server.name}</pre> ?
+          Do you really want to delete service <pre>{server.service.name}</pre>{" "}
+          on DeepDetect server <pre>{server.name}</pre> ?
         </div>
 
         <div className="modal-footer">

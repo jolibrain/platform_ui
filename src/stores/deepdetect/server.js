@@ -27,17 +27,28 @@ export default class deepdetectServer {
     return this.services.find(s => s.isActive);
   }
 
+  @computed
+  get isWritable() {
+    return this.settings.isWritable;
+  }
+
   @action
   setServiceIndex(serviceIndex) {
-    this.services.forEach(s => (s.isActive = false));
-    this.services[serviceIndex].isActive = true;
+    const currentServiceIndex = this.services.findIndex(s => s.isActive);
+    if (currentServiceIndex !== serviceIndex) {
+      this.services[currentServiceIndex].isActive = true;
+      this.services[serviceIndex].isActive = true;
+    }
   }
 
   @action
   setService(serviceName) {
-    this.services.forEach(s => (s.isActive = false));
+    const currentService = this.services.find(s => s.isActive);
     let service = this.services.find(s => s.name === serviceName);
-    if (service) service.isActive = true;
+    if (currentService.name !== serviceName && service) {
+      currentService.isActive = false;
+      service.isActive = true;
+    }
   }
 
   $reqInfo() {
@@ -60,26 +71,29 @@ export default class deepdetectServer {
   async loadServices(status = false) {
     try {
       const info = await this.$reqInfo();
-      const currentServiceName = this.service ? this.service.name : null;
 
       if (info.head && info.head.services) {
         this.serverDown = false;
-        this.services = info.head.services.map(serviceSettings => {
-          return new deepdetectService({
-            serviceSettings: serviceSettings,
-            serverName: this.name,
-            serverSettings: this.settings
-          });
+
+        info.head.services.forEach(serviceSettings => {
+          let existingService = this.services.find(
+            s => s.name === serviceSettings.name
+          );
+
+          if (existingService) {
+            existingService.settings = serviceSettings;
+          } else {
+            const service = new deepdetectService({
+              serviceSettings: serviceSettings,
+              serverName: this.name,
+              serverSettings: this.settings
+            });
+            this.services.push(service);
+          }
         });
       } else {
         this.serverDown = true;
         this.services = [];
-      }
-
-      if (currentServiceName) {
-        this.services.forEach(s => (s.isActive = false));
-        let service = this.services.find(s => s.name === currentServiceName);
-        if (service) service.isActive = true;
       }
     } catch (e) {
       this.serverDown = true;

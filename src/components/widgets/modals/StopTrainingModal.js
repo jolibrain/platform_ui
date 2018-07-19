@@ -9,8 +9,6 @@ import { inject, observer } from "mobx-react";
 export default class StopTrainingModal extends React.Component {
   constructor(props) {
     super(props);
-    this.serviceNameRef = React.createRef();
-
     this.handleStopTraining = this.handleStopTraining.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
   }
@@ -29,15 +27,9 @@ export default class StopTrainingModal extends React.Component {
   }
 
   render() {
-    const ddStore = this.props.deepdetectStore;
+    const { server } = this.props.deepdetectStore;
 
-    const server = ddStore.server;
-
-    if (!server) return null;
-
-    const service = ddStore.service;
-
-    if (!service) return null;
+    if (!server || !server.service) return null;
 
     return (
       <div id="modal-stopTraining">
@@ -46,8 +38,8 @@ export default class StopTrainingModal extends React.Component {
         </div>
 
         <div className="modal-body">
-          Do you really want to stop training <pre>{service.name}</pre> on
-          DeepDetect server <pre>{server.name}</pre> ?
+          Do you really want to stop training <pre>{server.service.name}</pre>{" "}
+          on DeepDetect server <pre>{server.name}</pre> ?
         </div>
 
         <div className="modal-footer">
