@@ -211,7 +211,7 @@ export default class Form extends React.Component {
         ddStore.setService(serviceName);
 
         this.props.history.push(
-          `/predict/${ddStore.writableServer.name}/${serviceName}`
+          `/predict/${ddStore.hostableServer.name}/${serviceName}`
         );
       }
     });

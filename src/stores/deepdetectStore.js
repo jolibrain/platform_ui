@@ -21,6 +21,11 @@ export class deepdetectStore {
   }
 
   @computed
+  get hostableServer() {
+    return this.servers.find(s => s.settings.isHostable);
+  }
+
+  @computed
   get services() {
     return [].concat.apply([], this.servers.map(s => s.services));
   }
@@ -95,7 +100,7 @@ export class deepdetectStore {
 
   @action
   newService(name, data, callback) {
-    this.writableServer.newService(name, data, callback);
+    this.hostableServer.newService(name, data, callback);
   }
 
   @action
