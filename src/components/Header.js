@@ -25,14 +25,14 @@ class Header extends React.Component {
 
   componentDidMount() {
     document.body.addEventListener("click", this.handleBodyClick);
-    const keycloak = Keycloak({
-      url: "http://auth.sodigital.io/auth",
-      realm: "innersource",
-      clientId: "jolibrain"
-    });
-    keycloak.init({ onLoad: "login-required" }).then(authenticated => {
-      this.setState({ keycloak: keycloak, authenticated: authenticated });
-    });
+    //const keycloak = Keycloak({
+    //  url: "http://auth.sodigital.io/auth",
+    //  realm: "innersource",
+    //  clientId: "jolibrain"
+    //});
+    //keycloak.init({ onLoad: "login-required" }).then(authenticated => {
+    //  this.setState({ keycloak: keycloak, authenticated: authenticated });
+    //});
   }
 
   componentWillUnmount() {
