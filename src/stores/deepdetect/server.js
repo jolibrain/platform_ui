@@ -48,7 +48,7 @@ export default class deepdetectServer {
       currentService.isActive = false;
     }
     let service = this.services.find(s => s.name === serviceName);
-    service.isActive = true;
+    if (service) service.isActive = true;
   }
 
   $reqInfo() {
@@ -74,6 +74,11 @@ export default class deepdetectServer {
 
       if (info.head && info.head.services) {
         this.serverDown = false;
+
+        const serviceNames = info.head.services.map(s => s.name);
+        this.services = this.services.filter(s =>
+          serviceNames.includes(s.name)
+        );
 
         info.head.services.forEach(serviceSettings => {
           let existingService = this.services.find(

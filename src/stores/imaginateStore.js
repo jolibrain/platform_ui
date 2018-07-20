@@ -36,7 +36,7 @@ export class imaginateStore {
 
   @computed
   get service() {
-    return this.server.service;
+    return this.server ? this.server.service : null;
   }
 }
 
