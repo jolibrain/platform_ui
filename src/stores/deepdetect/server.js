@@ -1,5 +1,6 @@
 import { observable, action, computed } from "mobx";
 import agent from "../../agent";
+import store from "store";
 
 import deepdetectService from "./service";
 
@@ -88,12 +89,25 @@ export default class deepdetectServer {
           if (existingService) {
             existingService.settings = serviceSettings;
           } else {
-            const service = new deepdetectService({
-              serviceSettings: serviceSettings,
-              serverName: this.name,
-              serverSettings: this.settings
-            });
-            this.services.push(service);
+            const authStore = store.get("autosave_auth");
+
+            if (authStore && this.isWritable) {
+              if (serviceSettings.name.match(`${authStore.user}_`)) {
+                const service = new deepdetectService({
+                  serviceSettings: serviceSettings,
+                  serverName: this.name,
+                  serverSettings: this.settings
+                });
+                this.services.push(service);
+              }
+            } else {
+              const service = new deepdetectService({
+                serviceSettings: serviceSettings,
+                serverName: this.name,
+                serverSettings: this.settings
+              });
+              this.services.push(service);
+            }
           }
         });
       } else {
