@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 import ReactTooltip from "react-tooltip";
 
+import Keycloak from "keycloak-js";
+
 @inject("commonStore")
 @inject("configStore")
 @inject("deepdetectStore")
@@ -12,7 +14,9 @@ class Header extends React.Component {
     super(props);
 
     this.state = {
-      aboutDown: false
+      aboutDown: false,
+      keycloak: null,
+      authenticated: false
     };
 
     this.handleBodyClick = this.handleBodyClick.bind(this);
@@ -21,6 +25,14 @@ class Header extends React.Component {
 
   componentDidMount() {
     document.body.addEventListener("click", this.handleBodyClick);
+    const keycloak = Keycloak({
+      url: "http://auth.sodigital.io/auth",
+      realm: "innersource",
+      clientId: "jolibrain"
+    });
+    keycloak.init({ onLoad: "login-required" }).then(authenticated => {
+      this.setState({ keycloak: keycloak, authenticated: authenticated });
+    });
   }
 
   componentWillUnmount() {

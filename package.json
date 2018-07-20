@@ -22,6 +22,7 @@
     "copy-to-clipboard": "^3.0.8",
     "custom-react-scripts": "^0.2.2",
     "deepdetect-js": "^1.5.9",
+    "keycloak-js": "^4.1.0",
     "mobx": "^5.0.3",
     "mobx-react": "^5.1.2",
     "mobx-utils": "^5.0.0",
