@@ -28,7 +28,7 @@
         "name": "training",
         "settings": {
           "path": "/api/training",
-          "isWritable": false
+          "isWritable": true
         }
       },
       {
