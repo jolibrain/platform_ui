@@ -18,7 +18,14 @@ export default class TrainingMeasure extends React.Component {
     if (!measure) return null;
 
     const measureKeys = Object.keys(measure)
-      .filter(k => k !== "remain_time_str")
+      .filter(
+        k =>
+          k !== "remain_time_str" &&
+          k !== "remain_time" &&
+          k !== "iter_time" &&
+          k !== "iteration" &&
+          k !== "train_loss"
+      )
       .sort((key1, key2) => {
         if (key1.includes("clacc_") && key2.includes("clacc_")) {
           return (
