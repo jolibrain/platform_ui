@@ -35,6 +35,7 @@ export default class TrainingCard extends React.Component {
 
   timer() {
     const { service } = this.props;
+    service.serviceInfo();
     service.fetchTrainMetrics();
   }
 
