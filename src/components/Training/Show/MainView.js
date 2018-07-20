@@ -40,14 +40,18 @@ export default class MainView extends React.Component {
               className="nav navbar-nav ml-auto"
               style={{ flexDirection: "row" }}
             >
-              <li className="nav-item">
-                <button
-                  className="btn btn-outline-danger"
-                  onClick={this.openStopTrainingModal}
-                >
-                  Stop training
-                </button>
-              </li>
+              {server.settings.isWritable ? (
+                <li className="nav-item">
+                  <button
+                    className="btn btn-outline-danger"
+                    onClick={this.openStopTrainingModal}
+                  >
+                    Stop training
+                  </button>
+                </li>
+              ) : (
+                ""
+              )}
             </ul>
           </nav>
           <div className="content">
