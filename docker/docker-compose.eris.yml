@@ -62,6 +62,7 @@ services:
     environment:
       - JUPYTER_LAB_ENABLE=yes
     image: 'jupyter/datascience-notebook'
+    restart: always
     ports:
       - '8920:8888'
     volumes:
@@ -69,8 +70,3 @@ services:
       - /data1:/data1
       - /data2:/data2
       - ../config/jupyter:/home/jovyan/.jupyter
-  seafile:
-    image: 'seafileltd/seafile:latest'
-    volumes:
-      - /data1/core_ui/seafile-data:/shared
-
