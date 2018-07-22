@@ -61,7 +61,7 @@ services:
   jupyter:
     environment:
       - JUPYTER_LAB_ENABLE=yes
-    image: 'jupyter/datascience-notebook'
+    image: 'jolibrain/jupyter-dd-notebook'
     restart: always
     ports:
       - '8920:8888'
