@@ -86,7 +86,7 @@ export class deepdetectStore {
   }
 
   @action
-  loadServices(status) {
+  loadServices(status = false) {
     const promises = [];
     this.servers.forEach(async server => {
       const promise = server.loadServices(status);

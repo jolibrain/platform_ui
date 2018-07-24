@@ -5009,6 +5009,10 @@ jsx-ast-utils@^2.0.1:
   dependencies:
     array-includes "^3.0.3"
 
+keycloak-js@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/keycloak-js/-/keycloak-js-4.1.0.tgz#762615d17df93b0a25daff8d7f6ffd2c39d25ea6"
+
 keycode@^2.1.2:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/keycode/-/keycode-2.2.0.tgz#3d0af56dc7b8b8e5cba8d0a97f107204eec22b04"
