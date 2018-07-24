@@ -36,69 +36,39 @@ export default class TrainingCard extends React.Component {
   timer() {
     const { service } = this.props;
     service.serviceInfo();
-    service.fetchTrainMetrics();
   }
 
   render() {
     const { server, service } = this.props;
     const measures = service.trainMeasure;
 
-    if (!server || !service || !measures) return null;
+    if (!server || !service) return null;
 
-    let trainStatusBadge = {
-      classNames: "badge badge-danger",
-      status: "unknown"
-    };
+    let badges = [];
 
-    switch (service.requestType) {
-      case "serviceInfo":
-        trainStatusBadge = {
-          classNames: "badge badge-info",
-          status: "Loading service info..."
-        };
-        break;
-      case "training":
-        if (!service.trainMeasure) {
-          trainStatusBadge = {
-            classNames: "badge badge-info",
-            status: "Loading data..."
-          };
-        } else if (service.isTraining) {
-          trainStatusBadge = {
-            classNames: "badge badge-success",
-            status: "training"
-          };
-        }
-        break;
-      default:
-        if (service.isTraining) {
-          trainStatusBadge = {
-            classNames: "badge badge-success",
-            status: "training"
-          };
-        } else if (
-          service.status.server ===
-          ServiceConstants.SERVER_STATUS.TRAINING_FINISHED
-        ) {
-          trainStatusBadge = {
-            classNames: "badge badge-warning",
-            status: "Finished"
-          };
-        } else if (
-          service.status.server ===
-          ServiceConstants.SERVER_STATUS.TRAINING_STOPPED
-        ) {
-          trainStatusBadge = {
-            classNames: "badge badge-error",
-            status: "Stopped"
-          };
-        } else {
-          trainStatusBadge = {
-            classNames: "badge badge-error",
-            status: "not training"
-          };
-        }
-        break;
+    badges.push({
+      classNames: "badge badge-secondary",
+      status: service.settings.mltype
+    });
+
+    if (service.isTraining) {
+      badges.push({
+        classNames: "badge badge-success",
+        status: "training"
+      });
+    } else if (service.respInfo && !service.trainJob) {
+      badges.push({
+        classNames: "badge badge-warning",
+        status: "not training"
+      });
+    }
+
+    if (service.isRequesting) {
+      badges.push({
+        classNames: "badge badge-info",
+        status: "",
+        loading: true
+      });
     }
 
     const serviceUrl = `/training/${server.name}/${service.name}`;
@@ -117,40 +87,40 @@ export default class TrainingCard extends React.Component {
       case "segmentation":
         info.push({
           text: "Mean IOU",
-          val: measures.meaniou ? measures.meaniou.toFixed(2) : "--"
+          val: measures && measures.meaniou ? measures.meaniou.toFixed(2) : "--"
         });
         break;
       case "detection":
         info.push({
           text: "MAP",
-          val: measures.map ? measures.map.toFixed(2) : "--"
+          val: measures && measures.map ? measures.map.toFixed(2) : "--"
         });
         break;
       case "ctc":
         info.push({
           text: "Accuracy",
-          val: measures.acc ? measures.acc.toFixed(2) : "--"
+          val: measures && measures.acc ? measures.acc.toFixed(2) : "--"
         });
         break;
       case "classification":
         info.push({
           text: "Accuracy",
-          val: measures.acc ? measures.acc.toFixed(2) : "--"
+          val: measures && measures.acc ? measures.acc.toFixed(2) : "--"
         });
         info.push({
           text: "F1",
-          val: measures.f1 ? measures.f1.toFixed(2) : "--"
+          val: measures && measures.f1 ? measures.f1.toFixed(2) : "--"
         });
 
         info.push({
           text: "mcll",
-          val: measures.mcll ? measures.mcll.toFixed(2) : "--"
+          val: measures && measures.mcll ? measures.mcll.toFixed(2) : "--"
         });
         break;
       case "regression":
         info.push({
           text: "Eucll",
-          val: measures.eucll ? measures.eucll.toFixed(2) : "--"
+          val: measures && measures.eucll ? measures.eucll.toFixed(2) : "--"
         });
         break;
       default:
@@ -170,12 +140,18 @@ export default class TrainingCard extends React.Component {
           <h5 className="card-title">
             {service.name}
             <br />
-            <span className="badge badge-secondary">
-              {service.settings.mltype}
-            </span>&nbsp;
-            <span className={trainStatusBadge.classNames}>
-              {trainStatusBadge.status}
-            </span>
+            {badges.map((badge, key) => {
+              return (
+                <span key={key} className={badge.classNames}>
+                  {badge.loading ? (
+                    <i className="fas fa-spinner fa-spin" />
+                  ) : (
+                    ""
+                  )}
+                  {badge.status}
+                </span>
+              );
+            })}
           </h5>
           <p className="card-text">{service.settings.description}</p>
           <ul>
