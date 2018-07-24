@@ -172,7 +172,11 @@ const Webserver = {
       .end(handleErrors)
       .then(res => {
         if (res && res.text) {
-          return JSON.parse(res.text);
+          let json = null;
+          try {
+            json = JSON.parse(res.text);
+          } catch (e) {}
+          return json;
         }
       })
 };
