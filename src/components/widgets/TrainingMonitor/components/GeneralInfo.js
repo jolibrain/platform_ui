@@ -15,17 +15,29 @@ export default class GeneralInfo extends React.Component {
 
     let infoCharts = [];
 
-    infoCharts.push(<MeasureChart title="Train Loss" attribute="train_loss" />);
+    infoCharts.push(
+      <MeasureChart
+        title="Train Loss"
+        key="train_loss"
+        attribute="train_loss"
+      />
+    );
 
     switch (server.service.settings.mltype) {
       case "segmentation":
         infoCharts.push(
-          <MeasureChart title="Accuracy" attribute="acc" steppedLine={true} />
+          <MeasureChart
+            title="Accuracy"
+            attribute="acc"
+            key="acc"
+            steppedLine={true}
+          />
         );
         infoCharts.push(
           <MeasureChart
             title="Mean Accuracy"
             attribute="meanacc"
+            key="meanacc"
             steppedLine={true}
           />
         );
@@ -33,36 +45,58 @@ export default class GeneralInfo extends React.Component {
           <MeasureChart
             title="Mean IOU"
             attribute="meaniou"
+            key="meaniou"
             steppedLine={true}
           />
         );
         break;
       case "detection":
         infoCharts.push(
-          <MeasureChart title="MAP" attribute="map" steppedLine={true} />
+          <MeasureChart
+            title="MAP"
+            attribute="map"
+            key="map"
+            steppedLine={true}
+          />
         );
         break;
       case "classification":
         infoCharts.push(
-          <MeasureChart title="Accuracy" attribute="acc" steppedLine={true} />
+          <MeasureChart
+            title="Accuracy"
+            attribute="acc"
+            key="acc"
+            steppedLine={true}
+          />
         );
         infoCharts.push(
           <MeasureChart
             title="Mean Accuracy"
             attribute="meanacc"
+            key="meanacc"
             steppedLine={true}
           />
         );
         infoCharts.push(
-          <MeasureChart title="F1" attribute="f1" steppedLine={true} />
+          <MeasureChart title="F1" attribute="f1" key="f1" steppedLine={true} />
         );
         infoCharts.push(
-          <MeasureChart title="Mcll" attribute="mcll" steppedLine={true} />
+          <MeasureChart
+            title="Mcll"
+            attribute="mcll"
+            key="mcll"
+            steppedLine={true}
+          />
         );
         break;
       case "regression":
         infoCharts.push(
-          <MeasureChart title="Eucll" attribute="eucll" steppedLine={true} />
+          <MeasureChart
+            title="Eucll"
+            attribute="eucll"
+            key="eucll"
+            steppedLine={true}
+          />
         );
         break;
       default:
@@ -71,15 +105,7 @@ export default class GeneralInfo extends React.Component {
 
     return (
       <div className="trainingmonitor-generalinfo">
-        <div className="row">
-          {infoCharts.map((chart, index) => {
-            return (
-              <div className="col-md-3" key={index}>
-                {chart}
-              </div>
-            );
-          })}
-        </div>
+        <div className="row">{infoCharts}</div>
         <div className="row">
           <div className="col-md-3">
             <span>

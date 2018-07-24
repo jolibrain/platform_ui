@@ -37,7 +37,7 @@ export default class TrainingMonitor extends React.Component {
 
   timer() {
     const { server } = this.props.deepdetectStore;
-    server.service.fetchTrainMetrics();
+    server.service.trainInfo();
   }
 
   render() {

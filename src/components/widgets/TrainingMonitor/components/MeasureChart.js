@@ -16,14 +16,20 @@ export default class MeasureChart extends React.Component {
 
     const { title, attribute } = this.props;
 
+    if (!measure[attribute]) return null;
+
     let chartData = {};
-    if (measureHist && measureHist[`${attribute}_hist`]) {
-      const measures = measureHist[`${attribute}_hist`];
+    if (
+      measureHist &&
+      measureHist[`${attribute}_hist`] &&
+      measureHist[`${attribute}_hist`].length > 0
+    ) {
+      const measures = toJS(measureHist[`${attribute}_hist`]);
       chartData = {
         labels: Array.apply(null, Array(measures.length)),
         datasets: [
           {
-            data: toJS(measures).map(x => (x ? x.toFixed(3) : null)),
+            data: measures.map(x => (x ? x.toFixed(3) : null)),
             fill: false,
             lineTension: 0,
             steppedLine: this.props.steppedLine,
@@ -68,10 +74,10 @@ export default class MeasureChart extends React.Component {
     };
 
     return (
-      <div>
+      <div className="col-md-3" refresh={server.service.refresh}>
         <span>
           <b>{title}</b>:&nbsp;
-          {measure[attribute] ? measure[attribute].toFixed(3) : "--"}
+          {measure[attribute].toFixed(3)}
         </span>
         {chartData.datasets ? (
           <Line
