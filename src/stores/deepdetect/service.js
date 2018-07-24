@@ -26,9 +26,10 @@ export default class deepdetectService {
 
   @observable confidence = null;
 
-  @observable jobId = null;
-  @observable trainMeasure = null;
-  @observable trainMeasureHist = null;
+  @observable respInfo = null;
+  @observable respTraining = null;
+
+  @observable refresh = Math.random();
 
   constructor(opts) {
     this.settings = opts.serviceSettings;
@@ -39,51 +40,19 @@ export default class deepdetectService {
     autoSave(this, `autosave_service_${this.serverName}_${this.settings.name}`);
   }
 
-  trainingServiceStatus(info) {
-    if (!info || !info.body || !info.body.jobs || info.body.jobs.length === 0)
-      return null;
+  async serviceInfo() {
+    this.respInfo = await this.$reqServiceInfo();
 
-    const hasJobs = info.body.jobs.length > 0;
+    const hasJobs = this.respInfo.body.jobs.length > 0;
+    if (hasJobs) this.trainInfo();
 
-    if (hasJobs) {
-      const currentJob = info.body.jobs[0];
-
-      switch (currentJob.status) {
-        case "running":
-          this.status.server = ServiceConstants.SERVER_STATUS.TRAINING_RUNNING;
-          this.jobId = currentJob.job;
-
-          if (!this.trainMeasure) {
-            this.fetchTrainMetrics();
-          }
-
-          break;
-
-        case "finished":
-        case "terminated":
-          this.status.server = ServiceConstants.SERVER_STATUS.TRAINING_FINISHED;
-          break;
-
-        default:
-          break;
-      }
-    } else {
-      // !hasJobs
-
-      if (
-        this.status.server !== ServiceConstants.SERVER_STATUS.TRAINING_FINISHED
-      ) {
-        this.status.server = ServiceConstants.SERVER_STATUS.TRAINING_STOPPED;
-      }
-    }
+    return this.respInfo;
   }
 
-  async serviceInfo() {
-    const info = await this.$reqServiceInfo();
-
-    if (this.settings.training) this.trainingServiceStatus(info);
-
-    return info;
+  async trainInfo() {
+    this.respTraining = await this.$reqTrainInfo();
+    this.refresh = Math.random();
+    return this.respTraining;
   }
 
   @computed
@@ -100,7 +69,11 @@ export default class deepdetectService {
   @computed
   get isTraining() {
     return (
-      this.status.server === ServiceConstants.SERVER_STATUS.TRAINING_RUNNING
+      this.respInfo &&
+      this.trainJob &&
+      this.respTraining &&
+      this.respTraining.head &&
+      this.respTraining.head.status === "running"
     );
   }
 
@@ -151,14 +124,46 @@ export default class deepdetectService {
   }
 
   @computed
+  get trainJob() {
+    let jobId = null;
+
+    if (this.respInfo && this.respInfo.body && this.respInfo.body.jobs) {
+      const hasJobs = this.respInfo.body.jobs.length > 0;
+      if (hasJobs) jobId = this.respInfo.body.jobs[0].job;
+    }
+
+    return jobId;
+  }
+
+  @computed
+  get trainMeasure() {
+    if (
+      this.respTraining &&
+      this.respTraining.body &&
+      this.respTraining.body.measure
+    )
+      return this.respTraining.body.measure;
+  }
+
+  @computed
+  get trainMeasureHist() {
+    if (
+      this.respTraining &&
+      this.respTraining.body &&
+      this.respTraining.body.measure_hist
+    )
+      return this.respTraining.body.measure_hist;
+  }
+
+  @computed
   get urlTraining() {
-    if (!this.jobId) {
+    if (!this.trainJob) {
       return null;
     }
 
     const serverPath = this.serverSettings.path;
     return `${serverPath}/train?service=${this.name}&job=${
-      this.jobId
+      this.trainJob
     }&parameters.output.measure_hist=true&parameters.output.max_hist_points=1000`;
   }
 
@@ -169,23 +174,6 @@ export default class deepdetectService {
       input.isActive = false;
     }
     this.inputs[index].isActive = true;
-  }
-
-  @action
-  async fetchTrainMetrics() {
-    if (!this.jobId) {
-      return null;
-    }
-
-    const trainMetrics = await this.$reqTrainMetrics();
-
-    if (trainMetrics.hasOwnProperty("body")) {
-      this.trainMeasure = trainMetrics.body.measure;
-      this.trainMeasureHist = trainMetrics.body.measure_hist;
-    } else {
-      this.trainMeasure = null;
-      this.trainMeasureHist = null;
-    }
   }
 
   @action
@@ -272,18 +260,26 @@ export default class deepdetectService {
     return info;
   }
 
-  async $reqTrainMetrics(job = 1, timeout = 0, history = false) {
+  async $reqTrainInfo(job = 1, timeout = 0, history = false) {
     this.status.client = ServiceConstants.CLIENT_STATUS.REQUESTING_TRAINING;
     const info = await agent.Deepdetect.getTrain(
       this.serverSettings,
       this.name,
-      this.jobId, // job id
+      this.trainJob, // job id
       0, // timeout
       false, // history
       10000 // max history points
     );
     this.status.client = ServiceConstants.CLIENT_STATUS.NONE;
     return info;
+  }
+
+  async $reqTrainMetrics() {
+    this.status.client = ServiceConstants.CLIENT_STATUS.REQUESTING_TRAINING;
+    const metricsPath = `${this.name}/metrics.json`;
+    const metrics = await agent.Webserver.getFile(metricsPath);
+    this.status.client = ServiceConstants.CLIENT_STATUS.NONE;
+    return metrics;
   }
 
   async $reqServiceInfo() {
