@@ -1,4 +1,4 @@
-import { observable, action } from "mobx";
+import { observable, action, computed } from "mobx";
 import agent from "../agent";
 
 export class modelRepositoriesStore {
@@ -10,6 +10,13 @@ export class modelRepositoriesStore {
   setup(configStore) {
     this.settings = configStore.modelRepositories;
     this.load();
+  }
+
+  $reqJsonMetrics(path) {
+    const jsonPath = path.match("/$")
+      ? `${path}metrics.json`
+      : `${path}/metrics.json`;
+    return agent.Webserver.getFile(jsonPath);
   }
 
   $reqJsonConfig(path) {
@@ -107,6 +114,9 @@ export class modelRepositoriesStore {
       })
     );
   }
+
+  @computed
+  get metrics() {}
 }
 
 export default new modelRepositoriesStore();
