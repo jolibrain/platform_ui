@@ -39,16 +39,6 @@ export default class GeneralInfo extends React.Component {
         break;
       case "detection":
         infoCharts.push(
-          <MeasureChart title="Accuracy" attribute="acc" steppedLine={true} />
-        );
-        infoCharts.push(
-          <MeasureChart
-            title="Mean Accuracy"
-            attribute="meanacc"
-            steppedLine={true}
-          />
-        );
-        infoCharts.push(
           <MeasureChart title="MAP" attribute="map" steppedLine={true} />
         );
         break;
