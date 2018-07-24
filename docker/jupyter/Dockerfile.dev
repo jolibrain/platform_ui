@@ -1,0 +1,9 @@
+FROM jupyter/datascience-notebook
+
+LABEL maintainer="Emmanuel Benazera <emmanuel.benazera@jolibrain.com>"
+
+USER root
+
+RUN conda install --quiet --yes \
+    'opencv' 
+

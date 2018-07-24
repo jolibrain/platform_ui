@@ -46,7 +46,7 @@ export default class PredictNew extends React.Component {
           <div className="loading alert alert-danger" role="alert">
             <i className="fas fa-times" /> No models repository found in :{" "}
             <code>{settings.systemPath.public}</code> or{" "}
-            <code>{settings.systemPath.public}</code>
+            <code>{settings.systemPath.private}</code>
           </div>
         </div>
       );

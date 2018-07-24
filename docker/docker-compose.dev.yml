@@ -7,12 +7,10 @@ services:
     image: core-ui-nginx
     ports:
       - '18104:80' # Connect localhost 18104 port to container 80 port
-    links: # Link services to access http://react and http://deepdetect inside the container
-      - deepdetect_public:deepdetect_public
-      - deepdetect_private:deepdetect_private
+    links:
       - react:react
     volumes:
-      - /data1/core_ui:/opt/platform
+      - /opt/platform:/opt/platform
   react:
     build:
       context: ../.
@@ -24,19 +22,3 @@ services:
       - ./..:/usr/src/react
     ports:
       - '3000:3000' # For docker to now where to redirect HMR queries
-  deepdetect_public:
-    build:
-      context: ../.
-      dockerfile: docker/deepdetect/Dockerfile.dev
-    ports:
-      - '8900:8080'
-    volumes:
-      - /data1/core_ui:/opt/platform
-  deepdetect_private:
-    build:
-      context: ../.
-      dockerfile: docker/deepdetect/Dockerfile.dev
-    ports:
-      - '8910:8080'
-    volumes:
-      - /data1/core_ui:/opt/platform
