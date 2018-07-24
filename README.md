@@ -13,16 +13,9 @@ Correctly using `/data1/core_ui/models` as models repository on the machine host
 
 This folder is mandatory for deepdetect and nginx to link to correct model files.
 
-## Dev setup
-
-```bash
-yarn dev:setup
-yarn dev:up
-```
-
 ## Usage
 
-Open your browser on [http://localhost:18104](http://localhost:18104)
+Open your browser on [http://localhost:3000](http://localhost:3000)
 
 ## public/config.json
 
@@ -215,50 +208,4 @@ To do so, fill the following array with these possible component names:
   "LinkJupyter",
   "LinkData"
 ]
-```
-
-## Docker Files
-
-`[env]` should be replaced by correct environnement (dev/production/product_name/...).
-
-- `package.json` : various scripts to run docker commands
-- `scripts/00-install-[env].sh` : build react and deepdetect containers for **[env]**
-- `docker/docker-compose.[env].sh` : docker-compose configuration for **[env]**
-- `docker/nginx/Dockerfile.[env]` : nginx container Dockerfile for **[env]**
-- `docker/react/Dockerfile.[env]` : react container Dockerfile for **[env]**
-- `docker/deepdetect/Dockerfile.[env]` : deepdetect container Dockerfile for **[env]**
-- `config/nginx/nginx.[env].conf` : nginx config file for **[env]** docker container
-
-### Running docker
-
-Docker-compose commands can be found in the `scripts` section of `package.json`.
-
-Usually, you can run shortcuts like these ones to quickly launch service:
-
-```
-yarn run eris:install
-yarn run eris:up
-yarn run eris:down
-```
-
-But it can be helpful to run full `docker-compose` commands to have finer access on each docker container:
-
-```
-docker-compose -f docker/docker-compose.eris.yml up server
-```
-
-### Accessing docker container bash console
-
-It can be helpful to access to a docker container bash console.
-
-First, fetch the container id with the following command:
-
-```
-docker ps
-```
-
-Then launch a bash console inside this container:
-
-```
-docker exec -t -i __Container_ID__ /bin/bash
 ```
