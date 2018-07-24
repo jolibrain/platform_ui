@@ -46,7 +46,7 @@ export default class MainView extends React.Component {
                     className="btn btn-outline-danger"
                     onClick={this.openStopTrainingModal}
                   >
-                    Stop training
+                    {service.isTraining ? "Stop Training" : "Delete Service"}
                   </button>
                 </li>
               ) : (
