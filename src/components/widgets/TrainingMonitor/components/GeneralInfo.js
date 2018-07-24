@@ -66,6 +66,9 @@ export default class GeneralInfo extends React.Component {
         infoCharts.push(
           <MeasureChart title="F1" attribute="f1" steppedLine={true} />
         );
+        infoCharts.push(
+          <MeasureChart title="Mcll" attribute="mcll" steppedLine={true} />
+        );
         break;
       case "regression":
         infoCharts.push(

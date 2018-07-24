@@ -41,8 +41,9 @@ export default class TrainingCard extends React.Component {
 
   render() {
     const { server, service } = this.props;
+    const measures = service.trainMeasure;
 
-    if (!server || !service) return null;
+    if (!server || !service || !measures) return null;
 
     let trainStatusBadge = {
       classNames: "badge badge-danger",
@@ -100,7 +101,6 @@ export default class TrainingCard extends React.Component {
         break;
     }
 
-    const measures = service.trainMeasure;
     const serviceUrl = `/training/${server.name}/${service.name}`;
 
     let info = [
@@ -117,35 +117,40 @@ export default class TrainingCard extends React.Component {
       case "segmentation":
         info.push({
           text: "Mean IOU",
-          val: measures && measures.meaniou ? measures.meaniou.toFixed(2) : "--"
+          val: measures.meaniou ? measures.meaniou.toFixed(2) : "--"
         });
         break;
       case "detection":
         info.push({
           text: "MAP",
-          val: measures && measures.map ? measures.map.toFixed(2) : "--"
+          val: measures.map ? measures.map.toFixed(2) : "--"
         });
         break;
       case "ctc":
         info.push({
           text: "Accuracy",
-          val: measures && measures.acc ? measures.acc.toFixed(2) : "--"
+          val: measures.acc ? measures.acc.toFixed(2) : "--"
         });
         break;
       case "classification":
         info.push({
           text: "Accuracy",
-          val: measures && measures.acc ? measures.acc.toFixed(2) : "--"
+          val: measures.acc ? measures.acc.toFixed(2) : "--"
         });
         info.push({
           text: "F1",
-          val: measures && measures.f1 ? measures.f1.toFixed(2) : "--"
+          val: measures.f1 ? measures.f1.toFixed(2) : "--"
+        });
+
+        info.push({
+          text: "mcll",
+          val: measures.mcll ? measures.mcll.toFixed(2) : "--"
         });
         break;
       case "regression":
         info.push({
           text: "Eucll",
-          val: measures && measures.eucll ? measures.eucll.toFixed(2) : "--"
+          val: measures.eucll ? measures.eucll.toFixed(2) : "--"
         });
         break;
       default:
