@@ -27,7 +27,7 @@ export default class ServiceTraining extends React.Component {
 
   timer() {
     const { service } = this.props.deepdetectStore;
-    service.fetchTrainMetrics();
+    service.trainInfo();
   }
 
   render() {
