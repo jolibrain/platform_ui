@@ -33,7 +33,7 @@ export default class ImageConnector extends React.Component {
   }
 
   render() {
-    const { server, service, serviceSettings } = this.props.imaginateStore;
+    const { service, serviceSettings } = this.props.imaginateStore;
 
     if (!service) return null;
 

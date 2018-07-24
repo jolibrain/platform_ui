@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 import ReactTooltip from "react-tooltip";
 
-import Keycloak from "keycloak-js";
+//import Keycloak from "keycloak-js";
 
 @inject("commonStore")
 @inject("configStore")
