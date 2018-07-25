@@ -359,6 +359,9 @@ export default class deepdetectService {
         input.postData.parameters.input = { segmentation: true };
         input.postData.parameters.output = {};
         break;
+      case "classification":
+        delete input.postData.parameters.output.bbox;
+        break;
       default:
         break;
     }
@@ -388,7 +391,10 @@ export default class deepdetectService {
       const prediction = input.json.body.predictions[0];
       const classes = prediction.classes;
 
-      if (typeof classes !== "undefined") {
+      if (
+        typeof classes !== "undefined" &&
+        this.settings.mltype !== "classication"
+      ) {
         input.boxes = classes.map(predict => predict.bbox);
       }
 
@@ -396,7 +402,8 @@ export default class deepdetectService {
         (settings.request.objSearch ||
           settings.request.imgSearch ||
           this.settings.mltype === "rois") &&
-        typeof input.json.body.predictions[0].rois !== "undefined"
+        typeof input.json.body.predictions[0].rois !== "undefined" &&
+        this.settings.mltype !== "classification"
       ) {
         input.boxes = prediction.rois.map(predict => predict.bbox);
       }
