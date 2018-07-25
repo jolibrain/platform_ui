@@ -34,8 +34,6 @@ export default class MainView extends React.Component {
     const { server } = this.props.deepdetectStore;
     if (!server) return null;
 
-    const service = server.service;
-
     return (
       <div className="main-view content-wrapper">
         <div className="container">

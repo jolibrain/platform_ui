@@ -4,9 +4,9 @@ import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/styles/hljs";
 import ReactTooltip from "react-tooltip";
 
-import { Controlled as CodeMirror } from "react-codemirror2";
-import "codemirror/lib/codemirror.css";
-import "codemirror/mode/javascript/javascript";
+//import { Controlled as CodeMirror } from "react-codemirror2";
+//import "codemirror/lib/codemirror.css";
+//import "codemirror/mode/javascript/javascript";
 
 import copy from "copy-to-clipboard";
 
