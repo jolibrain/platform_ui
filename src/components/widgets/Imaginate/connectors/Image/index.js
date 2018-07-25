@@ -37,6 +37,29 @@ export default class ImageConnector extends React.Component {
 
     if (!service) return null;
 
+    let thresholds = [];
+    //10.10.77.61:18104/o
+    http: if (
+      !(
+        service.selectedInput &&
+        service.selectedInput.json &&
+        service.selectedInput.json.body &&
+        service.selectedInput.json.body.predictions &&
+        service.selectedInput.json.body.predictions[0] &&
+        typeof service.selectedInput.json.body.predictions[0].vals !==
+          "undefined"
+      ) ||
+      !(
+        service.selectedInput &&
+        service.selectedInput.postData &&
+        service.selectedInput.postData.parameters &&
+        service.selectedInput.postData.parameters.output &&
+        service.selectedInput.postData.parameters.output.ctc
+      )
+    ) {
+      thresholds.push(<Threshold />);
+    }
+
     return (
       <div className="imaginate">
         <div className="row">
@@ -66,22 +89,7 @@ export default class ImageConnector extends React.Component {
           </div>
           <div className="col-md-5">
             <InputForm />
-            {(service.selectedInput &&
-              service.selectedInput.json &&
-              service.selectedInput.json.body &&
-              service.selectedInput.json.body.predictions &&
-              service.selectedInput.json.body.predictions[0] &&
-              typeof service.selectedInput.json.body.predictions[0].vals !==
-                "undefined") ||
-            (service.selectedInput &&
-              service.selectedInput.postData &&
-              service.selectedInput.postData.parameters &&
-              service.selectedInput.postData.parameters.output &&
-              service.selectedInput.postData.parameters.output.ctc) ? (
-              ""
-            ) : (
-              <Threshold />
-            )}
+            {thresholds}
             <div className="description">
               <Description
                 selectedBoxIndex={this.state.selectedBoxIndex}
