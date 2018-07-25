@@ -7,6 +7,7 @@ import ImageList from "./ImageList";
 import BoundingBoxDisplay from "./BoundingBoxDisplay";
 import Threshold from "./Threshold";
 import InputForm from "./InputForm";
+import ParamSlider from "./ParamSlider";
 
 import Description from "../commons/Description";
 import CardCommands from "../commons/CardCommands";
@@ -22,6 +23,12 @@ export default class ImageConnector extends React.Component {
 
     this.onOver = this.onOver.bind(this);
     this.onLeave = this.onLeave.bind(this);
+
+    this.confidenceTooltipFormatter = this.confidenceTooltipFormatter.bind(
+      this
+    );
+    this.handleConfidenceThreshold = this.handleConfidenceThreshold.bind(this);
+    this.handleBestThreshold = this.handleBestThreshold.bind(this);
   }
 
   onOver(index) {
@@ -32,14 +39,29 @@ export default class ImageConnector extends React.Component {
     this.setState({ selectedBoxIndex: -1 });
   }
 
+  confidenceTooltipFormatter(value) {
+    return (value / 100).toFixed(2);
+  }
+
+  handleConfidenceThreshold(value) {
+    const { serviceSettings } = this.props.imaginateStore;
+    serviceSettings.threshold.confidence = parseFloat((value / 100).toFixed(2));
+    this.props.imaginateStore.predict();
+  }
+
+  handleBestThreshold(value) {
+    const { serviceSettings } = this.props.imaginateStore;
+    serviceSettings.request.best = parseInt(value);
+    this.props.imaginateStore.predict();
+  }
+
   render() {
     const { service, serviceSettings } = this.props.imaginateStore;
 
     if (!service) return null;
 
     let thresholds = [];
-    //10.10.77.61:18104/o
-    http: if (
+    if (
       !(
         service.selectedInput &&
         service.selectedInput.json &&
@@ -50,14 +72,48 @@ export default class ImageConnector extends React.Component {
           "undefined"
       ) ||
       !(
-        service.selectedInput &&
-        service.selectedInput.postData &&
-        service.selectedInput.postData.parameters &&
-        service.selectedInput.postData.parameters.output &&
-        service.selectedInput.postData.parameters.output.ctc
+        (service.selectedInput &&
+          service.selectedInput.postData &&
+          service.selectedInput.postData.parameters &&
+          (service.selectedInput.postData.parameters.output &&
+            service.selectedInput.postData.parameters.output.ctc)) ||
+        (service.selectedInput.postData.parameters.input &&
+          service.selectedInput.postData.parameters.input.segmentation)
       )
     ) {
-      thresholds.push(<Threshold />);
+      thresholds.push(
+        <ParamSlider
+          key="paramSliderConfidence"
+          title="Confidence threshold"
+          defaultValue={parseInt(
+            serviceSettings.threshold.confidence * 100,
+            10
+          )}
+          onAfterChange={this.handleConfidenceThreshold}
+          tipFormatter={this.confidenceTooltipFormatter}
+        />
+      );
+
+      if (service.settings.mltype === "classification") {
+        if (service.settings.request) {
+          if (!service.settings.request.best) {
+            service.settings.request.best = 0.5;
+          }
+        } else {
+          service.settings.request = { best: 0.5 };
+        }
+
+        thresholds.push(
+          <ParamSlider
+            key="paramSliderBest"
+            title="Best threshold"
+            defaultValue={service.settings.request.best}
+            onAfterChange={this.handleBestThreshold}
+            min={1}
+            max={service.respInfo.body.parameters.mllib[0].nclasses}
+          />
+        );
+      }
     }
 
     return (

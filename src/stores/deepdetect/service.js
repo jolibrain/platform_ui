@@ -34,6 +34,8 @@ export default class deepdetectService {
   constructor(opts) {
     this.settings = opts.serviceSettings;
 
+    if (!this.settings.request) this.settings.request = {};
+
     this.serverName = opts.serverName;
     this.serverSettings = opts.serverSettings;
 
@@ -332,6 +334,8 @@ export default class deepdetectService {
     if (settings.display.boundingBox && this.name !== "text") {
       input.postData.parameters.output.bbox = true;
     }
+
+    console.log(settings.request);
 
     if (settings.request.best) {
       input.postData.parameters.output.best = parseInt(
