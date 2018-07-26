@@ -2,6 +2,7 @@ import { observable, action, computed } from "mobx";
 import agent from "../agent";
 
 export class modelRepositoriesStore {
+  @observable isReady = false;
   @observable isLoading = false;
   @observable settings = {};
   @observable repositories = [];
@@ -10,6 +11,11 @@ export class modelRepositoriesStore {
   setup(configStore) {
     this.settings = configStore.modelRepositories;
     this.load();
+  }
+
+  @computed
+  get metricRepositories() {
+    return this.repositories.filter(r => r.jsonMetrics);
   }
 
   $reqJsonMetrics(path) {
@@ -38,14 +44,24 @@ export class modelRepositoriesStore {
     return agent.Webserver.listFiles(this.settings.nginxPath.private + path);
   }
 
-  async _addRepository(repo, isPublic = true, files = []) {
-    const systemPath = isPublic
+  $reqTraining() {
+    return agent.Webserver.listFolders(this.settings.nginxPath.training);
+  }
+
+  @action.bound
+  async _addRepository(repo, isPublic = true, isTraining = false, files = []) {
+    let systemPath = isPublic
       ? this.settings.systemPath.public + repo
       : this.settings.systemPath.private + repo;
 
-    const nginxPath = isPublic
+    let nginxPath = isPublic
       ? this.settings.nginxPath.public + repo
       : this.settings.nginxPath.private + repo;
+
+    if (isTraining) {
+      systemPath = this.settings.systemPath.training + repo;
+      nginxPath = this.settings.nginxPath.training + repo;
+    }
 
     let jsonConfig = null;
 
@@ -54,6 +70,14 @@ export class modelRepositoriesStore {
       // TODO : remove this line when config.json editable
       jsonConfig.parameters.mllib.gpuid = 0;
     } catch (e) {}
+
+    let jsonMetrics = null;
+
+    if (isTraining) {
+      try {
+        jsonMetrics = await this.$reqJsonMetrics(nginxPath);
+      } catch (e) {}
+    }
 
     let protoTxtFiles = files.filter(f => f.includes("prototxt"));
     let caffemodelFile = files
@@ -65,20 +89,22 @@ export class modelRepositoriesStore {
 
     const filteredFiles = protoTxtFiles.concat(caffemodelFile);
 
-    this.repositories.push({
+    const repository = {
       id: this.repositories.length,
       modelName: repo.replace("/", ""),
       label: systemPath,
       labelKey: `item-${this.repositories.length}`,
       isPublic: isPublic,
       jsonConfig: jsonConfig,
+      jsonMetrics: jsonMetrics,
       files: filteredFiles.map(f => {
         return {
           filename: f,
           url: this.settings.nginxPath.private + repo + f
         };
       })
-    });
+    };
+    this.repositories.push(repository);
   }
 
   @action
@@ -106,17 +132,28 @@ export class modelRepositoriesStore {
               })
               .forEach(async repo => {
                 const files = await this.$reqPrivateFiles(repo);
-                this._addRepository(repo, false, files);
+                this._addRepository(repo, false, false, files);
               });
-            this.isLoading = false;
+
+            this.$reqTraining().then(
+              action(trainingRepo => {
+                trainingRepo
+                  .filter(repo => {
+                    return !this.repositories
+                      .map(r => r.modelName)
+                      .some(name => name === repo.replace("/", ""));
+                  })
+                  .forEach(repo => {
+                    this._addRepository(repo, false, true);
+                  });
+                this.isReady = true;
+              })
+            );
           })
         );
       })
     );
   }
-
-  @computed
-  get metrics() {}
 }
 
 export default new modelRepositoriesStore();
