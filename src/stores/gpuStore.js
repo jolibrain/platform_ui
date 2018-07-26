@@ -18,7 +18,7 @@ export class GpuStore {
   loadGpuInfo() {
     this.$reqGpuInfo().then(
       action(gpuInfo => {
-        if (typeof gpuinfo === "undefined") {
+        if (gpuInfo) {
           this.error = false;
           this.gpuInfo = gpuInfo;
 
