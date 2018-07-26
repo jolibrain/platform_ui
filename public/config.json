@@ -275,11 +275,13 @@
   "modelRepositories": {
     "nginxPath": {
       "public": "/models/public/",
-      "private": "/models/private/"
+      "private": "/models/private/",
+      "training": "/models/training/"
     },
     "systemPath": {
       "public": "/opt/platform/models/public/",
-      "private": "/opt/platform/models/private/"
+      "private": "/opt/platform/models/private/",
+      "training": "/opt/platform/models/training/"
     }
   },
   "dataRepositories": {
