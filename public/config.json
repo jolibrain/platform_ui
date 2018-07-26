@@ -38,6 +38,13 @@
           "path": "/api/training_test",
           "isWritable": true
         }
+      },
+      {
+        "name": "training_neptune2",
+        "settings": {
+          "path": "/api/training_neptune2",
+          "isWritable": true
+        }
       }
     ],
     "services": {
