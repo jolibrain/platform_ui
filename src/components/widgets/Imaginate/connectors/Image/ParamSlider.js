@@ -9,7 +9,7 @@ const SliderWithTooltip = createSliderWithTooltip(Slider);
 @observer
 export default class ParamSlider extends React.Component {
   render() {
-    if (!this.props.defaultValue) return null;
+    if (typeof this.props.defaultValue === "undefined") return null;
 
     return (
       <div>

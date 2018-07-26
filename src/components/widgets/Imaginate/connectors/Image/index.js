@@ -51,7 +51,7 @@ export default class ImageConnector extends React.Component {
 
   handleBestThreshold(value) {
     const { serviceSettings } = this.props.imaginateStore;
-    serviceSettings.request.best = parseInt(value);
+    serviceSettings.request.best = parseInt(value, 10);
     this.props.imaginateStore.predict();
   }
 
@@ -60,27 +60,18 @@ export default class ImageConnector extends React.Component {
 
     if (!service) return null;
 
+    const input = service.selectedInput;
+
     let thresholds = [];
+
     if (
-      !(
-        service.selectedInput &&
-        service.selectedInput.json &&
-        service.selectedInput.json.body &&
-        service.selectedInput.json.body.predictions &&
-        service.selectedInput.json.body.predictions[0] &&
-        typeof service.selectedInput.json.body.predictions[0].vals !==
-          "undefined"
-      ) ||
-      !(
-        (service.selectedInput &&
-          service.selectedInput.postData &&
-          service.selectedInput.postData.parameters &&
-          (service.selectedInput.postData.parameters.output &&
-            service.selectedInput.postData.parameters.output.ctc)) ||
-        (service.selectedInput.postData.parameters.input &&
-          service.selectedInput.postData.parameters.input.segmentation)
-      )
+      input &&
+      input.prediction &&
+      !input.prediction.vals &&
+      !input.isCtcOuput &&
+      !input.isSegmentationInput
     ) {
+      thresholds.push(<Threshold key="threshold" />);
       thresholds.push(
         <ParamSlider
           key="paramSliderConfidence"
@@ -95,12 +86,14 @@ export default class ImageConnector extends React.Component {
       );
 
       if (service.settings.mltype === "classification") {
+        // && service.respInfo.body.parameters.mllib[0].nclasses.length > 0
+
         if (service.settings.request) {
           if (!service.settings.request.best) {
-            service.settings.request.best = 0.5;
+            service.settings.request.best = 1;
           }
         } else {
-          service.settings.request = { best: 0.5 };
+          service.settings.request = { best: 1 };
         }
 
         thresholds.push(
@@ -110,7 +103,7 @@ export default class ImageConnector extends React.Component {
             defaultValue={service.settings.request.best}
             onAfterChange={this.handleBestThreshold}
             min={1}
-            max={service.respInfo.body.parameters.mllib[0].nclasses}
+            max={20}
           />
         );
       }
