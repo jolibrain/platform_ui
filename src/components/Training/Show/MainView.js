@@ -13,7 +13,35 @@ import Breadcrumb from "../../widgets/Breadcrumb";
 export default class MainView extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      intervalId: null
+    };
+
     this.openStopTrainingModal = this.openStopTrainingModal.bind(this);
+
+    this.timer();
+  }
+
+  componentDidMount() {
+    const { settings, server } = this.props.deepdetectStore;
+
+    var intervalId = setInterval(
+      this.timer.bind(this),
+      settings.refreshRate.training
+    );
+    this.setState({ intervalId: intervalId });
+
+    server.service.serviceInfo();
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.intervalId);
+  }
+
+  timer() {
+    const { server } = this.props.deepdetectStore;
+    server.service.trainInfo();
   }
 
   openStopTrainingModal() {
@@ -30,6 +58,10 @@ export default class MainView extends React.Component {
       this.props.history.push("/");
       return null;
     }
+
+    if (!service.respTraining) return null;
+
+    const { mltype, measure, measure_hist } = service.respTraining.body;
 
     return (
       <div className="main-view content-wrapper">
@@ -55,8 +87,12 @@ export default class MainView extends React.Component {
             </ul>
           </nav>
           <div className="content">
-            <TrainingMonitor />
-            <RightPanel trainingMeasure />
+            <TrainingMonitor
+              mltype={mltype}
+              measure={measure}
+              measureHist={measure_hist}
+            />
+            <RightPanel measure={measure} />
           </div>
         </div>
       </div>
