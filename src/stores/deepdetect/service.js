@@ -28,6 +28,7 @@ export default class deepdetectService {
 
   @observable respInfo = null;
   @observable respTraining = null;
+  @observable respTrainMetrics = null;
 
   @observable refresh = Math.random();
 
@@ -53,6 +54,8 @@ export default class deepdetectService {
 
   async trainInfo() {
     this.respTraining = await this.$reqTrainInfo();
+    this.respTrainMetrics = await this.$reqTrainMetrics();
+
     this.refresh = Math.random();
     return this.respTraining;
   }
@@ -278,8 +281,18 @@ export default class deepdetectService {
 
   async $reqTrainMetrics() {
     this.status.client = ServiceConstants.CLIENT_STATUS.REQUESTING_TRAINING;
-    const metricsPath = `${this.name}/metrics.json`;
-    const metrics = await agent.Webserver.getFile(metricsPath);
+
+    let metrics = null;
+
+    if (this.respInfo && this.respInfo.body && this.respInfo.body.repository) {
+      const repository = this.respInfo.body.repository;
+      const metricsPath = `${repository.replace(
+        "/opt/platform",
+        ""
+      )}/metrics.json`;
+      metrics = await agent.Webserver.getFile(metricsPath);
+    }
+
     this.status.client = ServiceConstants.CLIENT_STATUS.NONE;
     return metrics;
   }
@@ -334,8 +347,6 @@ export default class deepdetectService {
     if (settings.display.boundingBox && this.name !== "text") {
       input.postData.parameters.output.bbox = true;
     }
-
-    console.log(settings.request);
 
     if (settings.request.best) {
       input.postData.parameters.output.best = parseInt(
