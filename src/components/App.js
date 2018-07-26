@@ -11,6 +11,7 @@ import PredictShow from "./Predict/Show";
 
 import TrainingHome from "./Training/Home";
 import TrainingShow from "./Training/Show";
+import TrainingArchive from "./Training/Archive";
 
 import GenericNotFound from "./GenericNotFound";
 
@@ -63,6 +64,7 @@ export default class App extends React.Component {
     if (
       this.props.commonStore.appLoaded &&
       this.props.configStore.configLoaded &&
+      this.props.modelRepositoriesStore.isReady &&
       this.props.deepdetectStore.isReady
     ) {
       return (
@@ -85,6 +87,11 @@ export default class App extends React.Component {
               exact
               path="/training/:serverName/:serviceName"
               component={TrainingShow}
+            />
+            <Route
+              exact
+              path="/trainingArchive/:modelName"
+              component={TrainingArchive}
             />
 
             <Route exact path="/404" component={GenericNotFound} />
