@@ -62,17 +62,19 @@ export class configStore {
   loadConfig(callback = () => {}) {
     this.$req().then(
       action(config => {
-        this.configLoaded = true;
-        this.gpuInfo = config.gpuInfo;
-        this.deepdetect = config.deepdetect;
-        this.imaginate = config.imaginate;
-        this.modelRepositories = config.modelRepositories;
-        this.dataRepositories = config.dataRepositories;
-        this.homeComponent = config.homeComponent;
-        this.modals = config.modals;
-        this.componentBlacklist = config.componentBlacklist
-          ? config.componentBlacklist
-          : [];
+        if (config) {
+          this.configLoaded = true;
+          this.gpuInfo = config.gpuInfo;
+          this.deepdetect = config.deepdetect;
+          this.imaginate = config.imaginate;
+          this.modelRepositories = config.modelRepositories;
+          this.dataRepositories = config.dataRepositories;
+          this.homeComponent = config.homeComponent;
+          this.modals = config.modals;
+          this.componentBlacklist = config.componentBlacklist
+            ? config.componentBlacklist
+            : [];
+        }
         callback(this);
       })
     );

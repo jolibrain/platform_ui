@@ -34,9 +34,11 @@ export class deepdetectStore {
   setup(configStore) {
     this.settings = configStore.deepdetect;
 
-    this.settings.servers.forEach(serverConfig => {
-      this.servers.push(new deepdetectServer(serverConfig));
-    });
+    if (this.settings.servers) {
+      this.settings.servers.forEach(serverConfig => {
+        this.servers.push(new deepdetectServer(serverConfig));
+      });
+    }
 
     if (this.servers.length > 0 && !this.server) {
       this.servers[0].isActive = true;
