@@ -1,20 +1,11 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { toJS } from "mobx";
-import { observer, inject } from "mobx-react";
 import { Line } from "react-chartjs-2";
 
-@inject("deepdetectStore")
-@observer
 export default class MeasureChart extends React.Component {
   render() {
-    const { server } = this.props.deepdetectStore;
-
-    if (!server.service) return null;
-
-    const measure = server.service.trainMeasure;
-    const measureHist = server.service.trainMeasureHist;
-
-    const { title, attribute } = this.props;
+    const { title, attribute, measure, measureHist } = this.props;
 
     if (!measure[attribute]) return null;
 
@@ -74,7 +65,7 @@ export default class MeasureChart extends React.Component {
     };
 
     return (
-      <div className="col-md-3" refresh={server.service.refresh}>
+      <div className="col-md-3">
         <span>
           <b>{title}</b>:&nbsp;
           {measure[attribute].toFixed(3)}
@@ -92,3 +83,11 @@ export default class MeasureChart extends React.Component {
     );
   }
 }
+
+MeasureChart.propTypes = {
+  title: PropTypes.string.isRequired,
+  attribute: PropTypes.string.isRequired,
+  steppedLine: PropTypes.bool,
+  measure: PropTypes.object.isRequired,
+  measureHist: PropTypes.object.isRequired
+};

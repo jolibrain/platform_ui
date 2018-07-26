@@ -1,44 +1,25 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { observer, inject } from "mobx-react";
 
 @inject("deepdetectStore")
 @observer
 export default class TrainingAlerts extends React.Component {
   render() {
-    const { server } = this.props.deepdetectStore;
-
     let trainingAlert = null;
 
-    switch (server.service.requestType) {
-      case "serviceInfo":
-        trainingAlert = (
-          <div className="loading alert alert-primary" role="alert">
-            <i className="fas fa-spinner fa-spin" />&nbsp; Loading service
-            information...
-          </div>
-        );
-        break;
-      case "training":
-        if (!server.service.trainMeasure) {
-          trainingAlert = (
-            <div className="loading alert alert-primary" role="alert">
-              <i className="fas fa-spinner fa-spin" />&nbsp; Loading training
-              data...
-            </div>
-          );
-        }
-        break;
-      default:
-        if (!server.service.isTraining) {
-          trainingAlert = (
-            <div className="loading alert alert-primary" role="alert">
-              This job is not currently training.
-            </div>
-          );
-        }
-        break;
+    if (this.props.isRequesting) {
+      trainingAlert = (
+        <div className="loading alert alert-primary" role="alert">
+          <i className="fas fa-spinner fa-spin" />&nbsp; Loading information...
+        </div>
+      );
     }
 
     return trainingAlert;
   }
 }
+
+TrainingAlerts.propTypes = {
+  isRequesting: PropTypes.bool
+};

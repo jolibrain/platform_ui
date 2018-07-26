@@ -1,18 +1,10 @@
 import React from "react";
-import { observer, inject } from "mobx-react";
+import PropTypes from "prop-types";
 
 import MeasureChart from "./MeasureChart";
 
-@inject("deepdetectStore")
-@observer
 export default class GeneralInfo extends React.Component {
   render() {
-    const { server } = this.props.deepdetectStore;
-
-    if (!server.service || !server.service.trainMeasure) return null;
-
-    const measure = server.service.trainMeasure;
-
     let infoCharts = [];
 
     infoCharts.push(
@@ -20,10 +12,11 @@ export default class GeneralInfo extends React.Component {
         title="Train Loss"
         key="train_loss"
         attribute="train_loss"
+        {...this.props}
       />
     );
 
-    switch (server.service.settings.mltype) {
+    switch (this.props.mltype) {
       case "segmentation":
         infoCharts.push(
           <MeasureChart
@@ -31,6 +24,7 @@ export default class GeneralInfo extends React.Component {
             attribute="acc"
             key="acc"
             steppedLine={true}
+            {...this.props}
           />
         );
         infoCharts.push(
@@ -39,6 +33,7 @@ export default class GeneralInfo extends React.Component {
             attribute="meanacc"
             key="meanacc"
             steppedLine={true}
+            {...this.props}
           />
         );
         infoCharts.push(
@@ -47,6 +42,7 @@ export default class GeneralInfo extends React.Component {
             attribute="meaniou"
             key="meaniou"
             steppedLine={true}
+            {...this.props}
           />
         );
         break;
@@ -57,6 +53,7 @@ export default class GeneralInfo extends React.Component {
             attribute="map"
             key="map"
             steppedLine={true}
+            {...this.props}
           />
         );
         break;
@@ -67,6 +64,7 @@ export default class GeneralInfo extends React.Component {
             attribute="acc"
             key="acc"
             steppedLine={true}
+            {...this.props}
           />
         );
         infoCharts.push(
@@ -75,10 +73,17 @@ export default class GeneralInfo extends React.Component {
             attribute="meanacc"
             key="meanacc"
             steppedLine={true}
+            {...this.props}
           />
         );
         infoCharts.push(
-          <MeasureChart title="F1" attribute="f1" key="f1" steppedLine={true} />
+          <MeasureChart
+            title="F1"
+            attribute="f1"
+            key="f1"
+            steppedLine={true}
+            {...this.props}
+          />
         );
         infoCharts.push(
           <MeasureChart
@@ -86,6 +91,7 @@ export default class GeneralInfo extends React.Component {
             attribute="mcll"
             key="mcll"
             steppedLine={true}
+            {...this.props}
           />
         );
         break;
@@ -96,6 +102,7 @@ export default class GeneralInfo extends React.Component {
             attribute="eucll"
             key="eucll"
             steppedLine={true}
+            {...this.props}
           />
         );
         break;
@@ -109,17 +116,17 @@ export default class GeneralInfo extends React.Component {
         <div className="row">
           <div className="col-md-3">
             <span>
-              <b># Iteration</b>: {measure.iteration}
+              <b># Iteration</b>: {this.props.measure.iteration}
             </span>
           </div>
           <div className="col-md-3">
             <span>
-              <b>Iteration Time</b>: {measure.iter_time}
+              <b>Iteration Time</b>: {this.props.measure.iter_time}
             </span>
           </div>
           <div className="col-md-6">
             <span>
-              <b>Remaining Time</b>: {measure.remain_time_str}
+              <b>Remaining Time</b>: {this.props.measure.remain_time_str}
             </span>
           </div>
         </div>
@@ -127,3 +134,9 @@ export default class GeneralInfo extends React.Component {
     );
   }
 }
+
+GeneralInfo.propTypes = {
+  mltype: PropTypes.string.isRequired,
+  measure: PropTypes.object.isRequired,
+  measureHist: PropTypes.object.isRequired
+};

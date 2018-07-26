@@ -7,12 +7,7 @@ import { Sparklines, SparklinesLine } from "react-sparklines";
 @observer
 export default class PerClassArray extends React.Component {
   render() {
-    const { server } = this.props.deepdetectStore;
-
-    if (!server.service) return null;
-
-    const measure = server.service.trainMeasure;
-    const measureHist = server.service.trainMeasureHist;
+    const { measure, measureHist } = this.props;
 
     if (!measure) return null;
 

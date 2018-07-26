@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { inject, observer } from "mobx-react";
 
 @inject("deepdetectStore")
@@ -6,16 +7,13 @@ import { inject, observer } from "mobx-react";
 @observer
 export default class TrainingMeasure extends React.Component {
   render() {
-    if (this.props.configStore.isComponentBlacklisted("TrainingMeasure"))
+    const { measure } = this.props;
+
+    if (
+      this.props.configStore.isComponentBlacklisted("TrainingMeasure") ||
+      !measure
+    )
       return null;
-
-    const { server } = this.props.deepdetectStore;
-
-    if (!server.service) return null;
-
-    const measure = server.service.trainMeasure;
-
-    if (!measure) return null;
 
     const measureKeys = Object.keys(measure)
       .filter(
@@ -58,3 +56,7 @@ export default class TrainingMeasure extends React.Component {
     );
   }
 }
+
+TrainingMeasure.propTypes = {
+  measure: PropTypes.object.isRequired
+};
