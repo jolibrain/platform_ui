@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 import { Link, withRouter } from "react-router-dom";
 
@@ -6,11 +7,11 @@ import { Link, withRouter } from "react-router-dom";
 @observer
 export default class PredictCard extends React.Component {
   render() {
-    const { server, service } = this.props;
+    const { service } = this.props;
 
-    if (!server || !service) return null;
+    if (!service) return null;
 
-    const serviceUrl = `/predict/${server.name}/${service.name}`;
+    const serviceUrl = `/predict/${service.serverName}/${service.name}`;
 
     return (
       <div className="card">
@@ -25,3 +26,7 @@ export default class PredictCard extends React.Component {
     );
   }
 }
+
+PredictCard.propTypes = {
+  service: PropTypes.object.isRequired
+};

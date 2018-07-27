@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
@@ -10,48 +11,33 @@ import TrainingCard from "./Cards/Training.js";
 @withRouter
 @observer
 export default class ServiceCardList extends React.Component {
-  _mapServers(server, serverIndex) {
-    return server.services.map(
-      this._mapServices.bind(this, server, serverIndex)
-    );
-  }
-
-  _mapServices(server, serverIndex, service, serviceIndex) {
-    if (
-      (this.props.onlyPredict && service.settings.training) ||
-      (this.props.onlyTraining && !service.settings.training)
-    )
-      return null;
-
-    if (service.settings.training) {
-      return (
-        <TrainingCard
-          key={`${serverIndex}-${serviceIndex}`}
-          server={server}
-          service={service}
-        />
-      );
-    } else {
-      return (
-        <PredictCard
-          key={`${serverIndex}-${serviceIndex}`}
-          server={server}
-          service={service}
-        />
-      );
-    }
-  }
-
   render() {
     if (this.props.configStore.isComponentBlacklisted("ServiceCardList"))
       return null;
 
-    const ddStore = this.props.deepdetectStore;
+    let { services } = this.props.deepdetectStore;
+
+    if (this.props.onlyPredict) {
+      services = services.filter(s => !s.settings.training);
+    } else if (this.props.onlyTraining) {
+      services = services.filter(s => s.settings.training);
+    }
 
     return (
       <div className="serviceCardList card-columns">
-        {ddStore.servers.map(this._mapServers)}
+        {services.map((service, index) => {
+          return service.settings.training ? (
+            <TrainingCard key={index} service={service} />
+          ) : (
+            <PredictCard key={index} service={service} />
+          );
+        })}
       </div>
     );
   }
 }
+
+ServiceCardList.propTypes = {
+  onlyPredict: PropTypes.bool,
+  onlyTraining: PropTypes.bool
+};
