@@ -407,7 +407,7 @@ export default class deepdetectService {
 
       if (
         typeof classes !== "undefined" &&
-        this.settings.mltype !== "classication"
+        this.respInfo.body.mltype !== "classication"
       ) {
         input.boxes = classes.map(predict => predict.bbox);
       }
@@ -417,7 +417,7 @@ export default class deepdetectService {
           settings.request.imgSearch ||
           this.settings.mltype === "rois") &&
         typeof input.json.body.predictions[0].rois !== "undefined" &&
-        this.settings.mltype !== "classification"
+        this.respInfo.body.mltype !== "classification"
       ) {
         input.boxes = prediction.rois.map(predict => predict.bbox);
       }

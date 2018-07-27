@@ -61,6 +61,14 @@ export default class Description extends React.Component {
       displayFormat = "nns";
     }
 
+    if (
+      service.respInfo &&
+      service.respInfo.body &&
+      service.respInfo.body.mltype === "classification"
+    ) {
+      displayFormat = "category";
+    }
+
     let output = "";
     switch (displayFormat) {
       default:
@@ -259,11 +267,20 @@ export default class Description extends React.Component {
               }
 
               return (
-                <span style={styles} key={index}>
+                <span
+                  style={styles}
+                  key={index}
+                  className="badge badge-success"
+                  onMouseOver={this.props.onOver.bind(this, index)}
+                  onMouseLeave={this.props.onLeave}
+                  data-tip={`${category.prob.toFixed(2)}`}
+                  ref={c => this._nodes.set(index, c)}
+                >
                   {category.cat}
                 </span>
               );
             })}
+            <ReactTooltip effect="solid" />
           </div>
         );
         break;
