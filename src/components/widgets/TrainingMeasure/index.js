@@ -40,7 +40,7 @@ export default class TrainingMeasure extends React.Component {
     return (
       <div className="trainingmeasure">
         <h5>
-          <i className="fas fa-braille" /> Training Measure
+          <i className="fas fa-braille" /> Training Measures
         </h5>
         <div className="block">
           {measureKeys.map((key, index) => {
