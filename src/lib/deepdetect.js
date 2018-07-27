@@ -209,7 +209,7 @@ DD.prototype._httpRequest = function _httpRequest(
         .json()
         .catch(error => reject(error))
         .then(json => {
-          if (response.status >= 200 && response.status < 300) {
+          if (response.status >= 200 && response.status < 400) {
             return resolve(json);
           }
           const error = new Error();
