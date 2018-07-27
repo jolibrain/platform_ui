@@ -27,24 +27,26 @@ export default class MainView extends React.Component {
               ) : (
                 <div>
                   <h4>Current Training Service</h4>
-                  {trainingServices.map((service, index) => (
-                    <TrainingCard key={index} service={service} />
-                  ))}
+                  <div className="card-columns">
+                    {trainingServices.map((service, index) => (
+                      <TrainingCard key={index} service={service} />
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
             <hr />
-            <div className="modelList serviceList ServiceCardList card-columns">
+            <div className="serviceList">
               {metricRepositories.length === 0 ? (
                 ""
               ) : (
                 <div>
-                  <h4>Finished Training Services</h4>
-                  {metricRepositories.map((repo, index) => {
-                    return (
+                  <h4>Archive Training Services</h4>
+                  <div className="card-columns">
+                    {metricRepositories.map((repo, index) => (
                       <ModelRepositoryCard key={index} repository={repo} />
-                    );
-                  })}
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
