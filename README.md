@@ -209,3 +209,24 @@ To do so, fill the following array with these possible component names:
   "LinkData"
 ]
 ```
+
+## Docker
+
+Il est possible (et conseillé) de déléguer l’ensemble des tâches de build à un conteneur.
+
+Le Dockerfile de ce conteneur se trouve dans docker-build/Dockerfile. Il installe l’ensemble des dépendances.
+
+Il est le garant des bonnes versions des dépendances et permet de faire le build sur une machine vierge.
+
+```
+docker build -t eris:7750/dev/core-ui-build .
+docker push eris:7750/dev/core-ui-build
+```
+
+Puis (on oubliera pas de lier le répertoire local au volume) :
+
+```
+docker run -v .:/opt/code eris:7750/dev/core-ui-build
+```
+
+Les fichiers résultants du build seront dans ./build
