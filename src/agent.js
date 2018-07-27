@@ -1,7 +1,6 @@
 import superagentPromise from "superagent-promise";
 import _superagent from "superagent";
-
-import DD from "./lib/deepdetect";
+import DD from "deepdetect-js";
 
 const superagent = superagentPromise(_superagent, global.Promise);
 
@@ -22,6 +21,7 @@ const responseBody = res => res.body;
 const Config = {
   get: (path = "config.json") =>
     superagent
+      .withCredentials()
       .get(path)
       .end(handleErrors)
       .then(responseBody)
@@ -35,6 +35,7 @@ const Config = {
 const GpuInfo = {
   get: settings =>
     superagent
+      .withCredentials()
       .get(settings.gpuStatServer)
       .end(handleErrors)
       .then(responseBody)
@@ -129,6 +130,7 @@ const Deepdetect = {
 const Webserver = {
   listFolders: path =>
     superagent
+      .withCredentials()
       .get(path)
       .end(handleErrors)
       .then(res => {
@@ -149,6 +151,7 @@ const Webserver = {
       }),
   listFiles: (path, maxFiles = 100) =>
     superagent
+      .withCredentials()
       .get(path)
       .end(handleErrors)
       .then(res => {
@@ -169,15 +172,12 @@ const Webserver = {
       }),
   getFile: path =>
     superagent
+      .withCredentials()
       .get(path)
       .end(handleErrors)
       .then(res => {
         if (res && res.text) {
-          let json = null;
-          try {
-            json = JSON.parse(res.text);
-          } catch (e) {}
-          return json;
+          return JSON.parse(res.text);
         }
       })
 };
