@@ -190,7 +190,10 @@ DD.prototype._httpRequest = function _httpRequest(
 ) {
   return new Promise(async (resolve, reject) => {
     let url = this.ddurl + apiMethod;
-    const requestParams = { method: httpMethod };
+    const requestParams = {
+      method: httpMethod,
+      credentials: "same-origin"
+    };
 
     if (jsonParams != null) {
       requestParams.body = JSON.stringify(jsonParams);
