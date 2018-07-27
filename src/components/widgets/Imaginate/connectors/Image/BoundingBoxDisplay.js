@@ -22,7 +22,11 @@ export default class BoundingBoxDisplay extends React.Component {
         className="boundingboxdisplay"
         image={input.content}
         boxes={input.boxes}
-        selectedIndex={this.props.selectedBoxIndex}
+        selectedIndex={
+          input.boxes && input.boxes.length > this.props.selectedBoxIndex
+            ? this.props.selectedBoxIndex
+            : -1
+        }
         onSelected={this.props.onOver}
         pixelSegmentation={inputVals ? inputVals : null}
         separateSegmentation={inputVals ? inputVals.length > 0 : false}

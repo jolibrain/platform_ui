@@ -267,17 +267,19 @@ export default class Description extends React.Component {
               }
 
               return (
-                <span
-                  style={styles}
-                  key={index}
-                  className="badge badge-success"
-                  onMouseOver={this.props.onOver.bind(this, index)}
-                  onMouseLeave={this.props.onLeave}
-                  data-tip={`${category.prob.toFixed(2)}`}
-                  ref={c => this._nodes.set(index, c)}
-                >
-                  {category.cat}
-                </span>
+                <div>
+                  <span
+                    style={styles}
+                    key={index}
+                    className="badge badge-success"
+                    onMouseOver={this.props.onOver.bind(this, index)}
+                    onMouseLeave={this.props.onLeave}
+                    data-tip={`${category.prob.toFixed(2)}`}
+                    ref={c => this._nodes.set(index, c)}
+                  >
+                    {category.cat}
+                  </span>&nbsp;
+                </div>
               );
             })}
             <ReactTooltip effect="solid" />
