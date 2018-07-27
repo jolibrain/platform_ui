@@ -9,7 +9,12 @@ export default class TrainingMeasure extends React.Component {
   render() {
     const { service } = this.props;
 
-    const { measure } = service.respTraining.body;
+    let measure = null;
+    if (service.jsonMetrics) {
+      measure = service.jsonMetrics.body;
+    } else {
+      measure = service.respTraining.body;
+    }
 
     if (
       this.props.configStore.isComponentBlacklisted("TrainingMeasure") ||

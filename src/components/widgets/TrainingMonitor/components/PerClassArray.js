@@ -9,7 +9,16 @@ import { Sparklines, SparklinesLine } from "react-sparklines";
 export default class PerClassArray extends React.Component {
   render() {
     const { service } = this.props;
-    const { measure, measureHist } = service.respTraining.body;
+
+    let measure,
+      measure_hist = null;
+    if (service.jsonMetrics) {
+      measure = service.jsonMetrics.body.measure;
+      measure_hist = service.jsonMetrics.body.measure;
+    } else {
+      measure = service.respTraining.body.measure;
+      measure_hist = service.respTraining.body.measure_hist;
+    }
 
     if (!measure) return null;
 
@@ -56,11 +65,11 @@ export default class PerClassArray extends React.Component {
               <br />
               {measure[key] ? measure[key].toFixed(3) : "0"}
               <br />
-              {measureHist &&
-              measureHist[`${key}_hist`] &&
-              measureHist[`${key}_hist`].length > 0 ? (
+              {measure_hist &&
+              measure_hist[`${key}_hist`] &&
+              measure_hist[`${key}_hist`].length > 0 ? (
                 <Sparklines
-                  data={toJS(measureHist[`${key}_hist`]).map(x =>
+                  data={toJS(measure_hist[`${key}_hist`]).map(x =>
                     parseInt(x * 100, 10)
                   )}
                   min={0}

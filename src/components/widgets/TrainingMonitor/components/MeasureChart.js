@@ -10,7 +10,15 @@ export default class MeasureChart extends React.Component {
   render() {
     const { title, attribute, service } = this.props;
 
-    const { measure, measure_hist } = service.respTraining.body;
+    let measure,
+      measure_hist = null;
+    if (service.jsonMetrics) {
+      measure = service.jsonMetrics.body.measure;
+      measure_hist = service.jsonMetrics.body.measure_hist;
+    } else {
+      measure = service.respTraining.body.measure;
+      measure_hist = service.respTraining.body.measure_hist;
+    }
 
     if (!measure[attribute]) return null;
 

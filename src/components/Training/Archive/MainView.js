@@ -25,8 +25,6 @@ export default class MainView extends React.Component {
 
     if (!repository || !repository.jsonMetrics) return null;
 
-    const { mltype, measure, measure_hist } = repository.jsonMetrics.body;
-
     return (
       <div className="main-view content-wrapper">
         <div className="container">
@@ -37,12 +35,8 @@ export default class MainView extends React.Component {
             />
           </nav>
           <div className="content">
-            <TrainingMonitor
-              mltype={mltype}
-              measure={measure}
-              measureHist={measure_hist}
-            />
-            <RightPanel measure={measure} />
+            <TrainingMonitor service={repository} />
+            <RightPanel service={repository} />
           </div>
         </div>
       </div>

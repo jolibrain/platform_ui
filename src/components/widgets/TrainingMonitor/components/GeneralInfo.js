@@ -11,8 +11,15 @@ export default class GeneralInfo extends React.Component {
 
     const { service } = this.props;
 
-    const mltype = service.respInfo.body.mltype;
-    const measure = service.respTraining.body.measure;
+    let mltype,
+      measure = null;
+    if (service.jsonMetrics) {
+      mltype = service.jsonMetrics.body.mltype;
+      measure = service.jsonMetrics.body.measure;
+    } else {
+      mltype = service.respInfo.body.mltype;
+      measure = service.respTraining.body.measure;
+    }
 
     infoCharts.push(
       <MeasureChart
