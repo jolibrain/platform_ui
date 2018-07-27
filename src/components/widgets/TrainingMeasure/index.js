@@ -31,6 +31,7 @@ export default class TrainingMeasure extends React.Component {
           k !== "iteration" &&
           k !== "train_loss" &&
           k !== "labels" &&
+          k !== "cmfull" &&
           k !== "cmdiag"
       )
       .sort((key1, key2) => {

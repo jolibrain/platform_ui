@@ -31,6 +31,7 @@ export default class PerClassArray extends React.Component {
           k !== "iteration" &&
           k !== "train_loss" &&
           k !== "labels" &&
+          k !== "cmfull" &&
           k !== "cmdiag"
       )
       .sort((key1, key2) => {
