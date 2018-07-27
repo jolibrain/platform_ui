@@ -5,7 +5,6 @@ import { withRouter } from "react-router-dom";
 import TrainingCard from "../../widgets/ServiceCardList/Cards/Training";
 import ModelRepositoryCard from "../../widgets/ServiceCardList/Cards/ModelRepository";
 import RightPanel from "../commons/RightPanel";
-import ServiceCardList from "../../widgets/ServiceCardList";
 
 @inject("deepdetectStore")
 @inject("modelRepositoriesStore")
