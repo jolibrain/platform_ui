@@ -2,8 +2,7 @@ import React from "react";
 import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
-import TrainingCard from "../../widgets/ServiceCardList/Cards/Training";
-import ModelRepositoryCard from "../../widgets/ServiceCardList/Cards/ModelRepository";
+import ServiceCardList from "../../widgets/ServiceCardList";
 import RightPanel from "../commons/RightPanel";
 
 @inject("deepdetectStore")
@@ -27,11 +26,7 @@ export default class MainView extends React.Component {
               ) : (
                 <div>
                   <h4>Current Training Service</h4>
-                  <div className="card-columns">
-                    {trainingServices.map((service, index) => (
-                      <TrainingCard key={index} service={service} />
-                    ))}
-                  </div>
+                  <ServiceCardList services={trainingServices} />
                 </div>
               )}
             </div>
@@ -42,11 +37,7 @@ export default class MainView extends React.Component {
               ) : (
                 <div>
                   <h4>Archive Training Services</h4>
-                  <div className="card-columns">
-                    {metricRepositories.map((repo, index) => (
-                      <ModelRepositoryCard key={index} repository={repo} />
-                    ))}
-                  </div>
+                  <ServiceCardList services={metricRepositories} />
                 </div>
               )}
             </div>

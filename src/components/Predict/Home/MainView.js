@@ -1,15 +1,18 @@
 import React from "react";
-import { observer } from "mobx-react";
+import { inject, observer } from "mobx-react";
 import { Link, withRouter } from "react-router-dom";
 
 import RightPanel from "../commons/RightPanel";
 import ServiceCardList from "../../widgets/ServiceCardList";
 import ServiceCardCreate from "../../widgets/ServiceCardCreate";
 
+@inject("deepdetectStore")
 @withRouter
 @observer
 export default class MainView extends React.Component {
   render() {
+    const { predictServices } = this.props.deepdetectStore;
+
     return (
       <div className="main-view content-wrapper">
         <div className="container-fluid">
@@ -20,7 +23,7 @@ export default class MainView extends React.Component {
             <hr />
             <div className="serviceList">
               <h4>Current Predict Service</h4>
-              <ServiceCardList onlyPredict={true} />
+              <ServiceCardList services={predictServices} />
             </div>
             <hr />
             <div className="serviceCreate">

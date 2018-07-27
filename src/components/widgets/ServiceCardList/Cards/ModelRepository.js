@@ -7,7 +7,7 @@ import { Link, withRouter } from "react-router-dom";
 @observer
 export default class ModelRepositoryCard extends React.Component {
   render() {
-    const { repository } = this.props;
+    const repository = this.props.service;
 
     if (!repository) return null;
 

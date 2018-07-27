@@ -31,6 +31,11 @@ export class deepdetectStore {
   }
 
   @computed
+  get predictServices() {
+    return this.services.filter(s => !s.settings.training);
+  }
+
+  @computed
   get trainingServices() {
     return this.services.filter(s => s.settings.training);
   }
