@@ -14,7 +14,7 @@ export default class PerClassArray extends React.Component {
       measure_hist = null;
     if (service.jsonMetrics) {
       measure = service.jsonMetrics.body.measure;
-      measure_hist = service.jsonMetrics.body.measure;
+      measure_hist = service.jsonMetrics.body.measure_hist;
     } else {
       measure = service.respTraining.body.measure;
       measure_hist = service.respTraining.body.measure_hist;
@@ -29,7 +29,9 @@ export default class PerClassArray extends React.Component {
           k !== "remain_time" &&
           k !== "iter_time" &&
           k !== "iteration" &&
-          k !== "train_loss"
+          k !== "train_loss" &&
+          k !== "labels" &&
+          k !== "cmdiag"
       )
       .sort((key1, key2) => {
         if (key1.includes("clacc_") && key2.includes("clacc_")) {
