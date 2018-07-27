@@ -7,6 +7,8 @@ export default class GeneralInfo extends React.Component {
   render() {
     let infoCharts = [];
 
+    const { mltype, measure } = this.props;
+
     infoCharts.push(
       <MeasureChart
         title="Train Loss"
@@ -16,7 +18,7 @@ export default class GeneralInfo extends React.Component {
       />
     );
 
-    switch (this.props.mltype) {
+    switch (mltype) {
       case "segmentation":
         infoCharts.push(
           <MeasureChart
@@ -116,17 +118,17 @@ export default class GeneralInfo extends React.Component {
         <div className="row">
           <div className="col-md-3">
             <span>
-              <b># Iteration</b>: {this.props.measure.iteration}
+              <b># Iteration</b>: {measure.iteration}
             </span>
           </div>
           <div className="col-md-3">
             <span>
-              <b>Iteration Time</b>: {this.props.measure.iter_time}
+              <b>Iteration Time</b>: {measure.iter_time}
             </span>
           </div>
           <div className="col-md-6">
             <span>
-              <b>Remaining Time</b>: {this.props.measure.remain_time_str}
+              <b>Remaining Time</b>: {measure.remain_time_str}
             </span>
           </div>
         </div>

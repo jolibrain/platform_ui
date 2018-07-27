@@ -28,7 +28,8 @@ export default class MainView extends React.Component {
 
     if (!service.respTraining) return null;
 
-    const { mltype, measure, measure_hist } = service.respTraining.body;
+    const { mltype } = service.respInfo.body;
+    const { measure, measure_hist } = service.respTraining.body;
 
     return (
       <div className="main-view content-wrapper">
