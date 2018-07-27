@@ -30,13 +30,18 @@ export class deepdetectStore {
     return [].concat.apply([], this.servers.map(s => s.services));
   }
 
+  @computed
+  get trainingServices() {
+    return this.services.filter(s => s.isTraining);
+  }
+
   @action
   setup(configStore) {
     this.settings = configStore.deepdetect;
 
     if (this.settings.servers) {
       this.settings.servers.forEach(serverConfig => {
-        this.servers.push(new deepdetectServer(serverConfig));
+        this.servers.push(observable(new deepdetectServer(serverConfig)));
       });
     }
 
