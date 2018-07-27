@@ -10,7 +10,12 @@ import PerClassArray from "./components/PerClassArray";
 @observer
 export default class TrainingMonitor extends React.Component {
   render() {
-    if (this.props.configStore.isComponentBlacklisted("TrainingMonitor"))
+    const { service } = this.props;
+
+    if (
+      !service ||
+      this.props.configStore.isComponentBlacklisted("TrainingMonitor")
+    )
       return null;
 
     return (
@@ -24,8 +29,5 @@ export default class TrainingMonitor extends React.Component {
 }
 
 TrainingMonitor.propTypes = {
-  mltype: PropTypes.string.isRequired,
-  measure: PropTypes.object.isRequired,
-  measureHist: PropTypes.object.isRequired,
-  isRequesting: PropTypes.bool
+  service: PropTypes.object.isRequired
 };

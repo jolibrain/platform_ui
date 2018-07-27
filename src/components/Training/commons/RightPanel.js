@@ -21,7 +21,7 @@ export default class RightPanel extends React.Component {
         <div className="issuable-sidebar">
           <GpuInfo />
           {this.props.serviceInfo ? <ServiceInfo /> : ""}
-          {this.props.measure ? <TrainingMeasure {...this.props} /> : ""}
+          {this.props.service ? <TrainingMeasure {...this.props} /> : ""}
         </div>
       </aside>
     );
@@ -31,5 +31,5 @@ export default class RightPanel extends React.Component {
 RightPanel.propTypes = {
   configStore: PropTypes.object,
   searviceInfo: PropTypes.object,
-  measure: PropTypes.object
+  service: PropTypes.object
 };

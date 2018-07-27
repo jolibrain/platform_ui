@@ -289,7 +289,12 @@ export default class deepdetectService {
         "/opt/platform",
         ""
       )}/metrics.json`;
-      metrics = await agent.Webserver.getFile(metricsPath);
+
+      try {
+        metrics = await agent.Webserver.getFile(metricsPath);
+      } catch (e) {
+        console.warn("Error while fetching metrics");
+      }
     }
 
     this.status.client = ServiceConstants.CLIENT_STATUS.NONE;

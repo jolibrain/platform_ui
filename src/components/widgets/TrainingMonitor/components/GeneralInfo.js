@@ -7,7 +7,10 @@ export default class GeneralInfo extends React.Component {
   render() {
     let infoCharts = [];
 
-    const { mltype, measure } = this.props;
+    const { service } = this.props;
+
+    const mltype = service.respInfo.body.mltype;
+    const measure = service.respTraining.body.measure;
 
     infoCharts.push(
       <MeasureChart
@@ -138,7 +141,5 @@ export default class GeneralInfo extends React.Component {
 }
 
 GeneralInfo.propTypes = {
-  mltype: PropTypes.string.isRequired,
-  measure: PropTypes.object.isRequired,
-  measureHist: PropTypes.object.isRequired
+  service: PropTypes.object.isRequired
 };

@@ -9,8 +9,7 @@ export default class Breadcrumb extends React.Component {
     if (this.props.configStore.isComponentBlacklisted("Breadcrumb"))
       return null;
 
-    const { server, isTraining } = this.props;
-    const service = server.service;
+    const { service, isTraining } = this.props;
 
     if (!service) return null;
 
@@ -31,8 +30,11 @@ export default class Breadcrumb extends React.Component {
       <div className="breadcrumbs clearfix">
         <Link to="/">DeepDetect</Link> >&nbsp;
         <Link to={root.path}>{root.label}</Link> >&nbsp;
-        <Link to={`${root.path}/${server.name}`}>{server.name}</Link> >&nbsp;
-        <Link to={`${root.path}/${server.name}/${service.name}`}>
+        <Link to={`${root.path}/${service.serverName}`}>
+          {service.serverName}
+        </Link>{" "}
+        >&nbsp;
+        <Link to={`${root.path}/${service.serverName}/${service.name}`}>
           {service.name}
         </Link>
         <a
@@ -61,6 +63,6 @@ export default class Breadcrumb extends React.Component {
 }
 
 Breadcrumb.propTypes = {
-  server: PropTypes.object.isRequired,
+  service: PropTypes.object.isRequired,
   isTraining: PropTypes.bool
 };

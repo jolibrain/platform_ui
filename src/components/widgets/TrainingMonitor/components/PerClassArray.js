@@ -1,4 +1,6 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import { toJS } from "mobx";
 import { observer, inject } from "mobx-react";
 import { Sparklines, SparklinesLine } from "react-sparklines";
@@ -7,7 +9,8 @@ import { Sparklines, SparklinesLine } from "react-sparklines";
 @observer
 export default class PerClassArray extends React.Component {
   render() {
-    const { measure, measureHist } = this.props;
+    const { service } = this.props;
+    const { measure, measureHist } = service.respTraining.body;
 
     if (!measure) return null;
 
@@ -76,3 +79,7 @@ export default class PerClassArray extends React.Component {
     );
   }
 }
+
+PerClassArray.propTypes = {
+  service: PropTypes.object.isRequired
+};

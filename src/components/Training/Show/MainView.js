@@ -16,10 +16,16 @@ export default class MainView extends React.Component {
   }
 
   render() {
-    const { server } = this.props.deepdetectStore;
-    if (!server) return null;
+    if (!this.props.deepdetectStore.isReady) return null;
 
-    const service = server.service;
+    const { services } = this.props.deepdetectStore;
+
+    const { params } = this.props.match;
+    const service = services.find(s => {
+      return (
+        s.name === params.serviceName && s.serverName === params.serverName
+      );
+    });
 
     if (!service) {
       this.props.history.push("/");
@@ -28,19 +34,16 @@ export default class MainView extends React.Component {
 
     if (!service.respTraining) return null;
 
-    const { mltype } = service.respInfo.body;
-    const { measure, measure_hist } = service.respTraining.body;
-
     return (
       <div className="main-view content-wrapper">
         <div className="container">
-          <Breadcrumb service={service} server={server} isTraining={true} />
+          <Breadcrumb service={service} isTraining={true} />
           <nav className="navbar navbar-expand-lg">
             <ul
               className="nav navbar-nav ml-auto"
               style={{ flexDirection: "row" }}
             >
-              {server.settings.isWritable ? (
+              {service.serverSettings.isWritable ? (
                 <li className="nav-item">
                   <button
                     className="btn btn-outline-danger"
@@ -55,12 +58,8 @@ export default class MainView extends React.Component {
             </ul>
           </nav>
           <div className="content">
-            <TrainingMonitor
-              mltype={mltype}
-              measure={measure}
-              measureHist={measure_hist}
-            />
-            <RightPanel measure={measure} />
+            <TrainingMonitor service={service} />
+            <RightPanel service={service} />
           </div>
         </div>
       </div>

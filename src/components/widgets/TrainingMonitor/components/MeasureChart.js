@@ -5,17 +5,19 @@ import { Line } from "react-chartjs-2";
 
 export default class MeasureChart extends React.Component {
   render() {
-    const { title, attribute, measure, measureHist } = this.props;
+    const { title, attribute, service } = this.props;
+
+    const { measure, measure_hist } = service.respTraining.body;
 
     if (!measure[attribute]) return null;
 
     let chartData = {};
     if (
-      measureHist &&
-      measureHist[`${attribute}_hist`] &&
-      measureHist[`${attribute}_hist`].length > 0
+      measure_hist &&
+      measure_hist[`${attribute}_hist`] &&
+      measure_hist[`${attribute}_hist`].length > 0
     ) {
-      const measures = toJS(measureHist[`${attribute}_hist`]);
+      const measures = toJS(measure_hist[`${attribute}_hist`]);
       chartData = {
         labels: Array.apply(null, Array(measures.length)),
         datasets: [
@@ -88,6 +90,5 @@ MeasureChart.propTypes = {
   title: PropTypes.string.isRequired,
   attribute: PropTypes.string.isRequired,
   steppedLine: PropTypes.bool,
-  measure: PropTypes.object.isRequired,
-  measureHist: PropTypes.object.isRequired
+  service: PropTypes.object.isRequired
 };

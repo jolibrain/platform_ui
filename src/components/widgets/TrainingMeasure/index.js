@@ -7,7 +7,9 @@ import { inject, observer } from "mobx-react";
 @observer
 export default class TrainingMeasure extends React.Component {
   render() {
-    const { measure } = this.props;
+    const { service } = this.props;
+
+    const { measure } = service.respTraining.body;
 
     if (
       this.props.configStore.isComponentBlacklisted("TrainingMeasure") ||
@@ -58,5 +60,5 @@ export default class TrainingMeasure extends React.Component {
 }
 
 TrainingMeasure.propTypes = {
-  measure: PropTypes.object.isRequired
+  service: PropTypes.object.isRequired
 };

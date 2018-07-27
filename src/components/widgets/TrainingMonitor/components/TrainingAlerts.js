@@ -8,7 +8,9 @@ export default class TrainingAlerts extends React.Component {
   render() {
     let trainingAlert = null;
 
-    if (this.props.isRequesting) {
+    const { service } = this.props;
+
+    if (service.isRequesting) {
       trainingAlert = (
         <div className="loading alert alert-primary" role="alert">
           <i className="fas fa-spinner fa-spin" />&nbsp; Loading information...
@@ -21,5 +23,5 @@ export default class TrainingAlerts extends React.Component {
 }
 
 TrainingAlerts.propTypes = {
-  isRequesting: PropTypes.bool
+  service: PropTypes.object.isRequired
 };
