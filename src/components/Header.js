@@ -97,7 +97,7 @@ class Header extends React.Component {
                 ) : (
                   <li>
                     <a
-                      href="/data"
+                      href="/filebrowser"
                       style={{ textDecoration: "none" }}
                       target="_blank"
                       rel="noreferrer noopener"
