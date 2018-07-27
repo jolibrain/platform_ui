@@ -6,36 +6,6 @@ import { Link, withRouter } from "react-router-dom";
 @withRouter
 @observer
 export default class TrainingCard extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      intervalId: null
-    };
-
-    this.timer();
-  }
-
-  componentDidMount() {
-    const refreshRate = this.props.deepdetectStore.settings.refreshRate
-      .training;
-    const { service } = this.props;
-
-    var intervalId = setInterval(this.timer.bind(this), refreshRate);
-    this.setState({ intervalId: intervalId });
-
-    service.serviceInfo();
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.state.intervalId);
-  }
-
-  timer() {
-    const { service } = this.props;
-    service.serviceInfo();
-  }
-
   render() {
     const { server, service } = this.props;
     const measures = service.trainMeasure;

@@ -11,39 +11,6 @@ import Breadcrumb from "../../widgets/Breadcrumb";
 @observer
 @withRouter
 export default class MainView extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      intervalId: null
-    };
-
-    this.openStopTrainingModal = this.openStopTrainingModal.bind(this);
-
-    this.timer();
-  }
-
-  componentDidMount() {
-    const { settings, server } = this.props.deepdetectStore;
-
-    var intervalId = setInterval(
-      this.timer.bind(this),
-      settings.refreshRate.training
-    );
-    this.setState({ intervalId: intervalId });
-
-    server.service.serviceInfo();
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.state.intervalId);
-  }
-
-  timer() {
-    const { server } = this.props.deepdetectStore;
-    server.service.trainInfo();
-  }
-
   openStopTrainingModal() {
     this.props.modalStore.setVisible("stopTraining");
   }

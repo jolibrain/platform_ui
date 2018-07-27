@@ -9,30 +9,6 @@ import ServiceItem from "./Items/Service.js";
 @withRouter
 @observer
 export default class ServiceList extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      intervalId: null
-    };
-
-    this.timer();
-  }
-
-  componentDidMount() {
-    const refreshRate = this.props.deepdetectStore.settings.refreshRate.info;
-    var intervalId = setInterval(this.timer.bind(this), refreshRate);
-    this.setState({ intervalId: intervalId });
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.state.intervalId);
-  }
-
-  timer() {
-    this.props.deepdetectStore.loadServices(true);
-  }
-
   render() {
     if (this.props.configStore.isComponentBlacklisted("ServiceList"))
       return null;

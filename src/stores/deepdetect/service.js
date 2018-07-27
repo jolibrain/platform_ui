@@ -41,6 +41,7 @@ export default class deepdetectService {
     this.serverSettings = opts.serverSettings;
 
     autoSave(this, `autosave_service_${this.serverName}_${this.settings.name}`);
+    this.trainInfo();
   }
 
   async serviceInfo() {

@@ -10,34 +10,6 @@ import TrainingCard from "./Cards/Training.js";
 @withRouter
 @observer
 export default class ServiceCardList extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      intervalId: null
-    };
-
-    this.timer();
-
-    this._mapServers = this._mapServers.bind(this);
-    this._mapServices = this._mapServices.bind(this);
-  }
-
-  componentDidMount() {
-    const refreshRate = this.props.deepdetectStore.settings.refreshRate.info;
-    var intervalId = setInterval(this.timer.bind(this), refreshRate);
-    this.setState({ intervalId: intervalId });
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.state.intervalId);
-  }
-
-  timer() {
-    const status = true;
-    this.props.deepdetectStore.loadServices(status);
-  }
-
   _mapServers(server, serverIndex) {
     return server.services.map(
       this._mapServices.bind(this, server, serverIndex)

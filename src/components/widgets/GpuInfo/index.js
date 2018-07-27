@@ -7,30 +7,6 @@ import GpuInfoItem from "./Item";
 @inject("gpuStore")
 @observer
 export default class GpuInfo extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      intervalId: null
-    };
-
-    this.timer();
-  }
-
-  componentDidMount() {
-    const refreshRate = this.props.configStore.gpuInfo.refreshRate;
-    var intervalId = setInterval(this.timer.bind(this), refreshRate);
-    this.setState({ intervalId: intervalId });
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.state.intervalId);
-  }
-
-  timer() {
-    this.props.gpuStore.loadGpuInfo();
-  }
-
   render() {
     if (this.props.configStore.isComponentBlacklisted("GpuInfo")) return null;
 

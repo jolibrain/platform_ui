@@ -29,6 +29,52 @@ import GenericNotFound from "./GenericNotFound";
 @withRouter
 @observer
 export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      infoIntervalId: null,
+      trainingIntervalId: null,
+      gpuInfoIntervalId: null
+    };
+
+    this.setupTimers = this.setupTimers.bind(this);
+  }
+
+  setupTimers() {
+    const { info, training } = this.props.deepdetectStore.settings.refreshRate;
+    const gpuInfo = this.props.configStore.gpuInfo.refreshRate;
+
+    this.setState({
+      infoIntervalId: setInterval(this.infoTimer.bind(this), info),
+      trainingIntervalId: setInterval(this.trainingTimer.bind(this), training),
+      gpuInfoIntervalId: setInterval(this.gpuInfoTimer.bind(this), gpuInfo)
+    });
+
+    this.infoTimer();
+    this.trainingTimer();
+    this.gpuInfoTimer();
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.infoIntervalId);
+    clearInterval(this.state.trainingIntervalId);
+    clearInterval(this.state.gpuInfoIntervalId);
+  }
+
+  infoTimer() {
+    this.props.deepdetectStore.loadServices(true);
+  }
+
+  trainingTimer() {
+    const { service } = this.props.deepdetectStore;
+    if (service) service.trainInfo();
+  }
+
+  gpuInfoTimer() {
+    this.props.gpuStore.loadGpuInfo();
+  }
+
   componentWillMount() {
     if (!this.props.commonStore.token) {
       this.props.commonStore.setAppLoaded();
@@ -49,6 +95,8 @@ export default class App extends React.Component {
       if (config.dataRepositories) {
         this.props.dataRepositoriesStore.setup(config);
       }
+
+      this.setupTimers();
     });
   }
 
