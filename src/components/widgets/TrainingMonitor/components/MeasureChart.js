@@ -1,8 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
+
+import { observer } from "mobx-react";
 import { toJS } from "mobx";
 import { Line } from "react-chartjs-2";
 
+@observer
 export default class MeasureChart extends React.Component {
   render() {
     const { title, attribute, service } = this.props;

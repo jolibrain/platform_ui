@@ -2,10 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { toJS } from "mobx";
-import { observer, inject } from "mobx-react";
+import { observer } from "mobx-react";
 import { Sparklines, SparklinesLine } from "react-sparklines";
 
-@inject("deepdetectStore")
 @observer
 export default class PerClassArray extends React.Component {
   render() {
@@ -35,7 +34,7 @@ export default class PerClassArray extends React.Component {
       });
 
     return (
-      <div className="row">
+      <div className="row" refresh={service.refresh}>
         {measureKeys.map((key, index) => {
           let className = "col-md-1";
 

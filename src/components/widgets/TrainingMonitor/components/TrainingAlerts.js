@@ -1,8 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { observer, inject } from "mobx-react";
+import { observer } from "mobx-react";
 
-@inject("deepdetectStore")
 @observer
 export default class TrainingAlerts extends React.Component {
   render() {
