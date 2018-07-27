@@ -9,7 +9,6 @@ import "./styles/styles.css";
 
 import App from "./components/App";
 
-import authStore from "./stores/authStore.js";
 import commonStore from "./stores/commonStore.js";
 import configStore from "./stores/configStore.js";
 import gpuStore from "./stores/gpuStore.js";
@@ -20,7 +19,6 @@ import dataRepositoriesStore from "./stores/dataRepositoriesStore.js";
 import modalStore from "./stores/modalStore.js";
 
 const stores = {
-  authStore,
   commonStore,
   configStore,
   gpuStore,

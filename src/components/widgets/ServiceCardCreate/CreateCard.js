@@ -3,7 +3,6 @@ import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
 @inject("deepdetectStore")
-@inject("authStore")
 @withRouter
 @observer
 export default class CreateCard extends React.Component {
@@ -72,10 +71,6 @@ export default class CreateCard extends React.Component {
     const ddStore = this.props.deepdetectStore;
 
     this.setState({ creatingService: true });
-
-    if (this.props.authStore.user) {
-      serviceName = `${this.props.authStore.user}_${serviceName}`;
-    }
 
     ddStore.newService(serviceName, serviceData, resp => {
       if (resp instanceof Error || resp.status.code !== 201) {

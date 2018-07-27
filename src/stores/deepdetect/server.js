@@ -103,26 +103,13 @@ export default class deepdetectServer {
 
           if (existingService) {
             existingService.settings = serviceSettings;
-          } else {
-            const authStore = store.get("autosave_auth");
-
-            if (authStore && this.isWritable) {
-              if (serviceSettings.name.match(`${authStore.user}_`)) {
-                const service = new deepdetectService({
-                  serviceSettings: serviceSettings,
-                  serverName: this.name,
-                  serverSettings: this.settings
-                });
-                this.services.push(observable(service));
-              }
-            } else {
-              const service = new deepdetectService({
-                serviceSettings: serviceSettings,
-                serverName: this.name,
-                serverSettings: this.settings
-              });
-              this.services.push(observable(service));
-            }
+          } else if (this.isWritable) {
+            const service = new deepdetectService({
+              serviceSettings: serviceSettings,
+              serverName: this.name,
+              serverSettings: this.settings
+            });
+            this.services.push(observable(service));
           }
         });
       } else {

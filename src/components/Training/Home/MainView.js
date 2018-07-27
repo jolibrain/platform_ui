@@ -12,8 +12,10 @@ import ServiceCardList from "../../widgets/ServiceCardList";
 @observer
 export default class MainView extends React.Component {
   render() {
+    if (!this.props.deepdetectStore.isReady) return null;
+
     const { metricRepositories } = this.props.modelRepositoriesStore;
-    const { trainingServices } = this.props.deepdetectStore;
+    const { services, trainingServices } = this.props.deepdetectStore;
 
     return (
       <div className="main-view content-wrapper">

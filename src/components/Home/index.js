@@ -6,24 +6,10 @@ import { inject } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
 @inject("configStore")
-@inject("authStore")
 @withRouter
 export default class Home extends React.Component {
   componentWillMount() {
     store.clearAll();
-
-    const { match, authStore } = this.props;
-
-    if (match.params && match.params.username) {
-      const { username } = match.params;
-
-      if (username === "clean") {
-        authStore.user = null;
-        authStore.removeStore();
-      } else {
-        authStore.user = username;
-      }
-    }
   }
 
   render() {

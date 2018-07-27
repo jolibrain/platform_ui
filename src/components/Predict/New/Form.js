@@ -17,7 +17,6 @@ import "react-bootstrap-typeahead/css/Typeahead-bs4.css";
 @inject("imaginateStore")
 @inject("deepdetectStore")
 @inject("modelRepositoriesStore")
-@inject("authStore")
 @observer
 @withRouter
 export default class Form extends React.Component {
@@ -196,10 +195,6 @@ export default class Form extends React.Component {
     const ddStore = this.props.deepdetectStore;
 
     this.setState({ creatingService: true });
-
-    if (this.props.authStore.user) {
-      serviceName = `${this.props.authStore.user}_${serviceName}`;
-    }
 
     ddStore.newService(serviceName, serviceData, resp => {
       if (resp instanceof Error || resp.status.code !== 201) {
