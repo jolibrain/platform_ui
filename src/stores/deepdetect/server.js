@@ -13,10 +13,10 @@ export default class deepdetectServer {
   @observable isLoading = false;
   @observable servicesLoaded = false;
 
-  @observable serverDown = false;
-
   @observable services = [];
   @observable creatingService = false;
+
+  @observable respInfo = null;
 
   constructor(opts) {
     this.name = opts.name;
@@ -68,20 +68,35 @@ export default class deepdetectServer {
     return agent.Deepdetect.deleteService(this.settings, name);
   }
 
+  @computed
+  get isDown() {
+    if (!this.respInfo) return true;
+    return !(this.respInfo.head && this.respInfo.head.services);
+  }
+
+  @computed
+  get respInfoServices() {
+    if (!this.respInfo || !this.respInfo.head || !this.respInfo.head.services)
+      return [];
+    return this.respInfo.head.services;
+  }
+
+  @computed
+  get respInfoServiceNames() {
+    return this.respInfoServices.map(s => s.name);
+  }
+
   @action
   async loadServices(status = false) {
     try {
-      const info = await this.$reqInfo();
+      this.respInfo = await this.$reqInfo();
 
-      if (info.head && info.head.services) {
-        this.serverDown = false;
-
-        const serviceNames = info.head.services.map(s => s.name);
+      if (!this.isDown) {
         this.services = this.services.filter(s =>
-          serviceNames.includes(s.name)
+          this.respInfoServiceNames.includes(s.name)
         );
 
-        info.head.services.forEach(serviceSettings => {
+        this.respInfoServices.forEach(serviceSettings => {
           let existingService = this.services.find(
             s => s.name === serviceSettings.name
           );
@@ -98,7 +113,7 @@ export default class deepdetectServer {
                   serverName: this.name,
                   serverSettings: this.settings
                 });
-                this.services.push(service);
+                this.services.push(observable(service));
               }
             } else {
               const service = new deepdetectService({
@@ -106,16 +121,14 @@ export default class deepdetectServer {
                 serverName: this.name,
                 serverSettings: this.settings
               });
-              this.services.push(service);
+              this.services.push(observable(service));
             }
           }
         });
       } else {
-        this.serverDown = true;
         this.services = [];
       }
     } catch (e) {
-      this.serverDown = true;
       this.services = [];
     }
 
