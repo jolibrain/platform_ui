@@ -25,7 +25,7 @@ export default class MainView extends React.Component {
                 <h4>No training service running</h4>
               ) : (
                 <div>
-                  <h4>Current Training Service</h4>
+                  <h4>Current Training Services</h4>
                   <ServiceCardList services={trainingServices} />
                 </div>
               )}
@@ -36,7 +36,7 @@ export default class MainView extends React.Component {
                 ""
               ) : (
                 <div>
-                  <h4>Archive Training Services</h4>
+                  <h4>Archived Training Jobs</h4>
                   <ServiceCardList services={metricRepositories} />
                 </div>
               )}

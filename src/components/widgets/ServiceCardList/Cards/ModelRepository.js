@@ -115,7 +115,7 @@ export default class ModelRepositoryCard extends React.Component {
               );
             })}
           </ul>
-          <Link to={archiveUrl} className="btn btn-outline-success">
+          <Link to={archiveUrl} className="btn btn-outline-primary">
             View
           </Link>
         </div>
