@@ -412,7 +412,7 @@ export default class deepdetectService {
 
       if (
         typeof classes !== "undefined" &&
-        this.respInfo.body.mltype !== "classication"
+        this.respInfo.body.mltype !== "classification"
       ) {
         input.boxes = classes.map(predict => predict.bbox);
       }
