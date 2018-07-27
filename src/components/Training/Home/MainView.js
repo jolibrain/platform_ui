@@ -12,24 +12,20 @@ import ServiceCardList from "../../widgets/ServiceCardList";
 @observer
 export default class MainView extends React.Component {
   render() {
-    const { servers } = this.props.deepdetectStore;
-    const isEmptyTraining = !servers.some(server => {
-      return server.services.some(service => service.settings.training);
-    });
-
     const { metricRepositories } = this.props.modelRepositoriesStore;
+    const { trainingServices } = this.props.deepdetectStore;
 
     return (
       <div className="main-view content-wrapper">
         <div className="container-fluid">
           <div className="content">
             <div className="serviceList">
-              {isEmptyTraining ? (
+              {trainingServices.length === 0 ? (
                 <h4>No training service running</h4>
               ) : (
                 <div>
                   <h4>Current Training Service</h4>
-                  <ServiceCardList onlyTraining={true} />
+                  {trainingServices.map(s => s.name)}
                 </div>
               )}
             </div>

@@ -134,7 +134,7 @@ class Header extends React.Component {
                         {server.name + " "}
                         <i
                           className={
-                            server.serverDown
+                            server.isDown
                               ? "fas fa-circle serverDown"
                               : "fas fa-circle"
                           }
