@@ -19,7 +19,10 @@ export default class ImageConnector extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { selectedBoxIndex: -1 };
+    this.state = {
+      selectedBoxIndex: -1,
+      sliderBest: 1
+    };
 
     this.onOver = this.onOver.bind(this);
     this.onLeave = this.onLeave.bind(this);
@@ -52,6 +55,7 @@ export default class ImageConnector extends React.Component {
   handleBestThreshold(value) {
     const { serviceSettings } = this.props.imaginateStore;
     serviceSettings.request.best = parseInt(value, 10);
+    this.setState({ sliderBest: value });
     this.props.imaginateStore.predict();
   }
 
@@ -88,19 +92,11 @@ export default class ImageConnector extends React.Component {
       if (service.settings.mltype === "classification") {
         // && service.respInfo.body.parameters.mllib[0].nclasses.length > 0
 
-        if (service.settings.request) {
-          if (!service.settings.request.best) {
-            service.settings.request.best = 1;
-          }
-        } else {
-          service.settings.request = { best: 1 };
-        }
-
         thresholds.push(
           <ParamSlider
             key="paramSliderBest"
             title="Best threshold"
-            defaultValue={service.settings.request.best}
+            defaultValue={this.state.sliderBest}
             onAfterChange={this.handleBestThreshold}
             min={1}
             max={20}
