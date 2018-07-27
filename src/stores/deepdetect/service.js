@@ -41,7 +41,7 @@ export default class deepdetectService {
     this.serverSettings = opts.serverSettings;
 
     autoSave(this, `autosave_service_${this.serverName}_${this.settings.name}`);
-    this.trainInfo();
+    this.serviceInfo();
   }
 
   async serviceInfo() {
@@ -75,8 +75,6 @@ export default class deepdetectService {
   @computed
   get isTraining() {
     return (
-      this.respInfo &&
-      this.trainJob &&
       this.respTraining &&
       this.respTraining.head &&
       this.respTraining.head.status === "running"

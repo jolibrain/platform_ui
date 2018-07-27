@@ -67,8 +67,7 @@ export default class App extends React.Component {
   }
 
   trainingTimer() {
-    const { service } = this.props.deepdetectStore;
-    if (service) service.trainInfo();
+    this.props.deepdetectStore.refreshTrainInfo();
   }
 
   gpuInfoTimer() {

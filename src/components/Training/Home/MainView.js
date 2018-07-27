@@ -2,7 +2,8 @@ import React from "react";
 import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
-import RepositoryCard from "./RepositoryCard";
+import TrainingCard from "../../widgets/ServiceCardList/Cards/Training";
+import ModelRepositoryCard from "../../widgets/ServiceCardList/Cards/ModelRepository";
 import RightPanel from "../commons/RightPanel";
 import ServiceCardList from "../../widgets/ServiceCardList";
 
@@ -15,7 +16,7 @@ export default class MainView extends React.Component {
     if (!this.props.deepdetectStore.isReady) return null;
 
     const { metricRepositories } = this.props.modelRepositoriesStore;
-    const { services, trainingServices } = this.props.deepdetectStore;
+    const { trainingServices } = this.props.deepdetectStore;
 
     return (
       <div className="main-view content-wrapper">
@@ -27,14 +28,26 @@ export default class MainView extends React.Component {
               ) : (
                 <div>
                   <h4>Current Training Service</h4>
-                  {trainingServices.map(s => s.name)}
+                  {trainingServices.map((service, index) => (
+                    <TrainingCard key={index} service={service} />
+                  ))}
                 </div>
               )}
             </div>
+            <hr />
             <div className="modelList serviceList ServiceCardList card-columns">
-              {metricRepositories.map((repo, index) => (
-                <RepositoryCard key={index} repository={repo} />
-              ))}
+              {metricRepositories.length === 0 ? (
+                ""
+              ) : (
+                <div>
+                  <h4>Finished Training Services</h4>
+                  {metricRepositories.map((repo, index) => {
+                    return (
+                      <ModelRepositoryCard key={index} repository={repo} />
+                    );
+                  })}
+                </div>
+              )}
             </div>
             <RightPanel />
           </div>

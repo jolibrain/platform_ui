@@ -32,7 +32,7 @@ export class deepdetectStore {
 
   @computed
   get trainingServices() {
-    return this.services.filter(s => s.isTraining);
+    return this.services.filter(s => s.settings.training);
   }
 
   @action
@@ -101,6 +101,18 @@ export class deepdetectStore {
     });
     Promise.all(promises).then(results => {
       this.isReady = true;
+      this.refresh = Math.random();
+    });
+  }
+
+  @action
+  refreshTrainInfo() {
+    const promises = [];
+    this.trainingServices.forEach(async service => {
+      const promise = service.trainInfo();
+      promises.push(promise);
+    });
+    Promise.all(promises).then(results => {
       this.refresh = Math.random();
     });
   }

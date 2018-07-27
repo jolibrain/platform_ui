@@ -1,6 +1,5 @@
 import { observable, action, computed } from "mobx";
 import agent from "../../agent";
-import store from "store";
 
 import deepdetectService from "./service";
 

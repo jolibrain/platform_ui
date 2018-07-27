@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { inject, observer } from "mobx-react";
 import { Link, withRouter } from "react-router-dom";
 
@@ -7,10 +8,10 @@ import { Link, withRouter } from "react-router-dom";
 @observer
 export default class TrainingCard extends React.Component {
   render() {
-    const { server, service } = this.props;
+    const { service } = this.props;
     const measures = service.trainMeasure;
 
-    if (!server || !service) return null;
+    if (!service) return null;
 
     let badges = [];
 
@@ -39,7 +40,7 @@ export default class TrainingCard extends React.Component {
       });
     }
 
-    const serviceUrl = `/training/${server.name}/${service.name}`;
+    const serviceUrl = `/training/${service.serverName}/${service.name}`;
 
     let info = [
       {
@@ -140,3 +141,7 @@ export default class TrainingCard extends React.Component {
     );
   }
 }
+
+TrainingCard.propTypes = {
+  service: PropTypes.object.isRequired
+};
