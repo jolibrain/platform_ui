@@ -230,3 +230,10 @@ docker run -v .:/opt/code eris:7750/dev/core-ui-build
 ```
 
 Les fichiers résultants du build seront dans ./build
+
+### Deploy on server
+
+1.  modify code in src
+2.  build the app: `yarn run build`
+3.  create a docker image and push it to registry: `./docker-build.sh`
+4.  on server, in a git clone of `platform_docker`, use `{server}/deploy.sh` to deploy new docker image
