@@ -37,7 +37,7 @@ export default class MainView extends React.Component {
     return (
       <div className="main-view content-wrapper">
         <div className="container">
-          <Breadcrumb server={server} />
+          <Breadcrumb service={server.service} />
           <nav className="navbar navbar-expand-lg">
             <ul
               className="nav navbar-nav ml-auto"
