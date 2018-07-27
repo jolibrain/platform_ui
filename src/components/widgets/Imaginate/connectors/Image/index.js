@@ -49,6 +49,9 @@ export default class ImageConnector extends React.Component {
   handleConfidenceThreshold(value) {
     const { serviceSettings } = this.props.imaginateStore;
     serviceSettings.threshold.confidence = parseFloat((value / 100).toFixed(2));
+    if (serviceSettings.threshold.confidence === 0) {
+      serviceSettings.threshold.confidence = 0.01;
+    }
     this.props.imaginateStore.predict();
   }
 
