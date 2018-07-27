@@ -11,9 +11,9 @@ export default class TrainingMeasure extends React.Component {
 
     let measure = null;
     if (service.jsonMetrics) {
-      measure = service.jsonMetrics.body;
+      measure = service.jsonMetrics.body.measure;
     } else {
-      measure = service.respTraining.body;
+      measure = service.respTraining.body.measure;
     }
 
     if (
