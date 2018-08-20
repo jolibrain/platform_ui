@@ -22,28 +22,24 @@ export default class TrainingMeasure extends React.Component {
     )
       return null;
 
-    const measureKeys = Object.keys(measure)
-      .filter(
-        k =>
-          k !== "remain_time_str" &&
-          k !== "remain_time" &&
-          k !== "iter_time" &&
-          k !== "iteration" &&
-          k !== "train_loss" &&
-          k !== "labels" &&
-          k !== "cmfull" &&
-          k !== "cmdiag"
-      )
-      .sort((key1, key2) => {
-        if (key1.includes("clacc_") && key2.includes("clacc_")) {
-          return (
-            parseInt(key1.split("_").pop(), 10) -
-            parseInt(key2.split("_").pop(), 10)
-          );
-        } else {
-          return key1 - key2;
-        }
-      });
+    const measureKeys = Object.keys(measure).filter(
+      k =>
+        k !== "remain_time_str" &&
+        k !== "remain_time" &&
+        k !== "iter_time" &&
+        k !== "iteration" &&
+        k !== "train_loss" &&
+        k !== "labels" &&
+        k !== "cmfull" &&
+        k !== "cmdiag" &&
+        k !== "clacc"
+    );
+
+    if (measure["clacc"] && measure["clacc"].length > 0) {
+      for (let i = 0; i < measure["clacc"].length; i++) {
+        measureKeys.push(`clacc_${i}`);
+      }
+    }
 
     if (measureKeys.length === 0) return null;
 
