@@ -49,6 +49,10 @@ export default class TrainingCard extends React.Component {
           measures && measures.train_loss
             ? measures.train_loss.toFixed(2)
             : "--"
+      },
+      {
+        text: "Iterations",
+        val: measures && measures.iteration ? measures.iteration : "--"
       }
     ];
 
