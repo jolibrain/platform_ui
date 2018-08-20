@@ -11,6 +11,12 @@ import Breadcrumb from "../../widgets/Breadcrumb";
 @observer
 @withRouter
 export default class MainView extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.openStopTrainingModal = this.openStopTrainingModal.bind(this);
+  }
+
   openStopTrainingModal() {
     this.props.modalStore.setVisible("stopTraining");
   }
