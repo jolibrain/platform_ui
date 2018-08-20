@@ -7,12 +7,42 @@ import { Link, withRouter } from "react-router-dom";
 @withRouter
 @observer
 export default class TrainingCard extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.getValue = this.getValue.bind(this);
+  }
+
+  getValue(attr) {
+    const { service } = this.props;
+    const { measure, measure_hist } = service;
+
+    let value = "--";
+
+    if (measure) {
+      value = measure[attr];
+    } else if (
+      measure_hist &&
+      measure_hist[`${attr}_hist`] &&
+      measure_hist[`${attr}_hist`].length > 0
+    ) {
+      value =
+        measure_hist[`${attr}_hist`][measure_hist[`${attr}_hist`].length - 1];
+    }
+
+    if (attr !== "remain_time_str") {
+      if (value !== "--" && attr === "train_loss") {
+        value = value.toFixed(10);
+      } else {
+        value = value.toFixed(5);
+      }
+    }
+
+    return value;
+  }
+
   render() {
     const { service } = this.props;
-    const measures = service.trainMeasure;
-
-    if (!service) return null;
-
     let badges = [];
 
     badges.push({
@@ -45,14 +75,11 @@ export default class TrainingCard extends React.Component {
     let info = [
       {
         text: "Train Loss",
-        val:
-          measures && measures.train_loss
-            ? measures.train_loss.toFixed(10)
-            : "--"
+        val: this.getValue("train_loss")
       },
       {
         text: "Iterations",
-        val: measures && measures.iteration ? measures.iteration : "--"
+        val: this.getValue("iteration")
       }
     ];
 
@@ -60,40 +87,40 @@ export default class TrainingCard extends React.Component {
       case "segmentation":
         info.push({
           text: "Mean IOU",
-          val: measures && measures.meaniou ? measures.meaniou.toFixed(5) : "--"
+          val: this.getValue("meaniou")
         });
         break;
       case "detection":
         info.push({
           text: "MAP",
-          val: measures && measures.map ? measures.map.toFixed(5) : "--"
+          val: this.getValue("map")
         });
         break;
       case "ctc":
         info.push({
           text: "Accuracy",
-          val: measures && measures.acc ? measures.acc.toFixed(5) : "--"
+          val: this.getValue("acc")
         });
         break;
       case "classification":
         info.push({
           text: "Accuracy",
-          val: measures && measures.acc ? measures.acc.toFixed(5) : "--"
+          val: this.getValue("acc")
         });
         info.push({
           text: "F1",
-          val: measures && measures.f1 ? measures.f1.toFixed(5) : "--"
+          val: this.getValue("f1")
         });
 
         info.push({
           text: "mcll",
-          val: measures && measures.mcll ? measures.mcll.toFixed(5) : "--"
+          val: this.getValue("mcll")
         });
         break;
       case "regression":
         info.push({
           text: "Eucll",
-          val: measures && measures.eucll ? measures.eucll.toFixed(5) : "--"
+          val: this.getValue("eucll")
         });
         break;
       default:
@@ -102,8 +129,7 @@ export default class TrainingCard extends React.Component {
 
     info.push({
       text: "Time remaining",
-      val:
-        measures && measures.remain_time_str ? measures.remain_time_str : "--",
+      val: this.getValue("remain_time_str"),
       breakline: true
     });
 

@@ -140,23 +140,29 @@ export default class deepdetectService {
   }
 
   @computed
-  get trainMeasure() {
-    if (
-      this.respTraining &&
-      this.respTraining.body &&
-      this.respTraining.body.measure
-    )
-      return this.respTraining.body.measure;
+  get measure() {
+    let value = null;
+
+    if (this.respTrainMetrics && this.respTrainMetrics.body) {
+      value = this.respTrainMetrics.body.measure;
+    } else if (this.respTraining && this.respTraining.body) {
+      value = this.respTraining.body.measure;
+    }
+
+    return value;
   }
 
   @computed
-  get trainMeasureHist() {
-    if (
-      this.respTraining &&
-      this.respTraining.body &&
-      this.respTraining.body.measure_hist
-    )
-      return this.respTraining.body.measure_hist;
+  get measure_hist() {
+    let value = null;
+
+    if (this.respTrainMetrics && this.respTrainMetrics.body) {
+      value = this.respTrainMetrics.body.measure_hist;
+    } else if (this.respTraining && this.respTraining.body) {
+      value = this.respTraining.body.measure_hist;
+    }
+
+    return value;
   }
 
   @computed

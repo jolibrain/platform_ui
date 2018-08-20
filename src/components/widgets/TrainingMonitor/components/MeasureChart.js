@@ -20,8 +20,6 @@ export default class MeasureChart extends React.Component {
       measure_hist = service.respTraining.body.measure_hist;
     }
 
-    if (!measure || !measure[attribute]) return null;
-
     let chartData = {};
     if (
       measure_hist &&
@@ -77,11 +75,31 @@ export default class MeasureChart extends React.Component {
       }
     };
 
+    let value = "--";
+
+    if (measure && measure[attribute]) {
+      value = measure[attribute];
+    } else if (
+      measure_hist &&
+      measure_hist[`${attribute}_hist`] &&
+      measure_hist[`${attribute}_hist`].length > 0
+    ) {
+      value =
+        measure_hist[`${attribute}_hist`][
+          measure_hist[`${attribute}_hist`].length - 1
+        ];
+    }
+
+    if (attribute === "train_loss" && value !== "--") {
+      value = value.toFixed(10);
+    } else {
+      value = value.toFixed(5);
+    }
+
     return (
       <div className="col-md-3">
         <span>
-          <b>{title}</b>:&nbsp;
-          {measure[attribute].toFixed(3)}
+          <b>{title}</b>:&nbsp;{value}
         </span>
         {chartData.datasets ? (
           <Line
