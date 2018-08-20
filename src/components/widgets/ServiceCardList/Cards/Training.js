@@ -45,10 +45,7 @@ export default class TrainingCard extends React.Component {
     let info = [
       {
         text: "Train Loss",
-        val:
-          measures && measures.train_loss
-            ? measures.train_loss.toFixed(2)
-            : "--"
+        val: measures && measures.train_loss ? measures.train_loss : "--"
       },
       {
         text: "Iterations",
@@ -60,40 +57,40 @@ export default class TrainingCard extends React.Component {
       case "segmentation":
         info.push({
           text: "Mean IOU",
-          val: measures && measures.meaniou ? measures.meaniou.toFixed(2) : "--"
+          val: measures && measures.meaniou ? measures.meaniou : "--"
         });
         break;
       case "detection":
         info.push({
           text: "MAP",
-          val: measures && measures.map ? measures.map.toFixed(2) : "--"
+          val: measures && measures.map ? measures.map : "--"
         });
         break;
       case "ctc":
         info.push({
           text: "Accuracy",
-          val: measures && measures.acc ? measures.acc.toFixed(2) : "--"
+          val: measures && measures.acc ? measures.acc : "--"
         });
         break;
       case "classification":
         info.push({
           text: "Accuracy",
-          val: measures && measures.acc ? measures.acc.toFixed(2) : "--"
+          val: measures && measures.acc ? measures.acc : "--"
         });
         info.push({
           text: "F1",
-          val: measures && measures.f1 ? measures.f1.toFixed(2) : "--"
+          val: measures && measures.f1 ? measures.f1 : "--"
         });
 
         info.push({
           text: "mcll",
-          val: measures && measures.mcll ? measures.mcll.toFixed(2) : "--"
+          val: measures && measures.mcll ? measures.mcll : "--"
         });
         break;
       case "regression":
         info.push({
           text: "Eucll",
-          val: measures && measures.eucll ? measures.eucll.toFixed(2) : "--"
+          val: measures && measures.eucll ? measures.eucll : "--"
         });
         break;
       default:
