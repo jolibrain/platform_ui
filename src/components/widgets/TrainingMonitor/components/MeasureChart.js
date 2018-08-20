@@ -20,7 +20,7 @@ export default class MeasureChart extends React.Component {
       measure_hist = service.respTraining.body.measure_hist;
     }
 
-    if (!measure[attribute]) return null;
+    if (!measure || !measure[attribute]) return null;
 
     let chartData = {};
     if (
