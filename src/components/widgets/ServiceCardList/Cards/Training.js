@@ -30,8 +30,8 @@ export default class TrainingCard extends React.Component {
         measure_hist[`${attr}_hist`][measure_hist[`${attr}_hist`].length - 1];
     }
 
-    if (attr !== "remain_time_str") {
-      if (value !== "--" && attr === "train_loss") {
+    if (attr !== "remain_time_str" && value && value !== "--") {
+      if (attr === "train_loss") {
         value = value.toFixed(10);
       } else {
         value = value.toFixed(5);

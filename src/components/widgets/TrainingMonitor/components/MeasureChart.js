@@ -7,26 +7,52 @@ import { Line } from "react-chartjs-2";
 
 @observer
 export default class MeasureChart extends React.Component {
-  render() {
-    const { title, attribute, service } = this.props;
+  constructor(props) {
+    super(props);
 
-    let measure,
-      measure_hist = null;
-    if (service.jsonMetrics) {
-      measure = service.jsonMetrics.body.measure;
-      measure_hist = service.jsonMetrics.body.measure_hist;
-    } else {
-      measure = service.respTraining.body.measure;
-      measure_hist = service.respTraining.body.measure_hist;
+    this.getValue = this.getValue.bind(this);
+    this.getChartData = this.getChartData.bind(this);
+  }
+
+  getValue(attr) {
+    const { service } = this.props;
+    const { measure, measure_hist } = service.jsonMetrics.body;
+
+    let value = "--";
+
+    if (measure) {
+      value = measure[attr];
+    } else if (
+      measure_hist &&
+      measure_hist[`${attr}_hist`] &&
+      measure_hist[`${attr}_hist`].length > 0
+    ) {
+      value =
+        measure_hist[`${attr}_hist`][measure_hist[`${attr}_hist`].length - 1];
     }
+
+    if (attr !== "remain_time_str" && value && value !== "--") {
+      if (attr === "train_loss") {
+        value = value.toFixed(10);
+      } else {
+        value = value.toFixed(5);
+      }
+    }
+
+    return value;
+  }
+
+  getChartData(attr) {
+    const { service } = this.props;
+    const { measure_hist } = service.jsonMetrics.body;
 
     let chartData = {};
     if (
       measure_hist &&
-      measure_hist[`${attribute}_hist`] &&
-      measure_hist[`${attribute}_hist`].length > 0
+      measure_hist[`${attr}_hist`] &&
+      measure_hist[`${attr}_hist`].length > 0
     ) {
-      const measures = toJS(measure_hist[`${attribute}_hist`]);
+      const measures = toJS(measure_hist[`${attr}_hist`]);
       chartData = {
         labels: Array.apply(null, Array(measures.length)),
         datasets: [
@@ -50,6 +76,12 @@ export default class MeasureChart extends React.Component {
       chartData.labels.push(null);
       chartData.datasets[0].data.push(data[data.length - 1]);
     }
+
+    return chartData;
+  }
+
+  render() {
+    const { title, attribute } = this.props;
 
     const chartOptions = {
       animation: {
@@ -75,41 +107,16 @@ export default class MeasureChart extends React.Component {
       }
     };
 
-    let value = "--";
-
-    if (measure && measure[attribute]) {
-      value = measure[attribute];
-    } else if (
-      measure_hist &&
-      measure_hist[`${attribute}_hist`] &&
-      measure_hist[`${attribute}_hist`].length > 0
-    ) {
-      value =
-        measure_hist[`${attribute}_hist`][
-          measure_hist[`${attribute}_hist`].length - 1
-        ];
-    }
-
-    if (attribute === "train_loss" && value !== "--") {
-      value = value.toFixed(10);
-    } else {
-      value = value.toFixed(5);
-    }
-
     return (
       <div className="col-md-3">
         <span>
-          <b>{title}</b>:&nbsp;{value}
+          <b>{title}</b>:&nbsp;{this.getValue(attribute)}
         </span>
-        {chartData.datasets ? (
-          <Line
-            data={chartData}
-            legend={{ display: false }}
-            options={chartOptions}
-          />
-        ) : (
-          ""
-        )}
+        <Line
+          data={this.getChartData(attribute)}
+          legend={{ display: false }}
+          options={chartOptions}
+        />
       </div>
     );
   }

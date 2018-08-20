@@ -25,6 +25,13 @@ export class modelRepositoriesStore {
     return agent.Webserver.getFile(jsonPath);
   }
 
+  $reqBestModel(path) {
+    const jsonPath = path.match("/$")
+      ? `${path}best_model.txt`
+      : `${path}/best_model.txt`;
+    return agent.Webserver.getFile(jsonPath);
+  }
+
   $reqJsonConfig(path) {
     const jsonPath = path.match("/$")
       ? `${path}config.json`
