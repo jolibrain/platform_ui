@@ -16,7 +16,15 @@ export default class MeasureChart extends React.Component {
 
   getValue(attr) {
     const { service } = this.props;
-    const { measure, measure_hist } = service.jsonMetrics.body;
+
+    let measure, measure_hist;
+    if (service.jsonMetrics) {
+      measure = service.jsonMetrics.body.measure;
+      measure_hist = service.jsonMetrics.body.measure_hist;
+    } else {
+      measure = service.measure;
+      measure_hist = service.measure_hist;
+    }
 
     let value = "--";
 
@@ -44,7 +52,13 @@ export default class MeasureChart extends React.Component {
 
   getChartData(attr) {
     const { service } = this.props;
-    const { measure_hist } = service.jsonMetrics.body;
+
+    let measure_hist;
+    if (service.jsonMetrics) {
+      measure_hist = service.jsonMetrics.body.measure_hist;
+    } else {
+      measure_hist = service.measure_hist;
+    }
 
     let chartData = {};
     if (

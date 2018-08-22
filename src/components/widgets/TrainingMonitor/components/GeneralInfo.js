@@ -18,7 +18,7 @@ export default class GeneralInfo extends React.Component {
       measure = service.jsonMetrics.body.measure;
     } else {
       mltype = service.respInfo.body.mltype;
-      measure = service.respTraining.body.measure;
+      measure = service.measure;
     }
 
     infoCharts.push(
