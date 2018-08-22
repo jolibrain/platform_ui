@@ -10,14 +10,13 @@ export default class PerClassArray extends React.Component {
   render() {
     const { service } = this.props;
 
-    let measure,
-      measure_hist = null;
+    let measure, measure_hist;
     if (service.jsonMetrics) {
       measure = service.jsonMetrics.body.measure;
       measure_hist = service.jsonMetrics.body.measure_hist;
     } else {
-      measure = service.respTraining.body.measure;
-      measure_hist = service.respTraining.body.measure_hist;
+      measure = service.measure;
+      measure_hist = service.measure_hist;
     }
 
     if (!measure) return null;
