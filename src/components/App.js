@@ -62,6 +62,12 @@ export default class App extends React.Component {
     clearInterval(this.state.gpuInfoIntervalId);
   }
 
+  componentWillReceiveProps(nextProps) {
+    // timer has to be called in order to refresh Training Show component
+    // fix issue #157 - https://gitlab.com/jolibrain/core-ui/issues/157
+    this.trainingTimer();
+  }
+
   infoTimer() {
     this.props.deepdetectStore.loadServices(true);
   }
