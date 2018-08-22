@@ -5,10 +5,21 @@ import React from "react";
 import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
+@inject("deepdetectStore")
 @inject("configStore")
 @withRouter
 @observer
 export default class TrainingShow extends React.Component {
+  componentWillMount() {
+    const ddStore = this.props.deepdetectStore;
+    ddStore.init(this.props.match.params);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const ddStore = this.props.deepdetectStore;
+    ddStore.init(nextProps.match.params);
+  }
+
   render() {
     if (
       this.props.configStore.isComponentBlacklisted("Training") ||
