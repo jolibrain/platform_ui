@@ -20,7 +20,7 @@ export default class MainView extends React.Component {
       <div className="main-view content-wrapper">
         <div className="container-fluid">
           <div className="content">
-            <div className="serviceList">
+            <div className="serviceList current">
               {trainingServices.length === 0 ? (
                 <h4>No training service running</h4>
               ) : (
@@ -31,7 +31,7 @@ export default class MainView extends React.Component {
               )}
             </div>
             <hr />
-            <div className="serviceList">
+            <div className="serviceList archive">
               {metricRepositories.length === 0 ? (
                 ""
               ) : (

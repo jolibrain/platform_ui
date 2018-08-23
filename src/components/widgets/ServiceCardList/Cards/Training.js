@@ -137,7 +137,7 @@ export default class TrainingCard extends React.Component {
       <div className="card">
         <div className="card-body">
           <h5 className="card-title">
-            {service.name}
+            <span class="title">{service.name}</span>
             <br />
             {badges.map((badge, key) => {
               return (
