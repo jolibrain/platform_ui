@@ -17,24 +17,11 @@ class Header extends React.Component {
       aboutDown: false
     };
 
-    this.handleBodyClick = this.handleBodyClick.bind(this);
     this.handleAboutClick = this.handleAboutClick.bind(this);
   }
 
-  componentDidMount() {
-    document.body.addEventListener("click", this.handleBodyClick);
-  }
-
-  componentWillUnmount() {
-    document.body.removeEventListener("click", this.handleBodyClick);
-  }
-
-  handleBodyClick() {
-    this.setState({ aboutDown: false });
-  }
-
   handleAboutClick() {
-    this.setState({ aboutDown: true });
+    this.setState({ aboutDown: !this.state.aboutDown });
   }
 
   render() {
@@ -45,9 +32,7 @@ class Header extends React.Component {
           <div className="header-content">
             <div className="title-container">
               <h1 className="title">
-                <Link to="/">
-                  {this.props.commonStore.appName.toLowerCase()}
-                </Link>
+                <Link to="/">{this.props.commonStore.appName}</Link>
               </h1>
 
               <ul className="list-unstyled navbar-sub-nav">
