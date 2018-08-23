@@ -21,6 +21,7 @@
     "codemirror": "^5.38.0",
     "copy-to-clipboard": "^3.0.8",
     "custom-react-scripts": "^0.2.2",
+    "deepdetect-js": "^1.6.0",
     "keycloak-js": "^4.1.0",
     "mobx": "^5.0.3",
     "mobx-react": "^5.1.2",

@@ -1,7 +1,7 @@
 import superagentPromise from "superagent-promise";
 import _superagent from "superagent";
 
-import DD from "./lib/deepdetect";
+import DD from "deepdetect-js";
 
 const superagent = superagentPromise(_superagent, global.Promise);
 
