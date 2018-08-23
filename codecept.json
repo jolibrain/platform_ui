@@ -1,0 +1,16 @@
+{
+  "tests": "test/codecept/**/*.js",
+  "timeout": 10000,
+  "output": "test/codecept/output",
+  "helpers": {
+    "Nightmare": {
+      "url": "http://10.10.77.61:18104",
+      "show": false,
+      "restart": false,
+      "windowSize": "1920x1080"
+    }
+  },
+  "bootstrap": false,
+  "mocha": {},
+  "name": "core-ui"
+}

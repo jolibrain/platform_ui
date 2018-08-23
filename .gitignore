@@ -5,6 +5,7 @@
 
 # testing
 /coverage
+test/codecept/output/
 
 # production
 /build
@@ -23,29 +24,3 @@ yarn-debug.log*
 yarn-error.log*
 
 src/styles/**/*.css
-
-# docker files: just keep dev setup
-script/00-install-*.sh
-config/nginx/nginx.*.conf
-docker/docker-compose.*.yml
-docker/nginx/Dockerfile.*
-docker/react/Dockerfile.*
-docker/deepdetect/Dockerfile.*
-
-!script/00-install-dev.sh
-!config/nginx/nginx.dev.conf
-!docker/docker-compose.dev.yml
-!docker/nginx/Dockerfile.dev
-!docker/react/Dockerfile.dev
-!docker/deepdetect/Dockerfile.dev
-
-!script/00-install-eris.sh
-!config/nginx/nginx.eris.conf
-!docker/docker-compose.eris.yml
-!docker/nginx/Dockerfile.eris
-!docker/react/Dockerfile.eris
-!docker/deepdetect/Dockerfile.eris
-
-!config/nginx/nginx.eris_test.conf
-!docker/docker-compose.eris_test.yml
-!docker/nginx/Dockerfile.eris_test
