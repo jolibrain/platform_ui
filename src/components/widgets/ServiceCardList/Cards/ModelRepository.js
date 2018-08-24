@@ -29,8 +29,6 @@ export default class ModelRepositoryCard extends React.Component {
         measure_hist[`${attr}_hist`][measure_hist[`${attr}_hist`].length - 1];
     }
 
-    console.log(`${attr} : ${value}`);
-
     if (attr !== "remain_time_str" && value && value !== "--") {
       if (attr === "train_loss") {
         value = value.toFixed(10);
