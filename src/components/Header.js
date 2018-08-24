@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 import ReactTooltip from "react-tooltip";
+import moment from "moment";
 
 //import Keycloak from "keycloak-js";
 
@@ -25,16 +26,18 @@ class Header extends React.Component {
   }
 
   render() {
-    const servers = this.props.deepdetectStore.servers;
+    const { configStore, deepdetectStore } = this.props;
+    const servers = deepdetectStore.servers;
 
-    let tokenDropdownItem = null;
-    if (this.props.authTokenStore.token) {
-      tokenDropdownItem = (
+    let buildInfo = null;
+    if (configStore.common.buildGitHash) {
+      buildInfo = (
         <div>
           <div className="dropdown-divider" />
           <a className="dropdown-item">
-            Auth Token:<br />
-            <b>{this.props.authTokenStore.token}</b>
+            Build {configStore.common.buildGitHash}
+            <br />
+            updated {moment.unix(configStore.common.buildDateEpoch).fromNow()}
           </a>
         </div>
       );
@@ -181,7 +184,7 @@ class Header extends React.Component {
                     <a className="dropdown-item" href="http://jolibrain.com">
                       Jolibrain
                     </a>
-                    {tokenDropdownItem}
+                    {buildInfo}
                   </div>
                 </li>
               </ul>

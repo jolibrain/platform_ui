@@ -69,6 +69,7 @@ export class configStore {
     this.$req().then(
       action(config => {
         if (config) {
+          this.common = config.common;
           this.gpuInfo = config.gpuInfo;
           this.deepdetect = config.deepdetect;
           this.imaginate = config.imaginate;

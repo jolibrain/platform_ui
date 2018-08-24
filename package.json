@@ -29,6 +29,7 @@
     "mobx": "^5.0.3",
     "mobx-react": "^5.1.2",
     "mobx-utils": "^5.0.0",
+    "moment": "^2.22.2",
     "node-sass-chokidar": "^1.3.0",
     "prop-types": "^15.6.2",
     "rc-slider": "^8.6.1",
@@ -52,12 +53,13 @@
   },
   "scripts": {
     "precommit": "pretty-quick --staged",
+    "build-config-info": "jq --arg buildGitHash `git rev-parse --short HEAD` --arg buildDateEpoch `date +%s` '.common.buildGitHash=$buildGitHash | .common.buildDateEpoch=$buildDateEpoch' public/config.json > public/config.json.tmp && mv public/config.json.tmp public/config.json && git add public/config.json && git commit -m 'build: update public/config.json with latest build info'",
     "build-css": "node-sass-chokidar --include-path ./src/styles --include-path ./node_modules src/styles/ -o src/styles/",
     "watch-css": "npm run build-css && node-sass-chokidar --include-path ./src/styles --include-path ./node_modules src/styles/ -o src/styles --watch --recursive",
     "start-js": "react-scripts start",
     "start": "npm-run-all -p watch-css start-js",
     "build-js": "react-scripts build",
-    "build": "npm-run-all build-css build-js",
+    "build": "npm-run-all build-config-info build-css build-js",
     "test": "react-scripts test --env=jsdom",
     "test:e2e": "nodemon --exec 'codeceptjs run'"
   }
