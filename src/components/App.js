@@ -82,9 +82,6 @@ export default class App extends React.Component {
   }
 
   componentWillMount() {
-    if (!this.props.commonStore.token) {
-      this.props.commonStore.setAppLoaded();
-    }
     this.props.configStore.loadConfig(config => {
       if (config.gpuInfo) {
         this.props.gpuStore.setup(config);
@@ -104,15 +101,8 @@ export default class App extends React.Component {
       }
 
       this.setupTimers();
+      this.props.commonStore.setAppLoaded();
     });
-  }
-
-  componentDidMount() {
-    if (this.props.commonStore.token) {
-      this.props.userStore
-        .pullUser()
-        .finally(() => this.props.commonStore.setAppLoaded());
-    }
   }
 
   render() {
@@ -127,7 +117,6 @@ export default class App extends React.Component {
           <Header />
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route exact path="/user/:username" component={Home} />
 
             <Route exact path="/predict" component={PredictHome} />
             <Route exact path="/predict/new" component={PredictNew} />
