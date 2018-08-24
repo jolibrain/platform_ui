@@ -1,4 +1,9 @@
 {
+  "common": {
+    "name": "DeepDetect",
+    "buildGitHash": "2a850e7",
+    "buildDateEpoch": "1535121225"
+  },
   "homeComponent": {
     "contentType": "json",
     "title": "DeepDetect Platform",
