@@ -26,6 +26,7 @@ import GenericNotFound from "./GenericNotFound";
 @inject("modelRepositoriesStore")
 @inject("dataRepositoriesStore")
 @inject("modalStore")
+@inject("authTokenStore")
 @withRouter
 @observer
 export default class App extends React.Component {
@@ -92,6 +93,7 @@ export default class App extends React.Component {
       this.props.deepdetectStore.setup(config);
       this.props.imaginateStore.setup(config);
       this.props.modalStore.setup(config);
+      this.props.authTokenStore.setup();
 
       if (config.modelRepositories) {
         this.props.modelRepositoriesStore.setup(config);

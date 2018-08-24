@@ -12,6 +12,7 @@ import copy from "copy-to-clipboard";
 
 @inject("imaginateStore")
 @inject("deepdetectStore")
+@inject("authTokenStore")
 @observer
 export default class CurlCommand extends React.Component {
   constructor(props) {
@@ -31,9 +32,21 @@ export default class CurlCommand extends React.Component {
 
   curlCommand() {
     const { service } = this.props.imaginateStore;
-    return `curl -X POST '${window.location.origin}${
-      service.serverSettings.path
-    }/predict' -d '${JSON.stringify(this.state.jsonConfig, null, 1)}'`;
+    const { token } = this.props.authTokenStore;
+
+    let command = ["curl"];
+
+    if (token) {
+      command.push(`-H "Authorization: OAuth ${token}"`);
+    }
+
+    command.push("-X POST");
+    command.push(
+      `'${window.location.origin}${service.serverSettings.path}/predict'`
+    );
+    command.push(`-d '${JSON.stringify(this.state.jsonConfig, null, 1)}'`);
+
+    return command.join(" ");
   }
 
   componentWillReceiveProps(nextProps) {

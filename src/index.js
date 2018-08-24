@@ -17,6 +17,7 @@ import imaginateStore from "./stores/imaginateStore.js";
 import modelRepositoriesStore from "./stores/modelRepositoriesStore.js";
 import dataRepositoriesStore from "./stores/dataRepositoriesStore.js";
 import modalStore from "./stores/modalStore.js";
+import authTokenStore from "./stores/authTokenStore.js";
 
 const stores = {
   commonStore,
@@ -26,7 +27,8 @@ const stores = {
   imaginateStore,
   modelRepositoriesStore,
   dataRepositoriesStore,
-  modalStore
+  modalStore,
+  authTokenStore
 };
 
 // For easier debugging

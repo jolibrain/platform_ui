@@ -8,6 +8,7 @@ import ReactTooltip from "react-tooltip";
 @inject("commonStore")
 @inject("configStore")
 @inject("deepdetectStore")
+@inject("authTokenStore")
 @observer
 class Header extends React.Component {
   constructor(props) {
@@ -26,6 +27,20 @@ class Header extends React.Component {
 
   render() {
     const servers = this.props.deepdetectStore.servers;
+
+    let tokenDropdownItem = null;
+    if (this.props.authTokenStore.token) {
+      tokenDropdownItem = (
+        <div>
+          <div className="dropdown-divider" />
+          <a className="dropdown-item">
+            Auth Token:<br />
+            <b>{this.props.authTokenStore.token}</b>
+          </a>
+        </div>
+      );
+    }
+
     return (
       <header className="header navbar navbar-dark bg-dark" id="header">
         <div className="container-fluid">
@@ -167,6 +182,7 @@ class Header extends React.Component {
                     <a className="dropdown-item" href="http://jolibrain.com">
                       Jolibrain
                     </a>
+                    {tokenDropdownItem}
                   </div>
                 </li>
               </ul>
