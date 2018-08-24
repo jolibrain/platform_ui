@@ -2,7 +2,13 @@ import { observable, action } from "mobx";
 import agent from "../agent";
 
 export class configStore {
-  @observable configLoaded = false;
+  @observable isReady = false;
+
+  @observable
+  common = {
+    name: "DeepDetect",
+    gitCommitHash: null
+  };
 
   @observable
   homeComponent = {
@@ -63,7 +69,6 @@ export class configStore {
     this.$req().then(
       action(config => {
         if (config) {
-          this.configLoaded = true;
           this.gpuInfo = config.gpuInfo;
           this.deepdetect = config.deepdetect;
           this.imaginate = config.imaginate;
@@ -74,6 +79,8 @@ export class configStore {
           this.componentBlacklist = config.componentBlacklist
             ? config.componentBlacklist
             : [];
+
+          this.isReady = true;
         }
         callback(this);
       })

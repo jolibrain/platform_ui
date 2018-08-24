@@ -4,7 +4,6 @@ import { withRouter } from "react-router-dom";
 
 import ServiceList from "../../widgets/ServiceList";
 
-@inject("commonStore")
 @withRouter
 @observer
 export default class LeftPanel extends React.Component {

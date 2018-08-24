@@ -10,7 +10,6 @@ import "./styles/styles.css";
 
 import App from "./components/App";
 
-import commonStore from "./stores/commonStore.js";
 import configStore from "./stores/configStore.js";
 import gpuStore from "./stores/gpuStore.js";
 import deepdetectStore from "./stores/deepdetectStore.js";
@@ -21,7 +20,6 @@ import modalStore from "./stores/modalStore.js";
 import authTokenStore from "./stores/authTokenStore.js";
 
 const stores = {
-  commonStore,
   configStore,
   gpuStore,
   deepdetectStore,

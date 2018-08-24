@@ -13,7 +13,6 @@ import { Typeahead, Menu, MenuItem } from "react-bootstrap-typeahead";
 import "react-bootstrap-typeahead/css/Typeahead.css";
 import "react-bootstrap-typeahead/css/Typeahead-bs4.css";
 
-@inject("commonStore")
 @inject("imaginateStore")
 @inject("deepdetectStore")
 @inject("modelRepositoriesStore")

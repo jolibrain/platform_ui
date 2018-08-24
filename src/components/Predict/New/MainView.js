@@ -5,7 +5,6 @@ import { withRouter } from "react-router-dom";
 import RightPanel from "../commons/RightPanel";
 import Form from "./Form";
 
-@inject("commonStore")
 @withRouter
 @observer
 export default class MainView extends React.Component {

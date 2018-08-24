@@ -5,7 +5,6 @@ import ReactTooltip from "react-tooltip";
 
 //import Keycloak from "keycloak-js";
 
-@inject("commonStore")
 @inject("configStore")
 @inject("deepdetectStore")
 @inject("authTokenStore")
@@ -47,7 +46,7 @@ class Header extends React.Component {
           <div className="header-content">
             <div className="title-container">
               <h1 className="title">
-                <Link to="/">{this.props.commonStore.appName}</Link>
+                <Link to="/">{this.props.configStore.common.name}</Link>
               </h1>
 
               <ul className="list-unstyled navbar-sub-nav">

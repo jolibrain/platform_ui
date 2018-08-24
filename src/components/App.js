@@ -19,7 +19,6 @@ import GenericNotFound from "./GenericNotFound";
 // import Imaginate from "./widgets/Imaginate";
 
 @inject("configStore")
-@inject("commonStore")
 @inject("gpuStore")
 @inject("deepdetectStore")
 @inject("imaginateStore")
@@ -101,14 +100,12 @@ export default class App extends React.Component {
       }
 
       this.setupTimers();
-      this.props.commonStore.setAppLoaded();
     });
   }
 
   render() {
     if (
-      this.props.commonStore.appLoaded &&
-      this.props.configStore.configLoaded &&
+      this.props.configStore.isReady &&
       this.props.modelRepositoriesStore.isReady &&
       this.props.deepdetectStore.isReady
     ) {
