@@ -4,6 +4,7 @@ import ReactDOM from "react-dom";
 import { HashRouter } from "react-router-dom";
 import { configure } from "mobx";
 import { Provider } from "mobx-react";
+import { CookiesProvider } from "react-cookie";
 
 import "./styles/styles.css";
 
@@ -40,9 +41,11 @@ configure({
 
 ReactDOM.render(
   <Provider {...stores}>
-    <HashRouter>
-      <App />
-    </HashRouter>
+    <CookiesProvider>
+      <HashRouter>
+        <App />
+      </HashRouter>
+    </CookiesProvider>
   </Provider>,
   document.getElementById("root")
 );

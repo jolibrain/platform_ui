@@ -3,6 +3,7 @@ import { inject, observer } from "mobx-react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/styles/hljs";
 import ReactTooltip from "react-tooltip";
+import { withCookies } from "react-cookie";
 
 //import { Controlled as CodeMirror } from "react-codemirror2";
 //import "codemirror/lib/codemirror.css";
@@ -14,7 +15,7 @@ import copy from "copy-to-clipboard";
 @inject("deepdetectStore")
 @inject("authTokenStore")
 @observer
-export default class CurlCommand extends React.Component {
+class CurlCommand extends React.Component {
   constructor(props) {
     super(props);
 
@@ -32,19 +33,27 @@ export default class CurlCommand extends React.Component {
 
   curlCommand() {
     const { service } = this.props.imaginateStore;
-    const { token } = this.props.authTokenStore;
+    const { cookies } = this.props;
 
     let command = ["curl"];
-
-    if (token) {
-      command.push(`-H "Authorization: OAuth ${token}"`);
-    }
 
     command.push("-X POST");
     command.push(
       `'${window.location.origin}${service.serverSettings.path}/predict'`
     );
     command.push(`-d '${JSON.stringify(this.state.jsonConfig, null, 1)}'`);
+
+    console.log("cookies: " + cookies.getAll());
+    const session = cookies.get("session");
+    if (session) {
+      command.push(`-H "Cookie: session=${session}"`);
+      command.push('-H "Accept-Encoding: gzip, deflate, br"');
+      command.push('-H "Accept: */*"');
+      command.push('-H "Accept-Language: en-US,en;q=0.9"');
+      command.push(`-H "User-Agent: ${window.navigator.userAgent}"`);
+      command.push(`-H "Referer: ${window.location.origin}"`);
+      command.push("--compressed");
+    }
 
     return command.join(" ");
   }
@@ -115,3 +124,5 @@ export default class CurlCommand extends React.Component {
     );
   }
 }
+
+export default withCookies(CurlCommand);
