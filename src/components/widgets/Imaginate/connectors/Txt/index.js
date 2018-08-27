@@ -1,13 +1,41 @@
 import React from "react";
+import { inject, observer } from "mobx-react";
 
 import InputList from "./InputList";
 import InputForm from "./InputForm";
 
+import ParamSlider from "../commons/ParamSlider";
 import Description from "../commons/Description";
 import CardCommands from "../commons/CardCommands";
 
+@inject("imaginateStore")
+@observer
 export default class TxtConnector extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.confidenceTooltipFormatter = this.confidenceTooltipFormatter.bind(
+      this
+    );
+    this.handleConfidenceThreshold = this.handleConfidenceThreshold.bind(this);
+  }
+
+  confidenceTooltipFormatter(value) {
+    return (value / 100).toFixed(2);
+  }
+
+  handleConfidenceThreshold(value) {
+    const { serviceSettings } = this.props.imaginateStore;
+    serviceSettings.threshold.confidence = parseFloat((value / 100).toFixed(2));
+    if (serviceSettings.threshold.confidence === 0) {
+      serviceSettings.threshold.confidence = 0.01;
+    }
+    this.props.imaginateStore.predict();
+  }
+
   render() {
+    const { serviceSettings } = this.props.imaginateStore;
+
     return (
       <div className="imaginate txtConnector">
         <div className="row">
@@ -15,6 +43,16 @@ export default class TxtConnector extends React.Component {
             <InputList />
           </div>
           <div className="col-md-5">
+            <ParamSlider
+              key="paramSliderConfidence"
+              title="Confidence threshold"
+              defaultValue={parseInt(
+                serviceSettings.threshold.confidence * 100,
+                10
+              )}
+              onAfterChange={this.handleConfidenceThreshold}
+              tipFormatter={this.confidenceTooltipFormatter}
+            />
             <InputForm />
             <div className="description">
               <Description displayFormat="simple" />

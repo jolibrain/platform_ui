@@ -7,8 +7,8 @@ import ImageList from "./ImageList";
 import BoundingBoxDisplay from "./BoundingBoxDisplay";
 import Threshold from "./Threshold";
 import InputForm from "./InputForm";
-import ParamSlider from "./ParamSlider";
 
+import ParamSlider from "../commons/ParamSlider";
 import Description from "../commons/Description";
 import CardCommands from "../commons/CardCommands";
 
