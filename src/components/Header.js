@@ -7,6 +7,7 @@ import moment from "moment";
 //import Keycloak from "keycloak-js";
 
 @inject("configStore")
+@inject("buildInfoStore")
 @inject("deepdetectStore")
 @inject("authTokenStore")
 @observer
@@ -26,18 +27,21 @@ class Header extends React.Component {
   }
 
   render() {
-    const { configStore, deepdetectStore } = this.props;
+    const { buildInfoStore, deepdetectStore } = this.props;
     const servers = deepdetectStore.servers;
 
     let buildInfo = null;
-    if (configStore.common.buildGitHash) {
+    if (buildInfoStore.isReady) {
       buildInfo = (
         <div>
           <div className="dropdown-divider" />
-          <a className="dropdown-item">
-            Build {configStore.common.buildGitHash}
+          <a
+            className="dropdown-item"
+            href={`https://gitlab.com/jolibrain/core-ui/commits/master`}
+          >
+            Build {buildInfoStore.buildCommitHash.slice(0, 6)}
             <br />
-            updated {moment.unix(configStore.common.buildDateEpoch).fromNow()}
+            updated {moment.unix(buildInfoStore.buildDate).fromNow()}
           </a>
         </div>
       );

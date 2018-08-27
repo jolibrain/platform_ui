@@ -19,6 +19,7 @@ import GenericNotFound from "./GenericNotFound";
 // import Imaginate from "./widgets/Imaginate";
 
 @inject("configStore")
+@inject("buildInfoStore")
 @inject("gpuStore")
 @inject("deepdetectStore")
 @inject("imaginateStore")
@@ -85,6 +86,8 @@ export default class App extends React.Component {
       if (config.gpuInfo) {
         this.props.gpuStore.setup(config);
       }
+
+      this.props.buildInfoStore.loadBuildInfo();
 
       this.props.deepdetectStore.setup(config);
       this.props.imaginateStore.setup(config);

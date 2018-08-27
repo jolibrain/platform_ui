@@ -11,6 +11,7 @@ import "./styles/styles.css";
 import App from "./components/App";
 
 import configStore from "./stores/configStore.js";
+import buildInfoStore from "./stores/buildInfoStore.js";
 import gpuStore from "./stores/gpuStore.js";
 import deepdetectStore from "./stores/deepdetectStore.js";
 import imaginateStore from "./stores/imaginateStore.js";
@@ -21,6 +22,7 @@ import authTokenStore from "./stores/authTokenStore.js";
 
 const stores = {
   configStore,
+  buildInfoStore,
   gpuStore,
   deepdetectStore,
   imaginateStore,

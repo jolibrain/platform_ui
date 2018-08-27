@@ -30,6 +30,20 @@ const Config = {
 };
 
 /* ====
+ * json build info
+ * ====
+ */
+
+const BuildInfo = {
+  get: (path = "buildInfo.json") =>
+    superagent
+      .get(path)
+      .withCredentials()
+      .end(handleErrors)
+      .then(responseBody)
+};
+
+/* ====
  * gpustats
  * ====
  */
@@ -186,6 +200,7 @@ const Webserver = {
 
 export default {
   Config,
+  BuildInfo,
   GpuInfo,
   Deepdetect,
   Webserver
