@@ -22,7 +22,7 @@ export default class StopTrainingModal extends React.Component {
     const ddStore = this.props.deepdetectStore;
 
     ddStore.deleteService(() => {
-      this.props.history.push("/");
+      this.props.history.push("/#/training");
     });
   }
 
