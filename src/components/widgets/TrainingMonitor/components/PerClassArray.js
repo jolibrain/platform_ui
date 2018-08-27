@@ -53,14 +53,14 @@ export default class PerClassArray extends React.Component {
           // that contains an array of values
           if (title.includes("clacc")) {
             const claccIndex = title.split("_").pop();
-            value = measure["clacc"][claccIndex].toFixed(3);
+            value = measure["clacc"][claccIndex].toFixed(5);
             measureHistIndex = `clacc_${claccIndex}_hist`;
 
             if (value > 0) className = "col-md-1 clacc-level-0";
             if (value > 0.55) className = "col-md-1 clacc-level-warning";
             if (value > 0.9) className = "col-md-1 clacc-level-success";
           } else if (measure[key]) {
-            value = measure[key].toFixed(3);
+            value = measure[key].toFixed(5);
             measureHistIndex = `${key}_hist`;
           }
 

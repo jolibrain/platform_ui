@@ -71,7 +71,7 @@ export default class MeasureChart extends React.Component {
         labels: Array.apply(null, Array(measures.length)),
         datasets: [
           {
-            data: measures.map(x => (x ? x.toFixed(3) : null)),
+            data: measures.map(x => (x ? x.toFixed(5) : null)),
             fill: false,
             lineTension: 0,
             steppedLine: this.props.steppedLine,
