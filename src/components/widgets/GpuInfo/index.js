@@ -1,7 +1,7 @@
 import React from "react";
 import { inject, observer } from "mobx-react";
 
-import GpuInfoItem from "./Item";
+import GpuStatServer from "./Server";
 
 @inject("configStore")
 @inject("gpuStore")
@@ -10,18 +10,13 @@ export default class GpuInfo extends React.Component {
   render() {
     if (this.props.configStore.isComponentBlacklisted("GpuInfo")) return null;
 
-    const { gpuInfo } = this.props.gpuStore;
-
-    if (gpuInfo == null) return null;
+    const { servers } = this.props.gpuStore;
 
     return (
       <div className="gpuinfo">
-        <h5>
-          <i className="fas fa-tachometer-alt" /> GPU Monitoring
-        </h5>
-        {gpuInfo.gpus.map((gpu, index) => (
-          <GpuInfoItem key={index} index={index} gpu={gpu} />
-        ))}
+        {servers.map((s, i) => {
+          return <GpuStatServer key={i} server={s} />;
+        })}
       </div>
     );
   }

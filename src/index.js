@@ -10,15 +10,15 @@ import "./styles/styles.css";
 
 import App from "./components/App";
 
-import configStore from "./stores/configStore.js";
-import buildInfoStore from "./stores/buildInfoStore.js";
-import gpuStore from "./stores/gpuStore.js";
-import deepdetectStore from "./stores/deepdetectStore.js";
-import imaginateStore from "./stores/imaginateStore.js";
-import modelRepositoriesStore from "./stores/modelRepositoriesStore.js";
-import dataRepositoriesStore from "./stores/dataRepositoriesStore.js";
-import modalStore from "./stores/modalStore.js";
-import authTokenStore from "./stores/authTokenStore.js";
+import configStore from "./stores/configStore";
+import buildInfoStore from "./stores/buildInfoStore";
+import gpuStore from "./stores/gpuStore";
+import deepdetectStore from "./stores/deepdetectStore";
+import imaginateStore from "./stores/imaginateStore";
+import modelRepositoriesStore from "./stores/modelRepositoriesStore";
+import dataRepositoriesStore from "./stores/dataRepositoriesStore";
+import modalStore from "./stores/modalStore";
+import authTokenStore from "./stores/authTokenStore";
 
 const stores = {
   configStore,

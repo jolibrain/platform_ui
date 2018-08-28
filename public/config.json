@@ -4,8 +4,9 @@
   },
   "homeComponent": {
     "contentType": "json",
-    "title": "DeepDetect Platform",
-    "description": "Welcome to deepdetect"
+    "title": "DeepDetect Platform - dev",
+    "description":
+      "git clone git@gitlab.com:jolibrain/platform_docker.git; cd platform_docker/dev; docker-compose up -d"
   },
   "deepdetect": {
     "refreshRate": {
@@ -29,9 +30,9 @@
         }
       },
       {
-        "name": "training",
+        "name": "hyperion",
         "settings": {
-          "path": "/api/training",
+          "path": "/api/hyperion",
           "isWritable": true
         }
       },
@@ -43,9 +44,37 @@
         }
       },
       {
-        "name": "training_neptune2",
+        "name": "neptune01",
         "settings": {
-          "path": "/api/training_neptune2",
+          "path": "/api/neptune01",
+          "isWritable": true
+        }
+      },
+      {
+        "name": "neptune02",
+        "settings": {
+          "path": "/api/neptune02",
+          "isWritable": true
+        }
+      },
+      {
+        "name": "neptune02-test",
+        "settings": {
+          "path": "/api/neptune02-test",
+          "isWritable": true
+        }
+      },
+      {
+        "name": "hydra",
+        "settings": {
+          "path": "/api/hydra",
+          "isWritable": true
+        }
+      },
+      {
+        "name": "ceres",
+        "settings": {
+          "path": "/api/ceres",
           "isWritable": true
         }
       }
@@ -132,19 +161,42 @@
     ]
   },
   "gpuInfo": {
-    "gpuStatServer": "http://10.10.77.61:12345",
+    "servers": [
+      {
+        "name": "eris",
+        "url": "/gpu/eris"
+      },
+      {
+        "name": "hyperion",
+        "url": "/gpu/hyperion"
+      },
+      {
+        "name": "neptune01",
+        "url": "/gpu/neptune01"
+      },
+      {
+        "name": "neptune02",
+        "url": "/gpu/neptune02"
+      },
+      {
+        "name": "hydra",
+        "url": "/gpu/hydra"
+      },
+      {
+        "name": "ceres",
+        "url": "/gpu/ceres"
+      }
+    ],
     "refreshRate": 5000
   },
   "modelRepositories": {
     "nginxPath": {
       "public": "/models/public/",
-      "private": "/models/private/",
-      "training": "/models/training/"
+      "private": "/models/private/"
     },
     "systemPath": {
       "public": "/opt/platform/models/public/",
-      "private": "/opt/platform/models/private/",
-      "training": "/opt/platform/models/training/"
+      "private": "/opt/platform/models/private/"
     }
   },
   "dataRepositories": {

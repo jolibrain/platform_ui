@@ -1,17 +1,14 @@
 import { observable, action } from "mobx";
-import agent from "../agent";
+import agent from "../../agent";
 
-export class GpuStore {
+export default class GpuStatServer {
   @observable gpuInfo = null;
-  @observable settings = {};
-
   @observable recommendedGpuIndex = -1;
-
   @observable error = false;
 
-  @action
-  setup(configStore) {
-    this.settings = configStore.gpuInfo;
+  constructor(opts) {
+    this.name = opts.name;
+    this.url = opts.url;
   }
 
   @action
@@ -42,8 +39,6 @@ export class GpuStore {
   }
 
   $reqGpuInfo() {
-    return agent.GpuInfo.get(this.settings);
+    return agent.GpuInfo.get(this.url);
   }
 }
-
-export default new GpuStore();

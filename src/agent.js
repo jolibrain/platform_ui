@@ -48,9 +48,9 @@ const BuildInfo = {
  */
 
 const GpuInfo = {
-  get: settings =>
+  get: gpuStatServerUrl =>
     superagent
-      .get(settings.gpuStatServer)
+      .get(gpuStatServerUrl)
       .withCredentials()
       .end(handleErrors)
       .then(responseBody)
