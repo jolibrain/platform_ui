@@ -6,7 +6,7 @@ import { inject, observer } from "mobx-react";
 @inject("modalStore")
 @observer
 @withRouter
-export default class DeleteServiceModal extends React.Component {
+export default class DeletePredictServiceModal extends React.Component {
   constructor(props) {
     super(props);
     this.handleDeleteService = this.handleDeleteService.bind(this);
@@ -14,11 +14,11 @@ export default class DeleteServiceModal extends React.Component {
   }
 
   handleCancel() {
-    this.props.modalStore.setVisible("deleteService", false);
+    this.props.modalStore.setVisible("deletePredictService", false);
   }
 
   handleDeleteService() {
-    this.props.modalStore.setVisible("deleteService", false);
+    this.props.modalStore.setVisible("deletePredictService", false);
     const ddStore = this.props.deepdetectStore;
 
     ddStore.deleteService(() => {
@@ -32,7 +32,7 @@ export default class DeleteServiceModal extends React.Component {
     if (!server || !server.service) return null;
 
     return (
-      <div id="modal-deleteService">
+      <div id="modal-deletePredictService">
         <div className="modal-header">
           <h5 className="modal-title">Are you sure ?</h5>
         </div>

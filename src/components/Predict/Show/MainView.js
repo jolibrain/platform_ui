@@ -14,11 +14,13 @@ import Breadcrumb from "../../widgets/Breadcrumb";
 export default class MainView extends React.Component {
   constructor(props) {
     super(props);
-    this.openDeleteServiceModal = this.openDeleteServiceModal.bind(this);
+    this.openDeletePredictServiceModal = this.openDeletePredictServiceModal.bind(
+      this
+    );
   }
 
-  openDeleteServiceModal() {
-    this.props.modalStore.setVisible("deleteService");
+  openDeletePredictServiceModal() {
+    this.props.modalStore.setVisible("deletePredictService");
   }
 
   componentWillMount() {
@@ -47,7 +49,7 @@ export default class MainView extends React.Component {
                 <li className="nav-item">
                   <button
                     className="btn btn-outline-danger"
-                    onClick={this.openDeleteServiceModal}
+                    onClick={this.openDeletePredictServiceModal}
                   >
                     Delete Service
                   </button>
