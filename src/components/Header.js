@@ -9,7 +9,6 @@ import moment from "moment";
 @inject("configStore")
 @inject("buildInfoStore")
 @inject("deepdetectStore")
-@inject("authTokenStore")
 @observer
 class Header extends React.Component {
   constructor(props) {
@@ -127,7 +126,14 @@ class Header extends React.Component {
                       data-for={tooltipId}
                     >
                       <span className="badge badge-primary">
-                        {server.name + " "}
+                        <a
+                          href={`${server.settings.path}/`}
+                          target="_blank"
+                          rel="noreferrer noopener"
+                        >
+                          {server.name}
+                        </a>
+                        &nbsp;
                         <i
                           className={
                             server.isDown
@@ -141,7 +147,7 @@ class Header extends React.Component {
                         place="bottom"
                         effect="solid"
                       >
-                        {server.serverDown ? "Server Error" : "Server OK"}
+                        {server.settings.path}
                       </ReactTooltip>
                     </li>
                   );

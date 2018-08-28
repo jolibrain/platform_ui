@@ -129,6 +129,11 @@
     font-weight: 600;
     color: $light-color !important;
 
+    a {
+      color: $light-color !important;
+      text-decoration: none;
+    }
+
     .fa-circle {
       color: green;
       top: 1px;
