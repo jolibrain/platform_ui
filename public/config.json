@@ -30,6 +30,13 @@
         }
       },
       {
+        "name": "eris",
+        "settings": {
+          "path": "/api/eris",
+          "isWritable": true
+        }
+      },
+      {
         "name": "hyperion",
         "settings": {
           "path": "/api/hyperion",

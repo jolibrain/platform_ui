@@ -47,8 +47,10 @@ export default class deepdetectService {
   async serviceInfo() {
     this.respInfo = await this.$reqServiceInfo();
 
-    const hasJobs = this.respInfo.body.jobs.length > 0;
-    if (hasJobs) this.trainInfo();
+    if (this.respInfo && this.respInfo.body) {
+      const hasJobs = this.respInfo.body.jobs.length > 0;
+      if (hasJobs) this.trainInfo();
+    }
 
     return this.respInfo;
   }
