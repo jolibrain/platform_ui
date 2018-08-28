@@ -29,5 +29,7 @@ export default class TrainingMonitor extends React.Component {
 }
 
 TrainingMonitor.propTypes = {
-  service: PropTypes.object.isRequired
+  service: PropTypes.object.isRequired,
+  handleOverMeasure: PropTypes.func,
+  hoveredMeasure: PropTypes.number
 };

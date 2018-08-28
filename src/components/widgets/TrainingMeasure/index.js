@@ -51,7 +51,13 @@ export default class TrainingMeasure extends React.Component {
         <div className="block">
           {measureKeys.map((key, index) => {
             return (
-              <div className="row" key={index}>
+              <div
+                className={
+                  this.props.hoveredMeasure === index ? "row hovered" : "row"
+                }
+                key={index}
+                onMouseEnter={this.props.handleOverMeasure.bind(this, index)}
+              >
                 <b>{index + 1}</b>&nbsp;{key}
                 <br />
               </div>
@@ -64,5 +70,7 @@ export default class TrainingMeasure extends React.Component {
 }
 
 TrainingMeasure.propTypes = {
-  service: PropTypes.object.isRequired
+  service: PropTypes.object.isRequired,
+  handleOverMeasure: PropTypes.func.isRequired,
+  hoveredMeasure: PropTypes.number.isRequired
 };

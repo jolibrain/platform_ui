@@ -1,5 +1,11 @@
-.trainingmonitor-generalinfo {
-  .row {
-    padding: 15px 0;
+.trainingmonitor {
+  .trainingmonitor-generalinfo {
+    .row {
+      padding: 15px 0;
+    }
+  }
+
+  .measure-cell.hovered {
+    background-color: $light-color !important;
   }
 }

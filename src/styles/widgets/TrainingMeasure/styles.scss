@@ -5,4 +5,9 @@
     display: inline;
     overflow: hidden;
   }
+
+  .row:hover,
+  .row.hovered {
+    background-color: #b1bbec;
+  }
 }

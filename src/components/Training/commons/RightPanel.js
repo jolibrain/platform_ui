@@ -31,5 +31,7 @@ export default class RightPanel extends React.Component {
 RightPanel.propTypes = {
   configStore: PropTypes.object,
   searviceInfo: PropTypes.object,
-  service: PropTypes.object
+  service: PropTypes.object,
+  handleOverMeasure: PropTypes.func,
+  hoveredMeasure: PropTypes.number
 };

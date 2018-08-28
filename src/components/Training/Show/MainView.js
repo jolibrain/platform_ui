@@ -14,11 +14,20 @@ export default class MainView extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      hoveredMeasure: -1
+    };
+
     this.openStopTrainingModal = this.openStopTrainingModal.bind(this);
+    this.handleOverMeasure = this.handleOverMeasure.bind(this);
   }
 
   openStopTrainingModal() {
     this.props.modalStore.setVisible("stopTraining");
+  }
+
+  handleOverMeasure(index) {
+    this.setState({ hoveredMeasure: index });
   }
 
   render() {
@@ -64,8 +73,16 @@ export default class MainView extends React.Component {
             </ul>
           </nav>
           <div className="content">
-            <TrainingMonitor service={service} />
-            <RightPanel service={service} />
+            <TrainingMonitor
+              service={service}
+              handleOverMeasure={this.handleOverMeasure}
+              hoveredMeasure={this.state.hoveredMeasure}
+            />
+            <RightPanel
+              service={service}
+              handleOverMeasure={this.handleOverMeasure}
+              hoveredMeasure={this.state.hoveredMeasure}
+            />
           </div>
         </div>
       </div>

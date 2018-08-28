@@ -43,7 +43,10 @@ export default class PerClassArray extends React.Component {
     return (
       <div className="row" refresh={service.refresh}>
         {measureKeys.map((key, index) => {
-          let className = "col-md-1";
+          let classNames = ["col-md-1", "measure-cell"];
+
+          if (this.props.hoveredMeasure === index) classNames.push("hovered");
+
           let title = key;
           let value = 0;
           let sparkData = [];
@@ -56,9 +59,9 @@ export default class PerClassArray extends React.Component {
             value = measure["clacc"][claccIndex].toFixed(5);
             measureHistIndex = `clacc_${claccIndex}_hist`;
 
-            if (value > 0) className = "col-md-1 clacc-level-0";
-            if (value > 0.55) className = "col-md-1 clacc-level-warning";
-            if (value > 0.9) className = "col-md-1 clacc-level-success";
+            if (value > 0) classNames.push("clacc-level-0");
+            if (value > 0.55) classNames.push("clacc-level-warning");
+            if (value > 0.9) classNames.push("clacc-level-success");
           } else if (measure[key]) {
             value = measure[key].toFixed(5);
             measureHistIndex = `${key}_hist`;
@@ -80,7 +83,11 @@ export default class PerClassArray extends React.Component {
           title = title.slice(title.length - 7, title.length);
 
           return (
-            <div key={`measureKey-${key}`} className={className}>
+            <div
+              key={`measureKey-${key}`}
+              className={classNames.join(" ")}
+              onMouseEnter={this.props.handleOverMeasure.bind(this, index)}
+            >
               {value !== 0 ? <b>{index + 1}</b> : <span>{index + 1}</span>}
               <br />
               {value}
@@ -97,5 +104,7 @@ export default class PerClassArray extends React.Component {
 }
 
 PerClassArray.propTypes = {
-  service: PropTypes.object.isRequired
+  service: PropTypes.object.isRequired,
+  handleOverMeasure: PropTypes.func,
+  hoveredMeasure: PropTypes.number
 };
