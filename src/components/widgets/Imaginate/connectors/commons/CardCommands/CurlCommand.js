@@ -43,7 +43,6 @@ class CurlCommand extends React.Component {
     );
     command.push(`-d '${JSON.stringify(this.state.jsonConfig, null, 1)}'`);
 
-    console.log("cookies: " + cookies.getAll());
     const session = cookies.get("session");
     if (session) {
       command.push(`-H "Cookie: session=${session}"`);

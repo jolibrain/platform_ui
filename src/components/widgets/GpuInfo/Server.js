@@ -5,7 +5,6 @@ import GpuInfoItem from "./Item";
 export default class GpuStatServer extends React.Component {
   render() {
     const { server } = this.props;
-    console.log(server);
 
     let serverInfo = "Server information not available";
 
