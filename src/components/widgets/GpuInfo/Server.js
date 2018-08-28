@@ -1,7 +1,8 @@
 import React from "react";
-
+import { observer } from "mobx-react";
 import GpuInfoItem from "./Item";
 
+@observer
 export default class GpuStatServer extends React.Component {
   render() {
     const { server } = this.props;

@@ -1,5 +1,7 @@
 import React from "react";
+import { observer } from "mobx-react";
 
+@observer
 export default class GpuInfoItem extends React.Component {
   constructor(props) {
     super(props);
@@ -24,17 +26,43 @@ export default class GpuInfoItem extends React.Component {
     //const memoryPercent = parseInt(memoryMo * 100 / gpu['memory.total'], 10);
     const utilPercent = parseInt(gpu["utilization.gpu"], 10);
 
+    let alerts = [];
+
+    let utilPercentDisplay = `${utilPercent}%`;
+    if (utilPercent > 70) {
+      utilPercentDisplay = <b>{utilPercent}%</b>;
+      alerts.push("util");
+    }
+
+    let memoryDisplay = memoryMo;
+    if (memoryMo / memoryTotal > 0.7) {
+      memoryDisplay = <b>{memoryMo}</b>;
+      alerts.push("memory");
+    }
+
     return (
       <div key={`gpuInfoItem-${index}`} className="block">
         <div>
           <span className="font-weight-bold">{index}</span>. &nbsp;
           <span className="temp">{gpu["temperature.gpu"]}°C</span>
           ,&nbsp;
-          <span className="util">{utilPercent}%</span>
+          <span className="util">{utilPercentDisplay}</span>
           ,&nbsp;
-          <span className="memUsed text-primary">{memoryMo}</span> /{" "}
-          <span className="memTotal text-secondary">{memoryTotal}</span> Mo
-          <div className="badge detailsBadge" onClick={this.toggleDetails}>
+          <span className="memUsed text-primary">{memoryDisplay}</span> /{" "}
+          <span className="memTotal text-secondary">{memoryTotal}</span>
+          {alerts.length > 0 ? (
+            <span className="alerts">
+              &nbsp;<i className="fas fa-fire" style={{ color: "#3c457d" }} />
+            </span>
+          ) : (
+            ""
+          )}
+          <div
+            className={
+              gpu.processes.length > 0 ? "badge detailsBadge" : "hidden"
+            }
+            onClick={this.toggleDetails}
+          >
             <span className="fa-stack fa-xs">
               <i className="fas fa-circle fa-stack-2x" />
               <i
