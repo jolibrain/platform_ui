@@ -73,8 +73,7 @@ export default class ImageConnector extends React.Component {
 
     if (
       input &&
-      input.prediction &&
-      !input.prediction.vals &&
+      !input.hasPredictionValues &&
       !input.isCtcOuput &&
       !input.isSegmentationInput
     ) {

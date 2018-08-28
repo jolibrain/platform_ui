@@ -26,6 +26,17 @@ export default class Input {
   }
 
   @computed
+  get hasPredictionValues() {
+    return (
+      this.json &&
+      this.json.body &&
+      this.json.body.predictions &&
+      this.json.body.predictions[0] &&
+      this.json.body.predictions[0].vals
+    );
+  }
+
+  @computed
   get isCtcOuput() {
     return (
       this.postData &&
