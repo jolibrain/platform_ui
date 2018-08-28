@@ -19,9 +19,9 @@ export default class RightPanel extends React.Component {
     return (
       <aside className="right-sidebar right-sidebar right-sidebar-expanded">
         <div className="issuable-sidebar">
-          <GpuInfo />
           {this.props.serviceInfo ? <ServiceInfo /> : ""}
           {this.props.service ? <TrainingMeasure {...this.props} /> : ""}
+          <GpuInfo />
         </div>
       </aside>
     );
