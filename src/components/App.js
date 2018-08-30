@@ -1,9 +1,10 @@
-import Header from "./Header";
 import React from "react";
+import PropTypes from "prop-types";
 import { Switch, Route, withRouter } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 
 import Home from "./Home";
+import Header from "./Header";
 
 import PredictHome from "./Predict/Home";
 import PredictNew from "./Predict/New";
@@ -43,18 +44,25 @@ export default class App extends React.Component {
   }
 
   setupTimers() {
-    const { info, training } = this.props.deepdetectStore.settings.refreshRate;
-    const gpuInfo = this.props.configStore.gpuInfo.refreshRate;
+    const { deepdetectStore, configStore } = this.props;
 
-    this.setState({
-      infoIntervalId: setInterval(this.infoTimer.bind(this), info),
-      trainingIntervalId: setInterval(this.trainingTimer.bind(this), training),
-      gpuInfoIntervalId: setInterval(this.gpuInfoTimer.bind(this), gpuInfo)
-    });
+    if (deepdetectStore.settings && configStore.gpuInfo) {
+      const { info, training } = deepdetectStore.settings.refreshRate;
+      const gpuInfo = configStore.gpuInfo.refreshRate;
 
-    this.infoTimer();
-    this.trainingTimer();
-    this.gpuInfoTimer();
+      this.setState({
+        infoIntervalId: setInterval(this.infoTimer.bind(this), info),
+        trainingIntervalId: setInterval(
+          this.trainingTimer.bind(this),
+          training
+        ),
+        gpuInfoIntervalId: setInterval(this.gpuInfoTimer.bind(this), gpuInfo)
+      });
+
+      this.infoTimer();
+      this.trainingTimer();
+      this.gpuInfoTimer();
+    }
   }
 
   componentWillUnmount() {
@@ -165,3 +173,15 @@ export default class App extends React.Component {
     return <Header />;
   }
 }
+
+App.propTypes = {
+  configStore: PropTypes.object.isRequired,
+  buildInfoStore: PropTypes.object.isRequired,
+  gpuStore: PropTypes.object.isRequired,
+  deepdetectStore: PropTypes.object.isRequired,
+  imaginateStore: PropTypes.object.isRequired,
+  modelRepositoriesStore: PropTypes.object.isRequired,
+  dataRepositoriesStore: PropTypes.object.isRequired,
+  modalStore: PropTypes.object.isRequired,
+  authTokenStore: PropTypes.object.isRequired
+};
