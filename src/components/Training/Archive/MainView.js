@@ -19,11 +19,11 @@ export default class MainView extends React.Component {
       return null;
 
     const { modelName } = this.props.match.params;
-    const { metricRepositories } = this.props.modelRepositoriesStore;
+    const { trainingRepositories } = this.props.modelRepositoriesStore;
 
-    const repository = metricRepositories.find(r => r.modelName === modelName);
+    const repository = trainingRepositories.find(r => r.name === modelName);
 
-    if (!repository || !repository.jsonMetrics) return null;
+    if (!repository) return null;
 
     return (
       <div className="main-view content-wrapper">

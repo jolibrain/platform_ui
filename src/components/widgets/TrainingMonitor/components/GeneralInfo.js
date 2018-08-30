@@ -11,6 +11,8 @@ export default class GeneralInfo extends React.Component {
 
     const { service } = this.props;
 
+    if (!service.jsonMetrics && !service.respInfo) return null;
+
     let mltype = null;
     let measure = null;
     if (service.jsonMetrics) {

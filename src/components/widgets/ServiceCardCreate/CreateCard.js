@@ -96,16 +96,15 @@ export default class CreateCard extends React.Component {
   render() {
     const repository = this.props.repository;
 
-    if (!repository || repository.length === 0) return null;
-
-    const isPublic = repository.label.indexOf("/public/") !== -1;
-    const name = repository.label
-      .slice(0, -1)
-      .split("/")
-      .pop();
+    if (!repository) return null;
 
     let downloableFiles = [];
-    if (!isPublic) {
+    let badgeClasses = "badge float-right";
+    let badgeText = "Public";
+
+    if (repository.isPublic) {
+      badgeClasses += " badge-primary";
+    } else {
       downloableFiles = repository.files.map((f, index) => {
         return (
           <a
@@ -119,13 +118,7 @@ export default class CreateCard extends React.Component {
           </a>
         );
       });
-    }
 
-    let badgeClasses = "badge float-right";
-    let badgeText = "Public";
-    if (isPublic) {
-      badgeClasses += " badge-primary";
-    } else {
       badgeClasses += " badge-warning";
       badgeText = "Private";
     }
@@ -139,7 +132,7 @@ export default class CreateCard extends React.Component {
               type="text"
               className="form-control mb-2"
               id="inlineFormInputName"
-              defaultValue={name}
+              defaultValue={repository.name}
               ref={this.serviceNameRef}
             />
 
@@ -170,7 +163,7 @@ export default class CreateCard extends React.Component {
 
             <button
               className="btn btn-outline-primary"
-              onClick={this.handleClickCreate.bind(this, name)}
+              onClick={this.handleClickCreate.bind(this, repository.name)}
               style={{
                 marginBottom: "10px"
               }}

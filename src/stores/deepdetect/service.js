@@ -296,15 +296,14 @@ export default class deepdetectService {
 
     if (this.respInfo && this.respInfo.body && this.respInfo.body.repository) {
       const repository = this.respInfo.body.repository;
-      const metricsPath = `${repository.replace(
-        "/opt/platform",
-        ""
-      )}/metrics.json`;
+      const metricsPath = `${repository
+        .replace("/opt/platform", "")
+        .replace(/\/$/, "")}/metrics.json`;
 
       try {
         metrics = await agent.Webserver.getFile(metricsPath);
       } catch (e) {
-        console.warn("Error while fetching metrics");
+        //console.warn("Error while fetching metrics");
       }
     }
 

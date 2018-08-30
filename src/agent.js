@@ -191,9 +191,15 @@ const Webserver = {
       .withCredentials()
       .end(handleErrors)
       .then(res => {
+        let result = null;
         if (res && res.text) {
-          return JSON.parse(res.text);
+          try {
+            result = JSON.parse(res.text);
+          } catch (e) {
+            result = res.text;
+          }
         }
+        return result;
       })
 };
 

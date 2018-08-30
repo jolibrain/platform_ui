@@ -47,7 +47,7 @@ export default class ModelRepositoryCard extends React.Component {
 
     const { mltype } = repository.jsonMetrics.body;
 
-    const archiveUrl = `/trainingArchive/${repository.modelName}`;
+    const archiveUrl = `/trainingArchive/${repository.name}`;
 
     let badges = [];
 
@@ -113,11 +113,30 @@ export default class ModelRepositoryCard extends React.Component {
         break;
     }
 
+    let bestModelInfo = null;
+    if (repository.bestModel) {
+      bestModelInfo = (
+        <div>
+          <hr />
+          <p>Best Model:</p>
+          <ul>
+            {Object.keys(repository.bestModel).map((k, i) => {
+              return (
+                <li key={i}>
+                  {k}: <b>{repository.bestModel[k]}</b>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      );
+    }
+
     return (
       <div className="card">
         <div className="card-body">
           <h5 className="card-title">
-            {repository.modelName}
+            {repository.name}
             <br />
             {badges.map((badge, key) => {
               return (
@@ -142,6 +161,7 @@ export default class ModelRepositoryCard extends React.Component {
               );
             })}
           </ul>
+          {bestModelInfo}
           <Link to={archiveUrl} className="btn btn-outline-primary">
             View
           </Link>

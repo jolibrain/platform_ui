@@ -114,11 +114,7 @@ export default class App extends React.Component {
   }
 
   render() {
-    if (
-      this.props.configStore.isReady &&
-      this.props.modelRepositoriesStore.isReady &&
-      this.props.deepdetectStore.isReady
-    ) {
+    if (this.props.configStore.isReady && this.props.deepdetectStore.isReady) {
       return (
         <div>
           <Header />
@@ -134,6 +130,7 @@ export default class App extends React.Component {
             />
 
             <Route exact path="/training" component={TrainingHome} />
+            <Route exact path="/trainingArchive" component={TrainingHome} />
             <Route
               exact
               path="/training/:serverName/:serviceName"

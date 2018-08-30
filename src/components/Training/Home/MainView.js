@@ -13,8 +13,8 @@ export default class MainView extends React.Component {
   render() {
     if (!this.props.deepdetectStore.isReady) return null;
 
-    const { metricRepositories } = this.props.modelRepositoriesStore;
     const { trainingServices } = this.props.deepdetectStore;
+    const { archivedTrainingRepositories } = this.props.modelRepositoriesStore;
 
     return (
       <div className="main-view content-wrapper">
@@ -32,14 +32,8 @@ export default class MainView extends React.Component {
             </div>
             <hr />
             <div className="serviceList archive">
-              {metricRepositories.length === 0 ? (
-                ""
-              ) : (
-                <div>
-                  <h4>Archived Training Jobs</h4>
-                  <ServiceCardList services={metricRepositories} />
-                </div>
-              )}
+              <h4>Archived Training Jobs</h4>
+              <ServiceCardList services={archivedTrainingRepositories} />
             </div>
             <RightPanel />
           </div>
