@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Switch, Route, withRouter } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 
@@ -173,15 +172,3 @@ export default class App extends React.Component {
     return <Header />;
   }
 }
-
-App.propTypes = {
-  configStore: PropTypes.object.isRequired,
-  buildInfoStore: PropTypes.object.isRequired,
-  gpuStore: PropTypes.object.isRequired,
-  deepdetectStore: PropTypes.object.isRequired,
-  imaginateStore: PropTypes.object.isRequired,
-  modelRepositoriesStore: PropTypes.object.isRequired,
-  dataRepositoriesStore: PropTypes.object.isRequired,
-  modalStore: PropTypes.object.isRequired,
-  authTokenStore: PropTypes.object.isRequired
-};
