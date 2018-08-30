@@ -35,12 +35,10 @@ export default class RepositoryStore {
   }
 
   _loadRepositories() {
-    this.$reqFolder().then(
-      action(repo => {
-        repo.forEach(this._loadRepository.bind(this));
-        this.isReady = true;
-      })
-    );
+    this.$reqFolder().then(repo => {
+      repo.forEach(this._loadRepository.bind(this));
+      this.isReady = true;
+    });
   }
 
   $reqFolder() {
