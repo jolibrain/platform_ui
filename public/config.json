@@ -196,18 +196,25 @@
     ],
     "refreshRate": 5000
   },
-  "modelRepositories": {
-    "nginxPath": {
-      "public": "/models/public/",
-      "private": "/models/private/",
-      "training": "/models/training/"
+  "modelRepositories": [
+    {
+      "name": "public",
+      "nginxPath": "/models/public/",
+      "systemPath": "/opt/platform/models/public/"
     },
-    "systemPath": {
-      "public": "/opt/platform/models/public/",
-      "private": "/opt/platform/models/private/",
-      "training": "/opt/platform/models/training/"
+    {
+      "name": "private",
+      "nginxPath": "/models/private/",
+      "systemPath": "/opt/platform/models/private/",
+      "hasFiles": true
+    },
+    {
+      "name": "training",
+      "nginxPath": "/models/training/",
+      "systemPath": "/opt/platform/models/training/",
+      "isTraining": true
     }
-  },
+  ],
   "dataRepositories": {
     "nginxPath": "/data/",
     "systemPath": "/opt/platform/data/"

@@ -98,30 +98,28 @@ export default class CreateCard extends React.Component {
 
     if (!repository) return null;
 
-    let downloableFiles = [];
     let badgeClasses = "badge float-right";
-    let badgeText = "Public";
+    let badgeText = repository.store.name;
 
-    if (repository.isPublic) {
+    if (badgeText === "public") {
       badgeClasses += " badge-primary";
     } else {
-      downloableFiles = repository.files.map((f, index) => {
-        return (
-          <a
-            key={index}
-            href={f.url}
-            className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-            download
-          >
-            {f.filename}
-            <i className="fas fa-download" />
-          </a>
-        );
-      });
-
       badgeClasses += " badge-warning";
-      badgeText = "Private";
     }
+
+    let downloableFiles = repository.files.map((f, index) => {
+      return (
+        <a
+          key={index}
+          href={f.url}
+          className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+          download
+        >
+          {f.filename}
+          <i className="fas fa-download" />
+        </a>
+      );
+    });
 
     return (
       <div className="card">

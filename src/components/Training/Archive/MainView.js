@@ -21,6 +21,7 @@ export default class MainView extends React.Component {
     const { modelName } = this.props.match.params;
     const { trainingRepositories } = this.props.modelRepositoriesStore;
 
+    console.log(trainingRepositories);
     const repository = trainingRepositories.find(r => r.name === modelName);
 
     if (!repository) return null;

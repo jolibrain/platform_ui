@@ -1,106 +1,60 @@
-import { observable, action, computed, runInAction } from "mobx";
+import { observable, action, runInAction } from "mobx";
 import agent from "../../agent";
 
 export default class Repository {
-  @observable modelName = "";
-  @observable isPublic = true;
-  @observable isTraining = false;
-  @observable settings = {};
+  @observable folderName;
+  @observable name;
+  @observable store;
 
   @observable jsonConfig = null;
   @observable jsonMetrics = null;
   @observable bestModel = null;
 
-  @observable repoFiles = [];
+  @observable files = [];
 
-  constructor(
-    opts = {
-      repo: "",
-      isPublic: true,
-      isTraining: false,
-      settings: {},
-      files: []
+  constructor(folderName, store) {
+    this.folderName = folderName;
+    this.name = folderName.slice(0, -1);
+    this.store = store;
+
+    this._load();
+  }
+
+  _load() {
+    this._loadJsonConfig();
+
+    if (this.store.isTraining) {
+      this._loadJsonMetrics();
+      this._loadBestModel();
     }
-  ) {
-    this.repo = opts.repo;
-    this.isPublic = typeof opts.isPublic === "undefined" ? true : opts.isPublic;
-    this.isTraining =
-      typeof opts.isTraining === "undefined" ? false : opts.isTraining;
-    this.settings = typeof opts.settings === "undefined" ? {} : opts.settings;
-    this.repoFiles = typeof opts.files === "undefined" ? [] : opts.files;
 
-    this.loadJsonConfig();
-
-    if (this.isTraining) {
-      this.loadJsonMetrics();
-      this.loadBestModel();
+    if (this.store.hasFiles) {
+      this._loadFiles();
     }
   }
 
-  @computed
-  get name() {
-    return this.systemPath
-      .slice(0, -1)
-      .split("/")
-      .pop();
-  }
+  @action.bound
+  async _loadFiles() {
+    const repoFiles = await this.$reqFiles();
 
-  @computed
-  get files() {
-    const protoTxtFiles = this.repoFiles.filter(f => f.includes("prototxt"));
-    const caffemodelFile = this.repoFiles
+    const protoTxtFiles = repoFiles.filter(f => f.includes("prototxt"));
+    const caffemodelFile = repoFiles
       .filter(f => f.includes("caffemodel"))
       .sort((a, b) => {
         return parseInt(b.match(/\d+/), 10) - parseInt(a.match(/\d+/), 10);
       })
       .slice(0, 1);
 
-    return protoTxtFiles.concat(caffemodelFile).map(f => {
+    this.files = protoTxtFiles.concat(caffemodelFile).map(f => {
       return {
         filename: f,
-        url: this.nginxPath.private + this.repo + f
+        url: this.store.nginxPath.private + this.folderName + f
       };
     });
   }
 
-  @computed
-  get systemPath() {
-    let path = null;
-    const { systemPath } = this.settings;
-
-    if (systemPath) {
-      if (this.isTraining) {
-        path = systemPath.training + this.repo;
-      } else if (this.isPublic) {
-        path = systemPath.public + this.repo;
-      } else {
-        path = systemPath.private + this.repo;
-      }
-    }
-
-    return path;
-  }
-
-  @computed
-  get nginxPath() {
-    let path = null;
-    const { nginxPath } = this.settings;
-
-    if (nginxPath) {
-      if (this.isTraining) {
-        path = nginxPath.training + this.repo;
-      } else if (this.isPublic) {
-        path = nginxPath.public + this.repo;
-      } else {
-        path = nginxPath.private + this.repo;
-      }
-    }
-
-    return path.replace(/\/$/, "");
-  }
-
   @action.bound
-  async loadJsonConfig() {
+  async _loadJsonConfig() {
     try {
       this.jsonConfig = await this.$reqJsonConfig();
       // TODO : remove this line when config.json editable
@@ -109,14 +63,14 @@ export default class Repository {
   }
 
   @action.bound
-  async loadJsonMetrics() {
+  async _loadJsonMetrics() {
     try {
       this.jsonMetrics = await this.$reqJsonMetrics();
     } catch (e) {}
   }
 
   @action
-  async loadBestModel() {
+  async _loadBestModel() {
     try {
       let bestModel = {};
       const bestModelTxt = await this.$reqBestModel();
@@ -140,15 +94,25 @@ export default class Repository {
     }
   }
 
-  $reqJsonMetrics(path) {
-    return agent.Webserver.getFile(`${this.nginxPath}/metrics.json`);
+  $reqJsonMetrics() {
+    return agent.Webserver.getFile(
+      `${this.store.nginxPath}${this.folderName}metrics.json`
+    );
   }
 
   $reqBestModel() {
-    return agent.Webserver.getFile(`${this.nginxPath}/best_model.txt`);
+    return agent.Webserver.getFile(
+      `${this.store.nginxPath}${this.folderName}best_model.txt`
+    );
   }
 
-  $reqJsonConfig(path) {
-    return agent.Webserver.getFile(`${this.nginxPath}/config.json`);
+  $reqJsonConfig() {
+    return agent.Webserver.getFile(
+      `${this.store.nginxPath}${this.folderName}config.json`
+    );
+  }
+
+  $reqFiles() {
+    return agent.Webserver.listFiles(this.store.nginxPath + this.folderName);
   }
 }
