@@ -26,10 +26,10 @@ export class modelRepositoriesStore {
   }
 
   $reqBestModel(path) {
-    const jsonPath = path.match("/$")
+    const bestModelPath = path.match("/$")
       ? `${path}best_model.txt`
       : `${path}/best_model.txt`;
-    return agent.Webserver.getFile(jsonPath);
+    return agent.Webserver.getFile(bestModelPath);
   }
 
   $reqJsonConfig(path) {
@@ -79,10 +79,16 @@ export class modelRepositoriesStore {
     } catch (e) {}
 
     let jsonMetrics = null;
-
     if (isTraining) {
       try {
         jsonMetrics = await this.$reqJsonMetrics(nginxPath);
+      } catch (e) {}
+    }
+
+    let bestModel = null;
+    if (isTraining) {
+      try {
+        bestModel = await this.$reqBestModel(nginxPath);
       } catch (e) {}
     }
 
@@ -104,6 +110,7 @@ export class modelRepositoriesStore {
       isPublic: isPublic,
       jsonConfig: jsonConfig,
       jsonMetrics: jsonMetrics,
+      bestModel: bestModel,
       files: filteredFiles.map(f => {
         return {
           filename: f,
