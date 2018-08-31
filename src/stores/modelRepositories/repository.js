@@ -48,7 +48,7 @@ export default class Repository {
     this.files = protoTxtFiles.concat(caffemodelFile).map(f => {
       return {
         filename: f,
-        url: this.store.nginxPath.private + this.folderName + f
+        url: this.store.nginxPath + this.folderName + f
       };
     });
   }
