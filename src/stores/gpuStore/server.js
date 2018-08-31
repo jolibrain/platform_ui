@@ -19,18 +19,24 @@ export default class GpuStatServer {
           this.error = false;
           this.gpuInfo = gpuInfo;
 
-          const sortedMemoryGpus = gpuInfo.gpus
-            .map(g => {
-              return {
-                index: g.index,
-                memoryAvailable: g["memory.total"] - g["memory.used"]
-              };
-            })
-            .sort((a, b) => {
-              return b.memoryAvailable - a.memoryAvailable;
-            });
+          if (gpuInfo.gpus && gpuInfo.gpus.length > 0) {
+            const sortedMemoryGpus = gpuInfo.gpus
+              .map(g => {
+                return {
+                  index: parseInt(g.index, 10),
+                  memoryAvailable: g["memory.total"] - g["memory.used"]
+                };
+              })
+              .sort((a, b) => {
+                return b.memoryAvailable - a.memoryAvailable;
+              });
 
-          this.recommendedGpuIndex = sortedMemoryGpus[0].index;
+            if (sortedMemoryGpus[0] && sortedMemoryGpus[0].index >= 0) {
+              this.recommendedGpuIndex = sortedMemoryGpus[0].index;
+            } else {
+              this.recommendedGpuIndex = -1;
+            }
+          }
         } else {
           this.error = true;
         }
