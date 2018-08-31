@@ -182,6 +182,9 @@ export default class deepdetectService {
     }&parameters.output.measure_hist=true&parameters.output.max_hist_points=1000`;
   }
 
+  @computed
+  get descriptionDisplayFormat() {}
+
   @action
   selectInput(index) {
     let input = this.inputs.find(i => i.isActive);

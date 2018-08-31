@@ -118,12 +118,16 @@ export default class ModelRepositoryCard extends React.Component {
       bestModelInfo = (
         <div>
           <hr />
-          <p>Best Model:</p>
+          <p>Best Model</p>
           <ul>
             {Object.keys(repository.bestModel).map((k, i) => {
+              const attrTitle =
+                i === 0
+                  ? k.replace(/\b\w/g, l => l.toUpperCase())
+                  : k.toUpperCase();
               return (
                 <li key={i}>
-                  {k}: <b>{repository.bestModel[k]}</b>
+                  {attrTitle}: <b>{repository.bestModel[k]}</b>
                 </li>
               );
             })}
