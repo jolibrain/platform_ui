@@ -6,23 +6,26 @@ import { inject, observer } from "mobx-react";
 @inject("modalStore")
 @observer
 @withRouter
-export default class DeletePredictServiceModal extends React.Component {
+export default class DeleteServiceModal extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      spinner: false
+    };
     this.handleDeleteService = this.handleDeleteService.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
   }
 
   handleCancel() {
-    this.props.modalStore.setVisible("deletePredictService", false);
+    this.props.modalStore.setVisible("deleteService", false);
   }
 
   handleDeleteService() {
-    this.props.modalStore.setVisible("deletePredictService", false);
-    const ddStore = this.props.deepdetectStore;
-
-    ddStore.deleteService(() => {
-      this.props.history.push("/");
+    const { deepdetectStore, modalStore, history } = this.props;
+    this.setState({ spinner: true });
+    deepdetectStore.deleteService(() => {
+      modalStore.setVisible("deleteService", false);
+      history.push("/");
     });
   }
 
@@ -32,7 +35,7 @@ export default class DeletePredictServiceModal extends React.Component {
     if (!server || !server.service) return null;
 
     return (
-      <div id="modal-deletePredictService">
+      <div id="modal-deleteService">
         <div className="modal-header">
           <h5 className="modal-title">Are you sure ?</h5>
         </div>
@@ -54,6 +57,7 @@ export default class DeletePredictServiceModal extends React.Component {
             className="btn btn-primary mb-2"
             onClick={this.handleDeleteService}
           >
+            {this.state.spinner ? <i className="fas fa-spinner fa-spin" /> : ""}
             Yes
           </button>
         </div>
