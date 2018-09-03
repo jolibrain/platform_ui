@@ -23,7 +23,7 @@ export default class MainView extends React.Component {
   }
 
   openStopTrainingModal() {
-    this.props.modalStore.setVisible("stopTraining");
+    this.props.modalStore.setVisible("deleteService");
   }
 
   handleOverMeasure(index) {
@@ -64,7 +64,7 @@ export default class MainView extends React.Component {
                     className="btn btn-outline-danger"
                     onClick={this.openStopTrainingModal}
                   >
-                    {service.isTraining ? "Stop Training" : "Delete Service"}
+                    Stop Training
                   </button>
                 </li>
               ) : (
