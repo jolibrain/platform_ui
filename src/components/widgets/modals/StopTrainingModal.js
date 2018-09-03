@@ -9,6 +9,9 @@ import { inject, observer } from "mobx-react";
 export default class StopTrainingModal extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      spinner: false
+    };
     this.handleStopTraining = this.handleStopTraining.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
   }
@@ -18,11 +21,11 @@ export default class StopTrainingModal extends React.Component {
   }
 
   handleStopTraining() {
-    this.props.modalStore.setVisible("stopTraining", false);
-    const ddStore = this.props.deepdetectStore;
-
-    ddStore.deleteService(() => {
-      this.props.history.push("/#/training");
+    const { deepdetectStore, modalStore, history } = this.props;
+    this.setState({ spinner: true });
+    deepdetectStore.stopTraining(() => {
+      modalStore.setVisible("stopTraining", false);
+      history.push("/#/training");
     });
   }
 
@@ -38,8 +41,9 @@ export default class StopTrainingModal extends React.Component {
         </div>
 
         <div className="modal-body">
-          Do you really want to stop training <pre>{server.service.name}</pre>{" "}
-          on DeepDetect server <pre>{server.name}</pre> ?
+          Do you really want to stop training service{" "}
+          <pre>{server.service.name}</pre> on DeepDetect server{" "}
+          <pre>{server.name}</pre> ?
         </div>
 
         <div className="modal-footer">
@@ -54,6 +58,7 @@ export default class StopTrainingModal extends React.Component {
             className="btn btn-primary mb-2"
             onClick={this.handleStopTraining}
           >
+            {this.state.spinner ? <i className="fas fa-spinner fa-spin" /> : ""}
             Yes
           </button>
         </div>
