@@ -1,4 +1,4 @@
-import { observable, action, runInAction } from "mobx";
+import { observable, computed, action, runInAction } from "mobx";
 import agent from "../../agent";
 
 export default class Repository {
@@ -18,6 +18,11 @@ export default class Repository {
     this.store = store;
 
     this._load();
+  }
+
+  @computed
+  get location() {
+    return this.store.systemPath + this.folderName;
   }
 
   _load() {

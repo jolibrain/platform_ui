@@ -17,8 +17,7 @@ export default class PredictNew extends React.Component {
     )
       return null;
 
-    const { repositories, settings } = this.props.modelRepositoriesStore;
-
+    const { repositoryStores } = this.props.modelRepositoriesStore;
     const { services } = this.props.deepdetectStore.settings;
 
     if (services.length === 0) {
@@ -31,21 +30,13 @@ export default class PredictNew extends React.Component {
           </div>
         </div>
       );
-    } else if (typeof repositories === "undefined") {
-      return (
-        <div className="layout-page page-gutter page-with-contextual-sidebar right-sidebar-collapsed page-with-icon-sidebar service-new">
-          <div className="loading alert alert-primary" role="alert">
-            <i className="fas fa-spinner fa-spin" /> Loading repositories...
-          </div>
-        </div>
-      );
-    } else if (repositories.length === 0) {
+    } else if (repositoryStores.length === 0) {
       return (
         <div className="layout-page page-gutter page-with-contextual-sidebar right-sidebar-collapsed page-with-icon-sidebar service-new">
           <div className="loading alert alert-danger" role="alert">
             <i className="fas fa-times" /> No models repository found in :{" "}
-            <code>{settings.systemPath.public}</code> or{" "}
-            <code>{settings.systemPath.private}</code>
+            <code>modelRepositories</code>
+            from <code>config.json</code>
           </div>
         </div>
       );

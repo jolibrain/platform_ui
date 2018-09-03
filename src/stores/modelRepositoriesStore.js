@@ -20,6 +20,14 @@ export class modelRepositoriesStore {
   }
 
   @computed
+  get repositories() {
+    return Array.prototype.concat.apply(
+      [],
+      this.repositoryStores.map(r => r.repositories)
+    );
+  }
+
+  @computed
   get publicRepositories() {
     return this.repositoryStores.find(r => r.name === "public").repositories;
   }

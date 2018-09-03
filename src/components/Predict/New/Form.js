@@ -57,11 +57,9 @@ export default class Form extends React.Component {
 
   componentWillMount() {
     if (this.props.location.state && this.props.location.state.repository) {
-      const repository = this.props.modelRepositoriesStore.repositories.find(
-        r => r.modelName === this.props.location.state.repository.modelName
-      );
+      const repository = this.props.location.state.repository;
 
-      this.setState({ selectedLocation: repository ? [repository] : [] });
+      this.setState({ selectedLocation: repository ? [repository.name] : [] });
 
       const ddStore = this.props.deepdetectStore;
 
@@ -72,13 +70,13 @@ export default class Form extends React.Component {
       );
 
       if (defaultConfig) {
-        defaultConfig.modelConfig.model.repository = repository.label;
+        defaultConfig.modelConfig.model.repository = repository.name;
         this.setState({
           jsonConfig: JSON.stringify(defaultConfig.modelConfig, null, 1)
         });
       } else {
         let jsonConfig = JSON.parse(this.state.jsonConfig);
-        jsonConfig.model.repository = repository.label;
+        jsonConfig.model.repository = repository.location;
         this.setState({ jsonConfig: JSON.stringify(jsonConfig, null, 1) });
       }
     }
@@ -102,15 +100,15 @@ export default class Form extends React.Component {
   }
 
   handleInputChange() {
-    this.props.modelRepositoriesStore.load();
     const typeahead = this.typeahead.getInstance();
-
-    const serviceModelLocation = typeahead.getInput().value;
+    const selectedServiceName = typeahead.getInput().value;
 
     const repository = this.props.modelRepositoriesStore.repositories.find(
-      r => r.label === serviceModelLocation
+      r => r.name === selectedServiceName
     );
-    this.setState({ selectedLocation: repository ? [repository] : [] });
+    this.setState({ selectedLocation: repository ? [repository.name] : [] });
+
+    const serviceModelLocation = repository ? repository.location : "";
 
     let jsonConfig = JSON.parse(this.state.jsonConfig);
 
@@ -169,7 +167,7 @@ export default class Form extends React.Component {
     }
 
     const { repositories } = this.props.modelRepositoriesStore;
-    if (!repositories.map(r => r.label).includes(serviceModelLocation)) {
+    if (!repositories.map(r => r.name).includes(serviceModelLocation)) {
       errors.push("Model Repository Location must exists in predefined list");
     }
 
@@ -323,11 +321,11 @@ export default class Form extends React.Component {
                       return (
                         <MenuItem
                           key={index}
-                          option={result}
+                          option={result.name}
                           position={index}
-                          title={result.label}
+                          title={result.name}
                         >
-                          {result.label
+                          {result.name
                             .slice(0, -1)
                             .split("/")
                             .pop()}
