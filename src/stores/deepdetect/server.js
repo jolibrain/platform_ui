@@ -23,6 +23,11 @@ export default class deepdetectServer {
   }
 
   @computed
+  get infoPath() {
+    return `${this.settings.path}/info`;
+  }
+
+  @computed
   get service() {
     return this.services.find(s => s.isActive);
   }
@@ -133,6 +138,12 @@ export default class deepdetectServer {
     this.service.removeStore();
     const resp = await this.$reqDeleteService(this.service.name);
     await this.loadServices();
-    callback(resp);
+    if (callback && typeof callback === "function") callback(resp);
+  }
+
+  @action
+  async stopTraining(callback) {
+    this.service.stopTraining(callback);
+    await this.loadServices();
   }
 }
