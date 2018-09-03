@@ -98,7 +98,6 @@ export default class App extends React.Component {
 
       this.props.deepdetectStore.setup(config);
       this.props.imaginateStore.setup(config);
-      this.props.modalStore.setup(config);
       this.props.authTokenStore.setup();
 
       if (config.modelRepositories) {
