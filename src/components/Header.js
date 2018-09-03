@@ -127,7 +127,7 @@ class Header extends React.Component {
                     >
                       <span className="badge badge-primary">
                         <a
-                          href={`${server.settings.path}/`}
+                          href={server.infoPath}
                           target="_blank"
                           rel="noreferrer noopener"
                         >
