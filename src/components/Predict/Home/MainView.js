@@ -10,6 +10,20 @@ import ServiceCardCreate from "../../widgets/ServiceCardCreate";
 @withRouter
 @observer
 export default class MainView extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      filterServiceName: null
+    };
+
+    this.handleServiceFilter = this.handleServiceFilter.bind(this);
+  }
+
+  handleServiceFilter(event) {
+    this.setState({ filterServiceName: event.target.value });
+  }
+
   render() {
     const { predictServices } = this.props.deepdetectStore;
 
@@ -28,7 +42,14 @@ export default class MainView extends React.Component {
             <hr />
             <div className="serviceCreate">
               <h4>Available Predict Service</h4>
-              <ServiceCardCreate />
+              <input
+                type="text"
+                onChange={this.handleServiceFilter}
+                placeholder="Filter service name..."
+              />
+              <ServiceCardCreate
+                filterServiceName={this.state.filterServiceName}
+              />
             </div>
             <RightPanel />
           </div>

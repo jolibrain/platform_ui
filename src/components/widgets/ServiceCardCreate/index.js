@@ -9,6 +9,23 @@ import CreateCard from "./CreateCard";
 @withRouter
 @observer
 export default class ServiceCardCreate extends React.Component {
+  cardArray(repositories) {
+    const { filterServiceName } = this.props;
+
+    return repositories
+      .filter(r => {
+        return filterServiceName ? r.name.includes(filterServiceName) : true;
+      })
+      .map((repository, index) => {
+        return (
+          <CreateCard
+            key={`${index}-${repository.name}`}
+            repository={repository}
+          />
+        );
+      });
+  }
+
   render() {
     if (this.props.configStore.isComponentBlacklisted("ServiceCardCreate"))
       return null;
@@ -21,15 +38,11 @@ export default class ServiceCardCreate extends React.Component {
     return (
       <div>
         <div className="serviceQuickCreate card-columns">
-          {publicRepositories.map((repository, index) => {
-            return <CreateCard key={index} repository={repository} />;
-          })}
+          {this.cardArray(publicRepositories)}
         </div>
         <hr />
         <div className="serviceQuickCreate card-columns">
-          {privateRepositories.map((repository, index) => {
-            return <CreateCard key={index} repository={repository} />;
-          })}
+          {this.cardArray(privateRepositories)}
         </div>
       </div>
     );
