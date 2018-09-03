@@ -219,6 +219,5 @@
     "nginxPath": "/data/",
     "systemPath": "/opt/platform/data/"
   },
-  "modals": ["deletePredictService", "stopTraining"],
-  "componentBlacklist": []
+  "componentBlacklist": ["LinkJupyter"]
 }
