@@ -252,3 +252,9 @@ Les fichiers résultants du build seront dans ./build
 2.  build the app: `yarn run build`
 3.  create a docker image and push it to registry: `./docker-build.sh`
 4.  on server, in a git clone of `platform_docker`, use `{server}/deploy.sh` to deploy new docker image
+
+## Service Abstraction
+
+|     | Training | Detection | Segmentation | Classification |
+| --- | -------- | --------- | ------------ | -------------- |
+|     |          |           |              |                |
