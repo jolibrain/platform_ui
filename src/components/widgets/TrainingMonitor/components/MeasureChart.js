@@ -14,6 +14,45 @@ export default class MeasureChart extends React.Component {
     this.getChartData = this.getChartData.bind(this);
   }
 
+  getMinValue(attr) {
+    const { service } = this.props;
+
+    let measure, measure_hist;
+    if (service.jsonMetrics) {
+      measure = service.jsonMetrics.body.measure;
+      measure_hist = service.jsonMetrics.body.measure_hist;
+    } else {
+      measure = service.measure;
+      measure_hist = service.measure_hist;
+    }
+
+    let value = "--";
+
+    if (measure) {
+      value = measure[attr];
+    } else if (
+      measure_hist &&
+      measure_hist[`${attr}_hist`] &&
+      measure_hist[`${attr}_hist`].length > 0
+    ) {
+      value = Math.min.apply(Math, measure_hist[`${attr}_hist`]);
+    }
+
+    if (
+      !["remain_time_str", "iteration"].includes(attr) &&
+      value &&
+      value !== "--"
+    ) {
+      if (attr === "train_loss") {
+        value = value.toFixed(10);
+      } else {
+        value = value.toFixed(5);
+      }
+    }
+
+    return value;
+  }
+
   getValue(attr) {
     const { service } = this.props;
 
@@ -125,6 +164,11 @@ export default class MeasureChart extends React.Component {
       }
     };
 
+    let description = "";
+    if (title === "Train Loss") {
+      description = `min_loss: ${this.getMinValue(attribute)}`;
+    }
+
     return (
       <div className="col-md-3">
         <span>
@@ -135,6 +179,7 @@ export default class MeasureChart extends React.Component {
           legend={{ display: false }}
           options={chartOptions}
         />
+        <span>{description} </span>
       </div>
     );
   }
