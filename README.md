@@ -9,7 +9,7 @@ Web interface to control DeepDetect processus.
 - Docker Compose : https://docs.docker.com/compose/install/
 - Node v10 : https://github.com/creationix/nvm
 
-Correctly using `/data1/core_ui/models` as models repository on the machine hosting docker.
+Correctly using `/opt/platform/models` as models repository on the machine hosting docker.
 
 This folder is mandatory for deepdetect and nginx to link to correct model files.
 
@@ -167,17 +167,32 @@ When creating a new service, the app is pre-loading repositories path and user i
 ```js
   // Top level *Model Repositories* config object
   // src/store/modelRepositories.js
-  "modelRepositories": {
+  "modelRepositories": [
+    {
+      "name": "repositoryName",
 
-    // Nginx config
-    // which location is served by nginx to fetch the index of available models ?
-    "nginxPath": "/models/",
+      // Nginx config
+      // which location is served by nginx to fetch the index of available models ?
+      "nginxPath": "/models/",
 
-    // Server config
-    // When selecting a path from nginx result, what prefix should be added so this path correspond to existing system path ?
-    "systemPath": "/opt/models/"
+      // Server config
+      // When selecting a path from nginx result, what prefix should be added so this path correspond to existing system path ?
+      "systemPath": "/opt/models/",
 
-  }
+      // hasFiles
+      // Should we retrieve the list of files in this model repository ?
+      // it'd allow user to download these files from the interface
+      // default: false
+      "hasFiles": false,
+
+      // isTraining
+      // does this model repository contains training models ?
+      // default: false
+      "isTraining": false
+
+    },
+    ...
+  ]
 ```
 
 ### Blacklisting components
