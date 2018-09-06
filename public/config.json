@@ -51,6 +51,13 @@
         }
       },
       {
+        "name": "training_test_2",
+        "settings": {
+          "path": "/api/training_test_2",
+          "isWritable": true
+        }
+      },
+      {
         "name": "neptune01",
         "settings": {
           "path": "/api/neptune01",
