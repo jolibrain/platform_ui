@@ -10,8 +10,18 @@ export default class MeasureChart extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      showLine: false
+    };
+
     this.getValue = this.getValue.bind(this);
     this.getChartData = this.getChartData.bind(this);
+
+    this.toggleShowLine = this.toggleShowLine.bind(this);
+  }
+
+  toggleShowLine() {
+    this.setState({ showLine: !this.state.showLine });
   }
 
   getMinValue(attr) {
@@ -120,7 +130,8 @@ export default class MeasureChart extends React.Component {
             steppedLine: this.props.steppedLine,
             backgroundColor: "rgba(60, 69, 125, 0)",
             borderColor: "rgba(60, 69, 125, 0.5)",
-            showLine: this.props.steppedLine ? true : false,
+            showLine:
+              this.state.showLine || this.props.steppedLine ? true : false,
             radius: this.props.steppedLine ? 0 : 2
           }
         ]
@@ -165,8 +176,20 @@ export default class MeasureChart extends React.Component {
     };
 
     let description = "";
+    let controls = "";
     if (title === "Train Loss") {
       description = `min_loss: ${this.getMinValue(attribute)}`;
+      controls = (
+        <div>
+          <input
+            type="checkbox"
+            id="customShowLine"
+            checked={this.state.showLine ? "checked" : ""}
+            onChange={this.toggleShowLine}
+          />
+          <label for="customShowLine">Show line</label>
+        </div>
+      );
     }
 
     return (
@@ -179,7 +202,9 @@ export default class MeasureChart extends React.Component {
           legend={{ display: false }}
           options={chartOptions}
         />
-        <span>{description} </span>
+        <span>
+          {description} {controls}
+        </span>
       </div>
     );
   }
