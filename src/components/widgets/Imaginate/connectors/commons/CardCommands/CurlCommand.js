@@ -58,6 +58,10 @@ class CurlCommand extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    // Note about issue #54 - editable Curl command from interface
+    // Moving to CodeMirror is tricky because it'd call componentWillReceiveProps
+    // so you don't know if you need to update the curlCommand or not
+    // Would it need to be moved to a children Component ?
     const { service } = this.props.imaginateStore;
     this.setState({ jsonConfig: service.selectedInput.postData });
     ReactTooltip.rebuild();
