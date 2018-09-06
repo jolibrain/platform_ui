@@ -18,10 +18,15 @@ export default class MainView extends React.Component {
     };
 
     this.handleServiceFilter = this.handleServiceFilter.bind(this);
+    this.cleanServiceFilter = this.cleanServiceFilter.bind(this);
   }
 
   handleServiceFilter(event) {
     this.setState({ filterServiceName: event.target.value });
+  }
+
+  cleanServiceFilter(event) {
+    this.setState({ filterServiceName: "" });
   }
 
   render() {
@@ -42,11 +47,25 @@ export default class MainView extends React.Component {
             <hr />
             <div className="serviceCreate">
               <h4>Available Predict Service</h4>
-              <input
-                type="text"
-                onChange={this.handleServiceFilter}
-                placeholder="Filter service name..."
-              />
+
+              <div className="input-group">
+                <input
+                  type="text"
+                  onChange={this.handleServiceFilter}
+                  placeholder="Filter service name..."
+                  value={this.state.filterServiceName}
+                />
+                <div className="input-group-append">
+                  <button
+                    className="btn btn-outline-secondary"
+                    type="button"
+                    onClick={this.cleanServiceFilter}
+                  >
+                    <i className="fas fa-times-circle" />
+                  </button>
+                </div>
+              </div>
+
               <ServiceCardCreate
                 filterServiceName={this.state.filterServiceName}
               />
