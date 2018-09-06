@@ -3,22 +3,38 @@ import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
 import GpuInfo from "../../widgets/GpuInfo";
+import DownloadModelFiles from "../../widgets/DownloadModelFiles";
 import ServiceInfo from "../../widgets/ServiceInfo";
 
 @inject("configStore")
+@inject("modelRepositoriesStore")
+@inject("deepdetectStore")
 @withRouter
 @observer
 export default class RightPanel extends React.Component {
   render() {
-    if (typeof this.props.configStore.gpuInfo === "undefined") {
-      return null;
+    const { configStore, modelRepositoriesStore, deepdetectStore } = this.props;
+
+    if (typeof configStore.gpuInfo === "undefined") return null;
+
+    const { serviceInfo, includeDownloadPanel } = this.props;
+
+    let downloadPanel = "";
+    if (includeDownloadPanel) {
+      const repository = modelRepositoriesStore.privateRepositories.find(
+        r => r.name === deepdetectStore.server.service.name
+      );
+      if (repository) {
+        downloadPanel = <DownloadModelFiles repository={repository} />;
+      }
     }
 
     return (
       <aside className="right-sidebar right-sidebar right-sidebar-expanded">
         <div className="issuable-sidebar">
+          {serviceInfo ? <ServiceInfo /> : ""}
+          {downloadPanel}
           <GpuInfo />
-          {this.props.serviceInfo ? <ServiceInfo /> : ""}
         </div>
       </aside>
     );

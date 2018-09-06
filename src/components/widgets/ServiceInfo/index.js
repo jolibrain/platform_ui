@@ -9,11 +9,11 @@ export default class ServiceInfo extends React.Component {
     if (this.props.configStore.isComponentBlacklisted("ServiceInfo"))
       return null;
 
-    const { service } = this.props.deepdetectStore;
+    const { server } = this.props.deepdetectStore;
 
-    if (service == null) return null;
+    if (!server.service) return null;
 
-    const settings = service.settings;
+    const settings = server.service.settings;
 
     return (
       <div className="serviceinfo">

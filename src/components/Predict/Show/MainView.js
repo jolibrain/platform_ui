@@ -64,7 +64,7 @@ export default class MainView extends React.Component {
           </nav>
           <div className="content">
             <Imaginate />
-            <RightPanel serviceInfo={true} />
+            <RightPanel serviceInfo includeDownloadPanel />
           </div>
         </div>
       </div>

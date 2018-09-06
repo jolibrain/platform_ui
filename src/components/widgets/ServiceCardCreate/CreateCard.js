@@ -1,6 +1,9 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
+
+import DownloadModelFiles from "../DownloadModelFiles";
 
 @inject("deepdetectStore")
 @withRouter
@@ -47,7 +50,7 @@ export default class CreateCard extends React.Component {
   }
 
   handleClickCreate() {
-    const repository = this.props.repository;
+    const { repository } = this.props;
 
     if (!repository.jsonConfig) {
       this.props.history.push({
@@ -94,7 +97,7 @@ export default class CreateCard extends React.Component {
   }
 
   render() {
-    const repository = this.props.repository;
+    const { repository } = this.props;
 
     if (!repository) return null;
 
@@ -106,20 +109,6 @@ export default class CreateCard extends React.Component {
     } else {
       badgeClasses += " badge-warning";
     }
-
-    let downloableFiles = repository.files.map((f, index) => {
-      return (
-        <a
-          key={index}
-          href={f.url}
-          className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-          download
-        >
-          {f.filename}
-          <i className="fas fa-download" />
-        </a>
-      );
-    });
 
     return (
       <div className="card">
@@ -173,15 +162,13 @@ export default class CreateCard extends React.Component {
             </button>
           </div>
 
-          {downloableFiles.length > 0 ? (
-            <div className="row">
-              <div className="list-group">{downloableFiles}</div>
-            </div>
-          ) : (
-            ""
-          )}
+          <DownloadModelFiles repository={repository} />
         </div>
       </div>
     );
   }
 }
+
+CreateCard.propTypes = {
+  repository: PropTypes.object.isRequired
+};
