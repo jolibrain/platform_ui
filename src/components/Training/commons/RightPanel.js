@@ -16,7 +16,7 @@ export default class RightPanel extends React.Component {
       return null;
     }
 
-    let widgets = [<GpuInfo key="GpuInfo" />];
+    let widgets = [];
 
     if (this.props.serviceInfo) {
       widgets.push(<ServiceInfo key="ServiceInfo" />);
@@ -25,6 +25,8 @@ export default class RightPanel extends React.Component {
     if (this.props.service && this.props.handleOverMeasure) {
       widgets.push(<TrainingMeasure key="TrainingMeasure" {...this.props} />);
     }
+
+    widgets.push(<GpuInfo key="GpuInfo" />);
 
     return (
       <aside className="right-sidebar right-sidebar right-sidebar-expanded">
