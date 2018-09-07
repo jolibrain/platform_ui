@@ -19,8 +19,12 @@ export default class RightPanel extends React.Component {
 
     const { serviceInfo, includeDownloadPanel } = this.props;
 
+    let serviceName = null;
+    if (deepdetectStore.server.service)
+      serviceName = deepdetectStore.server.service.name;
+
     let downloadPanel = "";
-    if (includeDownloadPanel) {
+    if (serviceName && includeDownloadPanel) {
       const repository = modelRepositoriesStore.privateRepositories.find(
         r => r.name === deepdetectStore.server.service.name
       );
