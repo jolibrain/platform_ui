@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 
-import MeasureChart from "./MeasureChart";
+import MeasureChart from "../MeasureChart";
 
 @observer
 export default class GeneralInfo extends React.Component {
