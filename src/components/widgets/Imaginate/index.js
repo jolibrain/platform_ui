@@ -19,11 +19,15 @@ export default class Imaginate extends React.Component {
   }
 
   componentDidMount() {
-    this.getServiceConnector();
+    this.getServiceConnector(this.props);
   }
 
-  async getServiceConnector() {
-    const store = this.props.imaginateStore;
+  componentWillReceiveProps(nextProps) {
+    this.getServiceConnector(nextProps);
+  }
+
+  async getServiceConnector(props) {
+    const store = props.imaginateStore;
 
     if (store.service) {
       const serviceInfo = await store.service.serviceInfo();
@@ -59,6 +63,8 @@ export default class Imaginate extends React.Component {
         break;
     }
 
-    return connector;
+    return (
+      <div className={`imaginate-${this.state.connector}`}>{connector}</div>
+    );
   }
 }
