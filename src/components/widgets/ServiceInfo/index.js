@@ -28,6 +28,8 @@ export default class ServiceInfo extends React.Component {
 
                 if (typeof value === "boolean") {
                   value = value ? "True" : "False";
+                } else if (typeof value === "object") {
+                  value = JSON.stringify(value);
                 }
 
                 return (
