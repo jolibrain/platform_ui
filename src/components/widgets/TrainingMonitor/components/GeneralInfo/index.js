@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 
 import MeasureChart from "../MeasureChart";
+import TrainLossChart from "../TrainLossChart";
 
 @observer
 export default class GeneralInfo extends React.Component {
@@ -24,7 +25,7 @@ export default class GeneralInfo extends React.Component {
     }
 
     infoCharts.push(
-      <MeasureChart
+      <TrainLossChart
         title="Train Loss"
         key="train_loss"
         attribute="train_loss"

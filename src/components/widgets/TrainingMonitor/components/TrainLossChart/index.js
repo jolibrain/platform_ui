@@ -24,6 +24,26 @@ export default class MeasureChart extends React.Component {
     this.setState({ showLine: !this.state.showLine });
   }
 
+  getMinValue(attr) {
+    const { service } = this.props;
+
+    const measure_hist = service.jsonMetrics
+      ? service.jsonMetrics.body.measure_hist
+      : service.measure_hist;
+
+    let value = "--";
+
+    if (
+      measure_hist &&
+      measure_hist[`${attr}_hist`] &&
+      measure_hist[`${attr}_hist`].length > 0
+    ) {
+      value = Math.min.apply(Math, measure_hist[`${attr}_hist`]);
+    }
+
+    return value.toFixed(10);
+  }
+
   getValue(attr) {
     const { service } = this.props;
 
@@ -49,15 +69,7 @@ export default class MeasureChart extends React.Component {
         measure_hist[`${attr}_hist`][measure_hist[`${attr}_hist`].length - 1];
     }
 
-    if (
-      !["remain_time_str", "iteration"].includes(attr) &&
-      value &&
-      value !== "--"
-    ) {
-      value = value.toFixed(5);
-    }
-
-    return value;
+    return value.toFixed(10);
   }
 
   getChartData(attr) {
@@ -132,6 +144,20 @@ export default class MeasureChart extends React.Component {
       }
     };
 
+    const minValue = this.getMinValue(attribute);
+    const description = `min_loss: ${minValue}`;
+    const controls = (
+      <div>
+        <input
+          type="checkbox"
+          id="customShowLine"
+          checked={this.state.showLine ? "checked" : ""}
+          onChange={this.toggleShowLine}
+        />
+        <label for="customShowLine">Show line</label>
+      </div>
+    );
+
     return (
       <div className="col-md-3">
         <span>
@@ -142,6 +168,9 @@ export default class MeasureChart extends React.Component {
           legend={{ display: false }}
           options={chartOptions}
         />
+        <span>
+          {description} {controls}
+        </span>
       </div>
     );
   }
