@@ -78,9 +78,13 @@ export default class ImageConnector extends React.Component {
       !input.isSegmentationInput
     ) {
       thresholds.push(<Threshold key="threshold" />);
+
+      // Note: the threshold confidence variable in the key attribute
+      // is a hack to update the slider when user pushes
+      // on other external threshold (salient/medium/detailed for example)
       thresholds.push(
         <ParamSlider
-          key="paramSliderConfidence"
+          key={`paramSliderConfidence-${serviceSettings.threshold.confidence}`}
           title="Confidence threshold"
           defaultValue={parseInt(
             serviceSettings.threshold.confidence * 100,
