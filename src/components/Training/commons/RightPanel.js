@@ -32,7 +32,7 @@ export default class RightPanel extends React.Component {
     if (service && handleOverMeasure)
       widgets.push(<TrainingMeasure key="TrainingMeasure" {...this.props} />);
 
-    if (service.name && includeDownloadPanel) {
+    if (service && service.name && includeDownloadPanel) {
       const repository = modelRepositoriesStore.privateRepositories.find(
         r => r.name === service.name
       );
