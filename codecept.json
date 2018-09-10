@@ -1,14 +1,24 @@
 {
-  "tests": "test/codecept/**/*.js",
+  "tests": "./test/codecept/**/*.js",
   "timeout": 10000,
-  "output": "test/codecept/output",
+  "output": "./test/codecept/output",
   "helpers": {
-    "Nightmare": {
-      "url": "http://10.10.77.61:18104",
-      "show": false,
+    "REST": {
+      "endpoint": "http://localhost:3000/"
+    },
+    "WebDriverIO": {
+      "url": "http://localhost:3000",
+      "browser": "chrome",
       "restart": false,
-      "windowSize": "1920x1080"
+      "windowSize": "maximize",
+      "timeouts": {
+        "script": 60000,
+        "page load": 10000
+      }
     }
+  },
+  "include": {
+    "I": "./test/codecept/step_file.js"
   },
   "bootstrap": false,
   "mocha": {},
