@@ -16,12 +16,36 @@ export default class GeneralInfo extends React.Component {
 
     let mltype = null;
     let measure = null;
+
     if (service.jsonMetrics) {
       mltype = service.jsonMetrics.body.mltype;
       measure = service.jsonMetrics.body.measure;
     } else {
       mltype = service.respInfo.body.mltype;
       measure = service.measure;
+    }
+
+    let bestModelInfo = null;
+    if (service.bestModel) {
+      bestModelInfo = (
+        <div>
+          <hr />
+          <p>Best Model</p>
+          <ul>
+            {Object.keys(service.bestModel).map((k, i) => {
+              const attrTitle =
+                i === 0
+                  ? k.replace(/\b\w/g, l => l.toUpperCase())
+                  : k.toUpperCase();
+              return (
+                <li key={i}>
+                  {attrTitle}: <b>{service.bestModel[k]}</b>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      );
     }
 
     infoCharts.push(
@@ -152,6 +176,7 @@ export default class GeneralInfo extends React.Component {
             </span>
           </div>
         </div>
+        <div className="row">{bestModelInfo}</div>
       </div>
     );
   }
