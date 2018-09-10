@@ -37,7 +37,7 @@ export default class MainView extends React.Component {
           </nav>
           <div className="content">
             <TrainingMonitor service={repository} />
-            <RightPanel service={repository} />
+            <RightPanel service={repository} includeDownloadPanel />
           </div>
         </div>
       </div>

@@ -9,6 +9,7 @@
     "eslint-plugin-prettier": "^2.6.0",
     "eslint-plugin-react": "^7.8.2",
     "husky": "^0.14.3",
+    "nightmare": "^3.0.1",
     "nightwatch": "^0.9.21",
     "node-sass": "^4.9.0",
     "nodemon": "^1.18.3",
