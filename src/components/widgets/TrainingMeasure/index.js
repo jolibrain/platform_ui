@@ -31,15 +31,8 @@ export default class TrainingMeasure extends React.Component {
         k !== "train_loss" &&
         k !== "labels" &&
         k !== "cmfull" &&
-        k !== "cmdiag" &&
-        k !== "clacc"
+        k !== "cmdiag"
     );
-
-    if (measure["clacc"] && measure["clacc"].length > 0) {
-      for (let i = 0; i < measure["clacc"].length; i++) {
-        measureKeys.push(`clacc_${i}`);
-      }
-    }
 
     if (measureKeys.length === 0) return null;
 
