@@ -8,6 +8,7 @@
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-prettier": "^2.6.0",
     "eslint-plugin-react": "^7.8.2",
+    "faker": "^4.1.0",
     "husky": "^0.14.3",
     "nightmare": "^3.0.1",
     "nightwatch": "^0.9.21",
@@ -17,7 +18,10 @@
     "prettier": "^1.13.0",
     "pretty-quick": "^1.6.0",
     "react-app-rewired": "^1.5.2",
-    "sass-loader": "^7.0.1"
+    "rosie": "^2.0.1",
+    "sass-loader": "^7.0.1",
+    "selenium-standalone": "^6.15.2",
+    "unirest": "^0.5.1"
   },
   "dependencies": {
     "bootstrap": "^4.1.1",
@@ -62,6 +66,9 @@
     "build-js": "react-scripts build",
     "build": "npm-run-all build-info-json build-css build-js",
     "test": "react-scripts test --env=jsdom",
-    "test:e2e": "nodemon --exec 'codeceptjs run'"
+    "test:selenium:install": "selenium-standalone install",
+    "test:selenium:start": "selenium-standalone start",
+    "test:integration": "nodemon --exec 'codeceptjs run --grep \"@content\" --steps'",
+    "test:e2e": "npm-run-all -p start test:selenium:start test:integration"
   }
 }

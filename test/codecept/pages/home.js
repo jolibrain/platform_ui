@@ -1,12 +1,15 @@
 Feature("Home page");
 
-Scenario("@content MainView title and description", I => {
+Scenario("@content MainView title and description", async I => {
+  const configReq = await I.sendGetRequest("/config.json");
+  const config = JSON.parse(configReq.raw_body);
+
   I.amOnPage("/");
   I.waitForElement(".main-view");
 
   within(".main-view", () => {
-    I.see("DeepDetect Platform");
-    I.see("Welcome to deepdetect");
+    I.see(config.homeComponent.title);
+    I.see(config.homeComponent.description);
   });
 });
 
