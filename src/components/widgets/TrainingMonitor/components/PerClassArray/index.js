@@ -47,30 +47,18 @@ export default class PerClassArray extends React.Component {
 
           if (this.props.hoveredMeasure === index) classNames.push("hovered");
 
-          let title = key;
-          let value = 0;
+          let value = measure[key].toFixed(5);
+          let measureHistIndex = `${key}_hist`;
           let sparkData = [];
-          let measureHistIndex = null;
 
-          // Special processing for clacc
-          // that contains an array of values
-          if (title.includes("clacc")) {
-            const claccIndex = title.split("_").pop();
-            value = measure["clacc"][claccIndex].toFixed(5);
-            measureHistIndex = `clacc_${claccIndex}_hist`;
-
+          // display color levels for clacc
+          if (key.includes("clacc")) {
             if (value > 0) classNames.push("clacc-level-0");
             if (value > 0.55) classNames.push("clacc-level-warning");
             if (value > 0.9) classNames.push("clacc-level-success");
-          } else if (measure[key]) {
-            value = measure[key].toFixed(5);
-            measureHistIndex = `${key}_hist`;
           }
 
-          // Build sparkline data using measureHistIndex
-          // which could vary depending if using clacc
           if (
-            measureHistIndex &&
             measure_hist &&
             measure_hist[measureHistIndex] &&
             measure_hist[measureHistIndex].length > 0
@@ -79,8 +67,6 @@ export default class PerClassArray extends React.Component {
               parseInt(x * 100, 10)
             );
           }
-
-          title = title.slice(title.length - 7, title.length);
 
           return (
             <div
