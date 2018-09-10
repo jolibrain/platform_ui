@@ -10,12 +10,11 @@ import DownloadModelFiles from "../../widgets/DownloadModelFiles";
 
 @inject("configStore")
 @inject("modelRepositoriesStore")
-@inject("deepdetectStore")
 @withRouter
 @observer
 export default class RightPanel extends React.Component {
   render() {
-    const { configStore, modelRepositoriesStore, deepdetectStore } = this.props;
+    const { configStore, modelRepositoriesStore } = this.props;
 
     if (typeof configStore.gpuInfo === "undefined") return null;
 
