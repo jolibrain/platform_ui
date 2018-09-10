@@ -10,6 +10,20 @@ import TrainingMonitor from "../../widgets/TrainingMonitor";
 @observer
 @withRouter
 export default class MainView extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      hoveredMeasure: -1
+    };
+
+    this.handleOverMeasure = this.handleOverMeasure.bind(this);
+  }
+
+  handleOverMeasure(index) {
+    this.setState({ hoveredMeasure: index });
+  }
+
   render() {
     if (
       !this.props.match ||
@@ -21,7 +35,6 @@ export default class MainView extends React.Component {
     const { modelName } = this.props.match.params;
     const { trainingRepositories } = this.props.modelRepositoriesStore;
 
-    console.log(trainingRepositories);
     const repository = trainingRepositories.find(r => r.name === modelName);
 
     if (!repository) return null;
@@ -36,8 +49,17 @@ export default class MainView extends React.Component {
             />
           </nav>
           <div className="content">
-            <TrainingMonitor service={repository} />
-            <RightPanel service={repository} includeDownloadPanel />
+            <TrainingMonitor
+              service={repository}
+              handleOverMeasure={this.handleOverMeasure}
+              hoveredMeasure={this.state.hoveredMeasure}
+            />
+            <RightPanel
+              service={repository}
+              handleOverMeasure={this.handleOverMeasure}
+              hoveredMeasure={this.state.hoveredMeasure}
+              includeDownloadPanel
+            />
           </div>
         </div>
       </div>
