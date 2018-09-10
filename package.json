@@ -65,8 +65,9 @@
     "build-js": "react-scripts build",
     "build": "npm-run-all build-info-json build-css build-js",
     "test": "react-scripts test --env=jsdom",
-    "test:install": "selenium-standalone install",
-    "test:start": "selenium-standalone start",
-    "test:e2e": "nodemon --exec 'codeceptjs run --grep \"@content\" --steps'"
+    "test:selenium:install": "selenium-standalone install",
+    "test:selenium:start": "selenium-standalone start",
+    "test:integration": "nodemon --exec 'codeceptjs run --grep \"@content\" --steps'",
+    "test:e2e": "npm-run-all -p start test:selenium:start test:integration"
   }
 }

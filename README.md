@@ -266,7 +266,7 @@ Les fichiers résultants du build seront dans ./build
 First, you need to install `selenium` to run the integration testing:
 
 ```
-yarn test:install
+yarn test:selenium:install
 ```
 
 Then you can run the integration testing cases:
