@@ -3,6 +3,7 @@ import _superagent from "superagent";
 
 import DD from "deepdetect-js";
 
+const DD_TIMEOUT = 15000;
 const superagent = superagentPromise(_superagent, global.Promise);
 
 const handleErrors = err => {
@@ -64,6 +65,7 @@ const GpuInfo = {
 
 const Deepdetect = {
   info: async settings => {
+    settings.fetchTimeout = 5000;
     const dd = new DD(settings);
     try {
       return await dd.info();
@@ -72,6 +74,7 @@ const Deepdetect = {
     }
   },
   infoStatus: async settings => {
+    settings.fetchTimeout = 5000;
     const dd = new DD(settings);
     try {
       return await dd.info({ status: true });
@@ -80,6 +83,7 @@ const Deepdetect = {
     }
   },
   getService: async (settings, name) => {
+    settings.fetchTimeout = DD_TIMEOUT;
     const dd = new DD(settings);
     try {
       return await dd.getService(name);
@@ -88,6 +92,7 @@ const Deepdetect = {
     }
   },
   putService: async (settings, name, data) => {
+    settings.fetchTimeout = DD_TIMEOUT;
     const dd = new DD(settings);
     try {
       return await dd.putService(name, data);
@@ -96,6 +101,7 @@ const Deepdetect = {
     }
   },
   deleteService: async (settings, name) => {
+    settings.fetchTimeout = DD_TIMEOUT;
     const dd = new DD(settings);
     try {
       return await dd.deleteService(name);
@@ -104,6 +110,7 @@ const Deepdetect = {
     }
   },
   postPredict: async (settings, postData) => {
+    settings.fetchTimeout = DD_TIMEOUT;
     const dd = new DD(settings);
     try {
       return await dd.postPredict(postData);
@@ -119,6 +126,7 @@ const Deepdetect = {
     history = false,
     maxHistPoints = null
   ) => {
+    settings.fetchTimeout = DD_TIMEOUT;
     const dd = new DD(settings);
     try {
       return await dd.getTrain(
@@ -133,6 +141,7 @@ const Deepdetect = {
     }
   },
   stopTraining: async (settings, serviceName) => {
+    settings.fetchTimeout = DD_TIMEOUT;
     const dd = new DD(settings);
     try {
       return await dd.deleteTrain(serviceName);
