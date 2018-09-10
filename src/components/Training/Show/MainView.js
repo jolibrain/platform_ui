@@ -82,6 +82,7 @@ export default class MainView extends React.Component {
               service={service}
               handleOverMeasure={this.handleOverMeasure}
               hoveredMeasure={this.state.hoveredMeasure}
+              includeDownloadPanel
             />
           </div>
         </div>
