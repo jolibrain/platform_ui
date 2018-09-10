@@ -31,7 +31,7 @@ export default class MeasureChart extends React.Component {
       ? service.jsonMetrics.body.measure_hist
       : service.measure_hist;
 
-    let value = "--";
+    let value = null;
 
     if (
       measure_hist &&
@@ -41,7 +41,7 @@ export default class MeasureChart extends React.Component {
       value = Math.min.apply(Math, measure_hist[`${attr}_hist`]);
     }
 
-    return value.toFixed(10);
+    return value ? value.toFixed(10) : "--";
   }
 
   getValue(attr) {
@@ -56,7 +56,7 @@ export default class MeasureChart extends React.Component {
       measure_hist = service.measure_hist;
     }
 
-    let value = "--";
+    let value = null;
 
     if (measure) {
       value = measure[attr];
@@ -69,7 +69,7 @@ export default class MeasureChart extends React.Component {
         measure_hist[`${attr}_hist`][measure_hist[`${attr}_hist`].length - 1];
     }
 
-    return value.toFixed(10);
+    return value ? value.toFixed(10) : "--";
   }
 
   getChartData(attr) {

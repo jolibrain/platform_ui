@@ -39,8 +39,13 @@ export default class PerClassArray extends React.Component {
           let classNames = ["col-md-1", "measure-cell"];
 
           if (this.props.hoveredMeasure === index) classNames.push("hovered");
+          let value = "--";
+          try {
+            value = measure[key].toFixed(5);
+          } catch (e) {
+            // measure[key].toFixed is not a function
+          }
 
-          let value = measure[key].toFixed(5);
           let measureHistIndex = `${key}_hist`;
           let sparkData = [];
 
