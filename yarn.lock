@@ -2587,9 +2587,9 @@ deep-is@~0.1.3:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/deep-is/-/deep-is-0.1.3.tgz#b369d6fb5dbc13eecf524f91b070feedc357cf34"
 
-deepdetect-js@^1.6.2:
-  version "1.6.2"
-  resolved "https://registry.yarnpkg.com/deepdetect-js/-/deepdetect-js-1.6.2.tgz#a0034e7578259953419a275974eacfdd95dbd78a"
+deepdetect-js@^1.6.5:
+  version "1.6.5"
+  resolved "https://registry.yarnpkg.com/deepdetect-js/-/deepdetect-js-1.6.5.tgz#64e1bec65516aa06b40e85390b46ff60c99aaafe"
   dependencies:
     babel-runtime "^6.26.0"
     isomorphic-fetch "^2.2.1"
