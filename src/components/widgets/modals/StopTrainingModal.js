@@ -37,7 +37,7 @@ export default class StopTrainingModal extends React.Component {
     return (
       <div id="modal-stopTraining">
         <div className="modal-header">
-          <h5 className="modal-title">Are you sure ?</h5>
+          <h5 className="modal-title">Stop Training - Are you sure ?</h5>
         </div>
 
         <div className="modal-body">
