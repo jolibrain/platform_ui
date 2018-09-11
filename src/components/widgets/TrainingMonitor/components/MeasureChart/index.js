@@ -36,7 +36,7 @@ export default class MeasureChart extends React.Component {
       measure_hist = service.measure_hist;
     }
 
-    let value = "--";
+    let value = null;
 
     if (measure) {
       value = measure[attr];
@@ -49,15 +49,11 @@ export default class MeasureChart extends React.Component {
         measure_hist[`${attr}_hist`][measure_hist[`${attr}_hist`].length - 1];
     }
 
-    if (
-      !["remain_time_str", "iteration"].includes(attr) &&
-      value &&
-      value !== "--"
-    ) {
+    if (value && !["remain_time_str", "iteration"].includes(attr)) {
       value = value.toFixed(5);
     }
 
-    return value;
+    return value ? value : "--";
   }
 
   getChartData(attr) {

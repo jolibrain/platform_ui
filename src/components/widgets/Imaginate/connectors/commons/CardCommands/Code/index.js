@@ -89,6 +89,17 @@ run()`;
 
     let pythonCode = "";
 
+    if (this.state.configuration.importLib) {
+      pythonCode += `from dd_client import DD\n`;
+    }
+
+    if (this.state.configuration.ddConfig) {
+      pythonCode += `host = '${window.location.hostname}'
+port = ${window.location.port}
+path = '${service.serverSettings.path}'
+dd.set_return_format(dd.RETURN_PYTHON)\n\n`;
+    }
+
     if (postData.parameters.input) {
       pythonCode += `parameters_input = ${JSON.stringify(
         postData.parameters.input

@@ -31,15 +31,8 @@ export default class TrainingMeasure extends React.Component {
         k !== "train_loss" &&
         k !== "labels" &&
         k !== "cmfull" &&
-        k !== "cmdiag" &&
-        k !== "clacc"
+        k !== "cmdiag"
     );
-
-    if (measure["clacc"] && measure["clacc"].length > 0) {
-      for (let i = 0; i < measure["clacc"].length; i++) {
-        measureKeys.push(`clacc_${i}`);
-      }
-    }
 
     if (measureKeys.length === 0) return null;
 
@@ -57,6 +50,7 @@ export default class TrainingMeasure extends React.Component {
                 }
                 key={index}
                 onMouseEnter={this.props.handleOverMeasure.bind(this, index)}
+                onMouseLeave={this.props.handleLeaveMeasure.bind(this)}
               >
                 <b>{index + 1}</b>&nbsp;{key}
                 <br />
@@ -72,5 +66,6 @@ export default class TrainingMeasure extends React.Component {
 TrainingMeasure.propTypes = {
   service: PropTypes.object.isRequired,
   handleOverMeasure: PropTypes.func.isRequired,
+  handleLeaveMeasure: PropTypes.func.isRequired,
   hoveredMeasure: PropTypes.number.isRequired
 };

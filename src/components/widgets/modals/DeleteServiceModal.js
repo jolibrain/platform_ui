@@ -37,7 +37,7 @@ export default class DeleteServiceModal extends React.Component {
     return (
       <div id="modal-deleteService">
         <div className="modal-header">
-          <h5 className="modal-title">Are you sure ?</h5>
+          <h5 className="modal-title">Delete Service - Are you sure ?</h5>
         </div>
 
         <div className="modal-body">

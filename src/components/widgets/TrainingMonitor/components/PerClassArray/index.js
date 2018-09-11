@@ -30,15 +30,8 @@ export default class PerClassArray extends React.Component {
         k !== "train_loss" &&
         k !== "labels" &&
         k !== "cmfull" &&
-        k !== "cmdiag" &&
-        k !== "clacc"
+        k !== "cmdiag"
     );
-
-    if (measure["clacc"] && measure["clacc"].length > 0) {
-      for (let i = 0; i < measure["clacc"].length; i++) {
-        measureKeys.push(`clacc_${i}`);
-      }
-    }
 
     return (
       <div className="row" refresh={service.refresh}>
@@ -46,31 +39,24 @@ export default class PerClassArray extends React.Component {
           let classNames = ["col-md-1", "measure-cell"];
 
           if (this.props.hoveredMeasure === index) classNames.push("hovered");
+          let value = "--";
+          try {
+            value = measure[key].toFixed(5);
+          } catch (e) {
+            // measure[key].toFixed is not a function
+          }
 
-          let title = key;
-          let value = 0;
+          let measureHistIndex = `${key}_hist`;
           let sparkData = [];
-          let measureHistIndex = null;
 
-          // Special processing for clacc
-          // that contains an array of values
-          if (title.includes("clacc")) {
-            const claccIndex = title.split("_").pop();
-            value = measure["clacc"][claccIndex].toFixed(5);
-            measureHistIndex = `clacc_${claccIndex}_hist`;
-
+          // display color levels for clacc
+          if (key.includes("clacc")) {
             if (value > 0) classNames.push("clacc-level-0");
             if (value > 0.55) classNames.push("clacc-level-warning");
             if (value > 0.9) classNames.push("clacc-level-success");
-          } else if (measure[key]) {
-            value = measure[key].toFixed(5);
-            measureHistIndex = `${key}_hist`;
           }
 
-          // Build sparkline data using measureHistIndex
-          // which could vary depending if using clacc
           if (
-            measureHistIndex &&
             measure_hist &&
             measure_hist[measureHistIndex] &&
             measure_hist[measureHistIndex].length > 0
@@ -80,13 +66,12 @@ export default class PerClassArray extends React.Component {
             );
           }
 
-          title = title.slice(title.length - 7, title.length);
-
           return (
             <div
               key={`measureKey-${key}`}
               className={classNames.join(" ")}
               onMouseEnter={this.props.handleOverMeasure.bind(this, index)}
+              onMouseLeave={this.props.handleLeaveMeasure.bind(this)}
             >
               {value !== 0 ? <b>{index + 1}</b> : <span>{index + 1}</span>}
               <br />
@@ -105,6 +90,7 @@ export default class PerClassArray extends React.Component {
 
 PerClassArray.propTypes = {
   service: PropTypes.object.isRequired,
-  handleOverMeasure: PropTypes.func,
+  handleOverMeasure: PropTypes.func.isRequired,
+  handleLeaveMeasure: PropTypes.func.isRequired,
   hoveredMeasure: PropTypes.number
 };

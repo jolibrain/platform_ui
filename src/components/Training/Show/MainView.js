@@ -19,15 +19,25 @@ export default class MainView extends React.Component {
     };
 
     this.openStopTrainingModal = this.openStopTrainingModal.bind(this);
+    this.openDeleteServiceModal = this.openDeleteServiceModal.bind(this);
     this.handleOverMeasure = this.handleOverMeasure.bind(this);
+    this.handleLeaveMeasure = this.handleLeaveMeasure.bind(this);
   }
 
   openStopTrainingModal() {
+    this.props.modalStore.setVisible("stopTraining");
+  }
+
+  openDeleteServiceModal() {
     this.props.modalStore.setVisible("deleteService");
   }
 
   handleOverMeasure(index) {
     this.setState({ hoveredMeasure: index });
+  }
+
+  handleLeaveMeasure(index) {
+    this.setState({ hoveredMeasure: -1 });
   }
 
   render() {
@@ -54,11 +64,11 @@ export default class MainView extends React.Component {
         <div className="container">
           <Breadcrumb service={service} isTraining={true} />
           <nav className="navbar navbar-expand-lg">
-            <ul
-              className="nav navbar-nav ml-auto"
-              style={{ flexDirection: "row" }}
-            >
-              {service.serverSettings.isWritable ? (
+            {service.serverSettings.isWritable ? (
+              <ul
+                className="nav navbar-nav ml-auto"
+                style={{ flexDirection: "row" }}
+              >
                 <li className="nav-item">
                   <button
                     className="btn btn-outline-danger"
@@ -67,21 +77,32 @@ export default class MainView extends React.Component {
                     Stop Training
                   </button>
                 </li>
-              ) : (
-                ""
-              )}
-            </ul>
+                <li className="nav-item">
+                  <button
+                    className="btn btn-outline-danger"
+                    onClick={this.openDeleteServiceModal}
+                  >
+                    Delete Service
+                  </button>
+                </li>
+              </ul>
+            ) : (
+              ""
+            )}
           </nav>
           <div className="content">
             <TrainingMonitor
               service={service}
               handleOverMeasure={this.handleOverMeasure}
+              handleLeaveMeasure={this.handleLeaveMeasure}
               hoveredMeasure={this.state.hoveredMeasure}
             />
             <RightPanel
               service={service}
               handleOverMeasure={this.handleOverMeasure}
+              handleLeaveMeasure={this.handleLeaveMeasure}
               hoveredMeasure={this.state.hoveredMeasure}
+              includeDownloadPanel
             />
           </div>
         </div>

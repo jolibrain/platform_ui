@@ -6,24 +6,39 @@ import { withRouter } from "react-router-dom";
 import GpuInfo from "../../widgets/GpuInfo";
 import ServiceInfo from "../../widgets/ServiceInfo";
 import TrainingMeasure from "../../widgets/TrainingMeasure";
+import DownloadModelFiles from "../../widgets/DownloadModelFiles";
 
 @inject("configStore")
+@inject("modelRepositoriesStore")
 @withRouter
 @observer
 export default class RightPanel extends React.Component {
   render() {
-    if (typeof this.props.configStore.gpuInfo === "undefined") {
-      return null;
-    }
+    const { configStore, modelRepositoriesStore } = this.props;
+
+    if (typeof configStore.gpuInfo === "undefined") return null;
+
+    const {
+      service,
+      serviceInfo,
+      includeDownloadPanel,
+      handleOverMeasure
+    } = this.props;
 
     let widgets = [];
 
-    if (this.props.serviceInfo) {
-      widgets.push(<ServiceInfo key="ServiceInfo" />);
-    }
+    if (serviceInfo) widgets.push(<ServiceInfo key="ServiceInfo" />);
 
-    if (this.props.service && this.props.handleOverMeasure) {
+    if (service && handleOverMeasure)
       widgets.push(<TrainingMeasure key="TrainingMeasure" {...this.props} />);
+
+    if (service && service.name && includeDownloadPanel) {
+      const repository = modelRepositoriesStore.privateRepositories.find(
+        r => r.name === service.name
+      );
+      if (repository) {
+        widgets.push(<DownloadModelFiles repository={repository} />);
+      }
     }
 
     widgets.push(<GpuInfo key="GpuInfo" />);
@@ -41,5 +56,6 @@ RightPanel.propTypes = {
   searviceInfo: PropTypes.object,
   service: PropTypes.object,
   handleOverMeasure: PropTypes.func,
+  handleLeaveMeasure: PropTypes.func,
   hoveredMeasure: PropTypes.number
 };
