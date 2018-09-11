@@ -50,6 +50,7 @@ export default class TrainingMeasure extends React.Component {
                 }
                 key={index}
                 onMouseEnter={this.props.handleOverMeasure.bind(this, index)}
+                onMouseLeave={this.props.handleLeaveMeasure.bind(this)}
               >
                 <b>{index + 1}</b>&nbsp;{key}
                 <br />
@@ -65,5 +66,6 @@ export default class TrainingMeasure extends React.Component {
 TrainingMeasure.propTypes = {
   service: PropTypes.object.isRequired,
   handleOverMeasure: PropTypes.func.isRequired,
+  handleLeaveMeasure: PropTypes.func.isRequired,
   hoveredMeasure: PropTypes.number.isRequired
 };

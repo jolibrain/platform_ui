@@ -20,6 +20,7 @@ export default class MainView extends React.Component {
 
     this.openStopTrainingModal = this.openStopTrainingModal.bind(this);
     this.handleOverMeasure = this.handleOverMeasure.bind(this);
+    this.handleLeaveMeasure = this.handleLeaveMeasure.bind(this);
   }
 
   openStopTrainingModal() {
@@ -28,6 +29,10 @@ export default class MainView extends React.Component {
 
   handleOverMeasure(index) {
     this.setState({ hoveredMeasure: index });
+  }
+
+  handleLeaveMeasure(index) {
+    this.setState({ hoveredMeasure: -1 });
   }
 
   render() {
@@ -76,11 +81,13 @@ export default class MainView extends React.Component {
             <TrainingMonitor
               service={service}
               handleOverMeasure={this.handleOverMeasure}
+              handleLeaveMeasure={this.handleLeaveMeasure}
               hoveredMeasure={this.state.hoveredMeasure}
             />
             <RightPanel
               service={service}
               handleOverMeasure={this.handleOverMeasure}
+              handleLeaveMeasure={this.handleLeaveMeasure}
               hoveredMeasure={this.state.hoveredMeasure}
               includeDownloadPanel
             />

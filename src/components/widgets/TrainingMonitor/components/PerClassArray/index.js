@@ -71,6 +71,7 @@ export default class PerClassArray extends React.Component {
               key={`measureKey-${key}`}
               className={classNames.join(" ")}
               onMouseEnter={this.props.handleOverMeasure.bind(this, index)}
+              onMouseLeave={this.props.handleLeaveMeasure.bind(this)}
             >
               {value !== 0 ? <b>{index + 1}</b> : <span>{index + 1}</span>}
               <br />
@@ -89,6 +90,7 @@ export default class PerClassArray extends React.Component {
 
 PerClassArray.propTypes = {
   service: PropTypes.object.isRequired,
-  handleOverMeasure: PropTypes.func,
+  handleOverMeasure: PropTypes.func.isRequired,
+  handleLeaveMeasure: PropTypes.func.isRequired,
   hoveredMeasure: PropTypes.number
 };

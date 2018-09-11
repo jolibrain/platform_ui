@@ -56,5 +56,6 @@ RightPanel.propTypes = {
   searviceInfo: PropTypes.object,
   service: PropTypes.object,
   handleOverMeasure: PropTypes.func,
+  handleLeaveMeasure: PropTypes.func,
   hoveredMeasure: PropTypes.number
 };
