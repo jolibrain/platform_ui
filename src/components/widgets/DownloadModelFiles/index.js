@@ -6,8 +6,9 @@ import { observer } from "mobx-react";
 export default class DownloadModelFiles extends React.Component {
   render() {
     const { repository } = this.props;
+    const files = repository.downloadableFiles;
 
-    if (!repository.files || repository.files.length === 0) return null;
+    if (!files || files.length === 0) return null;
 
     return (
       <div className="downloadModelFiles">
@@ -16,15 +17,15 @@ export default class DownloadModelFiles extends React.Component {
         </h5>
 
         <div className="list-group">
-          {repository.files.map((f, index) => {
+          {files.map((f, index) => {
             return (
               <a
                 key={index}
-                href={f.url}
+                href={repository.path + f}
                 className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
                 download
               >
-                {f.filename}
+                {f}
                 <i className="fas fa-download" />
               </a>
             );

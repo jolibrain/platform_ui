@@ -12,20 +12,20 @@ export class dataRepositoriesStore {
     this.load();
   }
 
-  $req() {
-    return agent.Webserver.listFolders(this.settings.nginxPath);
+  $reqFolder(path) {
+    return agent.Webserver.listFolders(path);
   }
 
   @action
   load() {
     this.isLoading = true;
-    this.$req().then(
+    this.$reqFolder(this.settings.nginxPath).then(
       action(publicRepo => {
-        this.repositories = publicRepo.map((repo, index) => {
+        this.repositories = publicRepo.folders.map((repo, index) => {
           return {
             id: index,
-            folderName: repo.replace("/", ""),
-            label: this.settings.systemPath + repo
+            folderName: repo.name.replace("/", ""),
+            label: this.settings.systemPath + repo.name
           };
         });
         this.isLoading = false;

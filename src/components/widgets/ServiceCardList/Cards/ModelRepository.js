@@ -56,6 +56,16 @@ export default class ModelRepositoryCard extends React.Component {
       status: mltype
     });
 
+    let tags = repository.trainingTags;
+    if (tags && tags.length > 0) {
+      tags.forEach(t => {
+        badges.push({
+          classNames: "badge badge-info",
+          status: t
+        });
+      });
+    }
+
     let info = [
       {
         text: "Train Loss",

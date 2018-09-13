@@ -2,8 +2,8 @@ import { observable, computed, action, runInAction } from "mobx";
 import agent from "../../agent";
 
 export default class Repository {
-  @observable folderName;
-  @observable name;
+  @observable path;
+  @observable files;
   @observable store;
 
   @observable jsonConfig = null;
@@ -12,17 +12,52 @@ export default class Repository {
 
   @observable files = [];
 
-  constructor(folderName, store) {
-    this.folderName = folderName;
-    this.name = folderName.slice(0, -1);
+  constructor(path, files, store) {
+    this.path = path;
+    this.files = files;
     this.store = store;
 
     this._load();
   }
 
   @computed
+  get tags() {
+    return this.path.split("/").filter(p => p.length > 0);
+  }
+
+  @computed
+  get trainingTags() {
+    return this.path.split("/").filter(p => {
+      return (
+        p.length > 0 && p !== "models" && p !== "training" && p !== this.name
+      );
+    });
+  }
+
+  @computed
+  get name() {
+    return this.path
+      .split("/")
+      .filter(p => p.length > 0)
+      .pop();
+  }
+
+  @computed
   get location() {
-    return this.store.systemPath + this.folderName;
+    return this.store.systemPath + this.path;
+  }
+
+  @computed
+  get downloadableFiles() {
+    const protoTxtFiles = this.files.filter(f => f.includes("prototxt"));
+    const caffemodelFile = this.files
+      .filter(f => f.includes("caffemodel"))
+      .sort((a, b) => {
+        return parseInt(b.match(/\d+/), 10) - parseInt(a.match(/\d+/), 10);
+      })
+      .slice(0, 1);
+
+    return protoTxtFiles.concat(caffemodelFile);
   }
 
   _load() {
@@ -32,30 +67,6 @@ export default class Repository {
       this._loadJsonMetrics();
       this._loadBestModel();
     }
-
-    if (this.store.hasFiles) {
-      this._loadFiles();
-    }
-  }
-
-  @action.bound
-  async _loadFiles() {
-    const repoFiles = await this.$reqFiles();
-
-    const protoTxtFiles = repoFiles.filter(f => f.includes("prototxt"));
-    const caffemodelFile = repoFiles
-      .filter(f => f.includes("caffemodel"))
-      .sort((a, b) => {
-        return parseInt(b.match(/\d+/), 10) - parseInt(a.match(/\d+/), 10);
-      })
-      .slice(0, 1);
-
-    this.files = protoTxtFiles.concat(caffemodelFile).map(f => {
-      return {
-        filename: f,
-        url: this.store.nginxPath + this.folderName + f
-      };
-    });
   }
 
   @action.bound
@@ -100,24 +111,17 @@ export default class Repository {
   }
 
   $reqJsonMetrics() {
-    return agent.Webserver.getFile(
-      `${this.store.nginxPath}${this.folderName}metrics.json`
-    );
+    if (!this.files.includes("metrics.json")) return null;
+    return agent.Webserver.getFile(`${this.path}metrics.json`);
   }
 
   $reqBestModel() {
-    return agent.Webserver.getFile(
-      `${this.store.nginxPath}${this.folderName}best_model.txt`
-    );
+    if (!this.files.includes("best_model.txt")) return null;
+    return agent.Webserver.getFile(`${this.path}best_model.txt`);
   }
 
   $reqJsonConfig() {
-    return agent.Webserver.getFile(
-      `${this.store.nginxPath}${this.folderName}config.json`
-    );
-  }
-
-  $reqFiles() {
-    return agent.Webserver.listFiles(this.store.nginxPath + this.folderName);
+    if (!this.files.includes("config.json")) return null;
+    return agent.Webserver.getFile(`${this.path}config.json`);
   }
 }

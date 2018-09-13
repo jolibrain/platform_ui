@@ -151,28 +151,48 @@ const Deepdetect = {
   }
 };
 
+const autoIndex = res => {
+  const rowsReg = /<a href="(.+)">(.+)<\/a>.+(\d{2}-[a-zA-Z]{3}-\d{4} \d{2}:\d{2})\s+(\d{0,5})/g;
+  const dirReg = /href="(.*)\/"/;
+  const parentReg = /href="..\/">..\//;
+
+  let files = [],
+    folders = [];
+
+  res.text.replace(rowsReg, function(row, href, name, date, size) {
+    var obj = { href: href, name: name, date: date, size: size };
+
+    obj.name = obj.name.replace(/\/$/, "");
+
+    if (obj.date) {
+      obj.modified = new Date(obj.date);
+      delete obj.date;
+    }
+    if (!dirReg.test(row)) {
+      files.push(obj);
+      return;
+    }
+
+    delete obj.size;
+    if (!parentReg.test(row)) {
+      folders.push(obj);
+      return;
+    }
+  });
+
+  return {
+    folders: folders,
+    files: files.map(f => f.name)
+  };
+};
+
 const Webserver = {
   listFolders: path =>
     superagent
       .get(path)
       .withCredentials()
       .end(handleErrors)
-      .then(res => {
-        const parser = new DOMParser();
-        const htmlDoc = parser.parseFromString(res.text, "text/html");
-        const aElements = htmlDoc.getElementsByTagName("a");
-
-        let folders = [];
-
-        for (var i = 0; i < aElements.length; i++) {
-          const repo = aElements[i].text;
-
-          // Check if not parent folder
-          if (repo !== "../") folders.push(repo);
-        }
-
-        return folders;
-      }),
+      .then(autoIndex),
   listFiles: (path, maxFiles = 100) =>
     superagent
       .get(path)
