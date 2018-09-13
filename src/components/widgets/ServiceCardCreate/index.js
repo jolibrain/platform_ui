@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
@@ -48,3 +49,8 @@ export default class ServiceCardCreate extends React.Component {
     );
   }
 }
+
+ServiceCardCreate.propTypes = {
+  services: PropTypes.array.isRequired,
+  filterServiceName: PropTypes.string
+};

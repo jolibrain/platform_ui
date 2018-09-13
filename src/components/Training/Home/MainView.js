@@ -10,6 +10,25 @@ import RightPanel from "../commons/RightPanel";
 @withRouter
 @observer
 export default class MainView extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      filterServiceName: null
+    };
+
+    this.handleServiceFilter = this.handleServiceFilter.bind(this);
+    this.cleanServiceFilter = this.cleanServiceFilter.bind(this);
+  }
+
+  handleServiceFilter(event) {
+    this.setState({ filterServiceName: event.target.value });
+  }
+
+  cleanServiceFilter(event) {
+    this.setState({ filterServiceName: "" });
+  }
+
   render() {
     if (!this.props.deepdetectStore.isReady) return null;
 
@@ -33,7 +52,28 @@ export default class MainView extends React.Component {
             <hr />
             <div className="serviceList archive">
               <h4>Archived Training Jobs</h4>
-              <ServiceCardList services={archivedTrainingRepositories} />
+
+              <div className="input-group">
+                <input
+                  type="text"
+                  onChange={this.handleServiceFilter}
+                  placeholder="Filter service name..."
+                  value={this.state.filterServiceName}
+                />
+                <div className="input-group-append">
+                  <button
+                    className="btn btn-outline-secondary"
+                    type="button"
+                    onClick={this.cleanServiceFilter}
+                  >
+                    <i className="fas fa-times-circle" />
+                  </button>
+                </div>
+              </div>
+              <ServiceCardList
+                filterServiceName={this.state.filterServiceName}
+                services={archivedTrainingRepositories}
+              />
             </div>
             <RightPanel />
           </div>

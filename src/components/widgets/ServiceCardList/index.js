@@ -11,6 +11,26 @@ import ModelRepositoryCard from "./Cards/ModelRepository";
 @withRouter
 @observer
 export default class ServiceCardList extends React.Component {
+  cardArray(services) {
+    const { filterServiceName } = this.props;
+
+    return services
+      .filter(r => {
+        return filterServiceName ? r.name.includes(filterServiceName) : true;
+      })
+      .map((service, index) => {
+        let card = null;
+        if (service.jsonMetrics) {
+          card = <ModelRepositoryCard key={index} service={service} />;
+        } else if (service.settings.training) {
+          card = <TrainingCard key={index} service={service} />;
+        } else {
+          card = <PredictCard key={index} service={service} />;
+        }
+        return card;
+      });
+  }
+
   render() {
     const { services } = this.props;
 
@@ -22,22 +42,13 @@ export default class ServiceCardList extends React.Component {
 
     return (
       <div className="serviceCardList card-columns">
-        {services.map((service, index) => {
-          let card = null;
-          if (service.jsonMetrics) {
-            card = <ModelRepositoryCard key={index} service={service} />;
-          } else if (service.settings.training) {
-            card = <TrainingCard key={index} service={service} />;
-          } else {
-            card = <PredictCard key={index} service={service} />;
-          }
-          return card;
-        })}
+        {this.cardArray(services)}
       </div>
     );
   }
 }
 
 ServiceCardList.propTypes = {
-  services: PropTypes.array
+  services: PropTypes.array.isRequired,
+  filterServiceName: PropTypes.string
 };
