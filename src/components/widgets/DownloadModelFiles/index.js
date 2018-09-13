@@ -7,10 +7,14 @@ export default class DownloadModelFiles extends React.Component {
   render() {
     const { repository } = this.props;
 
-    if (!repository.files || repository.files === 0) return null;
+    if (!repository.files || repository.files.length === 0) return null;
 
     return (
-      <div className="row">
+      <div className="downloadModelFiles">
+        <h5>
+          <i className="fas fa-download" /> Downloads
+        </h5>
+
         <div className="list-group">
           {repository.files.map((f, index) => {
             return (

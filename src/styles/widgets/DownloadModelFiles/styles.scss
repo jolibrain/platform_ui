@@ -1,0 +1,19 @@
+/*
+ * Sidebar display
+ * change padding and hide download icons in list-group
+*/
+aside .downloadModelFiles {
+  padding-top: 15px !important;
+
+  .list-group i.fa-download {
+    display: none;
+  }
+}
+
+/*
+ * Predict list display
+ * hide title
+*/
+.card .downloadModelFiles h5 {
+  display: none;
+}
