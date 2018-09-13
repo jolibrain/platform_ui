@@ -35,6 +35,16 @@ export default class MainView extends React.Component {
     const { trainingServices } = this.props.deepdetectStore;
     const { archivedTrainingRepositories } = this.props.modelRepositoriesStore;
 
+    const { filterServiceName } = this.state;
+    const displayedArchiveRepositories = archivedTrainingRepositories.filter(
+      r => {
+        return (
+          r.name.includes(filterServiceName) ||
+          r.trainingTags.join(" ").includes(filterServiceName)
+        );
+      }
+    );
+
     return (
       <div className="main-view content-wrapper">
         <div className="container-fluid">
@@ -70,10 +80,7 @@ export default class MainView extends React.Component {
                   </button>
                 </div>
               </div>
-              <ServiceCardList
-                filterServiceName={this.state.filterServiceName}
-                services={archivedTrainingRepositories}
-              />
+              <ServiceCardList services={displayedArchiveRepositories} />
             </div>
             <RightPanel />
           </div>
