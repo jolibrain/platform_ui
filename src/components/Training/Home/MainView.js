@@ -14,7 +14,7 @@ export default class MainView extends React.Component {
     super(props);
 
     this.state = {
-      filterServiceName: null
+      filterServiceName: ""
     };
 
     this.handleServiceFilter = this.handleServiceFilter.bind(this);
