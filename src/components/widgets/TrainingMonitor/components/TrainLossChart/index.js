@@ -154,7 +154,7 @@ export default class MeasureChart extends React.Component {
           checked={this.state.showLine ? "checked" : ""}
           onChange={this.toggleShowLine}
         />
-        <label for="customShowLine">Show line</label>
+        <label htmlFor="customShowLine">Show line</label>
       </div>
     );
 

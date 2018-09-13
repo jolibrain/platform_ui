@@ -37,7 +37,12 @@ export default class RightPanel extends React.Component {
         r => r.name === service.name
       );
       if (repository) {
-        widgets.push(<DownloadModelFiles repository={repository} />);
+        widgets.push(
+          <DownloadModelFiles
+            key="DownloadModelFiles"
+            repository={repository}
+          />
+        );
       }
     }
 
