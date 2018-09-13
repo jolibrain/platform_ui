@@ -42,6 +42,6 @@ Scenario("@content @dynamic Left sidebar serviceList", I => {
   I.waitForElement(".left-sidebar");
 
   within(".left-sidebar", () => {
-    I.seeElement(".serviceList");
+    I.dontSeeElement(".serviceList");
   });
 });
