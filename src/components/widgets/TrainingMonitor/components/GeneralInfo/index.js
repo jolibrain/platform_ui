@@ -170,7 +170,7 @@ export default class GeneralInfo extends React.Component {
           <div className="col-md-6">
             <span>
               <b>Remaining Time</b>:{" "}
-              {measure && measure.remaint_time_str
+              {measure && measure.remain_time_str
                 ? measure.remain_time_str
                 : "--"}
             </span>
