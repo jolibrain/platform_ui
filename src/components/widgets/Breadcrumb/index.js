@@ -30,10 +30,20 @@ export default class Breadcrumb extends React.Component {
       <div className="breadcrumbs clearfix">
         <Link to="/">DeepDetect</Link> >&nbsp;
         <Link to={root.path}>{root.label}</Link> >&nbsp;
-        <Link to={`${root.path}/${service.serverName}`}>
-          {service.serverName}
-        </Link>{" "}
-        >&nbsp;
+        {service.serverName ? (
+          <span>
+            server: <b>{service.serverName}</b> >&nbsp;
+          </span>
+        ) : (
+          ""
+        )}
+        {service.gpuid ? (
+          <span>
+            gpu: <b>{service.gpuid}</b> >&nbsp;
+          </span>
+        ) : (
+          ""
+        )}
         <Link to={`${root.path}/${service.serverName}/${service.name}`}>
           {service.name}
         </Link>
