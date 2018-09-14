@@ -148,7 +148,11 @@ export default class deepdetectService {
   get measure() {
     let value = null;
 
-    if (this.respTrainMetrics && this.respTrainMetrics.body) {
+    if (
+      !this.isTraining &&
+      this.respTrainMetrics &&
+      this.respTrainMetrics.body
+    ) {
       value = this.respTrainMetrics.body.measure;
     } else if (this.respTraining && this.respTraining.body) {
       value = this.respTraining.body.measure;
@@ -161,7 +165,11 @@ export default class deepdetectService {
   get measure_hist() {
     let value = null;
 
-    if (this.respTrainMetrics && this.respTrainMetrics.body) {
+    if (
+      !this.isTraining &&
+      this.respTrainMetrics &&
+      this.respTrainMetrics.body
+    ) {
       value = this.respTrainMetrics.body.measure_hist;
     } else if (this.respTraining && this.respTraining.body) {
       value = this.respTraining.body.measure_hist;
