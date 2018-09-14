@@ -16,12 +16,12 @@ export default class ServiceItem extends React.Component {
           }/${service.name}`}
         >
           <span className="nav-item-name">
-            {service.name}
             {service.settings.training ? (
-              <i className="fas fa-braille float-right" />
+              <i className="fas fa-braille" />
             ) : (
-              <i className="fas fa-cube float-right" />
+              <i className="fas fa-cube" />
             )}
+            &nbsp;{service.name}
           </span>
         </Link>
       </li>
