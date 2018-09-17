@@ -16,6 +16,11 @@ export class deepdetectStore {
   }
 
   @computed
+  get service() {
+    return this.server.service;
+  }
+
+  @computed
   get writableServer() {
     return this.servers.find(s => s.settings.isWritable);
   }

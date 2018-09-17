@@ -195,7 +195,6 @@ export default class deepdetectService {
 
   @computed
   get gpuid() {
-    console.log("gpu " + this.respInfo.body.parameters.mllib.gpuid);
     return this.respInfo.body.parameters.mllib[0].gpuid;
   }
 
