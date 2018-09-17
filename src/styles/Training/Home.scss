@@ -1,3 +1,24 @@
 .training-home-component {
   margin-top: 80px;
+
+  .layoutSelect {
+    i {
+      margin-right: 10px;
+      font-size: 18px;
+      color: #ccc;
+      cursor: pointer;
+    }
+
+    i.active {
+      color: #333;
+    }
+  }
+
+  .form-inline {
+    margin-bottom: 10px;
+
+    .input-group {
+      margin-left: 20px;
+    }
+  }
 }
