@@ -3,6 +3,7 @@ import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
 import ServiceCardList from "../../widgets/ServiceCardList";
+import ServiceContentList from "../../widgets/ServiceContentList";
 import RightPanel from "../commons/RightPanel";
 
 @inject("deepdetectStore")
@@ -14,11 +15,15 @@ export default class MainView extends React.Component {
     super(props);
 
     this.state = {
-      filterServiceName: ""
+      filterServiceName: "",
+      archiveLayout: "cards"
     };
 
     this.handleServiceFilter = this.handleServiceFilter.bind(this);
     this.cleanServiceFilter = this.cleanServiceFilter.bind(this);
+
+    this.handleClickLayoutCards = this.handleClickLayoutCards.bind(this);
+    this.handleClickLayoutList = this.handleClickLayoutList.bind(this);
   }
 
   handleServiceFilter(event) {
@@ -27,6 +32,14 @@ export default class MainView extends React.Component {
 
   cleanServiceFilter(event) {
     this.setState({ filterServiceName: "" });
+  }
+
+  handleClickLayoutCards() {
+    this.setState({ archiveLayout: "cards" });
+  }
+
+  handleClickLayoutList() {
+    this.setState({ archiveLayout: "list" });
   }
 
   render() {
@@ -60,27 +73,52 @@ export default class MainView extends React.Component {
               )}
             </div>
             <hr />
-            <div className="serviceList archive">
-              <h4>Archived Training Jobs</h4>
-
-              <div className="input-group">
-                <input
-                  type="text"
-                  onChange={this.handleServiceFilter}
-                  placeholder="Filter service name..."
-                  value={this.state.filterServiceName}
+            <div className="archiveTrainingList archive">
+              <div className="layoutSelect float-right">
+                <i
+                  className={
+                    this.state.archiveLayout === "cards"
+                      ? "fas fa-th-large active"
+                      : "fas fa-th-large"
+                  }
+                  onClick={this.handleClickLayoutCards}
                 />
-                <div className="input-group-append">
-                  <button
-                    className="btn btn-outline-secondary"
-                    type="button"
-                    onClick={this.cleanServiceFilter}
-                  >
-                    <i className="fas fa-times-circle" />
-                  </button>
-                </div>
+                <i
+                  className={
+                    this.state.archiveLayout === "list"
+                      ? "fas fa-th-list active"
+                      : "fas fa-th-list"
+                  }
+                  onClick={this.handleClickLayoutList}
+                />
               </div>
-              <ServiceCardList services={displayedArchiveRepositories} />
+
+              <form className="form-inline">
+                <h4>Archived Training Jobs</h4>
+                <div className="input-group">
+                  <input
+                    type="text"
+                    onChange={this.handleServiceFilter}
+                    placeholder="Filter service name..."
+                    value={this.state.filterServiceName}
+                  />
+                  <div className="input-group-append">
+                    <button
+                      className="btn btn-outline-secondary"
+                      type="button"
+                      onClick={this.cleanServiceFilter}
+                    >
+                      <i className="fas fa-times-circle" />
+                    </button>
+                  </div>
+                </div>
+              </form>
+
+              {this.state.archiveLayout === "cards" ? (
+                <ServiceCardList services={displayedArchiveRepositories} />
+              ) : (
+                <ServiceContentList services={displayedArchiveRepositories} />
+              )}
             </div>
             <RightPanel />
           </div>
