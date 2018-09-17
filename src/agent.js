@@ -193,7 +193,7 @@ const Webserver = {
       .withCredentials()
       .end(handleErrors)
       .then(autoIndex),
-  listFiles: (path, maxFiles = 100) =>
+  listFiles: path =>
     superagent
       .get(path)
       .withCredentials()
@@ -212,7 +212,7 @@ const Webserver = {
           if (repo.indexOf("/") === -1) files.push(repo);
         }
 
-        return files.slice(0, maxFiles);
+        return files;
       }),
   getFile: path =>
     superagent
