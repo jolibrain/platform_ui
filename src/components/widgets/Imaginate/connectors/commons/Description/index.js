@@ -140,94 +140,146 @@ export default class Description extends React.Component {
         break;
 
       case "nns":
-        const rois = input.json.body.predictions[0].rois;
-        const roisIndex =
-          this.props.selectedBoxIndex !== -1 ? this.props.selectedBoxIndex : 0;
+        const { selectedBoxIndex } = this.props;
+        const prediction = input.json.body.predictions[0];
+        let cells = [];
 
-        if (rois.length === 0 || !rois[roisIndex]) break;
+        if (!prediction) break;
 
-        const cells = rois[roisIndex].nns
-          .sort((a, b) => b.prob - a.prob)
-          .map((category, index) => {
-            const percent = parseInt(category.prob * 100, 10);
-            const progressStyle = { width: `${percent}%` };
+        if (prediction.rois) {
+          const source = prediction.rois;
 
-            let progressBg = "bg-success";
-            let selectedBoxColor = "#31a354";
+          if (source.length === 0 || !source[selectedBoxIndex]) break;
 
-            if (percent < 60) {
-              progressBg = "bg-warning";
-              selectedBoxColor = "#a1d99b";
-            }
+          cells = source[selectedBoxIndex].nns
+            .sort((a, b) => b.prob - a.prob)
+            .map((category, index) => {
+              const percent = parseInt(category.prob * 100, 10);
+              const progressStyle = { width: `${percent}%` };
 
-            if (percent < 30) {
-              progressBg = "bg-danger";
-              selectedBoxColor = "#e5f5e0";
-            }
+              let progressBg = "bg-success";
+              let selectedBoxColor = "#31a354";
 
-            if (this.props.selectedBoxIndex === index) {
-              progressBg = "bg-info";
-            }
+              if (percent < 60) {
+                progressBg = "bg-warning";
+                selectedBoxColor = "#a1d99b";
+              }
 
-            return (
-              <div key={index} className="col progress-nns">
-                <Boundingbox
-                  key={`category-${Math.random()}`}
-                  image={category.uri}
-                  boxes={[
-                    {
-                      coord: [
-                        category.bbox.xmin,
-                        category.bbox.ymax,
-                        category.bbox.xmax - category.bbox.xmin,
-                        category.bbox.ymin - category.bbox.ymax
-                      ]
-                    }
-                  ]}
-                  options={{
-                    colors: {
-                      normal: "#ffffff",
-                      selected: selectedBoxColor
-                    }
-                  }}
-                  drawBox={(canvas, box, color) => {
-                    const ctx = canvas.getContext("2d");
+              if (percent < 30) {
+                progressBg = "bg-danger";
+                selectedBoxColor = "#e5f5e0";
+              }
 
-                    const coord = box.coord ? box.coord : box;
-                    let [x, y, width, height] = coord;
+              if (this.props.selectedBoxIndex === index) {
+                progressBg = "bg-info";
+              }
 
-                    ctx.strokeStyle = color;
-                    ctx.lineWidth = 5;
-                    ctx.beginPath();
-                    ctx.lineTo(x, y);
-                    ctx.lineTo(x, y + height);
-                    ctx.lineTo(x + width, y + height);
-                    ctx.lineTo(x + width, y);
-                    ctx.lineTo(x, y);
-                    ctx.stroke();
-                  }}
-                />
-                <div
-                  className={`progress-bar ${progressBg}`}
-                  role="progressbar"
-                  style={progressStyle}
-                  aria-valuenow={percent}
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                >
-                  {percent}
+              return (
+                <div key={index} className="col progress-nns">
+                  <Boundingbox
+                    key={`category-${Math.random()}`}
+                    image={category.uri}
+                    boxes={[
+                      {
+                        coord: [
+                          category.bbox.xmin,
+                          category.bbox.ymax,
+                          category.bbox.xmax - category.bbox.xmin,
+                          category.bbox.ymin - category.bbox.ymax
+                        ]
+                      }
+                    ]}
+                    options={{
+                      colors: {
+                        normal: "#ffffff",
+                        selected: selectedBoxColor
+                      }
+                    }}
+                    drawBox={(canvas, box, color) => {
+                      const ctx = canvas.getContext("2d");
+
+                      const coord = box.coord ? box.coord : box;
+                      let [x, y, width, height] = coord;
+
+                      ctx.strokeStyle = color;
+                      ctx.lineWidth = 5;
+                      ctx.beginPath();
+                      ctx.lineTo(x, y);
+                      ctx.lineTo(x, y + height);
+                      ctx.lineTo(x + width, y + height);
+                      ctx.lineTo(x + width, y);
+                      ctx.lineTo(x, y);
+                      ctx.stroke();
+                    }}
+                  />
+                  <div
+                    className={`progress-bar ${progressBg}`}
+                    role="progressbar"
+                    style={progressStyle}
+                    aria-valuenow={percent}
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  >
+                    {percent}
+                  </div>
                 </div>
-              </div>
-            );
-          })
-          .reduce((result, element, index, array) => {
-            // Add separators
-            result.push(element);
-            if ((index + 1) % 2 === 0) {
-              result.push(<div key={`sep-${index}`} className="w-100" />);
-            }
-            return result;
-          }, []);
+              );
+            })
+            .reduce((result, element, index, array) => {
+              // Add separators
+              result.push(element);
+              if ((index + 1) % 2 === 0) {
+                result.push(<div key={`sep-${index}`} className="w-100" />);
+              }
+              return result;
+            }, []);
+        } else {
+          if (!prediction || !prediction.nns || prediction.nns.length === 0)
+            break;
+
+          cells = prediction.nns
+            .map((nns, index) => {
+              const percent = parseInt(nns.dist * 100, 10);
+              const progressStyle = { width: `${percent}%` };
+
+              let progressBg = "bg-danger";
+              let selectedBoxColor = "#31a354";
+
+              if (percent < 60) {
+                progressBg = "bg-warning";
+                selectedBoxColor = "#a1d99b";
+              }
+
+              if (percent < 30) {
+                progressBg = "bg-success";
+                selectedBoxColor = "#e5f5e0";
+              }
+
+              return (
+                <div key={index} className="col progress-nns">
+                  <img src={nns.uri} className="img-fluid" />
+                  <div
+                    className={`progress-bar ${progressBg}`}
+                    role="progressbar"
+                    style={progressStyle}
+                    aria-valuenow={percent}
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  >
+                    {percent}
+                  </div>
+                </div>
+              );
+            })
+            .reduce((result, element, index, array) => {
+              // Add separators
+              result.push(element);
+              if ((index + 1) % 2 === 0) {
+                result.push(<div key={`sep-${index}`} className="w-100" />);
+              }
+              return result;
+            }, []);
+        }
 
         output = <div className="row">{cells}</div>;
         break;
