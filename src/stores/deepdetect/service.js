@@ -195,7 +195,20 @@ export default class deepdetectService {
 
   @computed
   get gpuid() {
-    return this.respInfo.body.parameters.mllib[0].gpuid;
+    let gpuid = null;
+
+    if (
+      this.respInfo &&
+      this.respInfo.body &&
+      this.respInfo.body.parameters &&
+      this.respInfo.body.parameters.mllib &&
+      this.respInfo.body.parameters.mllib[0] &&
+      this.respInfo.body.parameters.mllib[0].gpuid
+    ) {
+      gpuid = this.respInfo.body.parameters.mllib[0].gpuid;
+    }
+
+    return gpuid;
   }
 
   @action
