@@ -51,7 +51,7 @@ export default class TrainingCard extends React.Component {
 
     badges.push({
       classNames: "badge badge-info",
-      status: `Server: ${service.serverName}`
+      status: service.serverName
     });
 
     if (service.gpuid) {
