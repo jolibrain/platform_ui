@@ -16,7 +16,7 @@ export default class ToggleControl extends React.Component {
           onChange={onChange}
           checked={value}
         />
-        <label className="custom-control-label" for={elementId}>
+        <label className="custom-control-label" htmlFor={elementId}>
           {title}
         </label>
       </div>
@@ -25,7 +25,7 @@ export default class ToggleControl extends React.Component {
 }
 
 ToggleControl.propTypes = {
-  key: PropTypes.string.isRequired,
+  attr: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   value: PropTypes.bool
