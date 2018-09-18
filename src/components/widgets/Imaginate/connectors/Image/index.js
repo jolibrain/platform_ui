@@ -33,7 +33,7 @@ export default class ImageConnector extends React.Component {
     );
     this.handleConfidenceThreshold = this.handleConfidenceThreshold.bind(this);
     this.handleBestThreshold = this.handleBestThreshold.bind(this);
-    this.handleMultisearchRoi = this.handleMultisearchRoi.bind(this);
+    this.handleMultisearchRois = this.handleMultisearchRois.bind(this);
   }
 
   onOver(index) {
@@ -64,10 +64,10 @@ export default class ImageConnector extends React.Component {
     this.props.imaginateStore.predict();
   }
 
-  handleMultisearchRoi(value) {
+  handleMultisearchRois(value) {
     const { serviceSettings } = this.props.imaginateStore;
-    this.setState({ multisearch_roi: !this.state.multisearch_roi });
-    serviceSettings.request.multisearch_roi = !this.state.multisearch_roi;
+    this.setState({ multisearch_rois: !this.state.multisearch_rois });
+    serviceSettings.request.multisearch_rois = !this.state.multisearch_rois;
     this.props.imaginateStore.predict();
   }
 
@@ -123,10 +123,10 @@ export default class ImageConnector extends React.Component {
     if (service.respInfo.body.mltype === "rois") {
       uiControls.push(
         <ToggleControl
-          key="paramMultisearchRoi"
-          title="Multisearch ROI"
-          value={this.state.multisearch_roi}
-          onChange={this.handleMultisearchRoi}
+          key="paramMultisearchRois"
+          title="Multisearch ROIs"
+          value={this.state.multisearch_rois}
+          onChange={this.handleMultisearchRois}
         />
       );
     }

@@ -385,8 +385,8 @@ export default class deepdetectService {
       );
     }
 
-    if (settings.request.multisearch_roi) {
-      input.postData.parameters.output.multisearch_roi = true;
+    if (settings.request.multisearch_rois) {
+      input.postData.parameters.output.multisearch_rois = true;
     }
 
     if (settings.request.blank_label) {
