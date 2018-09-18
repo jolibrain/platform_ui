@@ -22,7 +22,8 @@ export default class ImageConnector extends React.Component {
 
     this.state = {
       selectedBoxIndex: -1,
-      sliderBest: 1
+      sliderBest: 1,
+      sliderSearchNn: 10
     };
 
     this.onOver = this.onOver.bind(this);
@@ -33,6 +34,7 @@ export default class ImageConnector extends React.Component {
     );
     this.handleConfidenceThreshold = this.handleConfidenceThreshold.bind(this);
     this.handleBestThreshold = this.handleBestThreshold.bind(this);
+    this.handleSearchNnThreshold = this.handleSearchNnThreshold.bind(this);
     this.handleMultisearchRois = this.handleMultisearchRois.bind(this);
   }
 
@@ -61,6 +63,13 @@ export default class ImageConnector extends React.Component {
     const { serviceSettings } = this.props.imaginateStore;
     serviceSettings.request.best = parseInt(value, 10);
     this.setState({ sliderBest: value });
+    this.props.imaginateStore.predict();
+  }
+
+  handleSearchNnThreshold(value) {
+    const { serviceSettings } = this.props.imaginateStore;
+    serviceSettings.request.search_nn = parseInt(value, 10);
+    this.setState({ sliderSearchNn: value });
     this.props.imaginateStore.predict();
   }
 
@@ -127,6 +136,17 @@ export default class ImageConnector extends React.Component {
           title="Multisearch ROIs"
           value={this.state.multibox_rois}
           onChange={this.handleMultisearchRois}
+        />
+      );
+
+      uiControls.push(
+        <ParamSlider
+          key="paramSliderSearchNn"
+          title="Search Size"
+          defaultValue={this.state.sliderSearchNn}
+          onAfterChange={this.handleSearchNnThreshold}
+          min={0}
+          max={100}
         />
       );
     }
