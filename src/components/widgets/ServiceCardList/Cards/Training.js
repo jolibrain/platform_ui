@@ -50,6 +50,18 @@ export default class TrainingCard extends React.Component {
     let badges = [];
 
     badges.push({
+      classNames: "badge badge-info",
+      status: `Server: ${service.serverName}`
+    });
+
+    if (service.gpuid) {
+      badges.push({
+        classNames: "badge badge-info",
+        status: `GPU: ${service.gpuid}`
+      });
+    }
+
+    badges.push({
       classNames: "badge badge-secondary",
       status: service.settings.mltype
     });
@@ -68,9 +80,9 @@ export default class TrainingCard extends React.Component {
 
     if (service.isRequesting) {
       badges.push({
-        classNames: "badge badge-info",
+        classNames: "badge badge-warning",
         status: "",
-        loading: true
+        spinner: true
       });
     }
 
@@ -146,7 +158,7 @@ export default class TrainingCard extends React.Component {
             {badges.map((badge, key) => {
               return (
                 <span key={key} className={badge.classNames}>
-                  {badge.loading ? (
+                  {badge.spinner ? (
                     <i className="fas fa-spinner fa-spin" />
                   ) : (
                     ""
