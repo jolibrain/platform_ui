@@ -33,7 +33,7 @@ export default class ImageList extends React.Component {
 
     if (!service) return null;
 
-    const inputs = service.inputs;
+    const inputs = service.inputs.slice(0, 100);
 
     return (
       <div id="carousel">
