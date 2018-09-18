@@ -385,6 +385,10 @@ export default class deepdetectService {
       );
     }
 
+    if (settings.request.multisearch_roi) {
+      input.postData.parameters.output.multisearch_roi = true;
+    }
+
     if (settings.request.blank_label) {
       input.postData.parameters.output.blank_label = parseInt(
         settings.request.blank_label,

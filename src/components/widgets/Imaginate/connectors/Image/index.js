@@ -11,6 +11,7 @@ import InputForm from "./InputForm";
 import ParamSlider from "../commons/ParamSlider";
 import Description from "../commons/Description";
 import CardCommands from "../commons/CardCommands";
+import ToggleControl from "../commons/ToggleControl";
 
 @inject("imaginateStore")
 @withRouter
@@ -32,6 +33,7 @@ export default class ImageConnector extends React.Component {
     );
     this.handleConfidenceThreshold = this.handleConfidenceThreshold.bind(this);
     this.handleBestThreshold = this.handleBestThreshold.bind(this);
+    this.handleMultisearchRoi = this.handleMultisearchRoi.bind(this);
   }
 
   onOver(index) {
@@ -62,6 +64,13 @@ export default class ImageConnector extends React.Component {
     this.props.imaginateStore.predict();
   }
 
+  handleMultisearchRoi(value) {
+    const { serviceSettings } = this.props.imaginateStore;
+    this.setState({ multisearch_roi: !this.state.multisearch_roi });
+    serviceSettings.request.multisearch_roi = !this.state.multisearch_roi;
+    this.props.imaginateStore.predict();
+  }
+
   render() {
     const { service, serviceSettings } = this.props.imaginateStore;
 
@@ -69,7 +78,7 @@ export default class ImageConnector extends React.Component {
 
     const input = service.selectedInput;
 
-    let thresholds = [];
+    let uiControls = [];
 
     if (
       input &&
@@ -77,12 +86,12 @@ export default class ImageConnector extends React.Component {
       !input.isCtcOuput &&
       !input.isSegmentationInput
     ) {
-      thresholds.push(<Threshold key="threshold" />);
+      uiControls.push(<Threshold key="threshold" />);
 
       // Note: the threshold confidence variable in the key attribute
       // is a hack to update the slider when user pushes
       // on other external threshold (salient/medium/detailed for example)
-      thresholds.push(
+      uiControls.push(
         <ParamSlider
           key={`paramSliderConfidence-${serviceSettings.threshold.confidence}`}
           title="Confidence threshold"
@@ -98,7 +107,7 @@ export default class ImageConnector extends React.Component {
       if (service.settings.mltype === "classification") {
         // && service.respInfo.body.parameters.mllib[0].nclasses.length > 0
 
-        thresholds.push(
+        uiControls.push(
           <ParamSlider
             key="paramSliderBest"
             title="Best threshold"
@@ -109,6 +118,17 @@ export default class ImageConnector extends React.Component {
           />
         );
       }
+    }
+
+    if (service.respInfo.body.mltype === "rois") {
+      uiControls.push(
+        <ToggleControl
+          key="paramMultisearchRoi"
+          title="Multisearch ROI"
+          value={this.state.multisearch_roi}
+          onChange={this.handleMultisearchRoi}
+        />
+      );
     }
 
     return (
@@ -140,7 +160,7 @@ export default class ImageConnector extends React.Component {
           </div>
           <div className="col-md-5">
             <InputForm />
-            {thresholds}
+            {uiControls}
             <div className="description">
               <Description
                 selectedBoxIndex={this.state.selectedBoxIndex}
