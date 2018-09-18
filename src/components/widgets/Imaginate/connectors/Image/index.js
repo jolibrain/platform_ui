@@ -66,8 +66,8 @@ export default class ImageConnector extends React.Component {
 
   handleMultisearchRois(value) {
     const { serviceSettings } = this.props.imaginateStore;
-    this.setState({ multisearch_rois: !this.state.multisearch_rois });
-    serviceSettings.request.multisearch_rois = !this.state.multisearch_rois;
+    this.setState({ multibox_rois: !this.state.multibox_rois });
+    serviceSettings.request.multibox_rois = !this.state.multibox_rois;
     this.props.imaginateStore.predict();
   }
 
@@ -125,7 +125,7 @@ export default class ImageConnector extends React.Component {
         <ToggleControl
           key="paramMultisearchRois"
           title="Multisearch ROIs"
-          value={this.state.multisearch_rois}
+          value={this.state.multibox_rois}
           onChange={this.handleMultisearchRois}
         />
       );
