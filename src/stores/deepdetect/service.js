@@ -398,6 +398,13 @@ export default class deepdetectService {
       );
     }
 
+    if (settings.request.search_nn) {
+      input.postData.parameters.output.search_nn = parseInt(
+        settings.request.search_nn,
+        10
+      );
+    }
+
     if (settings.request.multibox_rois) {
       input.postData.parameters.output.multibox_rois = true;
     }

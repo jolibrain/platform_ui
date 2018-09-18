@@ -243,21 +243,18 @@ export default class Description extends React.Component {
               const progressStyle = { width: `${percent}%` };
 
               let progressBg = "bg-danger";
-              let selectedBoxColor = "#31a354";
 
               if (percent < 60) {
                 progressBg = "bg-warning";
-                selectedBoxColor = "#a1d99b";
               }
 
               if (percent < 30) {
                 progressBg = "bg-success";
-                selectedBoxColor = "#e5f5e0";
               }
 
               return (
                 <div key={index} className="col progress-nns">
-                  <img src={nns.uri} className="img-fluid" />
+                  <img src={nns.uri} className="img-fluid" alt="" />
                   <div
                     className={`progress-bar ${progressBg}`}
                     role="progressbar"
