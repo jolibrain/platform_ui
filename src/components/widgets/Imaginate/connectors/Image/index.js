@@ -132,7 +132,7 @@ export default class ImageConnector extends React.Component {
     if (service.respInfo.body.mltype === "rois") {
       uiControls.push(
         <ToggleControl
-          attr="paramMultisearchRois"
+          key="paramMultisearchRois"
           title="Multisearch ROIs"
           value={this.state.multibox_rois}
           onChange={this.handleMultisearchRois}
