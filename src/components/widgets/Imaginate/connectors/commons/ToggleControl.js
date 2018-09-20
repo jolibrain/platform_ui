@@ -5,14 +5,14 @@ import { observer } from "mobx-react";
 @observer
 export default class ToggleControl extends React.Component {
   render() {
-    const { key, title, onChange, value } = this.props;
-    const elementId = `check-${key}`;
+    const { title, onChange, value } = this.props;
+    const elementId = `check-${Math.random()}`;
     return (
       <div className="custom-control custom-checkbox">
         <input
+          id={elementId}
           type="checkbox"
           className="custom-control-input"
-          id={elementId}
           onChange={onChange}
           checked={value}
         />
@@ -25,7 +25,6 @@ export default class ToggleControl extends React.Component {
 }
 
 ToggleControl.propTypes = {
-  attr: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   value: PropTypes.bool
