@@ -17,7 +17,7 @@ export default class TrainingCard extends React.Component {
     const { service } = this.props;
     const { measure, measure_hist } = service;
 
-    let value = "--";
+    let value = null;
 
     if (measure) {
       value = measure[attr];
@@ -30,11 +30,7 @@ export default class TrainingCard extends React.Component {
         measure_hist[`${attr}_hist`][measure_hist[`${attr}_hist`].length - 1];
     }
 
-    if (
-      !["remain_time_str", "iteration"].includes(attr) &&
-      value &&
-      value !== "--"
-    ) {
+    if (value && !["remain_time_str", "iteration"].includes(attr)) {
       if (attr === "train_loss") {
         value = value.toFixed(10);
       } else {
@@ -88,64 +84,83 @@ export default class TrainingCard extends React.Component {
 
     const serviceUrl = `/training/${service.serverName}/${service.name}`;
 
-    let info = [
-      {
+    let info = [];
+
+    const train_loss = this.getValue("train_loss");
+    if (train_loss)
+      info.push({
         text: "Train Loss",
-        val: this.getValue("train_loss")
-      },
-      {
+        val: train_loss
+      });
+
+    const iteration = this.getValue("iteration");
+    if (iteration)
+      info.push({
         text: "Iterations",
-        val: this.getValue("iteration")
-      }
-    ];
+        val: iteration
+      });
 
     switch (service.settings.mltype) {
       case "segmentation":
-        info.push({
-          text: "Mean IOU",
-          val: this.getValue("meaniou")
-        });
+        const meaniou = this.getValue("meaniou");
+        if (meaniou)
+          info.push({
+            text: "Mean IOU",
+            val: meaniou
+          });
         break;
       case "detection":
-        info.push({
-          text: "MAP",
-          val: this.getValue("map")
-        });
+        const map = this.getValue("map");
+        if (map)
+          info.push({
+            text: "MAP",
+            val: map
+          });
         break;
       case "ctc":
-        info.push({
-          text: "Accuracy",
-          val: this.getValue("acc")
-        });
+        const ctc_acc = this.getValue("acc");
+        if (ctc_acc)
+          info.push({
+            text: "Accuracy",
+            val: ctc_acc
+          });
         break;
       case "classification":
-        info.push({
-          text: "Accuracy",
-          val: this.getValue("acc")
-        });
-        info.push({
-          text: "F1",
-          val: this.getValue("f1")
-        });
-
-        info.push({
-          text: "mcll",
-          val: this.getValue("mcll")
-        });
+        const classif_acc = this.getValue("acc");
+        if (classif_acc)
+          info.push({
+            text: "Accuracy",
+            val: classif_acc
+          });
+        const f1 = this.getValue("f1");
+        if (f1)
+          info.push({
+            text: "F1",
+            val: f1
+          });
+        const mcll = this.getValue("mcll");
+        if (mcll)
+          info.push({
+            text: "mcll",
+            val: mcll
+          });
         break;
       case "regression":
-        info.push({
-          text: "Eucll",
-          val: this.getValue("eucll")
-        });
+        const eucll = this.getValue("eucll");
+        if (eucll)
+          info.push({
+            text: "Eucll",
+            val: eucll
+          });
         break;
       default:
         break;
     }
 
+    const remain_time_str = this.getValue("remain_time_str");
     info.push({
       text: "Time remaining",
-      val: this.getValue("remain_time_str"),
+      val: remain_time_str,
       breakline: true
     });
 
@@ -169,19 +184,27 @@ export default class TrainingCard extends React.Component {
             })}
           </h5>
           <p className="card-text">{service.settings.description}</p>
-          <ul>
-            {info.map((i, index) => {
-              return (
-                <li key={index}>
-                  {i.text}: {i.breakline ? <br /> : ""}
-                  <b>{i.val}</b>
-                </li>
-              );
-            })}
-          </ul>
-          <Link to={serviceUrl} className="btn btn-outline-primary">
-            Monitor
-          </Link>
+          {info.length > 0 ? (
+            <div>
+              <ul>
+                {info.map((i, index) => {
+                  return (
+                    <li key={index}>
+                      {i.text}: {i.breakline ? <br /> : ""}
+                      <b>{i.val}</b>
+                    </li>
+                  );
+                })}
+              </ul>
+              <Link to={serviceUrl} className="btn btn-outline-primary">
+                Monitor
+              </Link>
+            </div>
+          ) : (
+            <a className="btn btn-outline-primary disabled">
+              <i className="fas fa-spinner fa-spin" /> Waiting for data...
+            </a>
+          )}
         </div>
       </div>
     );
