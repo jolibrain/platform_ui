@@ -22,11 +22,13 @@ export default class DownloadModelFiles extends React.Component {
               <a
                 key={index}
                 href={repository.path + f}
-                className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                className="list-group-item list-group-item-action d-flex justify-content-start align-items-center text-truncate"
                 download
               >
-                {f}
-                <i className="fas fa-download" />
+                <span className="badge badge-light">
+                  <i className="fas fa-download" />
+                </span>
+                &nbsp;{f}
               </a>
             );
           })}
