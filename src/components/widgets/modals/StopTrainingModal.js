@@ -58,8 +58,13 @@ export default class StopTrainingModal extends React.Component {
             className="btn btn-primary mb-2"
             onClick={this.handleStopTraining}
           >
-            {this.state.spinner ? <i className="fas fa-spinner fa-spin" /> : ""}
-            Yes
+            {this.state.spinner ? (
+              <span>
+                <i className="fas fa-spinner fa-spin" /> Stopping
+              </span>
+            ) : (
+              "Yes"
+            )}
           </button>
         </div>
       </div>
