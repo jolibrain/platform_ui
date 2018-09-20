@@ -21,7 +21,6 @@ export class dataRepositoriesStore {
     this.isLoading = true;
     this.$reqFolder(path).then(content => {
       const { folders } = content;
-      console.log(folders);
 
       if (level === 0) {
         folders.forEach(f => this.load(path + f.name + "/", level + 1));

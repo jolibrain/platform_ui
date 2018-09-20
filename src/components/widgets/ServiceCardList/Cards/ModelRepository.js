@@ -14,9 +14,12 @@ export default class ModelRepositoryCard extends React.Component {
 
   getValue(attr) {
     const { service } = this.props;
+
+    if (!service.jsonMetrics) return null;
+
     const { measure, measure_hist } = service.jsonMetrics.body;
 
-    let value = "--";
+    let value = null;
 
     if (measure) {
       value = measure[attr];
@@ -29,7 +32,7 @@ export default class ModelRepositoryCard extends React.Component {
         measure_hist[`${attr}_hist`][measure_hist[`${attr}_hist`].length - 1];
     }
 
-    if (attr !== "remain_time_str" && value && value !== "--") {
+    if (attr !== "remain_time_str" && value) {
       if (attr === "train_loss") {
         value = value.toFixed(10);
       } else {
@@ -45,16 +48,20 @@ export default class ModelRepositoryCard extends React.Component {
 
     if (!repository) return null;
 
-    const { mltype } = repository.jsonMetrics.body;
+    const mltype = repository.jsonMetrics
+      ? repository.jsonMetrics.body.mltype
+      : null;
 
     const archiveUrl = `/trainingArchive/${repository.name}`;
 
     let badges = [];
 
-    badges.push({
-      classNames: "badge badge-secondary",
-      status: mltype
-    });
+    if (mltype) {
+      badges.push({
+        classNames: "badge badge-secondary",
+        status: mltype
+      });
+    }
 
     let tags = repository.trainingTags;
     if (tags && tags.length > 0) {
@@ -66,58 +73,71 @@ export default class ModelRepositoryCard extends React.Component {
       });
     }
 
-    let info = [
-      {
-        text: "Train Loss",
-        val: this.getValue("train_loss")
-      }
-    ];
+    let info = [];
 
-    let val_acc, val_accp;
+    const train_loss = this.getValue("train_loss");
+    if (train_loss)
+      info.push({
+        text: "Train Loss",
+        val: train_loss
+      });
 
     switch (mltype) {
       case "segmentation":
-        info.push({
-          text: "Mean IOU",
-          val: this.getValue("meaniou")
-        });
+        const meaniou = this.getValue("meaniou");
+        if (meaniou)
+          info.push({
+            text: "Mean IOU",
+            val: meaniou
+          });
         break;
       case "detection":
-        info.push({
-          text: "MAP",
-          val: this.getValue("map")
-        });
+        const map = this.getValue("map");
+        if (map)
+          info.push({
+            text: "MAP",
+            val: map
+          });
         break;
       case "ctc":
-        val_acc = this.getValue("acc");
-        val_accp = this.getValue("accp");
-        info.push({
-          text: "Accuracy",
-          val: val_acc || val_accp
-        });
+        const ctc_acc = this.getValue("acc");
+        const ctc_accp = this.getValue("accp");
+        if (ctc_acc || ctc_accp)
+          info.push({
+            text: "Accuracy",
+            val: ctc_acc || ctc_accp
+          });
         break;
       case "classification":
-        val_acc = this.getValue("acc");
-        val_accp = this.getValue("accp");
-        info.push({
-          text: "Accuracy",
-          val: val_acc || val_accp
-        });
-        info.push({
-          text: "F1",
-          val: this.getValue("f1")
-        });
+        const classif_acc = this.getValue("acc");
+        const classif_accp = this.getValue("accp");
+        if (classif_acc || classif_accp)
+          info.push({
+            text: "Accuracy",
+            val: classif_acc || classif_accp
+          });
 
-        info.push({
-          text: "mcll",
-          val: this.getValue("mcll")
-        });
+        const f1 = this.getValue("f1");
+        if (f1)
+          info.push({
+            text: "F1",
+            val: f1
+          });
+
+        const mcll = this.getValue("mcll");
+        if (mcll)
+          info.push({
+            text: "mcll",
+            val: mcll
+          });
         break;
       case "regression":
-        info.push({
-          text: "Eucll",
-          val: this.getValue("eucll")
-        });
+        const eucll = this.getValue("eucll");
+        if (eucll)
+          info.push({
+            text: "Eucll",
+            val: eucll
+          });
         break;
       default:
         break;
