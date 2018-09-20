@@ -278,6 +278,9 @@ export default class Description extends React.Component {
             }, []);
         }
 
+        // Add empty column to fill row
+        if (cells.length % 2 === 0) cells.push(<div className="col" />);
+
         output = <div className="row">{cells}</div>;
         break;
 
