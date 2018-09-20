@@ -34,7 +34,9 @@ export default class RepositoryStore {
       if (
         files.includes("model.json") ||
         files.includes("deploy.prototxt") ||
-        files.includes("config.json")
+        files.includes("config.json") ||
+        files.includes("metrics.json") ||
+        files.includes("best_model.txt")
       ) {
         this.repositories.push(new Repository(path, files, this));
       }

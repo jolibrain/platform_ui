@@ -44,7 +44,7 @@ export class modelRepositoriesStore {
 
   @computed
   get archivedTrainingRepositories() {
-    return this.trainingRepositories.filter(r => r.jsonMetrics);
+    return this.trainingRepositories.filter(r => r.jsonMetrics || r.bestModel);
   }
 }
 
