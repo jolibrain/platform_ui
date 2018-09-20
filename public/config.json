@@ -207,18 +207,18 @@
     {
       "name": "public",
       "nginxPath": "/models/public/",
-      "systemPath": "/opt/platform/models/public/"
+      "systemPath": "/opt/platform"
     },
     {
       "name": "private",
       "nginxPath": "/models/private/",
-      "systemPath": "/opt/platform/models/private/",
+      "systemPath": "/opt/platform",
       "hasFiles": true
     },
     {
       "name": "training",
       "nginxPath": "/models/training/",
-      "systemPath": "/opt/platform/models/training/",
+      "systemPath": "/opt/platform",
       "isTraining": true
     }
   ],
