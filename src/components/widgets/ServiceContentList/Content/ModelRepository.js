@@ -129,10 +129,13 @@ export default class ModelRepositoryContent extends React.Component {
         <div>
           <ul>
             {Object.keys(repository.bestModel).map((k, i) => {
-              const attrTitle =
+              let attrTitle =
                 i === 0
                   ? k.replace(/\b\w/g, l => l.toUpperCase())
                   : k.toUpperCase();
+
+              if (attrTitle === "MEANIOU") attrTitle = "Mean IOU";
+
               return (
                 <li key={i}>
                   {attrTitle} [best]: <b>{repository.bestModel[k]}</b>

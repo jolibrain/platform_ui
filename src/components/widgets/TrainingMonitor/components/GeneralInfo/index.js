@@ -33,10 +33,13 @@ export default class GeneralInfo extends React.Component {
           <p>Best Model</p>
           <ul>
             {Object.keys(service.bestModel).map((k, i) => {
-              const attrTitle =
+              let attrTitle =
                 i === 0
                   ? k.replace(/\b\w/g, l => l.toUpperCase())
                   : k.toUpperCase();
+
+              if (attrTitle === "MEANIOU") attrTitle = "Mean IOU";
+
               return (
                 <li key={i}>
                   {attrTitle}: <b>{service.bestModel[k]}</b>
