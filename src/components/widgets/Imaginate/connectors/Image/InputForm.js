@@ -171,10 +171,7 @@ export default class InputForm extends React.Component {
                         position={index}
                         title={result.label}
                       >
-                        {result.label
-                          .slice(0, -1)
-                          .split("/")
-                          .pop()}
+                        {result.label.split("/").pop()}
                       </MenuItem>
                     );
                   })}
