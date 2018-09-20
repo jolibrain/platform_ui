@@ -234,17 +234,15 @@ export default class deepdetectService {
   }
 
   @action
-  async addInputFromPath(nginxPath, systemPath, folderName, callback) {
-    const serverInputs = await this.$reqImgFromPath(
-      nginxPath + folderName + "/"
-    );
+  async addInputFromPath(folder, systemPath, callback) {
+    const serverInputs = await this.$reqImgFromPath(folder.path);
 
     this.inputs = [];
 
     this.inputs = serverInputs.map(i => {
       let input = new Input();
-      input.content = nginxPath + folderName + "/" + i;
-      input.path = systemPath + folderName + "/" + i;
+      input.content = folder.path + i;
+      input.path = systemPath + folder.path + i;
       return input;
     });
 

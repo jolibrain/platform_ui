@@ -9,7 +9,7 @@ export class dataRepositoriesStore {
   @action
   setup(configStore) {
     this.settings = configStore.dataRepositories;
-    this.load();
+    this.load(this.settings.nginxPath);
   }
 
   $reqFolder(path) {
@@ -17,20 +17,27 @@ export class dataRepositoriesStore {
   }
 
   @action
-  load() {
+  load(path, level = 0) {
     this.isLoading = true;
-    this.$reqFolder(this.settings.nginxPath).then(
-      action(publicRepo => {
-        this.repositories = publicRepo.folders.map((repo, index) => {
-          return {
-            id: index,
-            folderName: repo.name.replace("/", ""),
-            label: this.settings.systemPath + repo.name
-          };
+    this.$reqFolder(path).then(content => {
+      const { folders } = content;
+      console.log(folders);
+
+      if (level === 0) {
+        folders.forEach(f => this.load(path + f.name + "/", level + 1));
+      }
+
+      folders.forEach(f => {
+        this.repositories.push({
+          id: this.repositories.length,
+          name: f.name,
+          path: path + f.name + "/",
+          label: path.replace(/^\/data\//, "") + f.name
         });
-        this.isLoading = false;
-      })
-    );
+      });
+
+      this.isLoading = false;
+    });
   }
 }
 

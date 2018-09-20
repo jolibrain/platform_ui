@@ -224,7 +224,7 @@
   ],
   "dataRepositories": {
     "nginxPath": "/data/",
-    "systemPath": "/opt/platform/data/"
+    "systemPath": "/opt/platform"
   },
   "componentBlacklist": ["LinkJupyter"]
 }

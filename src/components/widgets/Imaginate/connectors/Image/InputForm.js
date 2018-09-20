@@ -20,8 +20,7 @@ export default class InputForm extends React.Component {
       availableMethods: [
         { id: 0, label: "Image URL" },
         { id: 1, label: "Path" }
-      ],
-      selectedData: []
+      ]
     };
 
     this.inputRef = React.createRef();
@@ -38,24 +37,19 @@ export default class InputForm extends React.Component {
   }
 
   handleInputChange() {
-    this.props.dataRepositoriesStore.load();
+    const { dataRepositoriesStore } = this.props;
+    const { systemPath } = dataRepositoriesStore.settings;
+
     const typeahead = this.typeahead.getInstance();
     const selected = typeahead.getInput().value;
 
     if (typeof selected !== "undefined" && selected.length > 0) {
-      const repository = this.props.dataRepositoriesStore.repositories.find(
+      const folder = dataRepositoriesStore.repositories.find(
         r => r.label === selected
       );
-      this.setState({ selectedData: repository ? [repository] : [] });
-
-      const {
-        nginxPath,
-        systemPath
-      } = this.props.dataRepositoriesStore.settings;
-      const folderName = repository.folderName;
 
       const store = this.props.imaginateStore;
-      store.service.addInputFromPath(nginxPath, systemPath, folderName, () => {
+      store.service.addInputFromPath(folder, systemPath, () => {
         store.predict();
       });
     }
@@ -163,15 +157,15 @@ export default class InputForm extends React.Component {
               onChange={this.handleInputChange}
               renderMenu={(results, menuProps) => (
                 <Menu {...menuProps}>
-                  {results.map((result, index) => {
+                  {results.map((folder, index) => {
                     return (
                       <MenuItem
                         key={index}
-                        option={result}
+                        option={folder}
                         position={index}
-                        title={result.label}
+                        title={folder.path}
                       >
-                        {result.label.split("/").pop()}
+                        {folder.label}
                       </MenuItem>
                     );
                   })}
