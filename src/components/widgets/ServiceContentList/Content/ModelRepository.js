@@ -184,7 +184,7 @@ export default class ModelRepositoryContent extends React.Component {
         <div className="col-md-3 main-best">{bestModelInfo}</div>
         <div className="col-md-2 main-meta">
           <Link to={archiveUrl} className="btn btn-outline-primary view">
-            <i class="fas fa-search" /> View
+            <i className="fas fa-search" /> View
           </Link>
         </div>
       </div>
