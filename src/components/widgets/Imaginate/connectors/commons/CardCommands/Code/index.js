@@ -51,7 +51,7 @@ export default class Code extends React.Component {
 
     const postData = service.selectedInput.postData;
 
-    let javascriptCode = "";
+    let javascriptCode = "// https://www.npmjs.com/package/deepdetect-js\n";
 
     if (this.state.configuration.importLib) {
       javascriptCode += `var DD = require('deepdetect-js');\n\n`;
@@ -87,7 +87,8 @@ run()`;
 
     const postData = service.selectedInput.postData;
 
-    let pythonCode = "";
+    let pythonCode =
+      "# https://github.com/jolibrain/deepdetect/blob/master/clients/python/dd_client.py\n";
 
     if (this.state.configuration.importLib) {
       pythonCode += `from dd_client import DD\n`;
