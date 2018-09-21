@@ -32,14 +32,16 @@ export default class MainView extends React.Component {
     if (
       !this.props.match ||
       !this.props.match.params ||
-      !this.props.match.params.modelName
+      !this.props.match.params.modelPath
     )
       return null;
 
-    const { modelName } = this.props.match.params;
+    const { modelPath } = this.props.match.params;
     const { trainingRepositories } = this.props.modelRepositoriesStore;
 
-    const repository = trainingRepositories.find(r => r.name === modelName);
+    const repository = trainingRepositories.find(
+      r => r.path === `/${modelPath}/`
+    );
 
     if (!repository) return null;
 

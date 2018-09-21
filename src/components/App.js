@@ -137,7 +137,7 @@ export default class App extends React.Component {
             />
             <Route
               exact
-              path="/trainingArchive/:modelName"
+              path="/trainingArchive/:modelPath*"
               component={TrainingArchive}
             />
 

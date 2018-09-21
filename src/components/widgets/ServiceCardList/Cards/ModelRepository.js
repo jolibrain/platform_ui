@@ -52,7 +52,7 @@ export default class ModelRepositoryCard extends React.Component {
       ? repository.jsonMetrics.body.mltype
       : null;
 
-    const archiveUrl = `/trainingArchive/${repository.name}`;
+    const archiveUrl = `/trainingArchive${repository.path}`;
 
     let badges = [];
 
