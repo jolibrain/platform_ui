@@ -9,7 +9,7 @@ export default class ImageListRandom extends React.Component {
 
     this.state = {
       inputs: [],
-      maxInput: 100,
+      maxFiles: 100,
       randomize: false
     };
 
