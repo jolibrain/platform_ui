@@ -4,6 +4,7 @@ import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
 import ImageList from "./ImageList";
+import ImageListRandom from "./ImageListRandom";
 import BoundingBoxDisplay from "./BoundingBoxDisplay";
 import Threshold from "./Threshold";
 import InputForm from "./InputForm";
@@ -157,7 +158,14 @@ export default class ImageConnector extends React.Component {
           <div className="col-md-7">
             <div className="row">
               <div className="img-list col-sm-12">
-                <ImageList />
+                {serviceSettings &&
+                serviceSettings.display &&
+                serviceSettings.display.imageList &&
+                serviceSettings.display.imageList === "random" ? (
+                  <ImageListRandom />
+                ) : (
+                  <ImageList />
+                )}
               </div>
             </div>
 

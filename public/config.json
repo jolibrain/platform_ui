@@ -130,7 +130,8 @@
         "boundingBox": true,
         "segmentation": false,
         "separateSegmentation": false,
-        "segmentationColors": ["#1b9e77", "#d95f02"]
+        "segmentationColors": ["#1b9e77", "#d95f02"],
+        "imageList": "random"
       },
       "threshold": {
         "confidence": 0.5,
