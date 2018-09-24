@@ -26,6 +26,7 @@ export class dataRepositoriesStore {
         folders.forEach(f => this.load(path + f.name + "/", level + 1));
       }
 
+      // TODO: replace data string by regexp
       folders.forEach(f => {
         this.repositories.push({
           id: this.repositories.length,
