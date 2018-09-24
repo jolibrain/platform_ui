@@ -111,6 +111,23 @@ class Header extends React.Component {
                     </a>
                   </li>
                 )}
+
+                {this.props.configStore.isComponentBlacklisted("LinkChat") ? (
+                  ""
+                ) : (
+                  <li>
+                    <a
+                      href={`${window.location.protocol}//${
+                        window.location.hostname
+                      }:3001`}
+                      style={{ textDecoration: "none" }}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
+                      <i className="fas fa-rocketchat" />&nbsp; Chat
+                    </a>
+                  </li>
+                )}
               </ul>
             </div>
 
