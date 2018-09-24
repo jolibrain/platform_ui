@@ -18,14 +18,9 @@ export default class MainView extends React.Component {
       hoveredMeasure: -1
     };
 
-    this.openStopTrainingModal = this.openStopTrainingModal.bind(this);
     this.openDeleteServiceModal = this.openDeleteServiceModal.bind(this);
     this.handleOverMeasure = this.handleOverMeasure.bind(this);
     this.handleLeaveMeasure = this.handleLeaveMeasure.bind(this);
-  }
-
-  openStopTrainingModal() {
-    this.props.modalStore.setVisible("stopTraining");
   }
 
   openDeleteServiceModal() {
@@ -69,14 +64,6 @@ export default class MainView extends React.Component {
                 className="nav navbar-nav ml-auto"
                 style={{ flexDirection: "row" }}
               >
-                <li className="nav-item">
-                  <button
-                    className="btn btn-outline-danger"
-                    onClick={this.openStopTrainingModal}
-                  >
-                    Stop Training
-                  </button>
-                </li>
                 <li className="nav-item">
                   <button
                     className="btn btn-outline-danger"
