@@ -47,12 +47,14 @@ export default class DeleteServiceModal extends React.Component {
 
         <div className="modal-footer">
           <button
+            id="cancelDeleteService"
             className="btn btn-secondary mb-2"
             onClick={this.handleCancel}
           >
             No
           </button>
           <button
+            id="submitDeleteService"
             type="submit"
             className="btn btn-primary mb-2"
             onClick={this.handleDeleteService}

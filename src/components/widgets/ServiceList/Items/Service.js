@@ -11,6 +11,7 @@ export default class ServiceItem extends React.Component {
     return (
       <li>
         <Link
+          id={`serviceList-${service.name}`}
           to={`/${service.settings.training ? "training" : "predict"}/${
             service.serverName
           }/${service.name}`}

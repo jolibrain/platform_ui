@@ -31,6 +31,7 @@ export default class ServiceList extends React.Component {
 
     return (
       <ul
+        id="widget-serviceList"
         className="serviceList sidebar-top-level-items"
         key={`serviceList-${ddStore.refresh}`}
       >

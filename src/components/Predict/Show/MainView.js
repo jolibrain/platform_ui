@@ -46,7 +46,8 @@ export default class MainView extends React.Component {
               {server.settings.isWritable ? (
                 <li className="nav-item">
                   <button
-                    className="btn btn-outline-danger"
+                    id="openDeleteService"
+                    className="btns btn-outline-danger"
                     onClick={this.openDeleteServiceModal}
                   >
                     Delete Service
