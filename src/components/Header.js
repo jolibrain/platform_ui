@@ -117,9 +117,7 @@ class Header extends React.Component {
                 ) : (
                   <li>
                     <a
-                      href={`${window.location.protocol}//${
-                        window.location.hostname
-                      }:3001`}
+                      href="/chat/"
                       style={{ textDecoration: "none" }}
                       target="_blank"
                       rel="noreferrer noopener"
