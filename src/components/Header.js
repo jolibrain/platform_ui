@@ -124,7 +124,7 @@ class Header extends React.Component {
                       target="_blank"
                       rel="noreferrer noopener"
                     >
-                      <i className="fas fa-rocketchat" />&nbsp; Chat
+                      <i className="fab fa-rocketchat" />&nbsp; Chat
                     </a>
                   </li>
                 )}
