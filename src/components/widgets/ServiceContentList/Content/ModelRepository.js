@@ -159,7 +159,7 @@ export default class ModelRepositoryContent extends React.Component {
       >
         <div className="col-md-4 main-info">
           <h5>{repository.name}</h5>
-          <span classNames="badges">
+          <span className="badges">
             {badges.map((badge, key) => {
               return (
                 <span key={key} className={badge.classNames}>
