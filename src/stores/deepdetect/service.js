@@ -241,7 +241,7 @@ export default class deepdetectService {
 
     this.inputs = serverInputs.map(i => {
       let input = new Input();
-      input.content = folder.relativePath + i;
+      input.content = folder.path + i;
       input.path = systemPath + folder.relativePath + i;
       return input;
     });

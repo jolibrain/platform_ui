@@ -32,7 +32,7 @@ export class dataRepositoriesStore {
           id: this.repositories.length,
           name: f.name,
           path: path + f.name + "/",
-          relativePath: path.replace("/data", "") + f.name,
+          relativePath: path.replace("/data", "") + f.name + "/",
           label: path.replace("/data/", "") + f.name
         });
       });
