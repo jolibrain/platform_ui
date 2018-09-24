@@ -14,6 +14,9 @@ export default class ModelRepositoryContent extends React.Component {
 
   getValue(attr) {
     const { service } = this.props;
+
+    if (!service.jsonMetrics) return null;
+
     const { measure, measure_hist } = service.jsonMetrics.body;
 
     let value = "--";
@@ -45,7 +48,9 @@ export default class ModelRepositoryContent extends React.Component {
 
     if (!repository) return null;
 
-    const { mltype } = repository.jsonMetrics.body;
+    const mltype = repository.jsonMetrics
+      ? repository.jsonMetrics.body.mltype
+      : null;
 
     const archiveUrl = `/trainingArchive/${repository.name}`;
 

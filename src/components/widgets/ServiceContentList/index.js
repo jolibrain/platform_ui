@@ -20,9 +20,9 @@ export default class ServiceContentList extends React.Component {
       })
       .map((service, index) => {
         let content = null;
-        if (service.jsonMetrics) {
+        if (service.jsonMetrics || service.bestModel) {
           content = <ModelRepositoryContent key={index} service={service} />;
-        } else if (service.settings.training) {
+        } else if (service.settings && service.settings.training) {
           //content = <TrainingContent key={index} service={service} />;
         } else {
           //content = <PredictContent key={index} service={service} />;
