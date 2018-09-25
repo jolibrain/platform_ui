@@ -77,6 +77,14 @@ export default class Repository {
       this.jsonConfig = await this.$reqJsonConfig();
       // TODO : remove this line when config.json editable
       this.jsonConfig.parameters.mllib.gpuid = 0;
+
+      // Clean this parameter from config
+      // it'd create an issue when creating a new service
+      // from ServiceCardCreate
+      //
+      // it's generated when creating a new Service with
+      // the Publish button from Archived Training Jobs
+      this.jsonConfig.parameters.mllib.from_repository = null;
     } catch (e) {}
   }
 
