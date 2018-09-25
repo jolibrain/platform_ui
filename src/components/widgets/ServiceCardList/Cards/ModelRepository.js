@@ -1,15 +1,77 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { observer } from "mobx-react";
+import { inject, observer } from "mobx-react";
 import { Link, withRouter } from "react-router-dom";
 
 @withRouter
+@inject("deepdetectStore")
+@inject("modelRepositoriesStore")
 @observer
 export default class ModelRepositoryCard extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      isPublishing: false,
+      publishError: null
+    };
+
     this.getValue = this.getValue.bind(this);
+    this.handlePublishClick = this.handlePublishClick.bind(this);
+  }
+
+  handlePublishClick() {
+    this.setState({ isPublishing: true });
+
+    const { deepdetectStore, modelRepositoriesStore, service } = this.props;
+
+    const { repositoryStores } = modelRepositoriesStore;
+    const privateStore = repositoryStores.find(r => r.name === "private");
+    const targetRepository =
+      privateStore.systemPath + privateStore.nginxPath + service.name;
+
+    const serviceConfig = {
+      description: "",
+      model: {
+        repository: targetRepository,
+        create_repository: true
+      },
+      mllib: "caffe",
+      type: "supervised",
+      parameters: {
+        input: {
+          connector: "image",
+          height: 300,
+          width: 300
+        },
+        output: {
+          store_config: true
+        },
+        mllib: {
+          nclasses: 2,
+          gpu: true,
+          gpuid: 0,
+          from_repository: service.location
+        }
+      }
+    };
+
+    //const ddServer = deepdetectStore.hostableServer;
+    const ddServer = deepdetectStore.servers.find(
+      s => s.name === "training_test"
+    );
+
+    const existingServices = ddServer.services.map(s => s.name.toLowerCase());
+    if (existingServices.includes(service.name.toLowerCase())) {
+      this.setState({
+        isPublishing: false,
+        publishError: "Service name already exists"
+      });
+    } else {
+      ddServer.newService(service.name, serviceConfig, () => {
+        this.props.history.push(`/predict/${ddServer.name}/${service.name}`);
+      });
+    }
   }
 
   getValue(attr) {
@@ -169,6 +231,23 @@ export default class ModelRepositoryCard extends React.Component {
       );
     }
 
+    let publishButton = repository.jsonConfig ? (
+      <a
+        onClick={this.handlePublishClick}
+        className="btn btn-outline-secondary"
+      >
+        Publish
+      </a>
+    ) : null;
+
+    if (this.state.isPublishing) {
+      publishButton = (
+        <a className="btn btn-outline-secondary">
+          <i className="fas fa-spinner fa-spin" /> Publishing...
+        </a>
+      );
+    }
+
     return (
       <div className="card">
         <div className="card-body">
@@ -199,9 +278,19 @@ export default class ModelRepositoryCard extends React.Component {
             })}
           </ul>
           {bestModelInfo}
+          {this.state.publishError ? (
+            <div className="alert alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle" />{" "}
+              {this.state.publishError}
+            </div>
+          ) : (
+            ""
+          )}
           <Link to={archiveUrl} className="btn btn-outline-primary">
             View
           </Link>
+          &nbsp;
+          {publishButton}
         </div>
       </div>
     );
