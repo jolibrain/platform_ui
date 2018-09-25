@@ -1,6 +1,7 @@
 import React from "react";
 import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
+import moment from "moment";
 
 import ServiceCardList from "../../widgets/ServiceCardList";
 import ServiceContentList from "../../widgets/ServiceContentList";
@@ -49,14 +50,16 @@ export default class MainView extends React.Component {
     const { archivedTrainingRepositories } = this.props.modelRepositoriesStore;
 
     const { filterServiceName } = this.state;
-    const displayedArchiveRepositories = archivedTrainingRepositories.filter(
-      r => {
+    const displayedArchiveRepositories = archivedTrainingRepositories
+      .filter(r => {
         return (
           r.name.includes(filterServiceName) ||
           r.trainingTags.join(" ").includes(filterServiceName)
         );
-      }
-    );
+      })
+      .sort((a, b) => {
+        return moment.utc(b.metricsDate).diff(moment.utc(a.metricsDate));
+      });
 
     return (
       <div className="main-view content-wrapper">
