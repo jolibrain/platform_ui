@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { inject, observer } from "mobx-react";
 import { Link, withRouter } from "react-router-dom";
+import moment from "moment";
 
 @withRouter
 @inject("deepdetectStore")
@@ -267,6 +268,11 @@ export default class ModelRepositoryCard extends React.Component {
               );
             })}
           </h5>
+          {repository.metricsDate ? (
+            <p>{moment(repository.metricsDate).format("DD/MM/YYYY - HH:mm")}</p>
+          ) : (
+            ""
+          )}
           <ul>
             {info.map((i, index) => {
               return (

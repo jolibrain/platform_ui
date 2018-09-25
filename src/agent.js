@@ -233,6 +233,25 @@ const Webserver = {
           }
         }
         return result;
+      }),
+  getFileMeta: path =>
+    superagent
+      .get(path)
+      .withCredentials()
+      .end(handleErrors)
+      .then(res => {
+        let content = null;
+        if (res && res.text) {
+          try {
+            content = JSON.parse(res.text);
+          } catch (e) {
+            content = res.text;
+          }
+        }
+        return {
+          content: content,
+          header: res.header
+        };
       })
 };
 

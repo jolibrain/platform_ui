@@ -10,6 +10,8 @@ export default class Repository {
   @observable jsonMetrics = null;
   @observable bestModel = null;
 
+  @observable metricsDate = null;
+
   @observable files = [];
 
   constructor(path, files, store) {
@@ -81,7 +83,9 @@ export default class Repository {
   @action.bound
   async _loadJsonMetrics() {
     try {
-      this.jsonMetrics = await this.$reqJsonMetrics();
+      const meta = await this.$reqJsonMetrics();
+      this.jsonMetrics = meta.content;
+      this.metricsDate = meta.header["last-modified"];
     } catch (e) {}
   }
 
@@ -112,7 +116,7 @@ export default class Repository {
 
   $reqJsonMetrics() {
     if (!this.files.includes("metrics.json")) return null;
-    return agent.Webserver.getFile(`${this.path}metrics.json`);
+    return agent.Webserver.getFileMeta(`${this.path}metrics.json`);
   }
 
   $reqBestModel() {
