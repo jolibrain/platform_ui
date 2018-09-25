@@ -174,7 +174,11 @@ const autoIndex = res => {
     }
 
     delete obj.size;
-    if (!parentReg.test(row)) {
+    if (
+      !parentReg.test(row) &&
+      obj.name !== "train.lmdb" &&
+      obj.name !== "test.lmdb"
+    ) {
       folders.push(obj);
       return;
     }
