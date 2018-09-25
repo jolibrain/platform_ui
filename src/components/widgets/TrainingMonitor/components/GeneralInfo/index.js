@@ -150,6 +150,17 @@ export default class GeneralInfo extends React.Component {
           />
         );
         break;
+      case "ctc":
+        infoCharts.push(
+          <MeasureChart
+            title="Accuracy"
+            attribute="acc"
+            key="acc"
+            steppedLine={true}
+            {...this.props}
+          />
+        );
+        break;
       default:
         break;
     }
