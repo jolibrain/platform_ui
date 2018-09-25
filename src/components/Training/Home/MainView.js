@@ -58,7 +58,9 @@ export default class MainView extends React.Component {
         );
       })
       .sort((a, b) => {
-        return moment.utc(b.metricsDate).diff(moment.utc(a.metricsDate));
+        return moment
+          .utc(b.metricsDate ? b.metricsDate : 1)
+          .diff(moment.utc(a.metricsDate ? a.metricsDate : 1));
       });
 
     return (
