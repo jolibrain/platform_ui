@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 import ReactTooltip from "react-tooltip";
 import moment from "moment";
+import { withCookies } from "react-cookie";
 
 //import Keycloak from "keycloak-js";
 
@@ -15,14 +16,25 @@ class Header extends React.Component {
     super(props);
 
     this.state = {
-      aboutDown: false
+      aboutDown: false,
+      userDown: false
     };
 
     this.handleAboutClick = this.handleAboutClick.bind(this);
+    this.handleUserClick = this.handleUserClick.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
   }
 
   handleAboutClick() {
     this.setState({ aboutDown: !this.state.aboutDown });
+  }
+
+  handleUserClick() {
+    this.setState({ userDown: !this.state.userDown });
+  }
+
+  handleLogout() {
+    // TODO
   }
 
   render() {
@@ -45,6 +57,8 @@ class Header extends React.Component {
         </div>
       );
     }
+
+    const userid = this.props.cookies.get("userid");
 
     return (
       <header className="header navbar navbar-dark bg-dark" id="header">
@@ -212,6 +226,39 @@ class Header extends React.Component {
                     {buildInfo}
                   </div>
                 </li>
+
+                {userid ? (
+                  <li className="nav-item dropdown">
+                    <a
+                      className="nav-link dropdown-toggle"
+                      style={{ cursor: "pointer" }}
+                      id="navbarDropdown"
+                      role="button"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                      onClick={this.handleUserClick}
+                    >
+                      <i class="fas fa-user" />&nbsp;{userid.substring(0, 5)}...
+                    </a>
+                    <div
+                      className={`dropdown-menu ${
+                        this.state.userDown ? "show" : ""
+                      }`}
+                      aria-labelledby="navbarDropdown"
+                    >
+                      <a
+                        className="dropdown-item"
+                        onClick={this.handleLogout}
+                        style={{ cursor: "pointer" }}
+                      >
+                        Logout
+                      </a>
+                    </div>
+                  </li>
+                ) : (
+                  ""
+                )}
               </ul>
             </div>
           </div>
@@ -221,4 +268,4 @@ class Header extends React.Component {
   }
 }
 
-export default Header;
+export default withCookies(Header);
