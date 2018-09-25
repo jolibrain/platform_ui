@@ -136,6 +136,13 @@ export default class ModelRepositoryCard extends React.Component {
       });
     }
 
+    if (repository.metricsDate) {
+      badges.push({
+        classNames: "badge badge-light",
+        status: moment(repository.metricsDate).format("L LT")
+      });
+    }
+
     let info = [];
 
     const train_loss = this.getValue("train_loss");
@@ -268,11 +275,6 @@ export default class ModelRepositoryCard extends React.Component {
               );
             })}
           </h5>
-          {repository.metricsDate ? (
-            <p>{moment(repository.metricsDate).format("DD/MM/YYYY - HH:mm")}</p>
-          ) : (
-            ""
-          )}
           <ul>
             {info.map((i, index) => {
               return (
