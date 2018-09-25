@@ -21,6 +21,11 @@ export default class RepositoryStore {
     this.isTraining =
       typeof config.isTraining === "undefined" ? false : config.isTraining;
 
+    this.load();
+  }
+
+  @action
+  load() {
     this._loadRepositories(this.nginxPath);
   }
 
@@ -38,7 +43,11 @@ export default class RepositoryStore {
         files.includes("metrics.json") ||
         files.includes("best_model.txt")
       ) {
-        this.repositories.push(new Repository(path, files, this));
+        if (
+          typeof this.repositories.find(r => r.path === path) === "undefined"
+        ) {
+          this.repositories.push(new Repository(path, files, this));
+        }
       }
     });
   }

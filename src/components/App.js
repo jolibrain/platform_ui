@@ -36,7 +36,8 @@ export default class App extends React.Component {
     this.state = {
       infoIntervalId: null,
       trainingIntervalId: null,
-      gpuInfoIntervalId: null
+      gpuInfoIntervalId: null,
+      modelRepositoriesIntervalId: null
     };
 
     this.setupTimers = this.setupTimers.bind(this);
@@ -55,12 +56,17 @@ export default class App extends React.Component {
           this.trainingTimer.bind(this),
           training
         ),
-        gpuInfoIntervalId: setInterval(this.gpuInfoTimer.bind(this), gpuInfo)
+        gpuInfoIntervalId: setInterval(this.gpuInfoTimer.bind(this), gpuInfo),
+        modelRepositoriesIntervalId: setInterval(
+          this.modelRepositoriesTimer.bind(this),
+          info
+        )
       });
 
       this.infoTimer();
       this.trainingTimer();
       this.gpuInfoTimer();
+      this.modelRepositoriesTimer();
     }
   }
 
@@ -86,6 +92,10 @@ export default class App extends React.Component {
 
   gpuInfoTimer() {
     this.props.gpuStore.loadGpuInfo();
+  }
+
+  modelRepositoriesTimer() {
+    this.props.modelRepositoriesStore.refresh();
   }
 
   componentWillMount() {

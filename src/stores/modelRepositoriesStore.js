@@ -14,6 +14,10 @@ export class modelRepositoriesStore {
     );
   }
 
+  refresh() {
+    this.repositoryStores.forEach(r => r.load());
+  }
+
   @computed
   get isReady() {
     return !this.repositoryStores.map(r => r.isReady).includes(false);
