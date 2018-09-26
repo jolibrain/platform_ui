@@ -36,7 +36,7 @@ export default class ModelRepositoryCard extends React.Component {
     serviceConfig.model.repository = targetRepository;
     serviceConfig.model.create_repository = true;
 
-    serviceConfig.parameters.output.store_config = true;
+    serviceConfig.parameters.output.store_config = false;
     serviceConfig.parameters.mllib.from_repository = service.location;
 
     const ddServer = deepdetectStore.hostableServer;
