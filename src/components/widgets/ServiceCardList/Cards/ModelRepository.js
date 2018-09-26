@@ -31,37 +31,15 @@ export default class ModelRepositoryCard extends React.Component {
     const targetRepository =
       privateStore.systemPath + privateStore.nginxPath + service.name;
 
-    const serviceConfig = {
-      description: "",
-      model: {
-        repository: targetRepository,
-        create_repository: true
-      },
-      mllib: "caffe",
-      type: "supervised",
-      parameters: {
-        input: {
-          connector: "image",
-          height: 300,
-          width: 300
-        },
-        output: {
-          store_config: true
-        },
-        mllib: {
-          nclasses: 2,
-          gpu: true,
-          gpuid: 0,
-          from_repository: service.location
-        }
-      }
-    };
+    let serviceConfig = service.jsonConfig;
+
+    serviceConfig.model.repository = targetRepository;
+    serviceConfig.model.create_repository = true;
+
+    serviceConfig.parameters.output.store_config = true;
+    serviceConfig.parameters.mllib.from_repository = service.location;
 
     const ddServer = deepdetectStore.hostableServer;
-    //const ddServer = deepdetectStore.servers.find(
-    //  s => s.name === "training_test"
-    //);
-
     const existingServices = ddServer.services.map(s => s.name.toLowerCase());
     if (existingServices.includes(service.name.toLowerCase())) {
       this.setState({
