@@ -57,10 +57,10 @@ export default class ModelRepositoryCard extends React.Component {
       }
     };
 
-    //const ddServer = deepdetectStore.hostableServer;
-    const ddServer = deepdetectStore.servers.find(
-      s => s.name === "training_test"
-    );
+    const ddServer = deepdetectStore.hostableServer;
+    //const ddServer = deepdetectStore.servers.find(
+    //  s => s.name === "training_test"
+    //);
 
     const existingServices = ddServer.services.map(s => s.name.toLowerCase());
     if (existingServices.includes(service.name.toLowerCase())) {
