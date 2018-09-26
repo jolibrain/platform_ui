@@ -48,8 +48,11 @@ export default class ModelRepositoryCard extends React.Component {
         publishError: "Service name already exists"
       });
     } else {
-      ddServer.newService(service.name, serviceConfig, () => {
-        this.props.history.push(`/predict/${ddServer.name}/${service.name}`);
+      ddServer.newService(service.name, serviceConfig, async () => {
+        // TODO add serviceName in ddServer.deleteService method
+        // to avoid using private request method
+        await ddServer.$reqDeleteService(service.name);
+        this.props.history.push(`/predict`);
       });
     }
   }

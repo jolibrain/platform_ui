@@ -193,7 +193,12 @@ export default class Form extends React.Component {
     this.setState({ creatingService: true });
 
     let serviceData = JSON.parse(this.state.jsonConfig);
-    serviceData.parameters.output.store_config = false;
+
+    if (serviceData.parameters.output) {
+      serviceData.parameters.output.store_config = false;
+    } else {
+      serviceData.parameters.output = { store_config: false };
+    }
 
     ddStore.newService(serviceName, serviceData, resp => {
       if (resp instanceof Error || resp.status.code !== 201) {
