@@ -70,10 +70,12 @@ export default class CreateCard extends React.Component {
 
     serviceName = serviceName.toLowerCase();
 
-    const serviceData = repository.jsonConfig;
     const ddStore = this.props.deepdetectStore;
 
     this.setState({ creatingService: true });
+
+    let serviceData = repository.jsonConfig;
+    serviceData.parameters.output.store_config = false;
 
     ddStore.newService(serviceName, serviceData, resp => {
       if (resp instanceof Error || resp.status.code !== 201) {

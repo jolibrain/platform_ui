@@ -188,10 +188,12 @@ export default class Form extends React.Component {
     }
 
     let serviceName = this.state.serviceName;
-    const serviceData = JSON.parse(this.state.jsonConfig);
     const ddStore = this.props.deepdetectStore;
 
     this.setState({ creatingService: true });
+
+    let serviceData = JSON.parse(this.state.jsonConfig);
+    serviceData.parameters.output.store_config = false;
 
     ddStore.newService(serviceName, serviceData, resp => {
       if (resp instanceof Error || resp.status.code !== 201) {
