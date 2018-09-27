@@ -74,8 +74,9 @@ export default class deepdetectServer {
 
   @computed
   get isDown() {
-    if (!this.respInfo) return true;
-    return !(this.respInfo.head && this.respInfo.head.services);
+    return (
+      !this.respInfo || !this.respInfo.head || !this.respInfo.head.services
+    );
   }
 
   @computed
@@ -95,7 +96,9 @@ export default class deepdetectServer {
     try {
       this.respInfo = await this.$reqInfo();
 
-      if (!this.isDown) {
+      if (this.isDown) {
+        this.services = [];
+      } else {
         this.services = this.services.filter(s =>
           this.respInfoServiceNames.includes(s.name)
         );
@@ -116,8 +119,6 @@ export default class deepdetectServer {
             this.services.push(observable(service));
           }
         });
-      } else {
-        this.services = [];
       }
     } catch (e) {
       this.services = [];
