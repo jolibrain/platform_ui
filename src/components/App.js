@@ -47,7 +47,11 @@ export default class App extends React.Component {
     const { deepdetectStore, configStore } = this.props;
 
     if (deepdetectStore.settings && configStore.gpuInfo) {
-      const { info, training } = deepdetectStore.settings.refreshRate;
+      const {
+        info,
+        training,
+        modelRepositories
+      } = deepdetectStore.settings.refreshRate;
       const gpuInfo = configStore.gpuInfo.refreshRate;
 
       this.setState({
@@ -59,7 +63,7 @@ export default class App extends React.Component {
         gpuInfoIntervalId: setInterval(this.gpuInfoTimer.bind(this), gpuInfo),
         modelRepositoriesIntervalId: setInterval(
           this.modelRepositoriesTimer.bind(this),
-          info
+          modelRepositories
         )
       });
 
