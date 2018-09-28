@@ -36,8 +36,7 @@ export default class App extends React.Component {
     this.state = {
       infoIntervalId: null,
       trainingIntervalId: null,
-      gpuInfoIntervalId: null,
-      modelRepositoriesIntervalId: null
+      gpuInfoIntervalId: null
     };
 
     this.setupTimers = this.setupTimers.bind(this);
@@ -47,11 +46,7 @@ export default class App extends React.Component {
     const { deepdetectStore, configStore } = this.props;
 
     if (deepdetectStore.settings && configStore.gpuInfo) {
-      const {
-        info,
-        training,
-        modelRepositories
-      } = deepdetectStore.settings.refreshRate;
+      const { info, training } = deepdetectStore.settings.refreshRate;
       const gpuInfo = configStore.gpuInfo.refreshRate;
 
       this.setState({
@@ -60,17 +55,12 @@ export default class App extends React.Component {
           this.trainingTimer.bind(this),
           training
         ),
-        gpuInfoIntervalId: setInterval(this.gpuInfoTimer.bind(this), gpuInfo),
-        modelRepositoriesIntervalId: setInterval(
-          this.modelRepositoriesTimer.bind(this),
-          modelRepositories
-        )
+        gpuInfoIntervalId: setInterval(this.gpuInfoTimer.bind(this), gpuInfo)
       });
 
       this.infoTimer();
       this.trainingTimer();
       this.gpuInfoTimer();
-      this.modelRepositoriesTimer();
     }
   }
 
@@ -96,10 +86,6 @@ export default class App extends React.Component {
 
   gpuInfoTimer() {
     this.props.gpuStore.loadGpuInfo();
-  }
-
-  modelRepositoriesTimer() {
-    this.props.modelRepositoriesStore.refresh();
   }
 
   componentWillMount() {
