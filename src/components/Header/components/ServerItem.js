@@ -1,9 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { observer } from "mobx-react";
 import ReactTooltip from "react-tooltip";
 
-@observer
 class ServerItem extends React.Component {
   render() {
     const { server } = this.props;
