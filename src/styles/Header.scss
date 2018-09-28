@@ -117,30 +117,18 @@
     color: $light-color !important;
   }
 
-  li.server {
-    display: -webkit-flex;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 6px 8px;
-    margin: 4px 2px;
-    border-radius: 4px;
-    height: 32px;
-    font-weight: 600;
-    color: $light-color !important;
-
-    a {
-      color: $light-color !important;
-      text-decoration: none;
+  #servers-dropdown {
+    .servers-ok {
+      margin-right: 5px;
     }
 
-    .fa-circle {
+    i {
       color: green;
-      top: 1px;
-      position: relative;
     }
 
-    .fa-circle.serverDown {
+    .far.fa-clone,
+    .servers-down,
+    .fa-square.serverDown {
       color: red;
     }
   }
