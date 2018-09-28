@@ -55,7 +55,7 @@
   transform: translate3d(0, 0, 0);
 }
 .left-sidebar .nav-sidebar-inner-scroll {
-  overflow: hidden;
+  overflow-y: auto;
   height: 100%;
   width: 100%;
 }
@@ -85,7 +85,8 @@
   transition: width 0.3s;
   background: #fafafa;
   z-index: 200;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   border-left: 1px solid #e5e5e5;
   padding-right: 0;
   font-size: 0.95rem;
@@ -97,7 +98,7 @@
 .right-sidebar .issuable-sidebar {
   width: calc(100% + 100px);
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 }
