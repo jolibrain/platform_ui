@@ -30,7 +30,7 @@ class ServerList extends React.Component {
     // some servers are down
     if (serversState.includes(true)) {
       badge = (
-        <span class="fa-stack">
+        <span className="fa-stack">
           <i className="fas fa-clone fa-stack-1x" />
           <i className="far fa-clone fa-stack-1x" />
         </span>
