@@ -4,6 +4,7 @@ import { inject, observer } from "mobx-react";
 
 import RightPanel from "../commons/RightPanel";
 import TrainingMonitor from "../../widgets/TrainingMonitor";
+import Breadcrumb from "../../widgets/Breadcrumb";
 
 @inject("modelRepositoriesStore")
 @observer
@@ -48,6 +49,8 @@ export default class MainView extends React.Component {
     return (
       <div className="main-view content-wrapper">
         <div className="container">
+          <Breadcrumb repository={repository} />
+          <nav className="navbar navbar-expand-lg" />
           <div className="content">
             <TrainingMonitor
               service={repository}
