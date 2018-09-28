@@ -7,13 +7,9 @@ export default class deepdetectServer {
   @observable name = "";
   @observable settings = {};
 
-  @observable isActive = false;
-
   @observable isLoading = false;
-  @observable servicesLoaded = false;
-
+  @observable isActive = false;
   @observable services = [];
-  @observable creatingService = false;
 
   @observable respInfo = null;
 
@@ -74,9 +70,8 @@ export default class deepdetectServer {
 
   @computed
   get isDown() {
-    return (
-      !this.respInfo || !this.respInfo.head || !this.respInfo.head.services
-    );
+    if (!this.respInfo) return true;
+    return !(this.respInfo.head && this.respInfo.head.services);
   }
 
   @computed
@@ -93,12 +88,14 @@ export default class deepdetectServer {
 
   @action
   async loadServices(status = false) {
-    try {
-      this.respInfo = await this.$reqInfo();
+    if (this.isLoading) return null;
 
-      if (this.isDown) {
-        this.services = [];
-      } else {
+    try {
+      this.isLoading = true;
+      this.respInfo = await this.$reqInfo();
+      this.isLoading = false;
+
+      if (!this.isDown) {
         this.services = this.services.filter(s =>
           this.respInfoServiceNames.includes(s.name)
         );
@@ -122,9 +119,8 @@ export default class deepdetectServer {
       }
     } catch (e) {
       this.services = [];
+      this.isLoading = false;
     }
-
-    this.servicesLoaded = true;
   }
 
   @action
