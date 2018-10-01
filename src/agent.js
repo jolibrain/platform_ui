@@ -177,7 +177,8 @@ const autoIndex = res => {
     if (
       !parentReg.test(row) &&
       obj.name !== "train.lmdb" &&
-      obj.name !== "test.lmdb"
+      obj.name !== "test.lmdb" &&
+      obj.name !== "names.bin"
     ) {
       folders.push(obj);
       return;
