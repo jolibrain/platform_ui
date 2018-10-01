@@ -25,6 +25,12 @@ export default class MainView extends React.Component {
 
     this.handleClickLayoutCards = this.handleClickLayoutCards.bind(this);
     this.handleClickLayoutList = this.handleClickLayoutList.bind(this);
+
+    this.handleClickRefreshArchive = this.handleClickRefreshArchive.bind(this);
+  }
+
+  handleClickRefreshArchive() {
+    this.props.modelRepositoriesStore.refresh();
   }
 
   handleServiceFilter(event) {
@@ -100,7 +106,17 @@ export default class MainView extends React.Component {
 
               <form className="form-inline">
                 <h4>Archived Training Jobs</h4>
+
                 <div className="input-group">
+                  <div className="input-group-prepend">
+                    <button
+                      onClick={this.handleClickRefreshArchive}
+                      type="button"
+                      className="btn btn-primary"
+                    >
+                      <i class="fas fa-sync" />
+                    </button>
+                  </div>
                   <input
                     type="text"
                     onChange={this.handleServiceFilter}
