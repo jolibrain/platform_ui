@@ -22,8 +22,7 @@ export default class MainView extends React.Component {
   }
 
   componentWillMount() {
-    const { server } = this.props.deepdetectStore;
-    const service = server.service;
+    const { server, service } = this.props.deepdetectStore;
 
     if (!server || !service) {
       this.props.history.push("/");
@@ -31,13 +30,13 @@ export default class MainView extends React.Component {
   }
 
   render() {
-    const { server } = this.props.deepdetectStore;
-    if (!server) return null;
+    const { server, service } = this.props.deepdetectStore;
+    if (!server || !service) return null;
 
     return (
       <div className="main-view content-wrapper">
         <div className="container">
-          <Breadcrumb service={server.service} />
+          <Breadcrumb service={service} />
           <nav className="navbar navbar-expand-lg">
             <ul
               className="nav navbar-nav ml-auto"

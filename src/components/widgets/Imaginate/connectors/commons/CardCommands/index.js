@@ -33,22 +33,20 @@ export default class CardCommands extends React.Component {
 
     let cardBody = null;
 
+    const isError =
+      !service.isRequesting &&
+      (!json ||
+        !json.status ||
+        !json.status.code ||
+        [400, 500].includes(json.status.code));
+
     switch (this.state.tab) {
       default:
       case "curl":
         cardBody = <CurlCommand />;
         break;
       case "json":
-        cardBody = (
-          <JsonResponse
-            isError={
-              !json ||
-              !json.state ||
-              !json.status.code ||
-              json.status.code === 500
-            }
-          />
-        );
+        cardBody = <JsonResponse isError={isError} />;
         break;
       case "code":
         cardBody = <Code />;
@@ -59,10 +57,6 @@ export default class CardCommands extends React.Component {
     if (json && json.head && json.head.time) {
       requestTime = json.head.time;
     }
-
-    const isError =
-      !service.isRequesting &&
-      (!json || !json.status || json.status.code === 500);
 
     return (
       <div className="card commands">
