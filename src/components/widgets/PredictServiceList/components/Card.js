@@ -2,13 +2,14 @@ import React from "react";
 import PropTypes from "prop-types";
 import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
+import moment from "moment";
 
-import DownloadModelFiles from "../DownloadModelFiles";
+import DownloadModelFiles from "../../DownloadModelFiles";
 
 @inject("deepdetectStore")
 @withRouter
 @observer
-export default class CreateCard extends React.Component {
+export default class Card extends React.Component {
   constructor(props) {
     super(props);
 
@@ -108,74 +109,114 @@ export default class CreateCard extends React.Component {
 
     if (!repository) return null;
 
-    let badgeClasses = "badge float-right";
-    let badgeText = repository.store.name;
+    let badges = [];
 
-    if (badgeText === "public") {
-      badgeClasses += " badge-primary";
-    } else {
-      badgeClasses += " badge-warning";
+    switch (repository.store.name) {
+      case "public":
+        badges.push({
+          classNames: "badge badge-primary",
+          status: repository.store.name
+        });
+        break;
+      default:
+        badges.push({
+          classNames: "badge badge-warning",
+          status: repository.store.name
+        });
+        break;
+    }
+
+    let tags = repository.trainingTags;
+    if (tags && tags.length > 0) {
+      tags.filter(t => t !== "private" && t !== "public").forEach(t =>
+        badges.push({
+          classNames: "badge badge-info",
+          status: t
+        })
+      );
+    }
+
+    if (repository.metricsDate) {
+      badges.push({
+        classNames: "badge badge-light",
+        status: moment(repository.metricsDate).format("L LT")
+      });
     }
 
     return (
       <div className="card">
+        <div className="card-header">
+          <span className="badges">
+            {badges.map((badge, key) => {
+              return (
+                <span key={key}>
+                  <span className={badge.classNames}>{badge.status}</span>
+                  &nbsp;
+                </span>
+              );
+            })}
+          </span>
+        </div>
+
         <div className="card-body">
-          <span className={badgeClasses}>{badgeText}</span>
-          <div className="row">
+          <h5 className="card-title">{repository.name}</h5>
+
+          {repository.jsonConfig &&
+          repository.jsonConfig.description &&
+          repository.jsonConfig.description.length > 0 ? (
+            <h6 className="card-subtitle mb-2 text-muted">
+              {repository.jsonConfig.description}
+            </h6>
+          ) : (
+            ""
+          )}
+
+          <DownloadModelFiles repository={repository} />
+
+          <div
+            className="alert alert-danger"
+            role="alert"
+            style={{
+              marginBottom: "10px",
+              marginTop: "10px",
+              display: this.state.errors.length > 0 ? "" : "none"
+            }}
+          >
+            <b>Error while creating service</b>
+            <ul>
+              {this.state.errors.map((error, i) => <li key={i}>{error}</li>)}
+            </ul>
+          </div>
+
+          <div id="create-service" className="input-group mb-3">
             <input
               type="text"
-              className="form-control mb-2"
+              className="form-control"
               id="inlineFormInputName"
               defaultValue={repository.name}
               ref={this.serviceNameRef}
             />
-
-            {repository.jsonConfig &&
-            repository.jsonConfig.description &&
-            repository.jsonConfig.description.length > 0 ? (
-              <p style={{ width: "100%" }}>
-                {repository.jsonConfig.description}
-              </p>
-            ) : (
-              ""
-            )}
-
-            <div
-              className="alert alert-danger"
-              role="alert"
-              style={{
-                marginBottom: "10px",
-                marginTop: "10px",
-                display: this.state.errors.length > 0 ? "" : "none"
-              }}
-            >
-              <b>Error while creating service</b>
-              <ul>
-                {this.state.errors.map((error, i) => <li key={i}>{error}</li>)}
-              </ul>
+            <div className="input-group-append">
+              <button
+                className="btn btn-outline-primary"
+                onClick={this.handleClickCreate.bind(this, repository.name)}
+              >
+                <i
+                  className={
+                    this.state.creatingService
+                      ? "fas fa-spinner fa-spin"
+                      : "fas fa-plus"
+                  }
+                />&nbsp; Add Service
+              </button>
             </div>
-
-            <button
-              className="btn btn-outline-primary"
-              onClick={this.handleClickCreate.bind(this, repository.name)}
-              style={{
-                marginBottom: "10px"
-              }}
-            >
-              <i
-                className="fas fa-spinner fa-spin"
-                style={this.state.creatingService ? {} : { display: "none" }}
-              />&nbsp; Add Service
-            </button>
           </div>
-
-          <DownloadModelFiles repository={repository} />
         </div>
       </div>
     );
   }
 }
 
-CreateCard.propTypes = {
+Card.propTypes = {
   repository: PropTypes.object.isRequired
 };

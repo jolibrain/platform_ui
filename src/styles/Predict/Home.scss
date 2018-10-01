@@ -1,3 +1,24 @@
 .predict-home-component {
   margin-top: 60px;
+
+  .layoutSelect {
+    i {
+      margin: 0 10px;
+      font-size: 18px;
+      color: #ccc;
+      cursor: pointer;
+    }
+
+    i.active {
+      color: #333;
+    }
+  }
+
+  #refreshServices {
+    margin-right: 5px;
+  }
+
+  h4 {
+    margin-right: 10px;
+  }
 }

@@ -114,7 +114,7 @@ export default class MainView extends React.Component {
                       type="button"
                       className="btn btn-primary"
                     >
-                      <i class="fas fa-sync" />
+                      <i className="fas fa-sync" />
                     </button>
                   </div>
                   <input

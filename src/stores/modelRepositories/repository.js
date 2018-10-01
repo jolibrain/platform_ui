@@ -80,7 +80,7 @@ export default class Repository {
 
       // Clean this parameter from config
       // it'd create an issue when creating a new service
-      // from ServiceCardCreate
+      // from PredictHome 'Add Service' button
       //
       // it's generated when creating a new Service with
       // the Publish button from Archived Training Jobs

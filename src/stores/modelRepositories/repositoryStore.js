@@ -8,7 +8,7 @@ export default class RepositoryStore {
   @observable nginxPath;
   @observable systempPath;
 
-  @observable fetchFiles = false;
+  @observable isRefreshing = false;
   @observable isTraining = false;
 
   @observable repositories = [];
@@ -31,24 +31,23 @@ export default class RepositoryStore {
 
   @action
   _loadRepositories(path) {
+    this.isRefreshing = true;
     this.$reqFolder(path).then(content => {
       const { folders, files } = content;
 
       folders.forEach(f => this._loadRepositories(path + f.name + "/"));
 
       if (
-        files.includes("model.json") ||
-        files.includes("deploy.prototxt") ||
-        files.includes("config.json") ||
-        files.includes("metrics.json") ||
-        files.includes("best_model.txt")
+        !this.repositories.find(r => r.path === path) &&
+        (files.includes("model.json") ||
+          files.includes("deploy.prototxt") ||
+          files.includes("config.json") ||
+          files.includes("metrics.json") ||
+          files.includes("best_model.txt"))
       ) {
-        if (
-          typeof this.repositories.find(r => r.path === path) === "undefined"
-        ) {
-          this.repositories.push(new Repository(path, files, this));
-        }
+        this.repositories.push(new Repository(path, files, this));
       }
+      this.isRefreshing = false;
     });
   }
 

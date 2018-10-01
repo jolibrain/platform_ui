@@ -20,6 +20,11 @@ export class modelRepositoriesStore {
   }
 
   @computed
+  get isRefreshing() {
+    return this.repositoryStores.map(r => r.isRefreshing).includes(true);
+  }
+
+  @computed
   get isReady() {
     return !this.repositoryStores.map(r => r.isReady).includes(false);
   }

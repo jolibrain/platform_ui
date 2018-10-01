@@ -11,7 +11,7 @@
   "deepdetect": {
     "refreshRate": {
       "info": 10000,
-      "training": 30000
+      "training": 10000
     },
     "servers": [
       {

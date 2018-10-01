@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 import { Link, withRouter } from "react-router-dom";
+import moment from "moment";
 
 @withRouter
 @observer
@@ -110,6 +111,13 @@ export default class ModelRepositoryContent extends React.Component {
           classNames: "badge badge-info",
           status: t
         });
+      });
+    }
+
+    if (repository.metricsDate) {
+      badges.push({
+        classNames: "badge badge-light",
+        status: moment(repository.metricsDate).format("L LT")
       });
     }
 
