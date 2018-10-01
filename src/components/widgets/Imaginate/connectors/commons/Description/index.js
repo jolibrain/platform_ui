@@ -55,18 +55,18 @@ export default class Description extends React.Component {
       if (store.service.settings.mltype === "ctc") {
         displayFormat = "category";
       }
-    }
 
-    if (service.settings.mltype === "rois") {
-      displayFormat = "nns";
-    }
+      if (service.settings.mltype === "rois") {
+        displayFormat = "nns";
+      }
 
-    if (
-      service.respInfo &&
-      service.respInfo.body &&
-      service.respInfo.body.mltype === "classification"
-    ) {
-      displayFormat = "category";
+      if (
+        service.respInfo &&
+        service.respInfo.body &&
+        service.respInfo.body.mltype === "classification"
+      ) {
+        displayFormat = "category";
+      }
     }
 
     let output = "";
