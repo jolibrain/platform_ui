@@ -1,5 +1,6 @@
 import superagentPromise from "superagent-promise";
 import _superagent from "superagent";
+import noCache from "superagent-no-cache";
 
 import DD from "deepdetect-js";
 
@@ -24,6 +25,7 @@ const Config = {
   get: (path = "config.json") =>
     superagent
       .get(path)
+      .use(noCache)
       .withCredentials()
       .end(handleErrors)
       .then(responseBody)

@@ -54,6 +54,7 @@
     "react-tooltip": "^3.6.0",
     "store": "^2.0.12",
     "superagent": "^3.8.3",
+    "superagent-no-cache": "^0.1.1",
     "superagent-promise": "^1.1.0"
   },
   "scripts": {
