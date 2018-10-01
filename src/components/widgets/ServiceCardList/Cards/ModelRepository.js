@@ -52,6 +52,7 @@ export default class ModelRepositoryCard extends React.Component {
         // TODO add serviceName in ddServer.deleteService method
         // to avoid using private request method
         await ddServer.$reqDeleteService(service.name);
+        modelRepositoriesStore.refresh();
         this.props.history.push(`/predict`);
       });
     }
