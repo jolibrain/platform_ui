@@ -51,6 +51,5 @@ export default class ServiceCardCreate extends React.Component {
 }
 
 ServiceCardCreate.propTypes = {
-  services: PropTypes.array.isRequired,
   filterServiceName: PropTypes.string
 };
