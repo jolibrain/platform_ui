@@ -17,7 +17,8 @@ export default class MainView extends React.Component {
 
     this.state = {
       filterServiceName: "",
-      archiveLayout: "cards"
+      archiveLayout: "cards",
+      isRefreshing: false
     };
 
     this.handleServiceFilter = this.handleServiceFilter.bind(this);
@@ -30,7 +31,11 @@ export default class MainView extends React.Component {
   }
 
   handleClickRefreshArchive() {
+    this.setState({ isRefreshing: true });
     this.props.modelRepositoriesStore.refresh();
+    setTimeout(() => {
+      this.setState({ isRefreshing: false });
+    }, 2000);
   }
 
   handleServiceFilter(event) {
@@ -93,9 +98,15 @@ export default class MainView extends React.Component {
                     id="refreshServices"
                     onClick={this.handleClickRefreshArchive}
                     type="button"
-                    className="btn btn-primary"
+                    className="btn btn-outline-primary"
                   >
-                    <i className="fas fa-sync" />
+                    <i
+                      className={
+                        this.state.isRefreshing
+                          ? "fas fa-sync fa-spin"
+                          : "fas fa-sync"
+                      }
+                    />
                   </button>
 
                   <div className="input-group">
