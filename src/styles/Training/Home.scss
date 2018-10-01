@@ -3,7 +3,7 @@
 
   .layoutSelect {
     i {
-      margin-right: 10px;
+      margin: 0 10px;
       font-size: 18px;
       color: #ccc;
       cursor: pointer;
@@ -14,11 +14,7 @@
     }
   }
 
-  .form-inline {
-    margin-bottom: 10px;
-
-    .input-group {
-      margin-left: 20px;
-    }
+  #refreshServices {
+    margin-right: 5px;
   }
 }

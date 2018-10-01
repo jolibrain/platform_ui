@@ -83,57 +83,66 @@ export default class MainView extends React.Component {
                 </div>
               )}
             </div>
+
             <hr />
+
             <div className="archiveTrainingList archive">
-              <div className="layoutSelect float-right">
-                <i
-                  className={
-                    this.state.archiveLayout === "cards"
-                      ? "fas fa-th-large active"
-                      : "fas fa-th-large"
-                  }
-                  onClick={this.handleClickLayoutCards}
-                />
-                <i
-                  className={
-                    this.state.archiveLayout === "list"
-                      ? "fas fa-th-list active"
-                      : "fas fa-th-list"
-                  }
-                  onClick={this.handleClickLayoutList}
-                />
+              <div className="float-right">
+                <form className="form-inline">
+                  <button
+                    id="refreshServices"
+                    onClick={this.handleClickRefreshArchive}
+                    type="button"
+                    className="btn btn-primary"
+                  >
+                    <i className="fas fa-sync" />
+                  </button>
+
+                  <div className="input-group">
+                    <div className="input-group-prepend">
+                      <div className="input-group-text">
+                        <i className="fas fa-search" />
+                      </div>
+                    </div>
+                    <input
+                      type="text"
+                      onChange={this.handleServiceFilter}
+                      placeholder="Filter service name..."
+                      value={this.state.filterServiceName}
+                    />
+                    <div className="input-group-append">
+                      <button
+                        className="btn btn-outline-secondary"
+                        type="button"
+                        onClick={this.cleanServiceFilter}
+                      >
+                        <i className="fas fa-times-circle" />
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="layoutSelect">
+                    <i
+                      className={
+                        this.state.archiveLayout === "cards"
+                          ? "fas fa-th-large active"
+                          : "fas fa-th-large"
+                      }
+                      onClick={this.handleClickLayoutCards}
+                    />
+                    <i
+                      className={
+                        this.state.archiveLayout === "list"
+                          ? "fas fa-th-list active"
+                          : "fas fa-th-list"
+                      }
+                      onClick={this.handleClickLayoutList}
+                    />
+                  </div>
+                </form>
               </div>
 
-              <form className="form-inline">
-                <h4>Archived Training Jobs</h4>
-
-                <div className="input-group">
-                  <div className="input-group-prepend">
-                    <button
-                      onClick={this.handleClickRefreshArchive}
-                      type="button"
-                      className="btn btn-primary"
-                    >
-                      <i className="fas fa-sync" />
-                    </button>
-                  </div>
-                  <input
-                    type="text"
-                    onChange={this.handleServiceFilter}
-                    placeholder="Filter service name..."
-                    value={this.state.filterServiceName}
-                  />
-                  <div className="input-group-append">
-                    <button
-                      className="btn btn-outline-secondary"
-                      type="button"
-                      onClick={this.cleanServiceFilter}
-                    >
-                      <i className="fas fa-times-circle" />
-                    </button>
-                  </div>
-                </div>
-              </form>
+              <h4>Archived Training Jobs</h4>
 
               {this.state.archiveLayout === "cards" ? (
                 <ServiceCardList services={displayedArchiveRepositories} />
