@@ -241,23 +241,20 @@ export default class ModelRepositoryCard extends React.Component {
 
     return (
       <div className="card">
+        {badges.length > 0 ? (
+          <div className="card-header">
+            {badges.map((badge, key) => (
+              <span key={key} className={badge.classNames}>
+                {badge.status}
+              </span>
+            ))}
+          </div>
+        ) : (
+          ""
+        )}
+
         <div className="card-body">
-          <h5 className="card-title">
-            {repository.name}
-            <br />
-            {badges.map((badge, key) => {
-              return (
-                <span key={key} className={badge.classNames}>
-                  {badge.loading ? (
-                    <i className="fas fa-spinner fa-spin" />
-                  ) : (
-                    ""
-                  )}
-                  {badge.status}
-                </span>
-              );
-            })}
-          </h5>
+          <h5 className="card-title">{repository.name}</h5>
           <ul>
             {info.map((i, index) => {
               return (

@@ -164,24 +164,24 @@ export default class TrainingCard extends React.Component {
 
     return (
       <div className="card">
+        <div className="card-header">
+          {badges.map((badge, key) => {
+            return (
+              <span key={key} className={badge.classNames}>
+                {badge.spinner ? <i className="fas fa-spinner fa-spin" /> : ""}
+                {badge.status}
+              </span>
+            );
+          })}
+        </div>
+
         <div className="card-body">
           <h5 className="card-title">
             <span className="title">{service.name}</span>
-            <br />
-            {badges.map((badge, key) => {
-              return (
-                <span key={key} className={badge.classNames}>
-                  {badge.spinner ? (
-                    <i className="fas fa-spinner fa-spin" />
-                  ) : (
-                    ""
-                  )}
-                  {badge.status}
-                </span>
-              );
-            })}
           </h5>
-          <p className="card-text">{service.settings.description}</p>
+          <h6 className="card-subtitle mb-2 text-muted">
+            {service.settings.description}
+          </h6>
           {info.length > 0 ? (
             <div>
               <ul>

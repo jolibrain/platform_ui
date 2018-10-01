@@ -146,16 +146,11 @@ export default class Card extends React.Component {
     return (
       <div className="card">
         <div className="card-header">
-          <span className="badges">
-            {badges.map((badge, key) => {
-              return (
-                <span key={key}>
-                  <span className={badge.classNames}>{badge.status}</span>
-                  &nbsp;
-                </span>
-              );
-            })}
-          </span>
+          {badges.map((badge, key) => (
+            <span key={key} className={badge.classNames}>
+              {badge.status}
+            </span>
+          ))}
         </div>
 
         <div className="card-body">

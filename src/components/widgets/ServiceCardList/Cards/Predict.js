@@ -17,7 +17,9 @@ export default class PredictCard extends React.Component {
       <div className="card">
         <div className="card-body">
           <h5 className="card-title">{service.name}</h5>
-          <p className="card-text">{service.settings.description}</p>
+          <h6 className="card-subtitle mb-2 text-muted">
+            {service.settings.description}
+          </h6>
           <Link to={serviceUrl} className="btn btn-outline-primary">
             Predict
           </Link>
