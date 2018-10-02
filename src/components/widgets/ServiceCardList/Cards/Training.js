@@ -192,15 +192,15 @@ export default class TrainingCard extends React.Component {
         //);
         break;
       case "not-running":
-        cardContent = (
-          <button
-            id="openDeleteService"
-            className="btn btn-outline-danger"
-            onClick={this.openDeleteServiceModal}
-          >
-            Delete Service
-          </button>
-        );
+        //cardContent = (
+        //  <button
+        //    id="openDeleteService"
+        //    className="btn btn-outline-danger"
+        //    onClick={this.openDeleteServiceModal}
+        //  >
+        //    Delete Service
+        //  </button>
+        //);
         break;
       case "waiting":
         cardContent = (
