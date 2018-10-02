@@ -7,7 +7,6 @@ export default class deepdetectServer {
   @observable name = "";
   @observable settings = {};
 
-  @observable isLoading = false;
   @observable isActive = false;
   @observable services = [];
 
@@ -88,17 +87,13 @@ export default class deepdetectServer {
 
   @action
   async loadServices(status = false) {
-    if (this.isLoading) return null;
-
     try {
-      this.isLoading = true;
       this.respInfo = await this.$reqInfo();
-      this.isLoading = false;
 
       if (!this.isDown) {
-        this.services = this.services.filter(s =>
-          this.respInfoServiceNames.includes(s.name)
-        );
+        this.services = this.services
+          .slice()
+          .filter(s => this.respInfoServiceNames.includes(s.name));
 
         this.respInfoServices.forEach(serviceSettings => {
           let existingService = this.services.find(
@@ -119,14 +114,13 @@ export default class deepdetectServer {
       }
     } catch (e) {
       this.services = [];
-      this.isLoading = false;
     }
   }
 
   @action
   async newService(name, data, callback) {
     const resp = await this.$reqPutService(name, data);
-    await this.loadServices();
+    this.loadServices();
     callback(resp);
   }
 
@@ -134,13 +128,13 @@ export default class deepdetectServer {
   async deleteService(callback) {
     this.service.removeStore();
     const resp = await this.$reqDeleteService(this.service.name);
-    await this.loadServices();
+    this.loadServices();
     if (callback && typeof callback === "function") callback(resp);
   }
 
   @action
-  async stopTraining(callback) {
+  stopTraining(callback) {
     this.service.stopTraining(callback);
-    await this.loadServices();
+    this.loadServices();
   }
 }
