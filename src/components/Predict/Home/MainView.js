@@ -82,13 +82,13 @@ export default class MainView extends React.Component {
       });
     }
 
-    publicRepositories = publicRepositories.sort((a, b) => {
+    publicRepositories = publicRepositories.slice().sort((a, b) => {
       return moment
         .utc(b.metricsDate ? b.metricsDate : 1)
         .diff(moment.utc(a.metricsDate ? a.metricsDate : 1));
     });
 
-    privateRepositories = privateRepositories.sort((a, b) => {
+    privateRepositories = privateRepositories.slice().sort((a, b) => {
       return moment
         .utc(b.metricsDate ? b.metricsDate : 1)
         .diff(moment.utc(a.metricsDate ? a.metricsDate : 1));

@@ -68,6 +68,7 @@ export default class MainView extends React.Component {
           r.trainingTags.join(" ").includes(filterServiceName)
         );
       })
+      .slice()
       .sort((a, b) => {
         return moment
           .utc(b.metricsDate ? b.metricsDate : 1)

@@ -4,6 +4,7 @@ import { inject, observer } from "mobx-react";
 import { Link, withRouter } from "react-router-dom";
 
 @inject("deepdetectStore")
+@inject("modalStore")
 @withRouter
 @observer
 export default class TrainingCard extends React.Component {
@@ -11,6 +12,11 @@ export default class TrainingCard extends React.Component {
     super(props);
 
     this.getValue = this.getValue.bind(this);
+    this.openDeleteServiceModal = this.openDeleteServiceModal.bind(this);
+  }
+
+  openDeleteServiceModal() {
+    this.props.modalStore.setVisible("deleteService");
   }
 
   getValue(attr) {
@@ -76,22 +82,20 @@ export default class TrainingCard extends React.Component {
         status: "training"
       });
     } else if (service.respInfo && !service.trainJob) {
-      status = "error";
+      badges.push({
+        classNames: "badge badge-warning",
+        status: "not running"
+      });
+      status = "not-running";
     } else if (service.isTraining && !train_loss) {
       badges.push({
         classNames: "badge badge-warning",
         status: "launching..."
       });
       status = "waiting";
-    } else {
-      badges.push({
-        classNames: "badge badge-warning",
-        status: "not running"
-      });
-      status = "not-running";
     }
 
-    if (status !== "error" && service.isRequesting) {
+    if (!["error", "not-running"].includes(status) && service.isRequesting) {
       badges.push({
         classNames: "badge badge-warning",
         status: "",
@@ -176,7 +180,6 @@ export default class TrainingCard extends React.Component {
     let cardContent = null;
     switch (status) {
       case "error":
-      case "not-running":
         //cardContent = (
         //  <a
         //    className="btn btn-outline-danger"
@@ -187,6 +190,17 @@ export default class TrainingCard extends React.Component {
         //    <i className="fas fa-circle-notch" /> Check error in Jupyter
         //  </a>
         //);
+        break;
+      case "not-running":
+        cardContent = (
+          <button
+            id="openDeleteService"
+            className="btn btn-outline-danger"
+            onClick={this.openDeleteServiceModal}
+          >
+            Delete Service
+          </button>
+        );
         break;
       case "waiting":
         cardContent = (
