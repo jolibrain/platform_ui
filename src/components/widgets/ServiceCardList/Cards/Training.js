@@ -83,6 +83,12 @@ export default class TrainingCard extends React.Component {
         status: "launching..."
       });
       status = "waiting";
+    } else {
+      badges.push({
+        classNames: "badge badge-warning",
+        status: "not running"
+      });
+      status = "not-running";
     }
 
     if (status !== "error" && service.isRequesting) {
@@ -170,6 +176,7 @@ export default class TrainingCard extends React.Component {
     let cardContent = null;
     switch (status) {
       case "error":
+      case "not-running":
         //cardContent = (
         //  <a
         //    className="btn btn-outline-danger"
