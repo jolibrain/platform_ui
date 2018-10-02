@@ -61,18 +61,23 @@ export default class TrainingCard extends React.Component {
       status: service.settings.mltype
     });
 
-    if (service.isTraining) {
+    let info = [];
+
+    const train_loss = this.getValue("train_loss");
+    if (train_loss)
+      info.push({
+        text: "Train Loss",
+        val: train_loss
+      });
+
+    if (service.isTraining && train_loss) {
       badges.push({
         classNames: "badge badge-success",
         status: "training"
       });
     } else if (service.respInfo && !service.trainJob) {
-      badges.push({
-        classNames: "badge badge-danger",
-        status: "error"
-      });
       status = "error";
-    } else {
+    } else if (service.isTraining && !train_loss) {
       badges.push({
         classNames: "badge badge-warning",
         status: "launching..."
@@ -89,15 +94,6 @@ export default class TrainingCard extends React.Component {
     }
 
     const serviceUrl = `/training/${service.serverName}/${service.name}`;
-
-    let info = [];
-
-    const train_loss = this.getValue("train_loss");
-    if (train_loss)
-      info.push({
-        text: "Train Loss",
-        val: train_loss
-      });
 
     const iteration = this.getValue("iteration");
     if (iteration)
@@ -164,11 +160,12 @@ export default class TrainingCard extends React.Component {
     }
 
     const remain_time_str = this.getValue("remain_time_str");
-    info.push({
-      text: "Time remaining",
-      val: remain_time_str,
-      breakline: true
-    });
+    if (remain_time_str)
+      info.push({
+        text: "Time remaining",
+        val: remain_time_str,
+        breakline: true
+      });
 
     let cardContent = null;
     switch (status) {
@@ -195,11 +192,14 @@ export default class TrainingCard extends React.Component {
       default:
         cardContent = (
           <div>
-            <ul>
+            <ul className="list-group list-group-flush">
               {info.map((i, index) => {
                 return (
-                  <li key={index}>
-                    {i.text}: {i.breakline ? <br /> : ""}
+                  <li
+                    key={index}
+                    className="list-group-item d-flex justify-content-between align-items-center"
+                  >
+                    {i.text}
                     <b>{i.val}</b>
                   </li>
                 );

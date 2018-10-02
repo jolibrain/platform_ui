@@ -3,4 +3,22 @@
   .badge {
     margin-right: 3px;
   }
+
+  .list-group-item:first-child {
+    border-top: 0;
+  }
+
+  .list-group-item:last-child {
+    border-bottom: 0;
+  }
+
+  .bestModelInfo {
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid #ccc;
+
+    h6 {
+      font-weight: 700;
+    }
+  }
 }

@@ -199,10 +199,9 @@ export default class ModelRepositoryCard extends React.Component {
     let bestModelInfo = null;
     if (repository.bestModel) {
       bestModelInfo = (
-        <div>
-          <hr />
-          <p>Best Model</p>
-          <ul>
+        <div className="bestModelInfo">
+          <h6>Best Model</h6>
+          <ul className="list-group list-group-flush">
             {Object.keys(repository.bestModel).map((k, i) => {
               let attrTitle =
                 i === 0
@@ -212,8 +211,12 @@ export default class ModelRepositoryCard extends React.Component {
               if (attrTitle === "MEANIOU") attrTitle = "Mean IOU";
 
               return (
-                <li key={i}>
-                  {attrTitle}: <b>{repository.bestModel[k]}</b>
+                <li
+                  key={i}
+                  className="list-group-item d-flex justify-content-between align-items-center"
+                >
+                  {attrTitle}
+                  <b>{repository.bestModel[k]}</b>
                 </li>
               );
             })}
@@ -255,11 +258,14 @@ export default class ModelRepositoryCard extends React.Component {
 
         <div className="card-body">
           <h5 className="card-title">{repository.name}</h5>
-          <ul>
+          <ul className="list-group list-group-flush">
             {info.map((i, index) => {
               return (
-                <li key={index}>
-                  {i.text}: {i.breakline ? <br /> : ""}
+                <li
+                  key={index}
+                  className="list-group-item d-flex justify-content-between align-items-center"
+                >
+                  {i.text}
                   <b>{i.val}</b>
                 </li>
               );
