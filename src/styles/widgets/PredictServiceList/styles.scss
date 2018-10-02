@@ -3,6 +3,10 @@
 
   .card {
     margin: 5px;
+
+    .card-header .badge {
+      margin-right: 3px;
+    }
   }
   #create-service {
     margin: 10px 0;

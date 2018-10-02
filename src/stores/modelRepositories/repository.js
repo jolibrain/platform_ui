@@ -64,11 +64,8 @@ export default class Repository {
 
   _load() {
     this._loadJsonConfig();
-
-    if (this.store.isTraining) {
-      this._loadJsonMetrics();
-      this._loadBestModel();
-    }
+    this._loadJsonMetrics();
+    this._loadBestModel();
   }
 
   @action.bound
