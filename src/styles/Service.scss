@@ -1,6 +1,17 @@
 .service-component .main-view .container {
   padding-top: 20px;
 
+  .main-view {
+    .serviceList,
+    .serviceQuickCreate {
+      margin-top: 20px;
+
+      .card {
+        margin: 5px;
+      }
+    }
+  }
+
   .content {
     padding: 0 15px;
   }
@@ -40,16 +51,6 @@
       border-color: #de7e00;
       box-shadow: none;
       color: #fff !important;
-    }
-  }
-}
-.main-view {
-  .serviceList,
-  .serviceQuickCreate {
-    margin-top: 20px;
-
-    .card {
-      margin: 5px;
     }
   }
 }

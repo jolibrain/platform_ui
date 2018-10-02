@@ -44,6 +44,7 @@ export default class TrainingCard extends React.Component {
   render() {
     const { service } = this.props;
     let badges = [];
+    let status = "running";
 
     badges.push({
       classNames: "badge badge-info",
@@ -67,12 +68,19 @@ export default class TrainingCard extends React.Component {
       });
     } else if (service.respInfo && !service.trainJob) {
       badges.push({
-        classNames: "badge badge-warning",
-        status: "not training"
+        classNames: "badge badge-danger",
+        status: "error"
       });
+      status = "error";
+    } else {
+      badges.push({
+        classNames: "badge badge-warning",
+        status: "launching..."
+      });
+      status = "waiting";
     }
 
-    if (service.isRequesting) {
+    if (status !== "error" && service.isRequesting) {
       badges.push({
         classNames: "badge badge-warning",
         status: "",
@@ -162,6 +170,49 @@ export default class TrainingCard extends React.Component {
       breakline: true
     });
 
+    let cardContent = null;
+    switch (status) {
+      case "error":
+        //cardContent = (
+        //  <a
+        //    className="btn btn-outline-danger"
+        //    href="/code/lab"
+        //    target="_blank"
+        //    rel="noreferrer noopener"
+        //  >
+        //    <i className="fas fa-circle-notch" /> Check error in Jupyter
+        //  </a>
+        //);
+        break;
+      case "waiting":
+        cardContent = (
+          <a className="btn btn-outline-info disabled">
+            <i className="fas fa-spinner fa-spin" /> Waiting for data
+          </a>
+        );
+        break;
+      case "training":
+      default:
+        cardContent = (
+          <div>
+            <ul>
+              {info.map((i, index) => {
+                return (
+                  <li key={index}>
+                    {i.text}: {i.breakline ? <br /> : ""}
+                    <b>{i.val}</b>
+                  </li>
+                );
+              })}
+            </ul>
+            <Link to={serviceUrl} className="btn btn-outline-primary">
+              Monitor
+            </Link>
+          </div>
+        );
+        break;
+    }
+
     return (
       <div className="card">
         <div className="card-header">
@@ -182,27 +233,7 @@ export default class TrainingCard extends React.Component {
           <h6 className="card-subtitle mb-2 text-muted">
             {service.settings.description}
           </h6>
-          {info.length > 0 ? (
-            <div>
-              <ul>
-                {info.map((i, index) => {
-                  return (
-                    <li key={index}>
-                      {i.text}: {i.breakline ? <br /> : ""}
-                      <b>{i.val}</b>
-                    </li>
-                  );
-                })}
-              </ul>
-              <Link to={serviceUrl} className="btn btn-outline-primary">
-                Monitor
-              </Link>
-            </div>
-          ) : (
-            <a className="btn btn-outline-primary disabled">
-              <i className="fas fa-spinner fa-spin" /> Waiting for data...
-            </a>
-          )}
+          {cardContent}
         </div>
       </div>
     );
