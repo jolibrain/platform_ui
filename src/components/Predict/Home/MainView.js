@@ -1,6 +1,7 @@
 import React from "react";
 import { inject, observer } from "mobx-react";
 import { Link, withRouter } from "react-router-dom";
+import moment from "moment";
 
 import RightPanel from "../commons/RightPanel";
 
@@ -58,24 +59,40 @@ export default class MainView extends React.Component {
 
   render() {
     const { predictServices } = this.props.deepdetectStore;
+    const { filterServiceName } = this.state;
 
     let {
       publicRepositories,
       privateRepositories
     } = this.props.modelRepositoriesStore;
 
-    if (
-      this.state.filterServiceName &&
-      this.state.filterServiceName.length > 0
-    ) {
+    if (filterServiceName && filterServiceName.length > 0) {
       publicRepositories = publicRepositories.filter(r => {
-        return r.name.includes(this.state.filterServiceName);
+        return (
+          r.name.includes(filterServiceName) ||
+          r.trainingTags.join(" ").includes(filterServiceName)
+        );
       });
 
       privateRepositories = privateRepositories.filter(r => {
-        return r.name.includes(this.state.filterServiceName);
+        return (
+          r.name.includes(filterServiceName) ||
+          r.trainingTags.join(" ").includes(filterServiceName)
+        );
       });
     }
+
+    publicRepositories = publicRepositories.sort((a, b) => {
+      return moment
+        .utc(b.metricsDate ? b.metricsDate : 1)
+        .diff(moment.utc(a.metricsDate ? a.metricsDate : 1));
+    });
+
+    privateRepositories = privateRepositories.sort((a, b) => {
+      return moment
+        .utc(b.metricsDate ? b.metricsDate : 1)
+        .diff(moment.utc(a.metricsDate ? a.metricsDate : 1));
+    });
 
     return (
       <div className="main-view content-wrapper">
