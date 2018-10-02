@@ -18,12 +18,17 @@ export default class Imaginate extends React.Component {
     this.getServiceConnector = this.getServiceConnector.bind(this);
   }
 
+  componentWillUnmount() {
+    this._ismounted = false;
+  }
+
   componentDidMount() {
+    this._ismounted = true;
     this.getServiceConnector(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.getServiceConnector(nextProps);
+    if (this._isMounted) this.getServiceConnector(nextProps);
   }
 
   async getServiceConnector(props) {
