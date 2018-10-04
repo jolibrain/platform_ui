@@ -12,11 +12,6 @@ export default class TrainingCard extends React.Component {
     super(props);
 
     this.getValue = this.getValue.bind(this);
-    this.openDeleteServiceModal = this.openDeleteServiceModal.bind(this);
-  }
-
-  openDeleteServiceModal() {
-    this.props.modalStore.setVisible("deleteService");
   }
 
   getValue(attr) {
@@ -193,15 +188,11 @@ export default class TrainingCard extends React.Component {
         //);
         break;
       case "not-running":
-        //cardContent = (
-        //  <button
-        //    id="openDeleteService"
-        //    className="btn btn-outline-danger"
-        //    onClick={this.openDeleteServiceModal}
-        //  >
-        //    Delete Service
-        //  </button>
-        //);
+        cardFooter = (
+          <Link to={serviceUrl} className="btn btn-outline-primary">
+            <i className="fas fa-braille" /> Monitor
+          </Link>
+        );
         break;
       case "waiting":
         cardContent = (

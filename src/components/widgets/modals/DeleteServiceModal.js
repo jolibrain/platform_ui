@@ -21,11 +21,11 @@ export default class DeleteServiceModal extends React.Component {
   }
 
   handleDeleteService() {
-    const { deepdetectStore, modalStore, history } = this.props;
+    const { deepdetectStore, modalStore, history, redirect } = this.props;
     this.setState({ spinner: true });
     deepdetectStore.deleteService(() => {
       modalStore.setVisible("deleteService", false);
-      history.push("/");
+      history.push(redirect || "/");
     });
   }
 

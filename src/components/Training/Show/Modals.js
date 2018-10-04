@@ -32,7 +32,7 @@ export default class Modals extends React.Component {
           visible={stopTrainingModal.visible}
           onClickBackdrop={this.modalBackdropClicked.bind(this, "stopTraining")}
         >
-          <StopTrainingModal />
+          <StopTrainingModal redirect="/#/training" />
         </Modal>
         <Modal
           visible={deleteServiceModal.visible}
@@ -41,7 +41,7 @@ export default class Modals extends React.Component {
             "deleteService"
           )}
         >
-          <DeleteServiceModal />
+          <DeleteServiceModal redirect="/#/training" />
         </Modal>
       </div>
     );
