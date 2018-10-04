@@ -32,14 +32,14 @@ export default class Breadcrumb extends React.Component {
         <Link to={root.path}>{root.label}</Link> >&nbsp;
         {service.serverName ? (
           <span>
-            server: <b>{service.serverName}</b> >&nbsp;
+            <i class="fas fa-server" /> <b>{service.serverName}</b> >&nbsp;
           </span>
         ) : (
           ""
         )}
         {service.gpuid ? (
           <span>
-            gpu: <b>{service.gpuid}</b> >&nbsp;
+            <i class="fas fa-hdd" /> <b>{service.gpuid}</b> >&nbsp;
           </span>
         ) : (
           ""

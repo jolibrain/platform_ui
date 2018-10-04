@@ -22,7 +22,7 @@ export default class GpuStatServer extends React.Component {
     return (
       <div className="gpuinfo">
         <h5>
-          <i className="fas fa-tachometer-alt" /> {server.name}
+          <i className="fas fa-server" /> {server.name}
         </h5>
         {serverInfo}
       </div>

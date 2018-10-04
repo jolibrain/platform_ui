@@ -43,20 +43,19 @@ export default class GpuInfoItem extends React.Component {
     return (
       <div key={`gpuInfoItem-${index}`} className="block">
         <div>
-          <span className="font-weight-bold">{index}</span>. &nbsp;
+          {alerts.length > 0 ? (
+            <i class="fas fa-fire" />
+          ) : (
+            <i class="far fa-hdd" />
+          )}{" "}
+          &nbsp;
+          <span className="font-weight-bold">{index}</span> &nbsp;
           <span className="temp">{gpu["temperature.gpu"]}°C</span>
           ,&nbsp;
           <span className="util">{utilPercentDisplay}</span>
           ,&nbsp;
           <span className="memUsed text-primary">{memoryDisplay}</span> /{" "}
           <span className="memTotal text-secondary">{memoryTotal}</span>
-          {alerts.length > 0 ? (
-            <span className="alerts">
-              &nbsp;<i className="fas fa-fire" style={{ color: "#3c457d" }} />
-            </span>
-          ) : (
-            ""
-          )}
           <div
             className={
               gpu.processes.length > 0 ? "badge detailsBadge" : "hidden"
