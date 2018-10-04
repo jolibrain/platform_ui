@@ -44,9 +44,9 @@ export default class GpuInfoItem extends React.Component {
       <div key={`gpuInfoItem-${index}`} className="block">
         <div>
           {alerts.length > 0 ? (
-            <i class="fas fa-fire" />
+            <i className="fas fa-fire" />
           ) : (
-            <i class="far fa-hdd" />
+            <i className="far fa-hdd" />
           )}{" "}
           &nbsp;
           <span className="font-weight-bold">{index}</span> &nbsp;

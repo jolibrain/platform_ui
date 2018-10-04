@@ -18,7 +18,7 @@ export default class ServiceInfo extends React.Component {
     return (
       <div className="serviceinfo">
         <h5>
-          <i class="fas fa-cube" /> {service.name}
+          <i className="fas fa-cube" /> {service.name}
         </h5>
         <h6>{service.settings.description}</h6>
         <div className="block list-group list-group-flush">
