@@ -97,9 +97,10 @@ export default class Card extends React.Component {
 
         ddStore.setService(serviceName);
 
-        this.props.history.push(
-          `/predict/${ddStore.writableServer.name}/${serviceName}`
-        );
+        const serviceUrl = `/predict/${
+          ddStore.hostableServer.name
+        }/${serviceName}`;
+        this.props.history.push(serviceUrl);
       }
     });
   }

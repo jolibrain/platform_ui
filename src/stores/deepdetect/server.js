@@ -120,7 +120,7 @@ export default class deepdetectServer {
   @action
   async newService(name, data, callback) {
     const resp = await this.$reqPutService(name, data);
-    this.loadServices();
+    await this.loadServices();
     callback(resp);
   }
 
@@ -128,7 +128,7 @@ export default class deepdetectServer {
   async deleteService(callback) {
     this.service.removeStore();
     const resp = await this.$reqDeleteService(this.service.name);
-    this.loadServices();
+    await this.loadServices();
     if (callback && typeof callback === "function") callback(resp);
   }
 
