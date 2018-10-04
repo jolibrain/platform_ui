@@ -25,7 +25,7 @@ export default class StopTrainingModal extends React.Component {
     this.setState({ spinner: true });
     deepdetectStore.stopTraining(() => {
       modalStore.setVisible("stopTraining", false);
-      history.push("/#/training");
+      history.push("/training");
     });
   }
 
