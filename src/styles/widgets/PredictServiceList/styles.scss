@@ -20,9 +20,11 @@
     .card-header .badge {
       margin-right: 3px;
     }
-  }
-  #create-service {
-    margin: 10px 0;
+
+    .alert.alert-danger {
+      margin-bottom: 10px;
+      margin-top: 10px;
+    }
   }
 
   .create-meta h5 {

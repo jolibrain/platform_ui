@@ -170,22 +170,18 @@ export default class Card extends React.Component {
         </div>
 
         <div className="card-footer text-right">
-          <div
-            className="alert alert-danger"
-            role="alert"
-            style={{
-              marginBottom: "10px",
-              marginTop: "10px",
-              display: this.state.errors.length > 0 ? "" : "none"
-            }}
-          >
-            <b>Error while creating service</b>
-            <ul>
-              {this.state.errors.map((error, i) => <li key={i}>{error}</li>)}
-            </ul>
-          </div>
+          {this.state.errors.length > 0 ? (
+            <div className="alert alert-danger" role="alert">
+              <b>Error while creating service</b>
+              <ul>
+                {this.state.errors.map((error, i) => <li key={i}>{error}</li>)}
+              </ul>
+            </div>
+          ) : (
+            ""
+          )}
 
-          <div id="create-service" className="input-group mb-3">
+          <div id="create-service" className="input-group">
             <input
               type="text"
               className="form-control"
