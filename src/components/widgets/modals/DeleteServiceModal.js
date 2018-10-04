@@ -51,7 +51,7 @@ export default class DeleteServiceModal extends React.Component {
             className="btn btn-secondary mb-2"
             onClick={this.handleCancel}
           >
-            No
+            Cancel
           </button>
           <button
             id="submitDeleteService"
@@ -61,10 +61,12 @@ export default class DeleteServiceModal extends React.Component {
           >
             {this.state.spinner ? (
               <span>
-                <i className="fas fa-spinner fa-spin" /> Deleting
+                <i className="fas fa-spinner fa-spin" /> Deleting...
               </span>
             ) : (
-              "Yes"
+              <span>
+                <i className="far fa-trash-alt" /> Delete Service
+              </span>
             )}
           </button>
         </div>

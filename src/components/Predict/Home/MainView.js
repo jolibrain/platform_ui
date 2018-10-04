@@ -98,12 +98,6 @@ export default class MainView extends React.Component {
       <div className="main-view content-wrapper">
         <div className="container-fluid">
           <div className="content">
-            <Link to="/predict/new" className="btn btn-outline-primary">
-              New Service
-            </Link>
-
-            <hr />
-
             <div className="serviceList">
               <h4>Current Predict Service</h4>
               <ServiceCardList services={predictServices} />
@@ -114,6 +108,10 @@ export default class MainView extends React.Component {
             <div className="predictServiceList">
               <div className="float-right">
                 <form className="serviceCreate form-inline">
+                  <Link to="/predict/new" className="btn btn-outline-primary">
+                    <i className="fas fa-plus" /> New Service
+                  </Link>
+                  &nbsp;
                   <button
                     onClick={this.handleClickRefreshServices}
                     type="button"
@@ -128,7 +126,6 @@ export default class MainView extends React.Component {
                       }
                     />
                   </button>
-
                   <div className="input-group">
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -151,7 +148,6 @@ export default class MainView extends React.Component {
                       </button>
                     </div>
                   </div>
-
                   <div className="layoutSelect">
                     <i
                       className={

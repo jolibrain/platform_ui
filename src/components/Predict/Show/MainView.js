@@ -49,15 +49,15 @@ export default class MainView extends React.Component {
                     className="btn btn-outline-danger"
                     onClick={this.openDeleteServiceModal}
                   >
-                    Delete Service
+                    <i className="far fa-trash-alt" /> Delete Service
                   </button>
                 </li>
               ) : (
                 ""
               )}
               <li className="nav-item">
-                <Link to="/predict/new" className="btn btn-outline-primary">
-                  New Service
+                <Link to="/predict" className="btn btn-outline-primary">
+                  <i className="fas fa-plus" /> New Service
                 </Link>
               </li>
             </ul>

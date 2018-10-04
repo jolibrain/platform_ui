@@ -51,7 +51,7 @@ export default class StopTrainingModal extends React.Component {
             className="btn btn-secondary mb-2"
             onClick={this.handleCancel}
           >
-            No
+            Cancel
           </button>
           <button
             type="submit"
@@ -60,10 +60,12 @@ export default class StopTrainingModal extends React.Component {
           >
             {this.state.spinner ? (
               <span>
-                <i className="fas fa-spinner fa-spin" /> Stopping
+                <i className="fas fa-spinner fa-spin" /> Stopping...
               </span>
             ) : (
-              "Yes"
+              <span>
+                <i className="far fa-hand-paper" /> Stop Training
+              </span>
             )}
           </button>
         </div>

@@ -18,14 +18,12 @@ export default class MainView extends React.Component {
             <p>{homeComponent.description}</p>
 
             <p>
-              <Link to="/predict" className="btn btn-primary">
-                Add Available Service
+              <Link to="/predict" className="btn btn-outline-primary">
+                <i className="fas fa-cube" /> Add Predict Service
               </Link>
-            </p>
-
-            <p>
-              <Link to="/predict/new" className="btn btn-outline-primary">
-                New Service
+              &nbsp;
+              <Link to="/predict" className="btn btn-outline-primary">
+                <i className="fas fa-braille" /> Monitor Training Jobs
               </Link>
             </p>
 
