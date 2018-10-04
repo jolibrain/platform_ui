@@ -178,6 +178,7 @@ export default class TrainingCard extends React.Component {
       });
 
     let cardContent = null;
+    let cardFooter = null;
     switch (status) {
       case "error":
         //cardContent = (
@@ -226,10 +227,12 @@ export default class TrainingCard extends React.Component {
                 );
               })}
             </ul>
-            <Link to={serviceUrl} className="btn btn-outline-primary">
-              Monitor
-            </Link>
           </div>
+        );
+        cardFooter = (
+          <Link to={serviceUrl} className="btn btn-outline-primary">
+            <i className="fas fa-braille" /> Monitor
+          </Link>
         );
         break;
     }
@@ -256,6 +259,11 @@ export default class TrainingCard extends React.Component {
           </h6>
           {cardContent}
         </div>
+        {cardFooter ? (
+          <div className="card-footer text-right">{cardFooter}</div>
+        ) : (
+          ""
+        )}
       </div>
     );
   }

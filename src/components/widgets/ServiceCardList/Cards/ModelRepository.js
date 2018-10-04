@@ -230,7 +230,7 @@ export default class ModelRepositoryCard extends React.Component {
         onClick={this.handlePublishClick}
         className="btn btn-outline-secondary"
       >
-        Publish
+        <i className="fas fa-plus" /> Publish
       </a>
     ) : null;
 
@@ -272,6 +272,8 @@ export default class ModelRepositoryCard extends React.Component {
             })}
           </ul>
           {bestModelInfo}
+        </div>
+        <div className="card-footer text-right">
           {this.state.publishError ? (
             <div className="alert alert-danger" role="alert">
               <i class="fas fa-exclamation-triangle" />{" "}
@@ -280,11 +282,11 @@ export default class ModelRepositoryCard extends React.Component {
           ) : (
             ""
           )}
-          <Link to={archiveUrl} className="btn btn-outline-primary">
-            View
-          </Link>
-          &nbsp;
           {publishButton}
+          &nbsp;
+          <Link to={archiveUrl} className="btn btn-outline-primary">
+            <i className="fas fa-arrow-right" /> View
+          </Link>
         </div>
       </div>
     );

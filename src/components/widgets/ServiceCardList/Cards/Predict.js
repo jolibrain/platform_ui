@@ -20,8 +20,10 @@ export default class PredictCard extends React.Component {
           <h6 className="card-subtitle mb-2 text-muted">
             {service.settings.description}
           </h6>
+        </div>
+        <div className="card-footer text-right">
           <Link to={serviceUrl} className="btn btn-outline-primary">
-            Predict
+            <i className="fas fa-cube" /> Predict
           </Link>
         </div>
       </div>

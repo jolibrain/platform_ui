@@ -2,7 +2,20 @@
   margin-top: 20px;
 
   .card {
+    box-shadow: 0 2px 6px 0 hsla(0, 0%, 0%, 0.2);
+    border: 0;
     margin: 5px;
+
+    .list-group-item {
+      border: 0;
+      padding: 2px 10px;
+    }
+
+    .card-header,
+    .card-footer {
+      background-color: hsl(210, 9%, 96%);
+      border: 0;
+    }
 
     .card-header .badge {
       margin-right: 3px;

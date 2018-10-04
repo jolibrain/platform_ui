@@ -167,7 +167,9 @@ export default class Card extends React.Component {
           )}
 
           <DownloadModelFiles repository={repository} />
+        </div>
 
+        <div className="card-footer text-right">
           <div
             className="alert alert-danger"
             role="alert"
