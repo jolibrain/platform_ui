@@ -1,0 +1,27 @@
+.gpuinfo {
+  margin-top: 20px;
+
+  h5 {
+    margin-top: 10px;
+    font-size: 18px;
+  }
+
+  .block {
+    border: 0;
+    padding: 2px 0;
+
+    .fas.fa-fire {
+      color: #3c457d;
+      margin: 0 3px;
+    }
+  }
+
+  .detailsBadge {
+    cursor: pointer;
+    float: right;
+
+    .fa-circle {
+      color: #aaa;
+    }
+  }
+}

@@ -9,38 +9,42 @@ export default class ServiceInfo extends React.Component {
     if (this.props.configStore.isComponentBlacklisted("ServiceInfo"))
       return null;
 
-    const { server } = this.props.deepdetectStore;
+    const { service } = this.props.deepdetectStore;
 
-    if (!server.service) return null;
+    if (!service) return null;
 
-    const settings = server.service.settings;
+    const settings = service.settings;
 
     return (
       <div className="serviceinfo">
         <h5>
-          <i className="fas fa-info-circle" /> Service Info
+          <i class="fas fa-cube" /> {service.name}
         </h5>
-        <div className="block">
-          <table className="table table-sm">
-            <tbody>
-              {Object.keys(settings).map((key, index) => {
-                let value = settings[key];
+        <h6>{service.settings.description}</h6>
+        <div className="block list-group list-group-flush">
+          {Object.keys(settings)
+            .filter(key => {
+              return !["name", "description"].includes(key);
+            })
+            .map((key, index) => {
+              let value = settings[key];
 
-                if (typeof value === "boolean") {
-                  value = value ? "True" : "False";
-                } else if (typeof value === "object") {
-                  value = JSON.stringify(value);
-                }
+              if (typeof value === "boolean") {
+                value = value ? "True" : "False";
+              } else if (typeof value === "object") {
+                value = JSON.stringify(value);
+              }
 
-                return (
-                  <tr key={index}>
-                    <th scope="row">{key}</th>
-                    <td>{value}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+              return (
+                <li
+                  key={index}
+                  className="list-group-item d-flex justify-content-between align-items-center"
+                >
+                  {key}
+                  <b>{value}</b>
+                </li>
+              );
+            })}
         </div>
       </div>
     );
