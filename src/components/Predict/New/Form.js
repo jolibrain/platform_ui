@@ -313,35 +313,40 @@ export default class Form extends React.Component {
                 placeholder="Model Repository location"
                 onChange={this.handleInputChange}
                 defaultSelected={this.state.selectedLocation}
-                renderMenu={(results, menuProps) => (
-                  <Menu {...menuProps}>
-                    {results.map((result, index) => {
-                      let badgeClasses = "badge float-right";
-                      let badgeText = "Public";
-                      if (result.isPublic) {
-                        badgeClasses += " badge-primary";
-                      } else {
-                        badgeClasses += " badge-warning";
-                        badgeText = "Private";
-                      }
+                renderMenu={(results, menuProps) => {
+                  return (
+                    <Menu {...menuProps}>
+                      {results
+                        .filter(r => {
+                          return (
+                            r.name &&
+                            ["public", "private"].includes(r.store.name)
+                          );
+                        })
+                        .map((result, index) => {
+                          let badgeClasses = "badge float-right";
+                          let badgeText = result.store.name;
+                          if (badgeText === "public") {
+                            badgeClasses += " badge-primary";
+                          } else {
+                            badgeClasses += " badge-warning";
+                          }
 
-                      return (
-                        <MenuItem
-                          key={index}
-                          option={result.name}
-                          position={index}
-                          title={result.name}
-                        >
-                          {result.name
-                            .slice(0, -1)
-                            .split("/")
-                            .pop()}
-                          <span className={badgeClasses}>{badgeText}</span>
-                        </MenuItem>
-                      );
-                    })}
-                  </Menu>
-                )}
+                          return (
+                            <MenuItem
+                              key={index}
+                              option={result.name}
+                              position={index}
+                              title={result.name}
+                            >
+                              {result.name.split("/").pop()}
+                              <span className={badgeClasses}>{badgeText}</span>
+                            </MenuItem>
+                          );
+                        })}
+                    </Menu>
+                  );
+                }}
               />
             </div>
 
