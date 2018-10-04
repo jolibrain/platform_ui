@@ -21,17 +21,19 @@ export default class PerClassArray extends React.Component {
 
     if (!measure) return null;
 
-    const measureKeys = Object.keys(measure).filter(
-      k =>
-        k !== "remain_time_str" &&
-        k !== "remain_time" &&
-        k !== "iter_time" &&
-        k !== "iteration" &&
-        k !== "train_loss" &&
-        k !== "labels" &&
-        k !== "cmfull" &&
-        k !== "cmdiag"
-    );
+    const measureKeys = Object.keys(measure)
+      .sort()
+      .filter(
+        k =>
+          k !== "remain_time_str" &&
+          k !== "remain_time" &&
+          k !== "iter_time" &&
+          k !== "iteration" &&
+          k !== "train_loss" &&
+          k !== "labels" &&
+          k !== "cmfull" &&
+          k !== "cmdiag"
+      );
 
     return (
       <div className="row" refresh={service.refresh}>
