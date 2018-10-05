@@ -1,4 +1,5 @@
 import React from "react";
+import { toJS } from "mobx";
 import { inject, observer } from "mobx-react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/styles/hljs";
@@ -40,6 +41,23 @@ export default class JsonResponse extends React.Component {
 
     const copiedText = this.state.copied ? "Copied!" : "Copy to clipboard";
 
+    let json = toJS(selectedInput.json);
+
+    if (
+      json &&
+      json.body &&
+      json.body.predictions &&
+      json.body.predictions[0] &&
+      json.body.predictions[0].vals &&
+      json.body.predictions[0].vals.length > 1000
+    ) {
+      json.body.predictions[0].vals = json.body.predictions[0].vals.slice(
+        0,
+        1000
+      );
+      json.body.predictions[0].vals.push("...");
+    }
+
     return (
       <div>
         <div className="bd-clipboard">
@@ -64,7 +82,7 @@ export default class JsonResponse extends React.Component {
           style={docco}
           className={this.props.isError ? "card-text card-error" : "card-text"}
         >
-          {JSON.stringify(selectedInput.json, null, 1)}
+          {JSON.stringify(json, null, 1)}
         </SyntaxHighlighter>
       </div>
     );
