@@ -195,7 +195,7 @@ export default class TrainingCard extends React.Component {
         );
         break;
       case "waiting":
-        cardContent = (
+        cardFooter = (
           <a className="btn btn-outline-info disabled">
             <i className="fas fa-spinner fa-spin" /> Waiting for data
           </a>
