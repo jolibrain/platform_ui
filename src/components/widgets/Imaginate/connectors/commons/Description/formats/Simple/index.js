@@ -8,6 +8,8 @@ export default class Simple extends React.Component {
     const { input } = this.props;
     const { classes } = input.json.body.predictions[0];
 
+    if (!classes) return null;
+
     return (
       <div className="description-simple">
         {classes.map((category, index) => {

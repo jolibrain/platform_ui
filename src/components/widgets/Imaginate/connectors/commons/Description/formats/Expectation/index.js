@@ -8,6 +8,8 @@ export default class Expectation extends React.Component {
     const { input } = this.props;
     const { classes } = input.json.body.predictions[0];
 
+    if (!classes) return null;
+
     return (
       <span className="description-expectation">
         {Math.ceil(

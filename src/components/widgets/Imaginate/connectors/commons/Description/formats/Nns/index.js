@@ -45,7 +45,8 @@ export default class Nns extends React.Component {
 
     const prediction = input.json.body.predictions[0];
 
-    if (!prediction.nns || prediction.nns.length === 0) return null;
+    if (!prediction || !prediction.nns || prediction.nns.length === 0)
+      return null;
 
     let cells = prediction.nns
       .map(this.nnsItem)

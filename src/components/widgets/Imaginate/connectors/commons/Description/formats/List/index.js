@@ -50,6 +50,8 @@ export default class List extends React.Component {
     const { input } = this.props;
     const { classes } = input.json.body.predictions[0];
 
+    if (!classes) return null;
+
     return (
       <div className="description-list">
         {classes.map(this.categoryDisplay)}
