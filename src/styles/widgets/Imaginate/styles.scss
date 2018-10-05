@@ -216,7 +216,8 @@
     }
   }
 
-  .boundingBoxCanvas {
+  .boundingBoxCanvas,
+  .boundingSegmentationCanvas {
     max-height: 60vh !important;
   }
 
