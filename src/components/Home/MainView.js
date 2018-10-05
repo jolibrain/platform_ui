@@ -22,7 +22,7 @@ export default class MainView extends React.Component {
                 <i className="fas fa-cube" /> Add Predict Service
               </Link>
               &nbsp;
-              <Link to="/predict" className="btn btn-outline-primary">
+              <Link to="/training" className="btn btn-outline-primary">
                 <i className="fas fa-braille" /> Monitor Training Jobs
               </Link>
             </p>
