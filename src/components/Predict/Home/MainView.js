@@ -176,6 +176,8 @@ export default class MainView extends React.Component {
                 layout={this.state.predictLayout}
               />
 
+              <hr />
+
               <PredictServiceList
                 services={privateRepositories}
                 layout={this.state.predictLayout}
