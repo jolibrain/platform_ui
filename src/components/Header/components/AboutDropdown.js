@@ -57,11 +57,8 @@ class AboutDropdown extends React.Component {
           className={`dropdown-menu ${this.state.aboutDown ? "show" : ""}`}
           aria-labelledby="navbarDropdown"
         >
-          <a
-            className="dropdown-item"
-            href="https://gitlab.com/jolibrain/core-ui/"
-          >
-            Gitlab
+          <a className="dropdown-item" href="https://github.com/jolibrain">
+            <i class="fab fa-github" /> Github
           </a>
           <div className="dropdown-divider" />
           <a className="dropdown-item" href="http://deepdetect.com">
