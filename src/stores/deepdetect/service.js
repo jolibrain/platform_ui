@@ -195,7 +195,7 @@ export default class deepdetectService {
 
   @computed
   get gpuid() {
-    let gpuid = 0;
+    let gpuid = "--";
 
     if (
       this.respInfo &&

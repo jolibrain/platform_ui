@@ -37,7 +37,7 @@ export default class Breadcrumb extends React.Component {
         ) : (
           ""
         )}
-        {service.gpuid ? (
+        {service.gpuid !== "--" ? (
           <span>
             <i className="far fa-hdd" /> <b>{service.gpuid}</b> >&nbsp;
           </span>

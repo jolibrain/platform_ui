@@ -75,7 +75,7 @@ export default class Repository {
       // TODO : remove this line when config.json editable
       this.jsonConfig.parameters.mllib.gpuid = 0;
 
-      // Clean this parameter from config
+      // delete this parameter from server config
       // it'd create an issue when creating a new service
       // from PredictHome 'Add Service' button
       //
