@@ -113,58 +113,56 @@ export default class App extends React.Component {
   }
 
   render() {
-    if (this.props.configStore.isReady && this.props.deepdetectStore.isReady) {
-      return (
-        <div>
-          <Header />
-          <Switch>
-            <Route exact path="/" component={Home} />
+    return (
+      <div>
+        <Header />
+        <Switch>
+          <Route exact path="/" component={Home} />
 
-            <Route exact path="/predict" component={PredictHome} />
-            <Route exact path="/predict/new" component={PredictNew} />
-            <Route
-              exact
-              path="/predict/:serverName/:serviceName"
-              component={PredictShow}
-            />
+          <Route exact path="/predict" component={PredictHome} />
+          <Route exact path="/predict/new" component={PredictNew} />
+          <Route
+            exact
+            path="/predict/:serverName/:serviceName"
+            component={PredictShow}
+          />
 
-            <Route exact path="/training" component={TrainingHome} />
-            <Route exact path="/trainingArchive" component={TrainingHome} />
-            <Route
-              exact
-              path="/training/:serverName/:serviceName"
-              component={TrainingShow}
-            />
-            <Route
-              exact
-              path="/trainingArchive/:modelPath*"
-              component={TrainingArchive}
-            />
+          <Route exact path="/training" component={TrainingHome} />
+          <Route exact path="/trainingArchive" component={TrainingHome} />
+          <Route
+            exact
+            path="/training/:serverName/:serviceName"
+            component={TrainingShow}
+          />
+          <Route
+            exact
+            path="/trainingArchive/:modelPath*"
+            component={TrainingArchive}
+          />
 
-            <Route exact path="/404" component={GenericNotFound} />
-          </Switch>
-        </div>
-      );
+          <Route exact path="/404" component={GenericNotFound} />
+        </Switch>
+      </div>
+    );
 
-      //
-      // TODO : restore minimal layout, not working since multiserver
-      //
-      // Minimal Layout
-      // if (
-      //   this.props.deepdetectStore.settings.services.defaultService &&
-      //   this.props.deepdetectStore.settings.services.defaultService.length > 0
-      // ) {
-      //   return (
-      //     <div>
-      //       <Route exact path="/" component={Imaginate} />
-      //     </div>
-      //   );
+    //
+    // TODO : restore minimal layout
+    // not working since multiserver
+    //
+    // Minimal Layout
+    // if (
+    //   this.props.deepdetectStore.settings.services.defaultService &&
+    //   this.props.deepdetectStore.settings.services.defaultService.length > 0
+    // ) {
+    //   return (
+    //     <div>
+    //       <Route exact path="/" component={Imaginate} />
+    //     </div>
+    //   );
 
-      //   // Full Layout
-      // } else {
-      // }
-      //
-    }
-    return <Header />;
+    //   // Full Layout
+    // } else {
+    // }
+    //
   }
 }
