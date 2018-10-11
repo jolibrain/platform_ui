@@ -58,7 +58,7 @@ class AboutDropdown extends React.Component {
           aria-labelledby="navbarDropdown"
         >
           <a className="dropdown-item" href="https://github.com/jolibrain">
-            <i class="fab fa-github" /> Github
+            <i className="fab fa-github" /> Github
           </a>
           <div className="dropdown-divider" />
           <a className="dropdown-item" href="http://deepdetect.com">
