@@ -20,7 +20,11 @@ export default class RightPanel extends React.Component {
     const { serviceInfo, includeDownloadPanel } = this.props;
 
     let serviceName = null;
-    if (deepdetectStore.server.service)
+    if (
+      deepdetectStore.isReady &&
+      deepdetectStore.server &&
+      deepdetectStore.server.service
+    )
       serviceName = deepdetectStore.server.service.name;
 
     let downloadPanel = "";
