@@ -22,7 +22,10 @@ export default class MainView extends React.Component {
   }
 
   componentWillMount() {
-    const { server, service } = this.props.deepdetectStore;
+    const { deepdetectStore } = this.props;
+    if (!deepdetectStore.isReady) return null;
+
+    const { server, service } = deepdetectStore;
 
     if (!server || !service) {
       this.props.history.push("/");
@@ -30,7 +33,10 @@ export default class MainView extends React.Component {
   }
 
   render() {
-    const { server, service } = this.props.deepdetectStore;
+    const { deepdetectStore } = this.props;
+    if (!deepdetectStore.isReady) return null;
+
+    const { server, service } = deepdetectStore;
     if (!server || !service) return null;
 
     return (
