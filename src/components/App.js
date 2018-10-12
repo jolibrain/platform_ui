@@ -38,51 +38,12 @@ export default class App extends React.Component {
       trainingIntervalId: null,
       gpuInfoIntervalId: null
     };
-
-    this.setupTimers = this.setupTimers.bind(this);
-  }
-
-  setupTimers() {
-    const { deepdetectStore, configStore } = this.props;
-
-    if (deepdetectStore.settings && configStore.gpuInfo) {
-      const { info, training } = deepdetectStore.settings.refreshRate;
-      const gpuInfo = configStore.gpuInfo.refreshRate;
-
-      this.setState({
-        infoIntervalId: setInterval(this.infoTimer.bind(this), info),
-        trainingIntervalId: setInterval(this.trainingTimer.bind(this), training)
-        //gpuInfoIntervalId: setInterval(this.gpuInfoTimer.bind(this), gpuInfo)
-      });
-
-      this.infoTimer();
-      this.trainingTimer();
-      this.gpuInfoTimer();
-    }
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.state.infoIntervalId);
-    clearInterval(this.state.trainingIntervalId);
-    clearInterval(this.state.gpuInfoIntervalId);
   }
 
   componentWillReceiveProps(nextProps) {
     // timer has to be called in order to refresh Training Show component
     // fix issue #157 - https://gitlab.com/jolibrain/core-ui/issues/157
-    this.trainingTimer();
-  }
-
-  infoTimer() {
-    this.props.deepdetectStore.loadServices(true);
-  }
-
-  trainingTimer() {
-    this.props.deepdetectStore.refreshTrainInfo();
-  }
-
-  gpuInfoTimer() {
-    this.props.gpuStore.loadGpuInfo();
+    // this.props.deepdetectStore.refreshTrainInfo();
   }
 
   componentWillMount() {
@@ -105,7 +66,13 @@ export default class App extends React.Component {
         this.props.dataRepositoriesStore.setup(config);
       }
 
-      this.setupTimers();
+      // Begin async.forever.series loops on various infos:
+      // - deepdetect server info
+      this.props.deepdetectStore.loadServices(true);
+      // - training service info
+      this.props.deepdetectStore.refreshTrainInfo();
+      // - gpu stat servers
+      this.props.gpuStore.loadGpuInfo();
     });
   }
 

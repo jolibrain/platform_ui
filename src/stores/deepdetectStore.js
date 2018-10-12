@@ -1,4 +1,5 @@
 import { observable, action, computed } from "mobx";
+import async from "async";
 
 import deepdetectServer from "./deepdetect/server";
 
@@ -58,8 +59,6 @@ export class deepdetectStore {
     if (this.servers.length > 0 && !this.server) {
       this.servers[0].isActive = true;
     }
-
-    this.loadServices();
   }
 
   @action
@@ -104,27 +103,43 @@ export class deepdetectStore {
 
   @action
   loadServices(status = false) {
-    const promises = [];
-    this.servers.forEach(async server => {
-      const promise = server.loadServices(status);
-      promises.push(promise);
-    });
-    Promise.all(promises).then(results => {
-      this.isReady = true;
-      this.refresh = Math.random();
-    });
+    async.forever(
+      next => {
+        const seriesArray = this.servers.map(s => {
+          return async callback => {
+            await s.loadServices(status);
+            callback();
+          };
+        });
+
+        async.series(seriesArray, (errorSeries, results) => {
+          this.isReady = true;
+          this.refresh = Math.random();
+          setTimeout(() => next(), 5000);
+        });
+      },
+      errorForever => {}
+    );
   }
 
   @action
   refreshTrainInfo() {
-    const promises = [];
-    this.trainingServices.forEach(async service => {
-      const promise = service.trainInfo();
-      promises.push(promise);
-    });
-    Promise.all(promises).then(results => {
-      this.refresh = Math.random();
-    });
+    async.forever(
+      next => {
+        const seriesArray = this.trainingServices.map(s => {
+          return async callback => {
+            await s.trainInfo();
+            callback();
+          };
+        });
+
+        async.series(seriesArray, (errorSeries, results) => {
+          this.refresh = Math.random();
+          setTimeout(() => next(), 5000);
+        });
+      },
+      errorForever => {}
+    );
   }
 
   @action
@@ -142,7 +157,6 @@ export class deepdetectStore {
   @action
   stopTraining(callback) {
     this.service.stopTraining(callback);
-    this.loadServices();
   }
 }
 
