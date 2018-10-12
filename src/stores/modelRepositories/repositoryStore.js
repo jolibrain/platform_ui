@@ -25,30 +25,41 @@ export default class RepositoryStore {
   }
 
   @action
-  load() {
-    this._loadRepositories(this.nginxPath);
+  async load() {
+    this.isRefreshing = true;
+    let repositories = await this._loadRepositories(this.nginxPath);
+
+    while (repositories.find(r => r.constructor.name === "Array")) {
+      repositories = [].concat.apply([], repositories).filter(r => r);
+    }
+
+    this.repositories = repositories;
+    this.isRefreshing = false;
   }
 
   @action
-  _loadRepositories(path) {
-    this.isRefreshing = true;
-    this.$reqFolder(path).then(content => {
-      const { folders, files } = content;
+  async _loadRepositories(path) {
+    const { folders, files } = await this.$reqFolder(path);
 
-      folders.forEach(f => this._loadRepositories(path + f.name + "/"));
+    const isRepository =
+      files.includes("model.json") ||
+      files.includes("deploy.prototxt") ||
+      files.includes("config.json") ||
+      files.includes("metrics.json") ||
+      files.includes("best_model.txt");
 
-      if (
-        !this.repositories.find(r => r.path === path) &&
-        (files.includes("model.json") ||
-          files.includes("deploy.prototxt") ||
-          files.includes("config.json") ||
-          files.includes("metrics.json") ||
-          files.includes("best_model.txt"))
-      ) {
-        this.repositories.push(new Repository(path, files, this));
-      }
-      this.isRefreshing = false;
-    });
+    if (isRepository) {
+      const repository = new Repository(path, files, this);
+      return repository;
+    } else if (folders.length > 0) {
+      let repositories = await Promise.all(
+        folders.map(async f => {
+          return await this._loadRepositories(path + f.href);
+        })
+      );
+
+      return repositories.length > 0 ? repositories : [];
+    }
   }
 
   $reqFolder(path) {

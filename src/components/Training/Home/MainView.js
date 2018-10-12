@@ -17,8 +17,7 @@ export default class MainView extends React.Component {
 
     this.state = {
       filterServiceName: "",
-      archiveLayout: "cards",
-      isRefreshing: false
+      archiveLayout: "cards"
     };
 
     this.handleServiceFilter = this.handleServiceFilter.bind(this);
@@ -31,11 +30,7 @@ export default class MainView extends React.Component {
   }
 
   handleClickRefreshArchive() {
-    this.setState({ isRefreshing: true });
     this.props.modelRepositoriesStore.refresh();
-    setTimeout(() => {
-      this.setState({ isRefreshing: false });
-    }, 2000);
   }
 
   handleServiceFilter(event) {
@@ -55,10 +50,12 @@ export default class MainView extends React.Component {
   }
 
   render() {
-    if (!this.props.deepdetectStore.isReady) return null;
+    const { deepdetectStore, modelRepositoriesStore } = this.props;
 
-    const { trainingServices } = this.props.deepdetectStore;
-    const { archivedTrainingRepositories } = this.props.modelRepositoriesStore;
+    if (!deepdetectStore.isReady) return null;
+
+    const { trainingServices } = deepdetectStore;
+    const { archivedTrainingRepositories } = modelRepositoriesStore;
 
     const { filterServiceName } = this.state;
     const displayedArchiveRepositories = archivedTrainingRepositories
@@ -103,7 +100,7 @@ export default class MainView extends React.Component {
                   >
                     <i
                       className={
-                        this.state.isRefreshing
+                        modelRepositoriesStore.isRefreshing
                           ? "fas fa-sync fa-spin"
                           : "fas fa-sync"
                       }

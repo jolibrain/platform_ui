@@ -18,8 +18,7 @@ export default class MainView extends React.Component {
 
     this.state = {
       filterServiceName: "",
-      predictLayout: "cards",
-      isRefreshing: false
+      predictLayout: "cards"
     };
 
     this.handleServiceFilter = this.handleServiceFilter.bind(this);
@@ -34,11 +33,7 @@ export default class MainView extends React.Component {
   }
 
   handleClickRefreshServices() {
-    this.setState({ isRefreshing: true });
     this.props.modelRepositoriesStore.refresh();
-    setTimeout(() => {
-      this.setState({ isRefreshing: false });
-    }, 2000);
   }
 
   handleServiceFilter(event) {
@@ -58,13 +53,11 @@ export default class MainView extends React.Component {
   }
 
   render() {
-    const { predictServices } = this.props.deepdetectStore;
+    const { deepdetectStore, modelRepositoriesStore } = this.props;
+    const { predictServices } = deepdetectStore;
     const { filterServiceName } = this.state;
 
-    let {
-      publicRepositories,
-      privateRepositories
-    } = this.props.modelRepositoriesStore;
+    let { publicRepositories, privateRepositories } = modelRepositoriesStore;
 
     if (filterServiceName && filterServiceName.length > 0) {
       publicRepositories = publicRepositories.filter(r => {
@@ -120,7 +113,7 @@ export default class MainView extends React.Component {
                   >
                     <i
                       className={
-                        this.state.isRefreshing
+                        modelRepositoriesStore.isRefreshing
                           ? "fas fa-sync fa-spin"
                           : "fas fa-sync"
                       }
