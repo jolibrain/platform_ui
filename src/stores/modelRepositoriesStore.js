@@ -37,26 +37,29 @@ export class modelRepositoriesStore {
     );
   }
 
+  storeRepositories(storeName) {
+    const store = this.repositoryStores.find(r => r.name === storeName);
+    return store ? store.repositories : [];
+  }
+
   @computed
   get publicRepositories() {
-    return this.repositoryStores.find(r => r.name === "public").repositories;
+    return this.storeRepositories("public");
   }
 
   @computed
   get privateRepositories() {
-    return this.repositoryStores.find(r => r.name === "private").repositories;
+    return this.storeRepositories("private");
   }
 
   @computed
   get trainingRepositories() {
-    return this.repositoryStores.find(r => r.name === "training").repositories;
+    return this.storeRepositories("training");
   }
 
   @computed
   get archivedTrainingRepositories() {
-    return this.trainingRepositories
-      ? this.trainingRepositories.filter(r => r.jsonMetrics || r.bestModel)
-      : [];
+    return this.trainingRepositories.filter(r => r.jsonMetrics || r.bestModel);
   }
 }
 
