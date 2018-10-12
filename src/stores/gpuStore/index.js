@@ -1,4 +1,5 @@
 import { observable, action } from "mobx";
+import async from "async";
 
 import GpuStatServer from "./server";
 
@@ -20,7 +21,21 @@ export class GpuStore {
 
   @action
   loadGpuInfo() {
-    this.servers.forEach(s => s.loadGpuInfo());
+    async.forever(
+      next => {
+        const seriesArray = this.servers.map(s => {
+          return async callback => {
+            await s.loadGpuInfo();
+            callback();
+          };
+        });
+
+        async.series(seriesArray, (errorSeries, results) => {
+          next();
+        });
+      },
+      errorForever => {}
+    );
   }
 }
 

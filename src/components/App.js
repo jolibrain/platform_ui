@@ -51,11 +51,8 @@ export default class App extends React.Component {
 
       this.setState({
         infoIntervalId: setInterval(this.infoTimer.bind(this), info),
-        trainingIntervalId: setInterval(
-          this.trainingTimer.bind(this),
-          training
-        ),
-        gpuInfoIntervalId: setInterval(this.gpuInfoTimer.bind(this), gpuInfo)
+        trainingIntervalId: setInterval(this.trainingTimer.bind(this), training)
+        //gpuInfoIntervalId: setInterval(this.gpuInfoTimer.bind(this), gpuInfo)
       });
 
       this.infoTimer();

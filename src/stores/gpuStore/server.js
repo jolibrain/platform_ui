@@ -12,36 +12,34 @@ export default class GpuStatServer {
   }
 
   @action
-  loadGpuInfo() {
-    this.$reqGpuInfo().then(
-      action(gpuInfo => {
-        if (gpuInfo) {
-          this.error = false;
-          this.gpuInfo = gpuInfo;
+  async loadGpuInfo() {
+    const gpuInfo = await this.$reqGpuInfo();
 
-          if (gpuInfo.gpus && gpuInfo.gpus.length > 0) {
-            const sortedMemoryGpus = gpuInfo.gpus
-              .map(g => {
-                return {
-                  index: parseInt(g.index, 10),
-                  memoryAvailable: g["memory.total"] - g["memory.used"]
-                };
-              })
-              .sort((a, b) => {
-                return b.memoryAvailable - a.memoryAvailable;
-              });
+    if (gpuInfo) {
+      this.error = false;
+      this.gpuInfo = gpuInfo;
 
-            if (sortedMemoryGpus[0] && sortedMemoryGpus[0].index >= 0) {
-              this.recommendedGpuIndex = sortedMemoryGpus[0].index;
-            } else {
-              this.recommendedGpuIndex = -1;
-            }
-          }
+      if (gpuInfo.gpus && gpuInfo.gpus.length > 0) {
+        const sortedMemoryGpus = gpuInfo.gpus
+          .map(g => {
+            return {
+              index: parseInt(g.index, 10),
+              memoryAvailable: g["memory.total"] - g["memory.used"]
+            };
+          })
+          .sort((a, b) => {
+            return b.memoryAvailable - a.memoryAvailable;
+          });
+
+        if (sortedMemoryGpus[0] && sortedMemoryGpus[0].index >= 0) {
+          this.recommendedGpuIndex = sortedMemoryGpus[0].index;
         } else {
-          this.error = true;
+          this.recommendedGpuIndex = -1;
         }
-      })
-    );
+      }
+    } else {
+      this.error = true;
+    }
   }
 
   $reqGpuInfo() {
