@@ -27,8 +27,11 @@ class ServerList extends React.Component {
     const serversState = servers.map(s => s.isDown);
     let badge = <i className="servers-ok fas fa-clone" />;
 
-    // some servers are down
-    if (serversState.includes(true)) {
+    if (!deepdetectStore.isReady) {
+      // deepdetectStore is loading
+      badge = <i className="servers-loading fas fa-spinner fa-spin" />;
+    } else if (serversState.includes(true)) {
+      // some servers are down
       badge = (
         <span className="fa-stack">
           <i className="fas fa-clone fa-stack-1x" />

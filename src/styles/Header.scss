@@ -118,13 +118,13 @@
   }
 
   #servers-dropdown {
-    .servers-ok,
-    .servers-down {
+    i {
+      color: green;
       margin-right: 5px;
     }
 
-    i {
-      color: green;
+    i.servers-loading {
+      color: #ccc;
     }
 
     .far.fa-clone,
