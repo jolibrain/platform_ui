@@ -11,13 +11,16 @@ import { withRouter } from "react-router-dom";
 @observer
 export default class TrainingShow extends React.Component {
   componentWillMount() {
-    const ddStore = this.props.deepdetectStore;
-    ddStore.init(this.props.match.params);
+    const { deepdetectStore } = this.props;
+
+    if (!deepdetectStore.isReady) this.props.history.push("/training");
+
+    deepdetectStore.init(this.props.match.params);
   }
 
   componentWillReceiveProps(nextProps) {
-    const ddStore = this.props.deepdetectStore;
-    ddStore.init(nextProps.match.params);
+    const { deepdetectStore } = this.props;
+    deepdetectStore.init(nextProps.match.params);
   }
 
   render() {

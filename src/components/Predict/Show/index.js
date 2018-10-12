@@ -17,20 +17,21 @@ export default class PredictShow extends React.Component {
     this.setDeepdetectServer = this.setDeepdetectServer.bind(this);
   }
 
-  setDeepdetectServer(params) {
-    const imaginateStore = this.props.imaginateStore;
-    const ddStore = this.props.deepdetectStore;
+  async setDeepdetectServer(params) {
+    const { deepdetectStore, imaginateStore } = this.props;
 
-    if (!ddStore.init(params)) {
+    if (!deepdetectStore.isReady) {
+      this.props.history.push("/predict");
+    } else if (!deepdetectStore.init(params)) {
       this.props.history.push("/404");
-    } else if (!ddStore.server.service) {
+    } else if (!deepdetectStore.server.service) {
       this.props.history.push("/");
     } else {
-      imaginateStore.connectToDdStore(ddStore);
+      imaginateStore.connectToDdStore(deepdetectStore);
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.setDeepdetectServer(this.props.match.params);
   }
 

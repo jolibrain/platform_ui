@@ -4,8 +4,17 @@ import React from "react";
 import { inject, observer } from "mobx-react";
 
 @inject("configStore")
+@inject("deepdetectStore")
 @observer
 export default class TrainingArchive extends React.Component {
+  componentWillMount() {
+    const { deepdetectStore } = this.props;
+
+    if (!deepdetectStore.isReady) this.props.history.push("/training");
+
+    deepdetectStore.init(this.props.match.params);
+  }
+
   render() {
     if (
       this.props.configStore.isComponentBlacklisted("Training") ||
