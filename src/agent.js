@@ -214,10 +214,10 @@ const Webserver = {
         let files = [];
 
         for (var i = 0; i < aElements.length; i++) {
-          const repo = aElements[i].text;
+          const repo = aElements[i].attributes["href"].value;
 
           // Check if files and if not parent folder
-          if (repo.indexOf("/") === -1) files.push(repo);
+          if (repo !== "../") files.push(repo);
         }
 
         return files;
