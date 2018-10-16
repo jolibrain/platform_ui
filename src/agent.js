@@ -164,13 +164,12 @@ const autoIndex = res => {
   res.text.replace(rowsReg, function(row, href, name, date, size) {
     var obj = { href: href, name: name, date: date, size: size };
 
-    obj.name = obj.name.replace(/\/$/, "");
-
     if (obj.date) {
       obj.modified = new Date(obj.date);
       delete obj.date;
     }
     if (!dirReg.test(row)) {
+      obj.name = obj.href;
       files.push(obj);
       return;
     }
