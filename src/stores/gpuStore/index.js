@@ -26,7 +26,8 @@ export class GpuStore {
         const seriesArray = this.servers.map(s => {
           return async callback => {
             await s.loadGpuInfo();
-            callback();
+            setTimeout(() => callback(), 500);
+            //callback();
           };
         });
 
