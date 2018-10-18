@@ -9,6 +9,10 @@ export class dataRepositoriesStore {
   @action
   setup(configStore) {
     this.settings = configStore.dataRepositories;
+    this.refresh();
+  }
+
+  refresh() {
     this.load(this.settings.nginxPath);
   }
 
