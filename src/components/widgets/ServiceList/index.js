@@ -13,11 +13,11 @@ export default class ServiceList extends React.Component {
     if (this.props.configStore.isComponentBlacklisted("ServiceList"))
       return null;
 
-    const ddStore = this.props.deepdetectStore;
+    const { deepdetectStore } = this.props;
 
-    if (!ddStore.isReady || ddStore.servers.length === 0) return null;
+    if (deepdetectStore.servers.length === 0) return null;
 
-    const services = ddStore.services.filter(service => {
+    const services = deepdetectStore.services.filter(service => {
       if (this.props.only) {
         if (this.props.only === "training") {
           return service.settings.training;
@@ -29,15 +29,26 @@ export default class ServiceList extends React.Component {
       }
     });
 
+    const serviceItems = services
+      .sort((a, b) => {
+        // Sort by name
+        return a.name > b.name ? 1 : -1;
+      })
+      .sort((a, b) => {
+        // Predict services first
+        return a.settings.training - b.settings.training;
+      })
+      .map((service, index) => {
+        return <ServiceItem key={index} service={service} />;
+      });
+
     return (
       <ul
         id="widget-serviceList"
         className="serviceList sidebar-top-level-items"
-        key={`serviceList-${ddStore.refresh}`}
+        key={`serviceList-${deepdetectStore.refresh}`}
       >
-        {services.map((service, index) => {
-          return <ServiceItem key={index} service={service} />;
-        })}
+        {serviceItems}
       </ul>
     );
   }
