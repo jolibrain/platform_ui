@@ -12,30 +12,33 @@ export default class Imaginate extends React.Component {
     super(props);
 
     this.state = {
-      connector: null
+      connector: null,
+      isMounted: false
     };
 
     this.getServiceConnector = this.getServiceConnector.bind(this);
   }
 
   componentWillUnmount() {
-    this._ismounted = false;
+    this.setState({ isMounted: false });
   }
 
   componentDidMount() {
-    this._ismounted = true;
+    this.setState({ isMounted: true });
     this.getServiceConnector(this.props);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this._isMounted) this.getServiceConnector(nextProps);
+  componentWillUpdate(nextProps) {
+    if (this.state.isMounted) {
+      this.getServiceConnector(nextProps);
+    }
   }
 
   async getServiceConnector(props) {
-    const store = props.imaginateStore;
+    const { imaginateStore } = props;
 
-    if (store.service) {
-      const serviceInfo = await store.service.serviceInfo();
+    if (imaginateStore.service) {
+      const serviceInfo = await imaginateStore.service.serviceInfo();
       if (
         serviceInfo.body &&
         serviceInfo.body.parameters &&
@@ -52,24 +55,30 @@ export default class Imaginate extends React.Component {
   render() {
     if (this.props.configStore.isComponentBlacklisted("Imaginate")) return null;
 
-    const store = this.props.imaginateStore;
+    const { imaginateStore } = this.props;
 
-    if (!store.service || !this.state.connector) return null;
+    if (!imaginateStore.service) return null;
 
-    let connector = null;
+    let connectorComponent = null;
 
     switch (this.state.connector) {
       case "txt":
-        connector = <TxtConnector />;
+        connectorComponent = <TxtConnector />;
+        break;
+      case "image":
+        connectorComponent = <ImageConnector />;
         break;
       default:
-      case "image":
-        connector = <ImageConnector />;
         break;
     }
 
     return (
-      <div className={`imaginate-${this.state.connector}`}>{connector}</div>
+      <div
+        className={`imaginate-${this.state.connector}`}
+        data-servicename={imaginateStore.service.name}
+      >
+        {connectorComponent}
+      </div>
     );
   }
 }
