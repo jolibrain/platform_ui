@@ -7,6 +7,8 @@ export class GpuStore {
   @observable refreshRate = 5000;
   @observable servers = [];
 
+  @observable firstLoad = true;
+
   @action
   setup(configStore) {
     const { gpuInfo } = configStore;
@@ -26,12 +28,17 @@ export class GpuStore {
         const seriesArray = this.servers.map(s => {
           return async callback => {
             await s.loadGpuInfo();
-            setTimeout(() => callback(), 500);
-            //callback();
+
+            if (this.firstLoad) {
+              callback();
+            } else {
+              setTimeout(() => callback(), 500);
+            }
           };
         });
 
         async.series(seriesArray, (errorSeries, results) => {
+          this.firstLoad = false;
           next();
         });
       },
