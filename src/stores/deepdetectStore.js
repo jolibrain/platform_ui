@@ -10,6 +10,7 @@ export class deepdetectStore {
 
   @observable refresh = 0;
   @observable isReady = false;
+  @observable firstLoad = true;
 
   @computed
   get server() {
@@ -108,8 +109,13 @@ export class deepdetectStore {
         const seriesArray = this.servers.map(s => {
           return async callback => {
             await s.loadServices(status);
-            setTimeout(() => callback(), 500);
-            //callback();
+
+            if (this.refresh === 0) {
+              // First load, do not wait
+              callback();
+            } else {
+              setTimeout(() => callback(), 500);
+            }
           };
         });
 
