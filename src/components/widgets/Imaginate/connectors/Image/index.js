@@ -130,7 +130,11 @@ export default class ImageConnector extends React.Component {
       }
     }
 
-    if (service.respInfo.body.mltype === "rois") {
+    if (
+      service.respInfo &&
+      service.respInfo.body &&
+      service.respInfo.body.mltype === "rois"
+    ) {
       uiControls.push(
         <ToggleControl
           key="paramMultisearchRois"
