@@ -20,8 +20,6 @@ export default class RepositoryStore {
 
     this.isTraining =
       typeof config.isTraining === "undefined" ? false : config.isTraining;
-
-    this.load();
   }
 
   @action

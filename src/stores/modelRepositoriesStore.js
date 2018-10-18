@@ -12,7 +12,6 @@ export class modelRepositoriesStore {
         return new RepositoryStore(repositoryConfig);
       }
     );
-    this.refresh();
   }
 
   refresh() {
