@@ -12,26 +12,23 @@ export default class Imaginate extends React.Component {
     super(props);
 
     this.state = {
-      connector: null,
-      isMounted: false
+      connector: null
     };
 
     this.getServiceConnector = this.getServiceConnector.bind(this);
   }
 
   componentWillUnmount() {
-    this.setState({ isMounted: false });
+    this._ismounted = false;
   }
 
   componentDidMount() {
-    this.setState({ isMounted: true });
+    this._ismounted = true;
     this.getServiceConnector(this.props);
   }
 
-  componentWillUpdate(nextProps) {
-    if (this.state.isMounted) {
-      this.getServiceConnector(nextProps);
-    }
+  componentWillReceiveProps(nextProps) {
+    this.getServiceConnector(nextProps);
   }
 
   async getServiceConnector(props) {
@@ -57,7 +54,7 @@ export default class Imaginate extends React.Component {
 
     const { imaginateStore } = this.props;
 
-    if (!imaginateStore.service) return null;
+    if (!imaginateStore.service || !this.state.connector) return null;
 
     let connectorComponent = null;
 
