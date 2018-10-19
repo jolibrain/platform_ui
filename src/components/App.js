@@ -77,6 +77,10 @@ export default class App extends React.Component {
   }
 
   render() {
+    const { configStore, deepdetectStore } = this.props;
+
+    if (!configStore.isReady || !deepdetectStore.isReady) return null;
+
     return (
       <div>
         <Header />
