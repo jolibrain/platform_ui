@@ -98,6 +98,7 @@ run()`;
       pythonCode += `host = '${window.location.hostname}'
 port = ${window.location.port}
 path = '${service.serverSettings.path}'
+dd = DD(host,port)
 dd.set_return_format(dd.RETURN_PYTHON)\n\n`;
     }
 
