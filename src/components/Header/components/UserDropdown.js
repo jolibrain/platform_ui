@@ -26,9 +26,9 @@ class UserDropdown extends React.Component {
   }
 
   render() {
-    const userid = this.props.cookies.get("userid");
+    const username = this.props.cookies.get("username");
 
-    if (!userid) return null;
+    if (!username) return null;
 
     return (
       <li className="nav-item dropdown" id="user-dropdown">
@@ -42,7 +42,7 @@ class UserDropdown extends React.Component {
           aria-expanded="false"
           onClick={this.handleUserClick}
         >
-          <i class="fas fa-user" />&nbsp;{userid.substring(0, 5)}...
+          <i class="fas fa-user" />&nbsp;{username}
         </a>
         <div
           className={`dropdown-menu ${this.state.userDown ? "show" : ""}`}
