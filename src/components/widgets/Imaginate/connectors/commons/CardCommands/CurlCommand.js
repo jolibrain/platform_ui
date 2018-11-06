@@ -46,12 +46,17 @@ class CurlCommand extends React.Component {
     const session = cookies.get("session");
     if (session) {
       command.push(`-H "Cookie: session=${session}"`);
-      command.push('-H "Accept-Encoding: gzip, deflate, br"');
-      command.push('-H "Accept: */*"');
-      command.push('-H "Accept-Language: en-US,en;q=0.9"');
+      command.push(`-H "Accept-Encoding: gzip, deflate, br"`);
+      command.push(`-H "Accept: */*"`);
+      command.push(`-H "Accept-Language: en-US,en;q=0.9"`);
       command.push(`-H "User-Agent: ${window.navigator.userAgent}"`);
       command.push(`-H "Referer: ${window.location.origin}"`);
-      command.push("--compressed");
+      command.push(`--compressed`);
+    }
+
+    const token = cookies.get("accesstoken");
+    if (token) {
+      command.push(`-H "Authorization: Bearer ${token}"`);
     }
 
     return command.join(" ");
