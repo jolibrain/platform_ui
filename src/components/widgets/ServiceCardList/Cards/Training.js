@@ -153,11 +153,19 @@ export default class TrainingCard extends React.Component {
           });
         break;
       case "regression":
-        const eucll = this.getValue("eucll");
-        if (eucll)
+        const eucll_reg = this.getValue("eucll");
+        if (eucll_reg)
           info.push({
             text: "Eucll",
-            val: eucll
+            val: eucll_reg
+          });
+        break;
+      case "autoencoder":
+        const eucll_autoenc = this.getValue("eucll");
+        if (eucll_autoenc)
+          info.push({
+            text: "Eucll",
+            val: eucll_autoenc
           });
         break;
       default:
