@@ -59,7 +59,7 @@
   },
   "scripts": {
     "precommit": "pretty-quick --staged",
-    "build-info-json": " jq -n --arg COMMIT_HASH `git rev-parse HEAD` --arg DATE `date +%s` '{buildCommitHash: $COMMIT_HASH, buildDate: $DATE}' > ./public/buildInfo.json && git add public/buildInfo.json && git commit -m 'build: update public/buildInfo.json with latest build info'",
+    "build-info-json": " jq -n --arg COMMIT_HASH `git rev-parse HEAD` --arg BRANCH `git rev-parse --abbrev-ref HEAD` --arg DATE `date +%s` '{buildCommitHash: $COMMIT_HASH, buildDate: $DATE, branch: $BRANCH}' > ./public/buildInfo.json && git add public/buildInfo.json && git commit -m 'build: update public/buildInfo.json with latest build info'",
     "build-css": "node-sass-chokidar --include-path ./src/styles --include-path ./node_modules src/styles/ -o src/styles/",
     "watch-css": "npm run build-css && node-sass-chokidar --include-path ./src/styles --include-path ./node_modules src/styles/ -o src/styles --watch --recursive",
     "start-js": "react-scripts start",

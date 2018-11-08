@@ -6,6 +6,7 @@ export class buildInfoStore {
 
   @observable buildCommitHash = null;
   @observable buildDate = null;
+  @observable branch = null;
 
   $req() {
     return agent.BuildInfo.get();
@@ -18,6 +19,7 @@ export class buildInfoStore {
         if (buildInfo) {
           this.buildCommitHash = buildInfo.buildCommitHash;
           this.buildDate = buildInfo.buildDate;
+          this.branch = buildInfo.branch;
           this.isReady = true;
         }
         callback(this);
