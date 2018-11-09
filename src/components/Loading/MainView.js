@@ -1,6 +1,6 @@
 import React from "react";
 import { inject, observer } from "mobx-react";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 import RightPanel from "./RightPanel";
 
@@ -18,9 +18,9 @@ export default class MainView extends React.Component {
             <p>{homeComponent ? homeComponent.description : ""}</p>
 
             <p>
-              <a href="#" className="btn btn-outline-primary">
+              <button type="button" className="btn btn-outline-dark">
                 <i className="fas fa-circle-notch fa-spin" /> loading...
-              </a>
+              </button>
             </p>
             <RightPanel />
           </div>
