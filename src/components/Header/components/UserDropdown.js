@@ -23,41 +23,56 @@ class UserDropdown extends React.Component {
 
   handleLogout() {
     // TODO
+    // https://gitlab.com/jolibrain/core-ui/issues/265
   }
 
   render() {
-    const userid = this.props.cookies.get("userid");
+    const username = this.props.cookies.get("username");
 
-    if (!userid) return null;
+    if (!username) return null;
 
     return (
       <li className="nav-item dropdown" id="user-dropdown">
         <a
-          className="nav-link dropdown-toggle"
+          className="nav-link"
           style={{ cursor: "pointer" }}
           id="navbarDropdown"
-          role="button"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-          onClick={this.handleUserClick}
         >
-          <i class="fas fa-user" />&nbsp;{userid.substring(0, 5)}...
+          <i className="fas fa-user" />&nbsp;{username}
         </a>
-        <div
-          className={`dropdown-menu ${this.state.userDown ? "show" : ""}`}
-          aria-labelledby="navbarDropdown"
-        >
-          <a
-            className="dropdown-item"
-            onClick={this.handleLogout}
-            style={{ cursor: "pointer" }}
-          >
-            Logout
-          </a>
-        </div>
       </li>
     );
+
+    // TODO add logout dropdown:
+
+    //    return (
+    //      <li className="nav-item dropdown" id="user-dropdown">
+    //        <a
+    //          className="nav-link dropdown-toggle"
+    //          style={{ cursor: "pointer" }}
+    //          id="navbarDropdown"
+    //          role="button"
+    //          data-toggle="dropdown"
+    //          aria-haspopup="true"
+    //          aria-expanded="false"
+    //          onClick={this.handleUserClick}
+    //        >
+    //          <i className="fas fa-user" />&nbsp;{username}
+    //        </a>
+    //        <div
+    //          className={`dropdown-menu ${this.state.userDown ? "show" : ""}`}
+    //          aria-labelledby="navbarDropdown"
+    //        >
+    //          <a
+    //            className="dropdown-item"
+    //            onClick={this.handleLogout}
+    //            style={{ cursor: "pointer" }}
+    //          >
+    //            Logout
+    //          </a>
+    //        </div>
+    //      </li>
+    //    );
   }
 }
 

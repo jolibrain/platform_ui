@@ -98,13 +98,16 @@ run()`;
       pythonCode += `host = '${window.location.hostname}'
 port = ${window.location.port}
 path = '${service.serverSettings.path}'
+dd = DD(host,port)
 dd.set_return_format(dd.RETURN_PYTHON)\n\n`;
     }
 
     if (postData.parameters.input) {
       pythonCode += `parameters_input = ${JSON.stringify(
         postData.parameters.input
-      )}\n`;
+      )
+        .replace("true", "True")
+        .replace("false", "False")}\n`;
     } else {
       pythonCode += `parameters_input = {}\n`;
     }
@@ -112,7 +115,9 @@ dd.set_return_format(dd.RETURN_PYTHON)\n\n`;
     if (postData.parameters.mlllib) {
       pythonCode += `parameters_mllib = ${JSON.stringify(
         postData.parameters.mllib
-      )}\n`;
+      )
+        .replace("true", "True")
+        .replace("false", "False")}\n`;
     } else {
       pythonCode += `parameters_mllib = {}\n`;
     }
@@ -120,7 +125,9 @@ dd.set_return_format(dd.RETURN_PYTHON)\n\n`;
     if (postData.parameters.output) {
       pythonCode += `parameters_output = ${JSON.stringify(
         postData.parameters.output
-      )}\n`;
+      )
+        .replace("true", "True")
+        .replace("false", "False")}\n`;
     } else {
       pythonCode += `parameters_output = {}\n`;
     }

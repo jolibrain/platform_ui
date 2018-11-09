@@ -225,6 +225,12 @@ To do so, fill the following array with these possible component names:
 ]
 ```
 
+### Minimal layout
+
+A minimal layout would only contain the `Imaginate` component.
+
+To load this layout, you can use the example in `public/config_minimal.json` to replace the standard `public/config.json`.
+
 ## Docker
 
 Il est possible (et conseillé) de déléguer l’ensemble des tâches de build à un conteneur.

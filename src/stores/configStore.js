@@ -4,6 +4,8 @@ import agent from "../agent";
 export class configStore {
   @observable isReady = false;
 
+  @observable layout = "full";
+
   @observable
   common = {
     name: "DeepDetect",
@@ -69,6 +71,7 @@ export class configStore {
     this.$req().then(
       action(config => {
         if (config) {
+          this.layout = config.layout;
           this.common = config.common;
           this.gpuInfo = config.gpuInfo;
           this.deepdetect = config.deepdetect;

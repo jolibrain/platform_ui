@@ -15,8 +15,8 @@ import TrainingArchive from "./Training/Archive";
 
 import GenericNotFound from "./GenericNotFound";
 
-// TODO: restore light config
-// import Imaginate from "./widgets/Imaginate";
+import Imaginate from "./widgets/Imaginate";
+import deepdetectService from "../stores/deepdetect/service";
 
 @inject("configStore")
 @inject("buildInfoStore")
@@ -47,32 +47,53 @@ export default class App extends React.Component {
   }
 
   componentWillMount() {
-    this.props.configStore.loadConfig(config => {
+    const {
+      configStore,
+      gpuStore,
+      buildInfoStore,
+      deepdetectStore,
+      imaginateStore,
+      authTokenStore,
+      modelRepositoriesStore,
+      dataRepositoriesStore
+    } = this.props;
+
+    configStore.loadConfig(config => {
       if (config.gpuInfo) {
-        this.props.gpuStore.setup(config);
+        gpuStore.setup(config);
       }
 
-      this.props.buildInfoStore.loadBuildInfo();
+      buildInfoStore.loadBuildInfo();
 
-      this.props.deepdetectStore.setup(config);
-      this.props.imaginateStore.setup(config);
-      this.props.authTokenStore.setup();
+      deepdetectStore.setup(config);
+      imaginateStore.setup(config);
+      authTokenStore.setup();
 
       if (config.modelRepositories) {
-        this.props.modelRepositoriesStore.setup(config);
+        modelRepositoriesStore.setup(config);
       }
 
       if (config.dataRepositories) {
-        this.props.dataRepositoriesStore.setup(config);
+        dataRepositoriesStore.setup(config);
       }
 
-      // Begin async.forever.series loops on various infos:
-      // - deepdetect server info
-      this.props.deepdetectStore.loadServices(true);
-      // - training service info
-      this.props.deepdetectStore.refreshTrainInfo();
-      // - gpu stat servers
-      this.props.gpuStore.loadGpuInfo();
+      if (config.layout === "minimal") {
+        const serviceSettings = imaginateStore.settings.services[0];
+
+        imaginateStore.service = new deepdetectService({
+          serviceSettings: serviceSettings,
+          serverName: deepdetectStore.server.name,
+          serverSettings: deepdetectStore.server.settings
+        });
+      } else {
+        // Begin async.forever.series loops on various infos:
+        // - deepdetect server info
+        this.props.deepdetectStore.loadServices(true);
+        // - training service info
+        this.props.deepdetectStore.refreshTrainInfo();
+        // - gpu stat servers
+        this.props.gpuStore.loadGpuInfo();
+      }
     });
   }
 
@@ -81,56 +102,47 @@ export default class App extends React.Component {
 
     if (!configStore.isReady || !deepdetectStore.isReady) return null;
 
-    return (
-      <div>
-        <Header />
-        <Switch>
-          <Route exact path="/" component={Home} />
-
-          <Route exact path="/predict" component={PredictHome} />
-          <Route exact path="/predict/new" component={PredictNew} />
-          <Route
-            exact
-            path="/predict/:serverName/:serviceName"
-            component={PredictShow}
-          />
-
-          <Route exact path="/training" component={TrainingHome} />
-          <Route exact path="/trainingArchive" component={TrainingHome} />
-          <Route
-            exact
-            path="/training/:serverName/:serviceName"
-            component={TrainingShow}
-          />
-          <Route
-            exact
-            path="/trainingArchive/:modelPath*"
-            component={TrainingArchive}
-          />
-
-          <Route exact path="/404" component={GenericNotFound} />
-        </Switch>
-      </div>
-    );
-
-    //
-    // TODO : restore minimal layout
-    // not working since multiserver
-    //
     // Minimal Layout
-    // if (
-    //   this.props.deepdetectStore.settings.services.defaultService &&
-    //   this.props.deepdetectStore.settings.services.defaultService.length > 0
-    // ) {
-    //   return (
-    //     <div>
-    //       <Route exact path="/" component={Imaginate} />
-    //     </div>
-    //   );
+    if (configStore.layout === "minimal") {
+      return (
+        <div>
+          <Route exact path="/" component={Imaginate} />
+        </div>
+      );
 
-    //   // Full Layout
-    // } else {
-    // }
-    //
+      // Full Layout
+    } else {
+      return (
+        <div>
+          <Header />
+          <Switch>
+            <Route exact path="/" component={Home} />
+
+            <Route exact path="/predict" component={PredictHome} />
+            <Route exact path="/predict/new" component={PredictNew} />
+            <Route
+              exact
+              path="/predict/:serverName/:serviceName"
+              component={PredictShow}
+            />
+
+            <Route exact path="/training" component={TrainingHome} />
+            <Route exact path="/trainingArchive" component={TrainingHome} />
+            <Route
+              exact
+              path="/training/:serverName/:serviceName"
+              component={TrainingShow}
+            />
+            <Route
+              exact
+              path="/trainingArchive/:modelPath*"
+              component={TrainingArchive}
+            />
+
+            <Route exact path="/404" component={GenericNotFound} />
+          </Switch>
+        </div>
+      );
+    }
   }
 }

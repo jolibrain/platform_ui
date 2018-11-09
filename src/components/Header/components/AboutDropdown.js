@@ -23,17 +23,28 @@ class AboutDropdown extends React.Component {
     const { buildInfoStore } = this.props;
 
     let buildInfo = null;
+
     if (buildInfoStore.isReady) {
+      const { buildCommitHash, buildDate, branch } = buildInfoStore;
+
       buildInfo = (
         <div>
           <div className="dropdown-divider" />
           <a
             className="dropdown-item"
-            href={`https://gitlab.com/jolibrain/core-ui/commits/master`}
+            href={`https://gitlab.com/jolibrain/core-ui/commits/${branch}`}
           >
-            Build {buildInfoStore.buildCommitHash.slice(0, 6)}
+            Build {buildCommitHash.slice(0, 6)}
             <br />
-            updated {moment.unix(buildInfoStore.buildDate).fromNow()}
+            {branch !== "master" ? (
+              <span>
+                Branch <i>{branch}</i>
+                <br />
+              </span>
+            ) : (
+              ""
+            )}
+            updated {moment.unix(buildDate).fromNow()}
           </a>
         </div>
       );
