@@ -3,6 +3,7 @@ import { Switch, Route, withRouter } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 
 import Home from "./Home";
+import Loading from "./Loading";
 import Header from "./Header";
 
 import PredictHome from "./Predict/Home";
@@ -59,24 +60,6 @@ export default class App extends React.Component {
     } = this.props;
 
     configStore.loadConfig(config => {
-      if (config.gpuInfo) {
-        gpuStore.setup(config);
-      }
-
-      buildInfoStore.loadBuildInfo();
-
-      deepdetectStore.setup(config);
-      imaginateStore.setup(config);
-      authTokenStore.setup();
-
-      if (config.modelRepositories) {
-        modelRepositoriesStore.setup(config);
-      }
-
-      if (config.dataRepositories) {
-        dataRepositoriesStore.setup(config);
-      }
-
       if (config.layout === "minimal") {
         const serviceSettings = imaginateStore.settings.services[0];
 
@@ -86,13 +69,29 @@ export default class App extends React.Component {
           serverSettings: deepdetectStore.server.settings
         });
       } else {
-        // Begin async.forever.series loops on various infos:
-        // - deepdetect server info
-        this.props.deepdetectStore.loadServices(true);
-        // - training service info
-        this.props.deepdetectStore.refreshTrainInfo();
-        // - gpu stat servers
-        this.props.gpuStore.loadGpuInfo();
+        deepdetectStore.setup(config);
+        deepdetectStore.loadServices(true);
+        deepdetectStore.refreshTrainInfo();
+
+        if (config.gpuInfo) {
+          gpuStore.setup(config);
+          gpuStore.loadGpuInfo();
+        }
+
+        imaginateStore.setup(config);
+        authTokenStore.setup();
+
+        if (config.modelRepositories) {
+          modelRepositoriesStore.setup(config);
+          modelRepositoriesStore.refresh();
+        }
+
+        if (config.dataRepositories) {
+          dataRepositoriesStore.setup(config);
+          dataRepositoriesStore.refresh();
+        }
+
+        buildInfoStore.loadBuildInfo();
       }
     });
   }
@@ -100,18 +99,28 @@ export default class App extends React.Component {
   render() {
     const { configStore, deepdetectStore } = this.props;
 
-    if (!configStore.isReady || !deepdetectStore.isReady) return null;
+    if (!configStore.isReady) return null;
 
-    // Minimal Layout
     if (configStore.layout === "minimal") {
+      // Minimal Layout
+
       return (
         <div>
           <Route exact path="/" component={Imaginate} />
         </div>
       );
+    } else if (!deepdetectStore.isReady) {
+      // Loading screen
 
-      // Full Layout
+      return (
+        <div>
+          <Header />
+          <Loading />
+        </div>
+      );
     } else {
+      // Full Layout
+
       return (
         <div>
           <Header />
