@@ -66,6 +66,13 @@ export default class Imaginate extends React.Component {
         connectorComponent = <ImageConnector />;
         break;
       default:
+        connectorComponent = (
+          <div className="alert alert-warning" role="alert">
+            <i className="fas fa-exclamation-circle" />
+            Missing attribute <code>body.parameters.input[0].connector</code> in
+            Service json.
+          </div>
+        );
         break;
     }
 
