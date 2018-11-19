@@ -32,6 +32,13 @@ export default class MainView extends React.Component {
     );
   }
 
+  componentWillMount() {
+    const { modelRepositoriesStore } = this.props;
+    if (!modelRepositoriesStore.isReady) {
+      modelRepositoriesStore.refresh();
+    }
+  }
+
   handleClickRefreshServices() {
     this.props.modelRepositoriesStore.refresh();
   }

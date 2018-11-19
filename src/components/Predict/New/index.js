@@ -10,6 +10,13 @@ import { withRouter } from "react-router-dom";
 @withRouter
 @observer
 export default class PredictNew extends React.Component {
+  componentWillMount() {
+    const { modelRepositoriesStore } = this.props;
+    if (!modelRepositoriesStore.isReady) {
+      modelRepositoriesStore.refresh();
+    }
+  }
+
   render() {
     if (
       this.props.configStore.isComponentBlacklisted("Predict") ||

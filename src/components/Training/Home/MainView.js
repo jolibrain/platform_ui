@@ -29,6 +29,13 @@ export default class MainView extends React.Component {
     this.handleClickRefreshArchive = this.handleClickRefreshArchive.bind(this);
   }
 
+  componentWillMount() {
+    const { modelRepositoriesStore } = this.props;
+    if (!modelRepositoriesStore.isReady) {
+      modelRepositoriesStore.refresh();
+    }
+  }
+
   handleClickRefreshArchive() {
     this.props.modelRepositoriesStore.refresh();
   }

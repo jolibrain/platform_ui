@@ -83,7 +83,6 @@ export default class App extends React.Component {
 
         if (config.modelRepositories) {
           modelRepositoriesStore.setup(config);
-          modelRepositoriesStore.refresh();
         }
 
         if (config.dataRepositories) {

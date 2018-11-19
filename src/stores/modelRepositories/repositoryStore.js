@@ -8,6 +8,7 @@ export default class RepositoryStore {
   @observable nginxPath;
   @observable systempPath;
 
+  @observable isReady = false;
   @observable isRefreshing = false;
   @observable isTraining = false;
 
@@ -32,6 +33,7 @@ export default class RepositoryStore {
     }
 
     this.repositories = repositories;
+    this.isReady = true;
     this.isRefreshing = false;
   }
 

@@ -21,6 +21,13 @@ export default class MainView extends React.Component {
     this.handleLeaveMeasure = this.handleLeaveMeasure.bind(this);
   }
 
+  componentWillMount() {
+    const { modelRepositoriesStore } = this.props;
+    if (!modelRepositoriesStore.isReady) {
+      modelRepositoriesStore.refresh();
+    }
+  }
+
   handleOverMeasure(index) {
     this.setState({ hoveredMeasure: index });
   }

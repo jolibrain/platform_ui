@@ -56,6 +56,11 @@ export default class Form extends React.Component {
   }
 
   componentWillMount() {
+    const { modelRepositoriesStore } = this.props;
+    if (!modelRepositoriesStore.isReady) {
+      modelRepositoriesStore.refresh();
+    }
+
     if (this.props.location.state && this.props.location.state.repository) {
       const repository = this.props.location.state.repository;
 
