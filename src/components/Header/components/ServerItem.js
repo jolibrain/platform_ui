@@ -13,11 +13,15 @@ class ServerItem extends React.Component {
       <div className="server-details">
         <div className="d-flex mb-2">
           <i className="fas fa-caret-right" /> Host{" "}
-          <span className="ml-auto">{window.location.hostname}</span>
+          <span className="ml-auto">
+            {settings.host || window.location.hostname}
+          </span>
         </div>
         <div className="d-flex mb-2">
           <i className="fas fa-caret-right" /> Port{" "}
-          <span className="ml-auto">{window.location.port}</span>
+          <span className="ml-auto">
+            {settings.port || window.location.port}
+          </span>
         </div>
         <div className="d-flex mb-2 last">
           <i className="fas fa-caret-right" /> Path{" "}
