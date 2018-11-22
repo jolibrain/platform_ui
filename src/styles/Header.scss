@@ -132,6 +132,32 @@
     .fa-square.serverDown {
       color: red;
     }
+
+    .server-details {
+      color: #ddd;
+
+      div {
+        padding-bottom: 4px;
+        border-bottom: 1px solid #666;
+
+        span {
+          color: #fff;
+          font-weight: 700;
+        }
+      }
+
+      div.last {
+        border-bottom: 0;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      i {
+        color: #ddd;
+        position: relative;
+        top: 3px;
+      }
+    }
   }
 
   .navbar-nav {
