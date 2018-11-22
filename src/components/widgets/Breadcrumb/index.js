@@ -45,7 +45,7 @@ export default class Breadcrumb extends React.Component {
           ""
         )}
         <Link to={`${root.path}/${service.serverName}/${service.name}`}>
-          {service.name}
+          {decodeURIComponent(service.name)}
         </Link>
         <a
           href={serviceJsonUrl}

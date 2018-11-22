@@ -130,7 +130,7 @@ export default class App extends React.Component {
             <Route exact path="/predict/new" component={PredictNew} />
             <Route
               exact
-              path="/predict/:serverName/:serviceName"
+              path="/predict/:serverName/:serviceName*"
               component={PredictShow}
             />
 
@@ -138,7 +138,7 @@ export default class App extends React.Component {
             <Route exact path="/trainingArchive" component={TrainingHome} />
             <Route
               exact
-              path="/training/:serverName/:serviceName"
+              path="/training/:serverName/:serviceName*"
               component={TrainingShow}
             />
             <Route

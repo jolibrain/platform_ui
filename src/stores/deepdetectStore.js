@@ -73,7 +73,7 @@ export class deepdetectStore {
       }
 
       server.isActive = true;
-      server.setService(params.serviceName);
+      server.setService(encodeURIComponent(params.serviceName));
     }
 
     return server && server.service;

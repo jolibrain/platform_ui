@@ -22,7 +22,7 @@ export default class ServiceItem extends React.Component {
             ) : (
               <i className="fas fa-cube" />
             )}
-            &nbsp;{service.name}
+            &nbsp;{decodeURIComponent(service.name)}
           </span>
         </Link>
       </li>
