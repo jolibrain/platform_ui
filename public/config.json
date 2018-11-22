@@ -51,13 +51,6 @@
         }
       },
       {
-        "name": "neptune01",
-        "settings": {
-          "path": "/api/neptune01",
-          "isWritable": true
-        }
-      },
-      {
         "name": "neptune02",
         "settings": {
           "path": "/api/neptune02",
@@ -177,10 +170,6 @@
       {
         "name": "hyperion",
         "url": "/gpu/hyperion"
-      },
-      {
-        "name": "neptune01",
-        "url": "/gpu/neptune01"
       },
       {
         "name": "neptune02",
