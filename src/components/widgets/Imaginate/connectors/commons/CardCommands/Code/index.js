@@ -60,7 +60,7 @@ export default class Code extends React.Component {
     if (this.state.configuration.ddConfig) {
       javascriptCode += `const dd = new DD({
   host: '${window.location.hostname}',
-  port: ${window.location.port},
+  port: ${window.location.port || window.protocol === "https" ? 443 : 80},
   path: '${service.serverSettings.path}'
 })\n\n`;
     }
@@ -96,7 +96,7 @@ run()`;
 
     if (this.state.configuration.ddConfig) {
       pythonCode += `host = '${window.location.hostname}'
-port = ${window.location.port}
+port = ${window.location.port || window.protocol === "https" ? 443 : 80},
 path = '${service.serverSettings.path}'
 dd = DD(host,port)
 dd.set_return_format(dd.RETURN_PYTHON)\n\n`;
