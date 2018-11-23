@@ -108,13 +108,17 @@ export class deepdetectStore {
       next => {
         const seriesArray = this.servers.map(s => {
           return async callback => {
-            await s.loadServices(status);
+            try {
+              await s.loadServices(status);
 
-            if (this.refresh === 0) {
-              // First load, do not wait
+              if (this.refresh === 0) {
+                // First load, do not wait
+                callback();
+              } else {
+                setTimeout(() => callback(), 500);
+              }
+            } catch (e) {
               callback();
-            } else {
-              setTimeout(() => callback(), 500);
             }
           };
         });
