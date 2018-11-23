@@ -21,7 +21,6 @@ export default class Description extends React.Component {
     const input = service.selectedInput;
 
     if (
-      input.error ||
       !input.json ||
       !input.json.body ||
       !input.json.body.predictions ||

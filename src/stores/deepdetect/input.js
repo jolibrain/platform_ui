@@ -6,7 +6,6 @@ export default class Input {
   @observable postData = {};
   @observable path = null;
   @observable json = null;
-  @observable error = false;
   @observable boxes = [];
 
   @computed

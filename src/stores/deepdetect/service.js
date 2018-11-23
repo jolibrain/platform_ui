@@ -452,9 +452,7 @@ export default class deepdetectService {
 
     input.json = await this.$reqPostPredict(input.postData);
 
-    if (typeof input.json.body === "undefined") {
-      input.error = true;
-    } else {
+    if (typeof input.json.body !== "undefined") {
       const prediction = input.json.body.predictions[0];
       const classes = prediction.classes;
 
