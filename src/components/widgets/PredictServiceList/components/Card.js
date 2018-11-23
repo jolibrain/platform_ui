@@ -170,10 +170,13 @@ export default class Card extends React.Component {
           <DownloadModelFiles repository={repository} />
         </div>
 
-        <div className="card-footer text-right">
+        <div className="card-footer">
           {this.state.errors.length > 0 ? (
             <div className="alert alert-danger" role="alert">
-              <b>Error while creating service</b>
+              <b>
+                <i class="fas fa-exclamation-circle" /> Error while creating
+                service
+              </b>
               <ul>
                 {this.state.errors.map((error, i) => <li key={i}>{error}</li>)}
               </ul>
