@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 
 import ImageList from "./ImageList";
 //import ImageListRandom from "./ImageListRandom";
-import BoundingBoxDisplay from "./BoundingBoxDisplay";
+import BoundingBox from "./BoundingBox";
 import Threshold from "./Threshold";
 import InputForm from "./InputForm";
 
@@ -175,7 +175,7 @@ export default class ImageConnector extends React.Component {
             )}
 
             <div className="row">
-              <BoundingBoxDisplay
+              <BoundingBox
                 selectedBoxIndex={this.state.selectedBoxIndex}
                 onOver={this.onOver}
                 input={toJS(service.selectedInput)}

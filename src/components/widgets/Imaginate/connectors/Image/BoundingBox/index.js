@@ -5,17 +5,9 @@ export default class BoundingBoxDisplay extends React.Component {
   render() {
     const input = this.props.input;
 
-    if (
-      !input ||
-      !input.content ||
-      !input.json ||
-      !input.json.body ||
-      !input.json.body.predictions ||
-      !input.json.body.predictions[0]
-    )
-      return null;
+    if (!input || !input.content || !input.prediction) return null;
 
-    const inputVals = input.json.body.predictions[0].vals;
+    const inputVals = input.prediction.vals;
 
     return (
       <Boundingbox
