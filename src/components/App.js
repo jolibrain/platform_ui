@@ -102,7 +102,6 @@ export default class App extends React.Component {
 
     if (configStore.layout === "minimal") {
       // Minimal Layout
-
       return (
         <div>
           <Route exact path="/" component={Imaginate} />
@@ -110,7 +109,6 @@ export default class App extends React.Component {
       );
     } else if (!deepdetectStore.isReady) {
       // Loading screen
-
       return (
         <div>
           <Header />
@@ -119,7 +117,6 @@ export default class App extends React.Component {
       );
     } else {
       // Full Layout
-
       return (
         <div>
           <Header />
