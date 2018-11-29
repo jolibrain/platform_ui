@@ -32,11 +32,16 @@ export default class ServiceList extends React.Component {
     const serviceItems = services
       .sort((a, b) => {
         // Sort by name
-        return a.name > b.name ? 1 : -1;
-      })
-      .sort((a, b) => {
-        // Predict services first
-        return a.settings.training - b.settings.training;
+        var nameA = a.settings.name.toUpperCase();
+        var nameB = b.settings.name.toUpperCase();
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        return 0;
       })
       .map((service, index) => {
         return <ServiceItem key={index} service={service} />;

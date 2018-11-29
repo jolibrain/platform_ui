@@ -9,10 +9,12 @@ export default class BoundingBox extends React.Component {
     super(props);
 
     this.state = {
-      boxFormat: "simple"
+      boxFormat: "simple",
+      showLabels: false
     };
 
     this.setBoxFormat = this.setBoxFormat.bind(this);
+    this.toggleLabels = this.toggleLabels.bind(this);
 
     this.drawLabelSimple = this.drawLabelSimple.bind(this);
     this.drawLabelColor = this.drawLabelColor.bind(this);
@@ -23,6 +25,10 @@ export default class BoundingBox extends React.Component {
 
   setBoxFormat(format) {
     this.setState({ boxFormat: format });
+  }
+
+  toggleLabels() {
+    this.setState({ showLabels: !this.state.showLabels });
   }
 
   drawLabelSimple(canvas, box) {
@@ -185,19 +191,18 @@ export default class BoundingBox extends React.Component {
 
     const inputVals = input.json.body.predictions[0].vals;
 
-    let drawLabel = null,
-      drawBox = null,
+    let drawLabel = () => {},
+      drawBox = this.drawBoxSimple,
       boxes = [];
 
     if (this.state.boxFormat === "simple") {
-      drawLabel = this.drawLabelSimple;
-      drawBox = this.drawBoxSimple;
-
       boxes = input.json.body.predictions[0].classes.map(pred => {
         return pred.bbox;
       });
     } else {
-      drawLabel = this.drawLabelColor;
+      if (this.state.showLabels) {
+        drawLabel = this.drawLabelColor;
+      }
       drawBox = this.drawBoxColor;
 
       const colors = [
@@ -228,6 +233,9 @@ export default class BoundingBox extends React.Component {
         <Controls
           handleClickBox={this.setBoxFormat.bind(this, "simple")}
           handleClickPalette={this.setBoxFormat.bind(this, "color")}
+          handleClickLabels={this.toggleLabels}
+          boxFormat={this.state.boxFormat}
+          showLabels={this.state.showLabels}
         />
         <Boundingbox
           className="boundingboxdisplay"
