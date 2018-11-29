@@ -41,7 +41,6 @@ export default class Imaginate extends React.Component {
 
     const { imaginateStore } = this.props;
 
-    console.log("render imaginate");
     if (!imaginateStore.service) return null;
 
     const connector = this.getServiceConnector();
