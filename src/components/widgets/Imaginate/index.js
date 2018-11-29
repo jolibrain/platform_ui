@@ -11,31 +11,17 @@ export default class Imaginate extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      connector: null
-    };
-
     this.getServiceConnector = this.getServiceConnector.bind(this);
   }
 
-  componentWillUnmount() {
-    this._ismounted = false;
-  }
+  componentWillReceiveProps(nextProps) {}
 
-  componentDidMount() {
-    this._ismounted = true;
-    this.getServiceConnector(this.props);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.getServiceConnector(nextProps);
-  }
-
-  async getServiceConnector(props) {
-    const { imaginateStore } = props;
+  getServiceConnector() {
+    const { imaginateStore } = this.props;
+    let connector = null;
 
     if (imaginateStore.service) {
-      const serviceInfo = await imaginateStore.service.serviceInfo();
+      const serviceInfo = imaginateStore.service.respInfo;
       if (
         serviceInfo.body &&
         serviceInfo.body.parameters &&
@@ -43,10 +29,11 @@ export default class Imaginate extends React.Component {
         serviceInfo.body.parameters.input.length === 1 &&
         serviceInfo.body.parameters.input[0].connector
       ) {
-        const connector = serviceInfo.body.parameters.input[0].connector;
-        this.setState({ connector: connector });
+        connector = serviceInfo.body.parameters.input[0].connector;
       }
     }
+
+    return connector;
   }
 
   render() {
@@ -54,11 +41,13 @@ export default class Imaginate extends React.Component {
 
     const { imaginateStore } = this.props;
 
-    if (!imaginateStore.service || !this.state.connector) return null;
+    console.log("render imaginate");
+    if (!imaginateStore.service) return null;
 
+    const connector = this.getServiceConnector();
     let connectorComponent = null;
 
-    switch (this.state.connector) {
+    switch (connector) {
       case "txt":
         connectorComponent = <TxtConnector />;
         break;
@@ -78,7 +67,7 @@ export default class Imaginate extends React.Component {
 
     return (
       <div
-        className={`imaginate-${this.state.connector}`}
+        className={`imaginate-${connector}`}
         data-servicename={imaginateStore.service.name}
       >
         {connectorComponent}
