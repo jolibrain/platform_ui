@@ -52,19 +52,21 @@ export default class BoundingBox extends React.Component {
     var rgba =
       "rgba(" + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(",") + ",0.8)";
 
+    const fontSize = (parseInt(canvas.width, 10) * 40) / 1024;
+
     const measure = ctx.measureText(box.label);
     ctx.fillStyle = rgba;
-    ctx.fillRect(x, y, measure.width + 10, 37);
+    ctx.fillRect(x, y, measure.width + fontSize / 4, fontSize - 2);
 
     ctx.fillStyle = "#fff";
     ctx.miterLimit = 2;
     ctx.lineJoin = "circle";
-    ctx.font = "40px Helvetica";
+    ctx.font = fontSize + "px Helvetica";
 
     ctx.lineWidth = 7;
-    ctx.strokeText(box.label, x + 5, y + 32);
+    ctx.strokeText(box.label, x + 5, y + fontSize * 0.8);
     ctx.lineWidth = 1;
-    ctx.fillText(box.label, x + 5, y + 32);
+    ctx.fillText(box.label, x + 5, y + fontSize * 0.8);
   }
 
   drawBoxSimple(canvas, box, color, lineWidth) {
