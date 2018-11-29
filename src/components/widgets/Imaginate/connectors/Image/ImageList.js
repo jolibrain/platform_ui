@@ -31,7 +31,6 @@ export default class ImageList extends React.Component {
   render() {
     const { service } = this.props.imaginateStore;
 
-    console.log("render ImageList");
     if (!service) return null;
 
     const inputs = service.inputs.slice(0, 100);
