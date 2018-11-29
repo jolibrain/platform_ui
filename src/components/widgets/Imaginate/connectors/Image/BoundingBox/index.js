@@ -52,7 +52,7 @@ export default class BoundingBox extends React.Component {
     var rgba =
       "rgba(" + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(",") + ",0.8)";
 
-    const fontSize = (parseInt(canvas.width, 10) * 40) / 1024;
+    const fontSize = parseInt(canvas.width, 10) * 0.04;
 
     const measure = ctx.measureText(box.label);
     ctx.fillStyle = rgba;
