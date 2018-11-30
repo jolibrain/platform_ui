@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import ReactTooltip from "react-tooltip";
 
-class ServerItem extends React.Component {
+class Item extends React.Component {
   render() {
     const { server } = this.props;
     const { settings } = server;
@@ -55,8 +55,8 @@ class ServerItem extends React.Component {
   }
 }
 
-ServerItem.propTypes = {
+Item.propTypes = {
   server: PropTypes.object.isRequired
 };
 
-export default ServerItem;
+export default Item;

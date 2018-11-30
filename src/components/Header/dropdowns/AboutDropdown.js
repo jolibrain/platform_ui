@@ -13,6 +13,34 @@ class AboutDropdown extends React.Component {
     };
 
     this.handleAboutClick = this.handleAboutClick.bind(this);
+
+    this.setWrapperRef = this.setWrapperRef.bind(this);
+    this.handleClickOutside = this.handleClickOutside.bind(this);
+  }
+
+  componentDidMount() {
+    document.addEventListener("mousedown", this.handleClickOutside);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.handleClickOutside);
+  }
+
+  /**
+   * Set the wrapper ref
+   */
+  setWrapperRef(node) {
+    this.wrapperRef = node;
+  }
+
+  handleClickOutside(event) {
+    if (
+      this.wrapperRef &&
+      !this.wrapperRef.contains(event.target) &&
+      this.state.aboutDown
+    ) {
+      this.setState({ aboutDown: false });
+    }
   }
 
   handleAboutClick() {
@@ -51,7 +79,11 @@ class AboutDropdown extends React.Component {
     }
 
     return (
-      <li className="nav-item dropdown">
+      <li
+        id="about-dropdown"
+        className="nav-item dropdown"
+        ref={this.setWrapperRef}
+      >
         <a
           className="nav-link dropdown-toggle"
           style={{ cursor: "pointer" }}
@@ -68,14 +100,29 @@ class AboutDropdown extends React.Component {
           className={`dropdown-menu ${this.state.aboutDown ? "show" : ""}`}
           aria-labelledby="navbarDropdown"
         >
-          <a className="dropdown-item" href="https://github.com/jolibrain">
+          <a
+            className="dropdown-item"
+            href="https://github.com/jolibrain"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <i className="fab fa-github" /> Github
           </a>
           <div className="dropdown-divider" />
-          <a className="dropdown-item" href="http://deepdetect.com">
+          <a
+            className="dropdown-item"
+            href="http://deepdetect.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             DeepDetect
           </a>
-          <a className="dropdown-item" href="http://jolibrain.com">
+          <a
+            className="dropdown-item"
+            href="http://jolibrain.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Jolibrain
           </a>
           {buildInfo}

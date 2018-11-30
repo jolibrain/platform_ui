@@ -2,9 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 
-import ServerList from "./components/ServerList";
-import UserDropdown from "./components/UserDropdown";
-import AboutDropdown from "./components/AboutDropdown";
+import ServerDropdown from "./dropdowns/ServerDropdown";
+import UserDropdown from "./dropdowns/UserDropdown";
+import AboutDropdown from "./dropdowns/AboutDropdown";
 
 import PredictLink from "./links/Predict";
 import TrainingLink from "./links/Training";
@@ -42,7 +42,7 @@ class Header extends React.Component {
 
             <div className="navbar-collapse d-flex justify-content-end">
               <ul className="nav nabar-nav">
-                <ServerList />
+                <ServerDropdown />
                 <DocumentationLink />
                 <AboutDropdown />
                 <UserDropdown />

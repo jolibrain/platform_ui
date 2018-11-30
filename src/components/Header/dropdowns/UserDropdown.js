@@ -15,6 +15,34 @@ class UserDropdown extends React.Component {
 
     this.handleUserClick = this.handleUserClick.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
+
+    this.setWrapperRef = this.setWrapperRef.bind(this);
+    this.handleClickOutside = this.handleClickOutside.bind(this);
+  }
+
+  componentDidMount() {
+    document.addEventListener("mousedown", this.handleClickOutside);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.handleClickOutside);
+  }
+
+  /**
+   * Set the wrapper ref
+   */
+  setWrapperRef(node) {
+    this.wrapperRef = node;
+  }
+
+  handleClickOutside(event) {
+    if (
+      this.wrapperRef &&
+      !this.wrapperRef.contains(event.target) &&
+      this.state.userDown
+    ) {
+      this.setState({ userDown: false });
+    }
   }
 
   handleUserClick() {
@@ -32,7 +60,11 @@ class UserDropdown extends React.Component {
     if (!username) return null;
 
     return (
-      <li className="nav-item dropdown" id="user-dropdown">
+      <li
+        id="user-dropdown"
+        className="nav-item dropdown"
+        ref={this.setWrapperRef}
+      >
         <a
           className="nav-link"
           style={{ cursor: "pointer" }}

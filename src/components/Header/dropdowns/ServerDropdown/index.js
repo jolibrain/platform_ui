@@ -1,11 +1,11 @@
 import React from "react";
 import { inject, observer } from "mobx-react";
 
-import ServerItem from "./ServerItem";
+import Item from "./Item";
 
 @inject("deepdetectStore")
 @observer
-class ServerList extends React.Component {
+class ServerDropdown extends React.Component {
   constructor(props) {
     super(props);
 
@@ -14,6 +14,34 @@ class ServerList extends React.Component {
     };
 
     this.handleListClick = this.handleListClick.bind(this);
+
+    this.setWrapperRef = this.setWrapperRef.bind(this);
+    this.handleClickOutside = this.handleClickOutside.bind(this);
+  }
+
+  componentDidMount() {
+    document.addEventListener("mousedown", this.handleClickOutside);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.handleClickOutside);
+  }
+
+  /**
+   * Set the wrapper ref
+   */
+  setWrapperRef(node) {
+    this.wrapperRef = node;
+  }
+
+  handleClickOutside(event) {
+    if (
+      this.wrapperRef &&
+      !this.wrapperRef.contains(event.target) &&
+      this.state.listDown
+    ) {
+      this.setState({ listDown: false });
+    }
   }
 
   handleListClick() {
@@ -46,7 +74,11 @@ class ServerList extends React.Component {
     }
 
     return (
-      <li id="servers-dropdown" className="nav-item dropdown">
+      <li
+        id="servers-dropdown"
+        className="nav-item dropdown"
+        ref={this.setWrapperRef}
+      >
         <a
           className="nav-link dropdown-toggle"
           style={{ cursor: "pointer" }}
@@ -65,7 +97,7 @@ class ServerList extends React.Component {
           aria-labelledby="navbarDropdown"
         >
           {servers.map((server, index) => {
-            return <ServerItem key={`server-${index}`} server={server} />;
+            return <Item key={`server-${index}`} server={server} />;
           })}
         </div>
       </li>
@@ -73,4 +105,4 @@ class ServerList extends React.Component {
   }
 }
 
-export default ServerList;
+export default ServerDropdown;
