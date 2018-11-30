@@ -10,7 +10,7 @@ import "react-bootstrap-typeahead/css/Typeahead-bs4.css";
 @inject("imaginateStore")
 @inject("dataRepositoriesStore")
 @observer
-export default class InputForm extends React.Component {
+class InputForm extends React.Component {
   constructor(props) {
     super(props);
 
@@ -34,6 +34,34 @@ export default class InputForm extends React.Component {
     this.handleInputChange = this.handleInputChange.bind(this);
 
     this.addUrl = this.addUrl.bind(this);
+
+    this.setWrapperRef = this.setWrapperRef.bind(this);
+    this.handleClickOutside = this.handleClickOutside.bind(this);
+  }
+
+  componentDidMount() {
+    document.addEventListener("mousedown", this.handleClickOutside);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.handleClickOutside);
+  }
+
+  /**
+   * Set the wrapper ref
+   */
+  setWrapperRef(node) {
+    this.wrapperRef = node;
+  }
+
+  handleClickOutside(event) {
+    if (
+      this.wrapperRef &&
+      !this.wrapperRef.contains(event.target) &&
+      this.state.dropdown
+    ) {
+      this.setState({ dropdown: false });
+    }
   }
 
   handleInputChange() {
@@ -108,7 +136,7 @@ export default class InputForm extends React.Component {
 
   render() {
     return (
-      <div className="card inputUrl">
+      <div className="card inputUrl" ref={this.setWrapperRef}>
         <div className="card-body">
           <div className="input-group">
             <div className="input-group-prepend">
@@ -187,3 +215,5 @@ export default class InputForm extends React.Component {
     );
   }
 }
+
+export default InputForm;
