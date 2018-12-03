@@ -87,7 +87,7 @@ export default class Card extends React.Component {
       if (resp instanceof Error || resp.status.code !== 201) {
         this.setState({
           creatingService: false,
-          errors: [resp.message || resp.status.msg]
+          errors: [resp.message || resp.status.dd_msg || resp.status.msg]
         });
       } else {
         this.setState({
@@ -174,7 +174,7 @@ export default class Card extends React.Component {
           {this.state.errors.length > 0 ? (
             <div className="alert alert-danger" role="alert">
               <b>
-                <i class="fas fa-exclamation-circle" /> Error while creating
+                <i className="fas fa-exclamation-circle" /> Error while creating
                 service
               </b>
               <ul>
