@@ -123,12 +123,18 @@ export class deepdetectStore {
           };
         });
 
-        async.series(seriesArray, (errorSeries, results) => {
-          this.isReady = true;
-          this.refresh = Math.random();
-          //setTimeout(() => next(), 5000);
-          next();
-        });
+        if (!this.isReady) {
+          async.parallel(seriesArray, (errorSeries, results) => {
+            this.isReady = true;
+            next();
+          });
+        } else {
+          async.series(seriesArray, (errorSeries, results) => {
+            this.refresh = Math.random();
+            //setTimeout(() => next(), 5000);
+            next();
+          });
+        }
       },
       errorForever => {}
     );

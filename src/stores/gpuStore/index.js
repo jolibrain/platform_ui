@@ -37,10 +37,16 @@ export class GpuStore {
           };
         });
 
-        async.series(seriesArray, (errorSeries, results) => {
-          this.firstLoad = false;
-          next();
-        });
+        if (this.firstLoad) {
+          async.parallel(seriesArray, (errorSeries, results) => {
+            this.firstLoad = false;
+            next();
+          });
+        } else {
+          async.series(seriesArray, (errorSeries, results) => {
+            next();
+          });
+        }
       },
       errorForever => {}
     );
