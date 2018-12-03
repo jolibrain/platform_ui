@@ -265,7 +265,7 @@ export default class ModelRepositoryContent extends React.Component {
           {publishButton}
           {this.state.publishError ? (
             <div className="alert alert-danger" role="alert">
-              <i class="fas fa-exclamation-triangle" />{" "}
+              <i className="fas fa-exclamation-triangle" />{" "}
               {this.state.publishError}
             </div>
           ) : (
