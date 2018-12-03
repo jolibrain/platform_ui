@@ -77,6 +77,13 @@
           "path": "/api/ceres",
           "isWritable": true
         }
+      },
+      {
+        "name": "defunc",
+        "settings": {
+          "path": "/api/defunc",
+          "isWritable": true
+        }
       }
     ],
     "services": {
