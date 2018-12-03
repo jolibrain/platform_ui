@@ -53,12 +53,19 @@ export default class Imaginate extends React.Component {
       case "image":
         connectorComponent = <ImageConnector />;
         break;
+      case "csv":
+        connectorComponent = (
+          <div className="alert alert-warning" role="alert">
+            <i className="fas fa-exclamation-circle" /> CSV connector interface
+            not available.
+          </div>
+        );
+        break;
       default:
         connectorComponent = (
           <div className="alert alert-warning" role="alert">
-            <i className="fas fa-exclamation-circle" />
-            Missing attribute <code>body.parameters.input[0].connector</code> in
-            Service json.
+            <i className="fas fa-exclamation-circle" /> Missing attribute{" "}
+            <code>body.parameters.input[0].connector</code> in Service json.
           </div>
         );
         break;
