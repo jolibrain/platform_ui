@@ -110,14 +110,7 @@ export class deepdetectStore {
           return async callback => {
             try {
               await s.loadServices(status);
-
-              if (this.refresh === 0) {
-                // First load, do not wait
-                callback();
-              } else {
-                setTimeout(() => callback(), 500);
-              }
-            } catch (e) {
+            } finally {
               callback();
             }
           };
@@ -131,8 +124,7 @@ export class deepdetectStore {
         } else {
           async.series(seriesArray, (errorSeries, results) => {
             this.refresh = Math.random();
-            //setTimeout(() => next(), 5000);
-            next();
+            setTimeout(() => next(), this.settings.refreshRate.info);
           });
         }
       },

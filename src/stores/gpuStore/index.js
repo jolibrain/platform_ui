@@ -27,12 +27,10 @@ export class GpuStore {
       next => {
         const seriesArray = this.servers.map(s => {
           return async callback => {
-            await s.loadGpuInfo();
-
-            if (this.firstLoad) {
+            try {
+              await s.loadGpuInfo();
+            } finally {
               callback();
-            } else {
-              setTimeout(() => callback(), 500);
             }
           };
         });
@@ -44,7 +42,7 @@ export class GpuStore {
           });
         } else {
           async.series(seriesArray, (errorSeries, results) => {
-            next();
+            setTimeout(() => next(), this.refreshRate);
           });
         }
       },
