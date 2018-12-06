@@ -205,11 +205,11 @@ export default class Form extends React.Component {
       serviceData.parameters.output = { store_config: false };
     }
 
-    ddStore.newService(serviceName, serviceData, resp => {
-      if (resp instanceof Error || resp.status.code !== 201) {
+    ddStore.newService(serviceName, serviceData, (resp, err) => {
+      if (err) {
         this.setState({
           creatingService: false,
-          errors: [resp.message || resp.status.msg]
+          errors: [`${err.status.msg}: ${err.status.dd_msg}`]
         });
       } else {
         this.setState({

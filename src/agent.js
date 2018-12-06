@@ -94,13 +94,15 @@ const Deepdetect = {
     }
   },
   putService: async (settings, name, data) => {
+    let response = null;
     settings.fetchTimeout = DD_TIMEOUT;
     const dd = new DD(settings);
     try {
-      return await dd.putService(name, data);
+      response = await dd.putService(name, data);
     } catch (err) {
-      return err;
+      throw err;
     }
+    return response;
   },
   deleteService: async (settings, name) => {
     settings.fetchTimeout = DD_TIMEOUT;
