@@ -23,6 +23,7 @@ export default class Imaginate extends React.Component {
     if (imaginateStore.service) {
       const serviceInfo = imaginateStore.service.respInfo;
       if (
+        serviceInfo &&
         serviceInfo.body &&
         serviceInfo.body.parameters &&
         serviceInfo.body.parameters.input &&
