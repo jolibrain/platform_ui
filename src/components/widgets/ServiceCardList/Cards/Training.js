@@ -205,7 +205,7 @@ export default class TrainingCard extends React.Component {
       case "waiting":
         cardFooter = (
           <a className="btn btn-outline-info disabled">
-            <i className="fas fa-spinner fa-spin" /> Preparing data...
+            <i className="fas fa-spinner" /> Preparing data...
           </a>
         );
         break;
@@ -242,7 +242,7 @@ export default class TrainingCard extends React.Component {
           {badges.map((badge, key) => {
             return (
               <span key={key} className={badge.classNames}>
-                {badge.spinner ? <i className="fas fa-spinner fa-spin" /> : ""}
+                {badge.spinner ? <i className="fas fa-spinner" /> : ""}
                 {badge.status}
               </span>
             );
