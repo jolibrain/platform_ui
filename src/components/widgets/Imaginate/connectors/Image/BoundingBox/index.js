@@ -138,14 +138,14 @@ export default class BoundingBox extends React.Component {
     const coord = box.coord ? box.coord : box;
 
     let [x, y, width, height] = [0, 0, 0, 0];
-    if (coord.xmin) {
+    if (coord.xmin && coord.xmax && coord.ymin && coord.ymax) {
       [x, y, width, height] = [
         coord.xmin,
         coord.ymax,
         coord.xmax - coord.xmin,
         coord.ymin - coord.ymax
       ];
-    } else {
+    } else if (coord.x && coord.y && coord.width && coord.height) {
       [x, y, width, height] = coord;
     }
 
@@ -191,43 +191,46 @@ export default class BoundingBox extends React.Component {
       return null;
 
     const inputVals = input.json.body.predictions[0].vals;
+    const classes = input.json.body.predictions[0].classes;
 
     let drawLabel = () => {},
       drawBox = this.drawBoxSimple,
       boxes = [];
 
-    if (this.state.boxFormat === "simple") {
-      boxes = input.json.body.predictions[0].classes.map(pred => {
-        return pred.bbox;
-      });
-    } else {
-      if (this.state.showLabels) {
-        drawLabel = this.drawLabelColor;
+    if (classes) {
+      if (this.state.boxFormat === "simple") {
+        boxes = classes.map(pred => {
+          return pred.bbox;
+        });
+      } else {
+        if (this.state.showLabels) {
+          drawLabel = this.drawLabelColor;
+        }
+        drawBox = this.drawBoxColor;
+
+        const colors = [
+          "#e41a1c",
+          "#377eb8",
+          "#4daf4a",
+          "#984ea3",
+          "#ff7f00",
+          "#ffff33",
+          "#a65628",
+          "#f781bf",
+          "#999999"
+        ];
+        const categories = classes
+          .map(pred => pred.cat)
+          .filter((value, index, self) => self.indexOf(value) === index);
+
+        boxes = input.json.body.predictions[0].classes.map(pred => {
+          let box = pred.bbox ? pred.bbox : {};
+          box.label = pred.cat ? pred.cat : "";
+          box.prob = pred.prob;
+          box.color = colors[categories.indexOf(pred.cat) % colors.length];
+          return box;
+        });
       }
-      drawBox = this.drawBoxColor;
-
-      const colors = [
-        "#e41a1c",
-        "#377eb8",
-        "#4daf4a",
-        "#984ea3",
-        "#ff7f00",
-        "#ffff33",
-        "#a65628",
-        "#f781bf",
-        "#999999"
-      ];
-      const categories = input.json.body.predictions[0].classes
-        .map(pred => pred.cat)
-        .filter((value, index, self) => self.indexOf(value) === index);
-
-      boxes = input.json.body.predictions[0].classes.map(pred => {
-        let box = pred.bbox;
-        box.label = pred.cat;
-        box.prob = pred.prob;
-        box.color = colors[categories.indexOf(pred.cat) % colors.length];
-        return box;
-      });
     }
 
     return (
