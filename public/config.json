@@ -223,5 +223,5 @@
     "nginxPath": "/data/",
     "systemPath": "/opt/platform"
   },
-  "componentBlacklist": ["LinkJupyter", "LinkChat"]
+  "componentBlacklist": ["LinkChat"]
 }
