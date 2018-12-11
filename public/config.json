@@ -72,6 +72,13 @@
         }
       },
       {
+        "name": "neptune04",
+        "settings": {
+          "path": "/api/neptune04",
+          "isWritable": true
+        }
+      },
+      {
         "name": "hydra",
         "settings": {
           "path": "/api/hydra",
@@ -190,6 +197,10 @@
         "url": "/gpu/neptune02"
       },
       {
+        "name": "neptune04",
+        "url": "/gpu/neptune04"
+      },
+      {
         "name": "hydra",
         "url": "/gpu/hydra"
       },
@@ -223,5 +234,5 @@
     "nginxPath": "/data/",
     "systemPath": "/opt/platform"
   },
-  "componentBlacklist": ["LinkChat"]
+  "componentBlacklist": ["LinkJupyter", "LinkChat"]
 }
