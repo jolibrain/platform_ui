@@ -7,11 +7,13 @@ export class modelRepositoriesStore {
 
   @action
   setup(configStore) {
-    this.repositoryStores = configStore.modelRepositories.map(
-      repositoryConfig => {
+    const { modelRepositories } = configStore;
+
+    if (typeof modelRepositories.map === "function") {
+      this.repositoryStores = modelRepositories.map(repositoryConfig => {
         return new RepositoryStore(repositoryConfig);
-      }
-    );
+      });
+    }
   }
 
   refresh() {
