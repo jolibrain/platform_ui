@@ -76,7 +76,7 @@ export default class TrainingCard extends React.Component {
         classNames: "badge badge-success",
         status: "training"
       });
-    } else if (service.respInfo && !service.trainJob) {
+    } else if (!service.trainJob) {
       badges.push({
         classNames: "badge badge-warning",
         status: "not running"

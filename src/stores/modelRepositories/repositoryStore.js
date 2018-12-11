@@ -26,8 +26,10 @@ export default class RepositoryStore {
   @action
   async load() {
     this.isRefreshing = true;
+
     let repositories = await this._loadRepositories(this.nginxPath);
 
+    // flatten repositories array
     while (repositories.find(r => r.constructor.name === "Array")) {
       repositories = [].concat.apply([], repositories).filter(r => r);
     }
@@ -39,7 +41,14 @@ export default class RepositoryStore {
 
   @action
   async _loadRepositories(path) {
-    const { folders, files } = await this.$reqFolder(path);
+    let folders = [],
+      files = [];
+
+    try {
+      const result = await this.$reqFolder(path);
+      folders = result.folders;
+      files = result.files;
+    } catch (err) {}
 
     const isRepository =
       files.includes("model.json") ||
@@ -59,6 +68,8 @@ export default class RepositoryStore {
       );
 
       return repositories.length > 0 ? repositories : [];
+    } else {
+      return [];
     }
   }
 

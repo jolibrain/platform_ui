@@ -20,6 +20,14 @@ export class modelRepositoriesStore {
     this.repositoryStores.forEach(r => r.load());
   }
 
+  refreshPredict() {
+    this.repositoryStores.filter(r => !r.isTraining).forEach(r => r.load());
+  }
+
+  refreshTraining() {
+    this.repositoryStores.filter(r => r.isTraining).forEach(r => r.load());
+  }
+
   @computed
   get isRefreshing() {
     return this.repositoryStores.map(r => r.isRefreshing).includes(true);

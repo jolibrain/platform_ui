@@ -21,7 +21,12 @@ export default class GeneralInfo extends React.Component {
       mltype = service.jsonMetrics.body.mltype;
       measure = service.jsonMetrics.body.measure;
     } else {
-      mltype = service.respInfo.body.mltype;
+      if (
+        service.respInfo &&
+        service.respInfo.body &&
+        service.respInfo.body.mltype
+      )
+        mltype = service.respInfo.body.mltype;
       measure = service.measure;
     }
 
