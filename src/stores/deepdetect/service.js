@@ -214,10 +214,10 @@ export default class deepdetectService {
   @action
   selectInput(index) {
     let input = this.inputs.find(i => i.isActive);
-    if (input) {
-      input.isActive = false;
-    }
-    this.inputs[index].isActive = true;
+
+    if (input) input.isActive = false;
+
+    if (this.inputs[index]) this.inputs[index].isActive = true;
   }
 
   @action
