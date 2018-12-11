@@ -101,11 +101,12 @@ export default class TrainingCard extends React.Component {
     const serviceUrl = `/training/${service.serverName}/${service.name}`;
 
     const iteration = this.getValue("iteration");
-    if (iteration)
+    if (iteration) {
       info.push({
         text: "Iterations",
         val: iteration
       });
+    }
 
     switch (service.settings.mltype) {
       case "segmentation":
