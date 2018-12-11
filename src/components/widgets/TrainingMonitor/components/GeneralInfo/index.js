@@ -178,7 +178,9 @@ export default class GeneralInfo extends React.Component {
           <div className="col-md-3">
             <span>
               <b>Iteration Time</b>:{" "}
-              {measure && measure.iter_time ? measure.iter_time : "--"}
+              {measure && measure.iter_time
+                ? parseInt(measure.iter_time, 10)
+                : "--"}
             </span>
           </div>
           <div className="col-md-6">
