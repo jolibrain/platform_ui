@@ -16,11 +16,13 @@ export default class TrainingShow extends React.Component {
     if (!deepdetectStore.isReady) this.props.history.push("/training");
 
     deepdetectStore.init(this.props.match.params);
+    deepdetectStore.setTrainRefreshMode("service");
   }
 
   componentWillReceiveProps(nextProps) {
     const { deepdetectStore } = this.props;
     deepdetectStore.init(nextProps.match.params);
+    deepdetectStore.setTrainRefreshMode("service");
   }
 
   render() {

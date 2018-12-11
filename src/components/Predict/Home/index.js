@@ -3,8 +3,14 @@ import MainView from "./MainView";
 import React from "react";
 import { inject } from "mobx-react";
 
+@inject("deepdetectStore")
 @inject("configStore")
 export default class PredictHome extends React.Component {
+  componentWillMount() {
+    const { deepdetectStore } = this.props;
+    deepdetectStore.setTrainRefreshMode(null);
+  }
+
   render() {
     if (
       this.props.configStore.isComponentBlacklisted("Predict") ||

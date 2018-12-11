@@ -88,7 +88,7 @@ export default class deepdetectServer {
   @action
   async loadServices(status = false) {
     try {
-      this.respInfo = await this.$reqInfo();
+      this.respInfo = await agent.Deepdetect.info(this.settings);
 
       if (!this.isDown) {
         this.services = this.services
@@ -112,8 +112,24 @@ export default class deepdetectServer {
           }
         });
       }
-    } catch (e) {
-      this.services = [];
+    } catch (err) {
+      switch (err.name) {
+        case "Error":
+          if (err.message === "timeout") {
+            console.log("timeout on server " + this.name + " loadServices()");
+          } else {
+            console.log("Uncatched error: " + err.message);
+          }
+          break;
+        case "SyntaxError":
+          // typical 502 error code, server is responding
+          // with an html page
+          break;
+        default:
+          // uncatched error
+          console.log(err.name);
+          console.log(err.message);
+      }
     }
   }
 

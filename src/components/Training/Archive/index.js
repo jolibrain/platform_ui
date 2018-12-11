@@ -13,6 +13,7 @@ export default class TrainingArchive extends React.Component {
     if (!deepdetectStore.isReady) this.props.history.push("/training");
 
     deepdetectStore.init(this.props.match.params);
+    deepdetectStore.setTrainRefreshMode(null);
   }
 
   render() {

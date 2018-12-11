@@ -3,8 +3,19 @@ import MainView from "./MainView";
 import React from "react";
 import { inject } from "mobx-react";
 
+@inject("deepdetectStore")
 @inject("configStore")
 export default class TrainingHome extends React.Component {
+  componentWillMount() {
+    const { deepdetectStore } = this.props;
+    deepdetectStore.setTrainRefreshMode("services");
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { deepdetectStore } = this.props;
+    deepdetectStore.setTrainRefreshMode("services");
+  }
+
   render() {
     if (
       this.props.configStore.isComponentBlacklisted("Training") ||

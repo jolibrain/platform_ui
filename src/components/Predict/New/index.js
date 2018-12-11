@@ -11,10 +11,11 @@ import { withRouter } from "react-router-dom";
 @observer
 export default class PredictNew extends React.Component {
   componentWillMount() {
-    const { modelRepositoriesStore } = this.props;
+    const { deepdetectStore, modelRepositoriesStore } = this.props;
     if (!modelRepositoriesStore.isReady) {
       modelRepositoriesStore.refresh();
     }
+    deepdetectStore.setTrainRefreshMode(null);
   }
 
   render() {

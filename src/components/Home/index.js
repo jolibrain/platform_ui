@@ -5,10 +5,13 @@ import store from "store";
 import { inject } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
+@inject("deepdetectStore")
 @inject("configStore")
 @withRouter
 export default class Home extends React.Component {
   componentWillMount() {
+    const { deepdetectStore } = this.props;
+    deepdetectStore.setTrainRefreshMode(null);
     store.clearAll();
   }
 

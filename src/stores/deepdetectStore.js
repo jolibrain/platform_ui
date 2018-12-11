@@ -12,6 +12,13 @@ export class deepdetectStore {
   @observable isReady = false;
   @observable firstLoad = true;
 
+  @observable trainRefreshMode = null;
+
+  @action
+  setTrainRefreshMode(mode) {
+    this.trainRefreshMode = mode;
+  }
+
   @computed
   get server() {
     return this.servers.find(s => s.isActive);
@@ -124,7 +131,18 @@ export class deepdetectStore {
         } else {
           async.series(seriesArray, (errorSeries, results) => {
             this.refresh = Math.random();
-            setTimeout(() => next(), this.settings.refreshRate.info);
+            let refreshRate = 500;
+
+            if (
+              this &&
+              this.settings &&
+              this.settings.refreshRate &&
+              this.settings.refreshRate.info &&
+              parseInt(this.settings.refreshRate.info, 10) > 0
+            )
+              refreshRate = this.settings.refreshRate.info;
+
+            setTimeout(() => next(), refreshRate);
           });
         }
       },
@@ -136,7 +154,19 @@ export class deepdetectStore {
   refreshTrainInfo() {
     async.forever(
       next => {
-        const seriesArray = this.trainingServices.map(s => {
+        let services = [];
+        switch (this.trainRefreshMode) {
+          case "services":
+            services = this.trainingServices;
+            break;
+          case "service":
+            services = [this.service];
+            break;
+          default:
+            break;
+        }
+
+        const seriesArray = services.map(s => {
           return async callback => {
             await s.trainInfo();
             callback();
@@ -145,7 +175,7 @@ export class deepdetectStore {
 
         async.series(seriesArray, (errorSeries, results) => {
           this.refresh = Math.random();
-          setTimeout(() => next(), 5000);
+          setTimeout(() => next(), 500);
         });
       },
       errorForever => {}

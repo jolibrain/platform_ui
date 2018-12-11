@@ -29,6 +29,8 @@ export default class PredictShow extends React.Component {
     } else {
       imaginateStore.connectToDdStore(deepdetectStore);
     }
+
+    deepdetectStore.setTrainRefreshMode(null);
   }
 
   componentDidMount() {
