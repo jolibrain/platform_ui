@@ -20,9 +20,9 @@ export default class TrainingMonitor extends React.Component {
 
     return (
       <div className="trainingmonitor">
+        <TrainingAlerts {...this.props} />
         <GeneralInfo {...this.props} />
         <PerClassArray {...this.props} />
-        <TrainingAlerts {...this.props} />
       </div>
     );
   }
