@@ -67,13 +67,15 @@ const GpuInfo = {
 
 const Deepdetect = {
   info: async settings => {
+    let response = null;
     settings.fetchTimeout = 5000;
     const dd = new DD(settings);
     try {
-      return await dd.info();
+      response = await dd.info();
     } catch (err) {
-      return err;
+      throw err;
     }
+    return response;
   },
   infoStatus: async settings => {
     settings.fetchTimeout = 5000;
