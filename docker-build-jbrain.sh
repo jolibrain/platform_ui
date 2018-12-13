@@ -4,7 +4,7 @@ set -ex
 
 PARENT_DIR=$(basename "${PWD%/*}")
 CURRENT_DIR="${PWD##*/}"
-IMAGE_NAME="platform/ui"
+IMAGE_NAME="platform-ui"
 TAG=$(git rev-parse --verify --short HEAD)
 
 REGISTRY="jbrain"
