@@ -60,12 +60,7 @@ class ServerDropdown extends React.Component {
       badge = <i className="servers-loading fas fa-spinner fa-spin" />;
     } else if (serversState.includes(true)) {
       // some servers are down
-      badge = (
-        <span className="fa-stack">
-          <i className="fas fa-clone fa-stack-1x" />
-          <i className="far fa-clone fa-stack-1x" />
-        </span>
-      );
+      badge = <i className="servers-ok fas fa-clone warning" />;
     }
 
     // All servers are down
