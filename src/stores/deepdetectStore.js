@@ -168,8 +168,12 @@ export class deepdetectStore {
 
         const seriesArray = services.map(s => {
           return async callback => {
-            await s.trainInfo();
-            callback();
+            try {
+              await s.trainInfo();
+            } catch (err) {
+            } finally {
+              callback();
+            }
           };
         });
 
