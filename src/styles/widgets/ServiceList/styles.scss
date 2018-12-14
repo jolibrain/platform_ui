@@ -16,10 +16,10 @@ ul.serviceList {
     word-break: break-all;
 
     .nav-item-name {
-      color: $neutral_blue_2;
+      color: $neutral_blue_3;
 
       i {
-        color: $neutral_blue_5;
+        color: $neutral_blue_6;
         width: 26px;
       }
 
@@ -31,11 +31,10 @@ ul.serviceList {
 
   li:hover {
     background-color: $neutral_blue_10;
-    border-right: 5px solid $neutral_blue_5;
+    border-right: 2px solid $neutral_blue_5;
 
     .nav-item-name {
       color: $neutral_blue_1;
-      font-weight: 500;
 
       i {
         color: $neutral_blue_4;
@@ -44,12 +43,11 @@ ul.serviceList {
   }
 
   li.selected {
-    background-color: $neutral_blue_10;
-    border-right: 5px solid $neutral_blue_1;
+    background-color: $neutral_blue_9;
+    border-right: 2px solid $neutral_blue_1;
 
     .nav-item-name {
       color: $neutral_blue_1;
-      font-weight: 700;
 
       i {
         color: $neutral_blue_3;
@@ -83,7 +81,6 @@ ul.serviceList {
       color: #393982;
       margin-left: 4px;
       padding-left: 11px;
-      font-weight: 600;
     }
   }
 

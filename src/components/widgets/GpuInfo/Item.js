@@ -42,72 +42,28 @@ export default class GpuInfoItem extends React.Component {
 
     return (
       <div key={`gpuInfoItem-${index}`} className="block">
-        <div>
-          {alerts.length > 0 ? (
-            <i className="fas fa-fire" />
-          ) : (
-            <i className="far fa-hdd" />
-          )}{" "}
-          &nbsp;
-          <span className="font-weight-bold">{index}</span> &nbsp;
-          <span className="temp">{gpu["temperature.gpu"]}°C</span>
-          ,&nbsp;
-          <span className="util">{utilPercentDisplay}</span>
-          ,&nbsp;
-          <span className="memUsed text-primary">{memoryDisplay}</span> /{" "}
-          <span className="memTotal text-secondary">{memoryTotal}</span>
-          <div
-            className={
-              gpu.processes.length > 0 ? "badge detailsBadge" : "hidden"
-            }
-            onClick={this.toggleDetails}
-          >
-            <span className="fa-stack fa-xs">
-              <i className="fas fa-circle fa-stack-2x" />
-              <i
-                className={
-                  this.state.detailsVisible
-                    ? "fas fa-angle-down fa-inverse fa-stack-1x"
-                    : "fas fa-angle-right fa-inverse fa-stack-1x"
-                }
-              />
-            </span>
+        <div className="row">
+          <div className="col-sm-2">
+            {alerts.length > 0 ? (
+              <span class="badge badge-pill gpu-alert">
+                <i className="fas fa-fire" /> {index}
+              </span>
+            ) : (
+              <span class="badge badge-pill">
+                <i className="far fa-hdd" /> {index}
+              </span>
+            )}
           </div>
-        </div>
-
-        <div
-          className="list processList"
-          style={this.state.detailsVisible ? {} : { display: "none" }}
-        >
-          <table className="table table-sm">
-            <thead>
-              <tr>
-                <th scope="col">User</th>
-                <th scope="col">PID</th>
-                <th scope="col">Memory</th>
-              </tr>
-            </thead>
-            <tbody>
-              {gpu.processes.map((process, idx) => {
-                let levelMemory = "secondary";
-
-                if (parseInt(process.gpu_memory_usage, 10) > 2000)
-                  levelMemory = "primary";
-
-                return (
-                  <tr key={idx}>
-                    <td>{process.username}</td>
-                    <td className="processPID">{process.pid}</td>
-                    <td>
-                      <span className={`badge badge-${levelMemory}`}>
-                        {process.gpu_memory_usage}M
-                      </span>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          <div className="col-sm-2">
+            <span className="temp">{gpu["temperature.gpu"]}°C</span>
+          </div>
+          <div className="col-sm-2 text-right">
+            <span className="util">{utilPercentDisplay}</span>
+          </div>
+          <div className="col-sm-6 text-right">
+            <span className="memUsed text-primary">{memoryDisplay}</span> /{" "}
+            <span className="memTotal text-secondary">{memoryTotal}</span>
+          </div>
         </div>
       </div>
     );
