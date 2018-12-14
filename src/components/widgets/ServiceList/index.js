@@ -15,23 +15,9 @@ export default class ServiceList extends React.Component {
 
     const { deepdetectStore } = this.props;
 
-    const serviceItems = deepdetectStore.services
-      .sort((a, b) => {
-        // Sort by name
-        var nameA = a.settings.name.toUpperCase();
-        var nameB = b.settings.name.toUpperCase();
-        if (nameA < nameB) {
-          return -1;
-        }
-        if (nameA > nameB) {
-          return 1;
-        }
-
-        return 0;
-      })
-      .map((service, index) => {
-        return <ServiceItem key={index} service={service} />;
-      });
+    const serviceItems = deepdetectStore.services.map((service, index) => {
+      return <ServiceItem key={index} service={service} />;
+    });
 
     return (
       <ul

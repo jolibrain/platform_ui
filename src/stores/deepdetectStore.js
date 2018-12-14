@@ -41,7 +41,21 @@ export class deepdetectStore {
 
   @computed
   get services() {
-    return [].concat.apply([], this.servers.map(s => s.services));
+    return [].concat
+      .apply([], this.servers.map(s => s.services))
+      .sort((a, b) => {
+        // Sort by name
+        var nameA = a.settings.name.toUpperCase();
+        var nameB = b.settings.name.toUpperCase();
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        return 0;
+      });
   }
 
   @computed
