@@ -58,25 +58,6 @@ export default class MainView extends React.Component {
       <div className="main-view content-wrapper">
         <div className="container">
           <Breadcrumb service={service} isTraining={true} />
-          <nav className="navbar navbar-expand-lg">
-            {service.serverSettings.isWritable ? (
-              <ul
-                className="nav navbar-nav ml-auto"
-                style={{ flexDirection: "row" }}
-              >
-                <li className="nav-item">
-                  <button
-                    className="btn btn-outline-danger"
-                    onClick={this.openDeleteServiceModal}
-                  >
-                    <i className="far fa-trash-alt" /> Delete Service
-                  </button>
-                </li>
-              </ul>
-            ) : (
-              ""
-            )}
-          </nav>
           <div className="content">
             <TrainingMonitor
               service={service}

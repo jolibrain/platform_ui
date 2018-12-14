@@ -3,8 +3,18 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { inject } from "mobx-react";
 
+@inject("modalStore")
 @inject("configStore")
 export default class Breadcrumb extends React.Component {
+  constructor(props) {
+    super(props);
+    this.openDeleteServiceModal = this.openDeleteServiceModal.bind(this);
+  }
+
+  openDeleteServiceModal() {
+    this.props.modalStore.setVisible("deleteService");
+  }
+
   render() {
     if (this.props.configStore.isComponentBlacklisted("Breadcrumb"))
       return null;
@@ -53,7 +63,8 @@ export default class Breadcrumb extends React.Component {
           target="_blank"
           rel="noreferrer noopener"
         >
-          Service JSON
+          <i class="fas fa-chevron-circle-right" />
+          &nbsp; Service JSON
         </a>
         {trainingJsonUrl ? (
           <a
@@ -62,7 +73,19 @@ export default class Breadcrumb extends React.Component {
             target="_blank"
             rel="noreferrer noopener"
           >
-            Training JSON
+            <i class="fas fa-chevron-circle-right" />
+            &nbsp; Training JSON
+          </a>
+        ) : (
+          ""
+        )}
+        {service.serverSettings.isWritable ? (
+          <a
+            className="badge badge-secondary delete-service"
+            onClick={this.openDeleteServiceModal}
+          >
+            <i class="far fa-trash-alt" />
+            &nbsp; Delete Service
           </a>
         ) : (
           ""

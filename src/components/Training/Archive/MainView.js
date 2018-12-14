@@ -57,7 +57,6 @@ export default class MainView extends React.Component {
       <div className="main-view content-wrapper">
         <div className="container">
           <Breadcrumb repository={repository} />
-          <nav className="navbar navbar-expand-lg" />
           <div className="content">
             <TrainingMonitor
               service={repository}
