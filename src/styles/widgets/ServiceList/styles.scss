@@ -9,13 +9,26 @@
   white-space: pre-line; /* CSS 3 (and 2.1 as well, actually) */
   word-wrap: break-word; /* IE */
   word-break: break-all;
+  .nav-item-name {
+    color: $neutral_blue_4;
+  }
 }
+.serviceList li:hover {
+  background-color: $neutral_blue_10;
+  border-right: 5px solid $neutral_blue_5;
+
+  .nav-item-name {
+    color: $neutral_blue_3;
+    font-weight: 500;
+  }
+}
+
 .serviceList li.selected {
   background-color: $neutral_blue_10;
   border-right: 5px solid $neutral_blue_1;
 
   .nav-item-name {
-    color: $neutral_blue_1;
+    color: $neutral_blue_3;
     font-weight: 700;
   }
 }
