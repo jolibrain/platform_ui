@@ -156,6 +156,18 @@ export default class ImageConnector extends React.Component {
       );
     }
 
+    // Hide controls when displaying categories as description
+    // For example, in OCR models
+    let boundingBoxControls = true;
+    if (
+      service.settings.mltype === "ctc" ||
+      (service.respInfo &&
+        service.respInfo.body &&
+        service.respInfo.body.mltype === "classification")
+    ) {
+      boundingBoxControls = false;
+    }
+
     return (
       <div className="imaginate">
         <div className="row">
@@ -180,6 +192,7 @@ export default class ImageConnector extends React.Component {
                 onOver={this.onOver}
                 input={toJS(service.selectedInput)}
                 displaySettings={toJS(serviceSettings.display)}
+                boundingBoxControls={boundingBoxControls}
               />
             </div>
           </div>

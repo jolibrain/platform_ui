@@ -235,13 +235,17 @@ export default class BoundingBox extends React.Component {
 
     return (
       <div>
-        <Controls
-          handleClickBox={this.setBoxFormat.bind(this, "simple")}
-          handleClickPalette={this.setBoxFormat.bind(this, "color")}
-          handleClickLabels={this.toggleLabels}
-          boxFormat={this.state.boxFormat}
-          showLabels={this.state.showLabels}
-        />
+        {this.props.boundingBoxControls ? (
+          <Controls
+            handleClickBox={this.setBoxFormat.bind(this, "simple")}
+            handleClickPalette={this.setBoxFormat.bind(this, "color")}
+            handleClickLabels={this.toggleLabels}
+            boxFormat={this.state.boxFormat}
+            showLabels={this.state.showLabels}
+          />
+        ) : (
+          ""
+        )}
         <Boundingbox
           className="boundingboxdisplay"
           image={input.content}
