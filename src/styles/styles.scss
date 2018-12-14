@@ -5,11 +5,11 @@
 @import "./_tooltip";
 @import "./_widgets.scss";
 
-// Palette
-@import "./palettes/palette-1.scss";
-
 // Bootstrap library
 @import "bootstrap/scss/bootstrap";
+
+// Palette
+@import "./palettes/palette-1.scss";
 
 @import "./Header.scss";
 @import "./Home.scss";

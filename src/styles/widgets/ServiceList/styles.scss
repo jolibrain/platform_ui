@@ -1,3 +1,5 @@
+@import "../../palettes/palette-1.scss";
+
 .serviceList li {
   white-space: -moz-pre-wrap; /* Mozilla */
   white-space: -hp-pre-wrap; /* HP printers */
@@ -7,4 +9,13 @@
   white-space: pre-line; /* CSS 3 (and 2.1 as well, actually) */
   word-wrap: break-word; /* IE */
   word-break: break-all;
+}
+.serviceList li.selected {
+  background-color: $neutral_blue_10;
+  border-right: 5px solid $neutral_blue_1;
+
+  .nav-item-name {
+    color: $neutral_blue_1;
+    font-weight: 700;
+  }
 }

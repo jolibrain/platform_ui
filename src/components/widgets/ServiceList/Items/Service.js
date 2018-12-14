@@ -6,10 +6,34 @@ import { Link, withRouter } from "react-router-dom";
 @observer
 export default class ServiceItem extends React.Component {
   render() {
-    const { service } = this.props;
+    const { service, match } = this.props;
+
+    console.log(match);
+    console.log(service);
+
+    if (match && match.path) {
+      const predictPatt = /^\/predict/g;
+      const trainingPatt = /^\/training/g;
+
+      // hide predict services in training section
+      if (trainingPatt.test(match.path) && !service.settings.training) {
+        return null;
+      }
+
+      // hide training services in predict section
+      if (predictPatt.test(match.path) && service.settings.training) {
+        return null;
+      }
+    }
+
+    const selectedService =
+      match &&
+      match.params &&
+      match.params.serviceName &&
+      match.params.serviceName === service.name;
 
     return (
-      <li>
+      <li className={selectedService ? "selected" : ""}>
         <Link
           id={`serviceList-${service.name}`}
           to={`/${service.settings.training ? "training" : "predict"}/${

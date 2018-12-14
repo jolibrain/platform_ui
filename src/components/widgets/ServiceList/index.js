@@ -15,21 +15,7 @@ export default class ServiceList extends React.Component {
 
     const { deepdetectStore } = this.props;
 
-    if (deepdetectStore.servers.length === 0) return null;
-
-    const services = deepdetectStore.services.filter(service => {
-      if (this.props.only) {
-        if (this.props.only === "training") {
-          return service.settings.training;
-        } else {
-          return !service.settings.training;
-        }
-      } else {
-        return true;
-      }
-    });
-
-    const serviceItems = services
+    const serviceItems = deepdetectStore.services
       .sort((a, b) => {
         // Sort by name
         var nameA = a.settings.name.toUpperCase();
@@ -51,7 +37,6 @@ export default class ServiceList extends React.Component {
       <ul
         id="widget-serviceList"
         className="serviceList sidebar-top-level-items"
-        key={`serviceList-${deepdetectStore.refresh}`}
       >
         {serviceItems}
       </ul>

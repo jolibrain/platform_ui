@@ -121,8 +121,10 @@ export default class App extends React.Component {
         <div>
           <Header />
           <Switch>
+            {/* Home */}
             <Route exact path="/" component={Home} />
 
+            {/* Predict */}
             <Route exact path="/predict" component={PredictHome} />
             <Route exact path="/predict/new" component={PredictNew} />
             <Route
@@ -131,6 +133,7 @@ export default class App extends React.Component {
               component={PredictShow}
             />
 
+            {/* Training */}
             <Route exact path="/training" component={TrainingHome} />
             <Route exact path="/trainingArchive" component={TrainingHome} />
             <Route
@@ -144,6 +147,7 @@ export default class App extends React.Component {
               component={TrainingArchive}
             />
 
+            {/* 404 */}
             <Route exact path="/404" component={GenericNotFound} />
           </Switch>
         </div>
