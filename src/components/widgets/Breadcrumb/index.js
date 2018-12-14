@@ -90,6 +90,13 @@ export default class Breadcrumb extends React.Component {
         ) : (
           ""
         )}
+        {service.isRequesting ? (
+          <span className="badge badge-requesting">
+            <i className="fas fa-spinner fa-spin" />
+          </span>
+        ) : (
+          ""
+        )}
       </div>
     );
   }

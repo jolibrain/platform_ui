@@ -97,8 +97,8 @@ export default class MeasureChart extends React.Component {
             fill: false,
             lineTension: 0,
             steppedLine: this.props.steppedLine,
-            backgroundColor: "rgba(60, 69, 125, 0)",
-            borderColor: "rgba(60, 69, 125, 0.5)",
+            backgroundColor: "hsl(210, 22%, 49%)",
+            borderColor: "hsl(210, 22%, 49%)",
             showLine:
               this.state.showLine || this.props.steppedLine ? true : false,
             radius: this.props.steppedLine ? 0 : 2

@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { observer, inject } from "mobx-react";
 
-import TrainingAlerts from "./components/TrainingAlerts";
 import GeneralInfo from "./components/GeneralInfo";
 import PerClassArray from "./components/PerClassArray";
 
@@ -20,7 +19,7 @@ export default class TrainingMonitor extends React.Component {
 
     return (
       <div className="trainingmonitor">
-        <TrainingAlerts {...this.props} />
+        <h3>{service.name}</h3>
         <GeneralInfo {...this.props} />
         <PerClassArray {...this.props} />
       </div>

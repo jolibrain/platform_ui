@@ -10,7 +10,7 @@
   word-wrap: break-word; /* IE */
   word-break: break-all;
   .nav-item-name {
-    color: $neutral_blue_4;
+    color: $neutral_blue_2;
   }
 }
 .serviceList li:hover {
@@ -18,7 +18,7 @@
   border-right: 5px solid $neutral_blue_5;
 
   .nav-item-name {
-    color: $neutral_blue_3;
+    color: $neutral_blue_1;
     font-weight: 500;
   }
 }
@@ -28,7 +28,7 @@
   border-right: 5px solid $neutral_blue_1;
 
   .nav-item-name {
-    color: $neutral_blue_3;
+    color: $neutral_blue_1;
     font-weight: 700;
   }
 }

@@ -1,11 +1,7 @@
-.trainingmonitor {
-  .trainingmonitor-generalinfo {
-    .row {
-      padding: 15px 0;
-    }
-  }
+@import "../../palettes/palette-1.scss";
 
+.trainingmonitor {
   .measure-cell.hovered {
-    background-color: #b1bbec !important;
+    background-color: $neutral_blue_9;
   }
 }
