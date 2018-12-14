@@ -127,7 +127,7 @@ export default class TrainingCard extends React.Component {
         break;
       case "ctc":
         const ctc_acc = this.getValue("acc");
-        if (ctc_acc)
+        if (ctc_acc !== null)
           info.push({
             text: "Accuracy",
             val: ctc_acc
@@ -135,7 +135,7 @@ export default class TrainingCard extends React.Component {
         break;
       case "classification":
         const classif_acc = this.getValue("acc");
-        if (classif_acc)
+        if (classif_acc !== null)
           info.push({
             text: "Accuracy",
             val: classif_acc

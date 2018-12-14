@@ -53,7 +53,7 @@ export default class MeasureChart extends React.Component {
       value = value.toFixed(5);
     }
 
-    return value ? value : "--";
+    return value !== null ? value : "--";
   }
 
   getChartData(attr) {
