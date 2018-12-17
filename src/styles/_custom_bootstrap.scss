@@ -1,11 +1,11 @@
-$light-color: #e6e8f4;
+@import "./palettes/palette-1.scss";
 
 // Array of colors from _variables.scss
 $theme-colors: (
-light: $light-color,
-dark: #323545,
-primary: #3c457d,
-secondary: #b1bbec,
+  light: $neutral_blue_10,
+  dark: $neutral_blue_1,
+  primary: $primary_cyan_3,
+  secondary: $primary_cyan_5
 ) !default;
 
-$grey-900: #323545,
+$grey-900: #323545;
