@@ -1,6 +1,5 @@
 import React from "react";
 import { observer } from "mobx-react";
-import Controls from "./Controls";
 import Boundingbox from "react-bounding-box";
 
 @observer
@@ -8,27 +7,11 @@ export default class BoundingBox extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      boxFormat: "simple",
-      showLabels: false
-    };
-
-    this.setBoxFormat = this.setBoxFormat.bind(this);
-    this.toggleLabels = this.toggleLabels.bind(this);
-
     this.drawLabelSimple = this.drawLabelSimple.bind(this);
     this.drawLabelColor = this.drawLabelColor.bind(this);
 
     this.drawBoxSimple = this.drawBoxSimple.bind(this);
     this.drawBoxColor = this.drawBoxColor.bind(this);
-  }
-
-  setBoxFormat(format) {
-    this.setState({ boxFormat: format });
-  }
-
-  toggleLabels() {
-    this.setState({ showLabels: !this.state.showLabels });
   }
 
   drawLabelSimple(canvas, box) {
@@ -43,14 +26,14 @@ export default class BoundingBox extends React.Component {
     const coord = box.coord ? box.coord : box;
 
     let [x, y, width, height] = [0, 0, 0, 0];
-    if (coord.xmin) {
+    if (coord.xmin && coord.xmax && coord.ymin && coord.ymax) {
       [x, y, width, height] = [
         coord.xmin,
         coord.ymax,
         coord.xmax - coord.xmin,
         coord.ymin - coord.ymax
       ];
-    } else {
+    } else if (coord.x && coord.y && coord.width && coord.height) {
       [x, y, width, height] = coord;
     }
 
@@ -197,72 +180,55 @@ export default class BoundingBox extends React.Component {
       drawBox = this.drawBoxSimple,
       boxes = [];
 
-    if (classes) {
-      if (this.state.boxFormat === "simple") {
-        boxes = classes.map(pred => {
-          return pred.bbox;
-        });
-      } else {
-        if (this.state.showLabels) {
-          drawLabel = this.drawLabelColor;
-        }
-        drawBox = this.drawBoxColor;
-
-        const colors = [
-          "#e41a1c",
-          "#377eb8",
-          "#4daf4a",
-          "#984ea3",
-          "#ff7f00",
-          "#ffff33",
-          "#a65628",
-          "#f781bf",
-          "#999999"
-        ];
-        const categories = classes
-          .map(pred => pred.cat)
-          .filter((value, index, self) => self.indexOf(value) === index);
-
-        boxes = input.json.body.predictions[0].classes.map(pred => {
-          let box = pred.bbox ? pred.bbox : {};
-          box.label = pred.cat ? pred.cat : "";
-          box.prob = pred.prob;
-          box.color = colors[categories.indexOf(pred.cat) % colors.length];
-          return box;
-        });
+    if (this.props.boxFormat === "simple") {
+      boxes = input.boxes;
+    } else if (classes) {
+      if (this.props.showLabels) {
+        drawLabel = this.drawLabelColor;
       }
+      drawBox = this.drawBoxColor;
+
+      const colors = [
+        "#e41a1c",
+        "#377eb8",
+        "#4daf4a",
+        "#984ea3",
+        "#ff7f00",
+        "#ffff33",
+        "#a65628",
+        "#f781bf",
+        "#999999"
+      ];
+      const categories = classes
+        .map(pred => pred.cat)
+        .filter((value, index, self) => self.indexOf(value) === index);
+
+      boxes = input.json.body.predictions[0].classes.map(pred => {
+        let box = pred.bbox ? pred.bbox : {};
+        box.label = pred.cat ? pred.cat : "";
+        box.prob = pred.prob;
+        box.color = colors[categories.indexOf(pred.cat) % colors.length];
+        return box;
+      });
     }
 
     return (
-      <div>
-        {this.props.boundingBoxControls ? (
-          <Controls
-            handleClickBox={this.setBoxFormat.bind(this, "simple")}
-            handleClickPalette={this.setBoxFormat.bind(this, "color")}
-            handleClickLabels={this.toggleLabels}
-            boxFormat={this.state.boxFormat}
-            showLabels={this.state.showLabels}
-          />
-        ) : (
-          ""
-        )}
-        <Boundingbox
-          className="boundingboxdisplay"
-          image={input.content}
-          boxes={boxes}
-          selectedIndex={
-            input.boxes && input.boxes.length > this.props.selectedBoxIndex
-              ? this.props.selectedBoxIndex
-              : -1
-          }
-          onSelected={this.props.onOver}
-          pixelSegmentation={inputVals ? inputVals : null}
-          separateSegmentation={inputVals ? inputVals.length > 0 : false}
-          segmentationColors={this.props.displaySettings.segmentationColors}
-          drawLabel={drawLabel}
-          drawBox={drawBox}
-        />
-      </div>
+      <Boundingbox
+        className="boundingboxdisplay"
+        image={input.content}
+        boxes={boxes}
+        selectedIndex={
+          input.boxes && input.boxes.length > this.props.selectedBoxIndex
+            ? this.props.selectedBoxIndex
+            : -1
+        }
+        onSelected={this.props.onOver}
+        pixelSegmentation={inputVals ? inputVals : null}
+        separateSegmentation={inputVals ? inputVals.length > 0 : false}
+        segmentationColors={this.props.displaySettings.segmentationColors}
+        drawLabel={drawLabel}
+        drawBox={drawBox}
+      />
     );
   }
 }

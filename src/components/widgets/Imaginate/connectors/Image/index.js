@@ -6,6 +6,7 @@ import { withRouter } from "react-router-dom";
 import ImageList from "./ImageList";
 //import ImageListRandom from "./ImageListRandom";
 import BoundingBox from "./BoundingBox";
+import Controls from "./BoundingBox/Controls";
 import Threshold from "./Threshold";
 import InputForm from "./InputForm";
 
@@ -24,7 +25,9 @@ export default class ImageConnector extends React.Component {
     this.state = {
       selectedBoxIndex: -1,
       sliderBest: 1,
-      sliderSearchNn: 10
+      sliderSearchNn: 10,
+      boxFormat: "simple",
+      showLabels: false
     };
 
     this.onOver = this.onOver.bind(this);
@@ -37,6 +40,17 @@ export default class ImageConnector extends React.Component {
     this.handleBestThreshold = this.handleBestThreshold.bind(this);
     this.handleSearchNnThreshold = this.handleSearchNnThreshold.bind(this);
     this.handleMultisearchRois = this.handleMultisearchRois.bind(this);
+
+    this.setBoxFormat = this.setBoxFormat.bind(this);
+    this.toggleLabels = this.toggleLabels.bind(this);
+  }
+
+  setBoxFormat(format) {
+    this.setState({ boxFormat: format });
+  }
+
+  toggleLabels() {
+    this.setState({ showLabels: !this.state.showLabels });
   }
 
   onOver(index) {
@@ -76,7 +90,13 @@ export default class ImageConnector extends React.Component {
 
   handleMultisearchRois(value) {
     const { serviceSettings } = this.props.imaginateStore;
-    this.setState({ multibox_rois: !this.state.multibox_rois });
+
+    this.setState({
+      multibox_rois: !this.state.multibox_rois,
+      boxFormat: "simple",
+      showLabels: false
+    });
+
     serviceSettings.request.multibox_rois = !this.state.multibox_rois;
     this.props.imaginateStore.predict();
   }
@@ -163,7 +183,14 @@ export default class ImageConnector extends React.Component {
       service.settings.mltype === "ctc" ||
       (service.respInfo &&
         service.respInfo.body &&
-        service.respInfo.body.mltype === "classification")
+        service.respInfo.body.mltype === "classification") ||
+      (input &&
+        input.json &&
+        input.json.body &&
+        input.json.body.predictions &&
+        input.json.body.predictions[0] &&
+        (typeof input.json.body.predictions[0].rois !== "undefined" ||
+          typeof input.json.body.predictions[0].nns !== "undefined"))
     ) {
       boundingBoxControls = false;
     }
@@ -187,12 +214,26 @@ export default class ImageConnector extends React.Component {
             )}
 
             <div className="row">
+              {boundingBoxControls ? (
+                <Controls
+                  handleClickBox={this.setBoxFormat.bind(this, "simple")}
+                  handleClickPalette={this.setBoxFormat.bind(this, "color")}
+                  handleClickLabels={this.toggleLabels}
+                  boxFormat={this.state.boxFormat}
+                  showLabels={this.state.showLabels}
+                />
+              ) : (
+                ""
+              )}
+            </div>
+            <div className="row">
               <BoundingBox
                 selectedBoxIndex={this.state.selectedBoxIndex}
                 onOver={this.onOver}
                 input={toJS(service.selectedInput)}
                 displaySettings={toJS(serviceSettings.display)}
-                boundingBoxControls={boundingBoxControls}
+                boxFormat={this.state.boxFormat}
+                showLabels={this.state.showLabels}
               />
             </div>
           </div>

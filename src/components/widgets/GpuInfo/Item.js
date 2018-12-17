@@ -45,11 +45,11 @@ export default class GpuInfoItem extends React.Component {
         <div className="row">
           <div className="col-sm-2">
             {alerts.length > 0 ? (
-              <span class="badge badge-pill gpu-alert">
+              <span className="badge badge-pill gpu-alert">
                 <i className="fas fa-fire" /> {index}
               </span>
             ) : (
-              <span class="badge badge-pill">
+              <span className="badge badge-pill">
                 <i className="far fa-hdd" /> {index}
               </span>
             )}

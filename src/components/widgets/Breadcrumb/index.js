@@ -63,7 +63,7 @@ export default class Breadcrumb extends React.Component {
           target="_blank"
           rel="noreferrer noopener"
         >
-          <i class="fas fa-chevron-circle-right" />
+          <i className="fas fa-chevron-circle-right" />
           &nbsp; Service JSON
         </a>
         {trainingJsonUrl ? (
@@ -73,7 +73,7 @@ export default class Breadcrumb extends React.Component {
             target="_blank"
             rel="noreferrer noopener"
           >
-            <i class="fas fa-chevron-circle-right" />
+            <i className="fas fa-chevron-circle-right" />
             &nbsp; Training JSON
           </a>
         ) : (
@@ -84,7 +84,7 @@ export default class Breadcrumb extends React.Component {
             className="badge badge-secondary delete-service"
             onClick={this.openDeleteServiceModal}
           >
-            <i class="far fa-trash-alt" />
+            <i className="far fa-trash-alt" />
             &nbsp; Delete Service
           </a>
         ) : (
