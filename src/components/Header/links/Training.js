@@ -9,8 +9,11 @@ class Training extends React.Component {
 
     if (configStore.isComponentBlacklisted("Training")) return null;
 
+    const trainingPatt = /^#\/training/g;
+    const selectedItem = trainingPatt.test(window.location.hash);
+
     return (
-      <li id="training-link">
+      <li id="training-link" className={selectedItem ? "selected" : ""}>
         <Link to="/training" style={{ textDecoration: "none" }}>
           <i className="fas fa-braille" />&nbsp; Training
         </Link>

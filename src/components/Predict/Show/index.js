@@ -1,9 +1,11 @@
-import LeftPanel from "../commons/LeftPanel";
-import MainView from "./MainView";
-import Modals from "./Modals";
 import React from "react";
 import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
+
+import Header from "../../Header";
+import LeftPanel from "../commons/LeftPanel";
+import MainView from "./MainView";
+import Modals from "./Modals";
 
 @inject("deepdetectStore")
 @inject("imaginateStore")
@@ -49,10 +51,13 @@ export default class PredictShow extends React.Component {
       return null;
 
     return (
-      <div className="layout-page page-gutter page-with-contextual-sidebar right-sidebar-collapsed page-with-icon-sidebar service-component">
-        <LeftPanel />
-        <MainView />
-        <Modals />
+      <div>
+        <Header />
+        <div className="layout-page page-gutter page-with-contextual-sidebar right-sidebar-collapsed page-with-icon-sidebar service-component">
+          <LeftPanel />
+          <MainView />
+          <Modals />
+        </div>
       </div>
     );
   }

@@ -42,6 +42,10 @@
     padding-left: 0;
     width: 100%;
 
+    li:hover {
+      background-color: $neutral_blue_2;
+    }
+
     .title-container {
       display: -webkit-flex;
       display: flex;
@@ -51,6 +55,11 @@
       flex: 1 1 auto;
       padding-top: 0;
       overflow: visible;
+
+      ul li.selected {
+        background-color: $neutral_blue_3;
+        color: $neutral_blue_9;
+      }
     }
 
     .title {

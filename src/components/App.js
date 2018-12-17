@@ -4,7 +4,6 @@ import { inject, observer } from "mobx-react";
 
 import Home from "./Home";
 import Loading from "./Loading";
-import Header from "./Header";
 
 import PredictHome from "./Predict/Home";
 import PredictNew from "./Predict/New";
@@ -109,48 +108,40 @@ export default class App extends React.Component {
       );
     } else if (!deepdetectStore.isReady) {
       // Loading screen
-      return (
-        <div>
-          <Header />
-          <Loading />
-        </div>
-      );
+      return <Loading />;
     } else {
       // Full Layout
       return (
-        <div>
-          <Header />
-          <Switch>
-            {/* Home */}
-            <Route exact path="/" component={Home} />
+        <Switch>
+          {/* Home */}
+          <Route exact path="/" component={Home} />
 
-            {/* Predict */}
-            <Route exact path="/predict" component={PredictHome} />
-            <Route exact path="/predict/new" component={PredictNew} />
-            <Route
-              exact
-              path="/predict/:serverName/:serviceName*"
-              component={PredictShow}
-            />
+          {/* Predict */}
+          <Route exact path="/predict" component={PredictHome} />
+          <Route exact path="/predict/new" component={PredictNew} />
+          <Route
+            exact
+            path="/predict/:serverName/:serviceName*"
+            component={PredictShow}
+          />
 
-            {/* Training */}
-            <Route exact path="/training" component={TrainingHome} />
-            <Route exact path="/trainingArchive" component={TrainingHome} />
-            <Route
-              exact
-              path="/training/:serverName/:serviceName*"
-              component={TrainingShow}
-            />
-            <Route
-              exact
-              path="/trainingArchive/:modelPath*"
-              component={TrainingArchive}
-            />
+          {/* Training */}
+          <Route exact path="/training" component={TrainingHome} />
+          <Route exact path="/trainingArchive" component={TrainingHome} />
+          <Route
+            exact
+            path="/training/:serverName/:serviceName*"
+            component={TrainingShow}
+          />
+          <Route
+            exact
+            path="/trainingArchive/:modelPath*"
+            component={TrainingArchive}
+          />
 
-            {/* 404 */}
-            <Route exact path="/404" component={GenericNotFound} />
-          </Switch>
-        </div>
+          {/* 404 */}
+          <Route exact path="/404" component={GenericNotFound} />
+        </Switch>
       );
     }
   }
