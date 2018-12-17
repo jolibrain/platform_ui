@@ -8,9 +8,6 @@ export default class ServiceItem extends React.Component {
   render() {
     const { service, match } = this.props;
 
-    console.log(match);
-    console.log(service);
-
     if (match && match.path) {
       const predictPatt = /^\/predict/g;
       const trainingPatt = /^\/training/g;
