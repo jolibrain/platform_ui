@@ -185,18 +185,32 @@ class InputForm extends React.Component {
               onChange={this.handleInputChange}
               renderMenu={(results, menuProps) => (
                 <Menu {...menuProps}>
-                  {results.map((folder, index) => {
-                    return (
-                      <MenuItem
-                        key={index}
-                        option={folder}
-                        position={index}
-                        title={folder.path}
-                      >
-                        {folder.label}
-                      </MenuItem>
-                    );
-                  })}
+                  {results
+                    .sort((a, b) => {
+                      // Sort by name
+                      var nameA = a.label.toUpperCase();
+                      var nameB = b.label.toUpperCase();
+                      if (nameA < nameB) {
+                        return -1;
+                      }
+                      if (nameA > nameB) {
+                        return 1;
+                      }
+
+                      return 0;
+                    })
+                    .map((folder, index) => {
+                      return (
+                        <MenuItem
+                          key={index}
+                          option={folder}
+                          position={index}
+                          title={folder.path}
+                        >
+                          {folder.label}
+                        </MenuItem>
+                      );
+                    })}
                 </Menu>
               )}
             />
