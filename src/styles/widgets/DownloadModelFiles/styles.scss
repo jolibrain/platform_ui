@@ -1,3 +1,5 @@
+@import "../../palettes/palette-1.scss";
+
 /*
  * Sidebar display
  * change padding and hide download icons in list-group
@@ -5,8 +7,21 @@
 aside .downloadModelFiles {
   padding-top: 15px !important;
 
-  .list-group i.fa-download {
-    display: none;
+  h5 {
+    color: $neutral_blue_2;
+  }
+
+  h6 {
+    color: $neutral_blue_4;
+  }
+
+  .list-group a {
+    border: 0;
+    background-color: transparent;
+  }
+
+  .list-group i {
+    color: $neutral_blue_3;
   }
 }
 

@@ -1,8 +1,14 @@
+@import "../../palettes/palette-1.scss";
+
 .serviceinfo {
   margin-top: 20px;
 
+  h5 {
+    color: $neutral_blue_2;
+  }
+
   h6 {
-    color: #666;
+    color: $neutral_blue_4;
     margin-bottom: 0;
   }
 
