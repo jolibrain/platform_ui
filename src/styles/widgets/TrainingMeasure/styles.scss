@@ -3,9 +3,18 @@
 .trainingmeasure {
   margin-top: 20px;
 
-  .row {
-    display: inline;
-    overflow: hidden;
+  h5 {
+    color: $neutral_blue_1;
+
+    i {
+      color: $neutral_blue_4;
+    }
+  }
+
+  .index {
+    color: $neutral_blue_3;
+    font-weight: 700;
+    margin-right: 10px;
   }
 
   .row:hover,
