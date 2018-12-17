@@ -203,7 +203,7 @@ export default class deepdetectService {
       this.respInfo.body.parameters &&
       this.respInfo.body.parameters.mllib &&
       this.respInfo.body.parameters.mllib[0] &&
-      this.respInfo.body.parameters.mllib[0].gpuid
+      this.respInfo.body.parameters.mllib[0].gpuid !== null
     ) {
       gpuid = this.respInfo.body.parameters.mllib[0].gpuid;
     }

@@ -58,7 +58,11 @@
 
       ul li.selected {
         background-color: $neutral_blue_3;
-        color: $neutral_blue_9;
+
+        i,
+        a {
+          color: $neutral_blue_10;
+        }
       }
     }
 
@@ -80,7 +84,7 @@
         margin: 5px 2px 5px -8px;
         border-radius: 4px;
         text-decoration: none;
-        color: $neutral_blue_10;
+        color: $neutral_blue_9;
       }
     }
   }
@@ -102,7 +106,7 @@
       border-radius: 4px;
       height: 32px;
       font-weight: 600;
-      color: $neutral_blue_10;
+      color: $neutral_blue_9;
     }
   }
 
@@ -125,7 +129,7 @@
     border-radius: 4px;
     height: 32px;
     font-weight: 600;
-    color: $neutral_blue_10;
+    color: $neutral_blue_9;
   }
 
   i {
