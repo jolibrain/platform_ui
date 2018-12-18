@@ -35,6 +35,7 @@ export default class MainView extends React.Component {
 
     if (!service) {
       this.props.history.push("/");
+
       return null;
     }
 

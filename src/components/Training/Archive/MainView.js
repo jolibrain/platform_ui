@@ -4,36 +4,18 @@ import { inject, observer } from "mobx-react";
 
 import RightPanel from "../commons/RightPanel";
 import TrainingMonitor from "../../widgets/TrainingMonitor";
+import Title from "../../widgets/TrainingMonitor/components/Title";
 import Breadcrumb from "../../widgets/Breadcrumb";
 
 @inject("modelRepositoriesStore")
 @observer
 @withRouter
 export default class MainView extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      hoveredMeasure: -1
-    };
-
-    this.handleOverMeasure = this.handleOverMeasure.bind(this);
-    this.handleLeaveMeasure = this.handleLeaveMeasure.bind(this);
-  }
-
   componentWillMount() {
     const { modelRepositoriesStore } = this.props;
     if (!modelRepositoriesStore.isReady) {
       modelRepositoriesStore.refresh();
     }
-  }
-
-  handleOverMeasure(index) {
-    this.setState({ hoveredMeasure: index });
-  }
-
-  handleLeaveMeasure(index) {
-    this.setState({ hoveredMeasure: -1 });
   }
 
   render() {
@@ -55,22 +37,14 @@ export default class MainView extends React.Component {
 
     return (
       <div className="main-view content-wrapper">
-        <div className="container">
-          <Breadcrumb repository={repository} />
-          <div className="content">
-            <TrainingMonitor
-              service={repository}
-              handleOverMeasure={this.handleOverMeasure}
-              handleLeaveMeasure={this.handleLeaveMeasure}
-              hoveredMeasure={this.state.hoveredMeasure}
-            />
-            <RightPanel
-              service={repository}
-              handleOverMeasure={this.handleOverMeasure}
-              handleLeaveMeasure={this.handleLeaveMeasure}
-              hoveredMeasure={this.state.hoveredMeasure}
-              includeDownloadPanel
-            />
+        <div className="fluid-container">
+          <Title service={repository} />
+          <div className="training-breadcrumb px-4 py-2">
+            <Breadcrumb repository={repository} />
+          </div>
+          <div className="content p-4">
+            <TrainingMonitor service={repository} />
+            <RightPanel includeDownloadPanel />
           </div>
         </div>
       </div>
