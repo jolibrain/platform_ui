@@ -16,7 +16,10 @@ export class configStore {
   homeComponent = {
     contentType: "json", // TODO: more content types
     title: "DeepDetect Platform",
-    description: "Welcome to deepdetect"
+    description: "Welcome to deepdetect",
+    headerLinks: {
+      linkJupyter: "/code/lab"
+    }
   };
 
   @observable

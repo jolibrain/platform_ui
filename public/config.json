@@ -6,7 +6,10 @@
     "contentType": "json",
     "title": "DeepDetect Platform - dev",
     "description":
-      "git clone git@gitlab.com:jolibrain/platform_docker.git; cd platform_docker/dev; docker-compose up -d"
+      "git clone git@gitlab.com:jolibrain/platform_docker.git; cd platform_docker/dev; docker-compose up -d",
+    "headerLinks": {
+      "linkJupyter": "http://10.10.77.61:18105/code/lab"
+    }
   },
   "deepdetect": {
     "refreshRate": {
@@ -234,5 +237,5 @@
     "nginxPath": "/data/",
     "systemPath": "/opt/platform"
   },
-  "componentBlacklist": ["LinkJupyter", "LinkChat"]
+  "componentBlacklist": ["LinkChat"]
 }

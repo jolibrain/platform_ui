@@ -8,10 +8,12 @@ class Jupyter extends React.Component {
 
     if (configStore.isComponentBlacklisted("LinkJupyter")) return null;
 
+    const href = configStore.homeComponent.headerLinks.linkJupyter;
+
     return (
       <li id="jupyter-link">
         <a
-          href="/code/lab"
+          href={href}
           style={{ textDecoration: "none" }}
           target="_blank"
           rel="noreferrer noopener"
