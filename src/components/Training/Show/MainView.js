@@ -4,6 +4,7 @@ import { inject, observer } from "mobx-react";
 
 import RightPanel from "../commons/RightPanel";
 import TrainingMonitor from "../../widgets/TrainingMonitor";
+import Title from "../../widgets/TrainingMonitor/components/Title";
 import Breadcrumb from "../../widgets/Breadcrumb";
 
 @inject("deepdetectStore")
@@ -13,26 +14,11 @@ import Breadcrumb from "../../widgets/Breadcrumb";
 export default class MainView extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      hoveredMeasure: -1
-    };
-
     this.openDeleteServiceModal = this.openDeleteServiceModal.bind(this);
-    this.handleOverMeasure = this.handleOverMeasure.bind(this);
-    this.handleLeaveMeasure = this.handleLeaveMeasure.bind(this);
   }
 
   openDeleteServiceModal() {
     this.props.modalStore.setVisible("deleteService");
-  }
-
-  handleOverMeasure(index) {
-    this.setState({ hoveredMeasure: index });
-  }
-
-  handleLeaveMeasure(index) {
-    this.setState({ hoveredMeasure: -1 });
   }
 
   render() {
@@ -57,38 +43,13 @@ export default class MainView extends React.Component {
     return (
       <div className="main-view content-wrapper">
         <div className="fluid-container">
-          <div className="title p-2">
-            <h2>{service.name}</h2>
-            <div className="row">
-              <div className="col-md-4">
-                <h3>184356</h3>
-                <h4>Iterations</h4>
-              </div>
-              <div className="col-md-4">
-                <h3>325</h3>
-                <h4>Iteration Time</h4>
-              </div>
-              <div className="col-md-4">
-                <h3>0d:9h:48m:48s</h3>
-                <h4>Remaining Time</h4>
-              </div>
-            </div>
+          <Title service={service} />
+          <div className="training-breadcrumb px-4 py-2">
+            <Breadcrumb service={service} isTraining={true} />
           </div>
-          <Breadcrumb service={service} isTraining={true} />
-          <div className="content">
-            <TrainingMonitor
-              service={service}
-              handleOverMeasure={this.handleOverMeasure}
-              handleLeaveMeasure={this.handleLeaveMeasure}
-              hoveredMeasure={this.state.hoveredMeasure}
-            />
-            <RightPanel
-              service={service}
-              handleOverMeasure={this.handleOverMeasure}
-              handleLeaveMeasure={this.handleLeaveMeasure}
-              hoveredMeasure={this.state.hoveredMeasure}
-              includeDownloadPanel
-            />
+          <div className="content p-4">
+            <TrainingMonitor service={service} />
+            <RightPanel />
           </div>
         </div>
       </div>

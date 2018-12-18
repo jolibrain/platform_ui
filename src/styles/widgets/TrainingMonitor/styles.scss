@@ -4,4 +4,39 @@
   .measure-cell.hovered {
     background-color: $neutral_blue_9;
   }
+
+  table {
+    border: 1px solid $neutral_blue_9;
+
+    thead {
+      background-color: $neutral_blue_10;
+      color: $neutral_blue_3;
+      text-transform: uppercase;
+    }
+
+    td {
+      h3 {
+        color: $neutral_blue_1;
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      h4 {
+        color: $neutral_blue_3;
+        margin: 0;
+        font-size: 16px;
+      }
+    }
+
+    th.sparkline {
+      padding: 0;
+      max-width: 150px;
+
+      svg {
+        position: relative;
+        left: -2px;
+      }
+    }
+  }
 }

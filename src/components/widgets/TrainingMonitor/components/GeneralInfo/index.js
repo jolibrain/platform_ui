@@ -15,11 +15,9 @@ export default class GeneralInfo extends React.Component {
     if (!service.jsonMetrics && !service.respInfo) return null;
 
     let mltype = null;
-    let measure = null;
 
     if (service.jsonMetrics) {
       mltype = service.jsonMetrics.body.mltype;
-      measure = service.jsonMetrics.body.measure;
     } else {
       if (
         service.respInfo &&
@@ -27,7 +25,6 @@ export default class GeneralInfo extends React.Component {
         service.respInfo.body.mltype
       )
         mltype = service.respInfo.body.mltype;
-      measure = service.measure;
     }
 
     let bestModelInfo = null;
@@ -173,30 +170,6 @@ export default class GeneralInfo extends React.Component {
     return (
       <div className="trainingmonitor-generalinfo">
         <div className="row">{infoCharts}</div>
-        <div className="row">
-          <div className="col-md-3">
-            <span>
-              <b># Iteration</b>:{" "}
-              {measure && measure.iteration ? measure.iteration : "--"}
-            </span>
-          </div>
-          <div className="col-md-3">
-            <span>
-              <b>Iteration Time</b>:{" "}
-              {measure && measure.iter_time
-                ? parseInt(measure.iter_time, 10)
-                : "--"}
-            </span>
-          </div>
-          <div className="col-md-6">
-            <span>
-              <b>Remaining Time</b>:{" "}
-              {measure && measure.remain_time_str
-                ? measure.remain_time_str
-                : "--"}
-            </span>
-          </div>
-        </div>
         <div className="row">{bestModelInfo}</div>
       </div>
     );

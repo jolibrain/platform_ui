@@ -19,7 +19,6 @@ export default class TrainingMonitor extends React.Component {
 
     return (
       <div className="trainingmonitor">
-        <h3>{service.name}</h3>
         <GeneralInfo {...this.props} />
         <PerClassArray {...this.props} />
       </div>
