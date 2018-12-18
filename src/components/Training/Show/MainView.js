@@ -56,7 +56,24 @@ export default class MainView extends React.Component {
 
     return (
       <div className="main-view content-wrapper">
-        <div className="container">
+        <div className="fluid-container">
+          <div className="title p-2">
+            <h2>{service.name}</h2>
+            <div className="row">
+              <div className="col-md-4">
+                <h3>184356</h3>
+                <h4>Iterations</h4>
+              </div>
+              <div className="col-md-4">
+                <h3>325</h3>
+                <h4>Iteration Time</h4>
+              </div>
+              <div className="col-md-4">
+                <h3>0d:9h:48m:48s</h3>
+                <h4>Remaining Time</h4>
+              </div>
+            </div>
+          </div>
           <Breadcrumb service={service} isTraining={true} />
           <div className="content">
             <TrainingMonitor
