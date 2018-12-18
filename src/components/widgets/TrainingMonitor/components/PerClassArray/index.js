@@ -18,7 +18,7 @@ export default class PerClassArray extends React.Component {
 
     if (!measure) return null;
 
-    const measureKeys = Object.keys(measure)
+    let measureKeys = Object.keys(measure)
       .sort()
       .filter(
         k =>
@@ -31,6 +31,15 @@ export default class PerClassArray extends React.Component {
           k !== "cmfull" &&
           k !== "cmdiag"
       );
+
+    if (
+      Object.keys(measure).includes("cmdiag") &&
+      Object.keys(measure).includes("labels")
+    ) {
+      measure.labels.forEach(label => {
+        measureKeys.push(`cmdiag_${label}`);
+      });
+    }
 
     return (
       <div className="perClassArray" refresh={service.refresh}>
@@ -69,12 +78,7 @@ export default class PerClassArray extends React.Component {
         ) : (
           <div className="row">
             <div className="col-md-4 col-sm-12">
-              <Table
-                measureKeys={measureKeys.slice(
-                  parseInt(measureKeys.length / 3, 10) * 2
-                )}
-                {...this.props}
-              />
+              <Table measureKeys={measureKeys} {...this.props} />
             </div>
           </div>
         )}

@@ -24,6 +24,26 @@ export default class MeasureChart extends React.Component {
     this.setState({ showLine: !this.state.showLine });
   }
 
+  getMinValue(attr) {
+    const { service } = this.props;
+
+    const measure_hist = service.jsonMetrics
+      ? service.jsonMetrics.body.measure_hist
+      : service.measure_hist;
+
+    let value = null;
+
+    if (
+      measure_hist &&
+      measure_hist[`${attr}_hist`] &&
+      measure_hist[`${attr}_hist`].length > 0
+    ) {
+      value = Math.min.apply(Math, measure_hist[`${attr}_hist`]);
+    }
+
+    return value ? value.toFixed(5) : "--";
+  }
+
   getValue(attr) {
     const { service } = this.props;
 
@@ -104,6 +124,14 @@ export default class MeasureChart extends React.Component {
   render() {
     const { title, attribute } = this.props;
 
+    const chartData = this.getChartData(attribute);
+
+    if (
+      typeof chartData.datasets === "undefined" ||
+      chartData.datasets[0].data.length === 0
+    )
+      return null;
+
     const chartOptions = {
       animation: {
         duration: 0
@@ -128,19 +156,27 @@ export default class MeasureChart extends React.Component {
       }
     };
 
+    const minValue = this.getMinValue(attribute);
+
     return (
       <div className="col-md-3">
         <div className="chart container">
           <div className="row">
             <Line
-              data={this.getChartData(attribute)}
+              data={chartData}
               legend={{ display: false }}
               options={chartOptions}
             />
           </div>
           <div className="description row">
-            <h3>{this.getValue(attribute)}</h3>
-
+            <h3>
+              {this.getValue(attribute)}{" "}
+              {this.props.showMinValue ? (
+                <span className="minValue">(min: {minValue})</span>
+              ) : (
+                ""
+              )}
+            </h3>
             <h4>{title}</h4>
           </div>
         </div>

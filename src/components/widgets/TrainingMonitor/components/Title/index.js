@@ -48,32 +48,54 @@ export default class Title extends React.Component {
       measure = service.measure;
     }
 
+    let infoColumns = [];
+
+    infoColumns.push({
+      value: this.getValue("train_loss"),
+      title: "Train Loss"
+    });
+
+    infoColumns.push({
+      value: measure && measure.iteration ? measure.iteration : "--",
+      title: "Iterations"
+    });
+
+    if (service.bestModel) {
+      Object.keys(service.bestModel).forEach((key, index) => {
+        let title =
+          index === 0
+            ? key.replace(/\b\w/g, l => l.toUpperCase())
+            : key.toUpperCase();
+
+        infoColumns.push({
+          value: service.bestModel[key],
+          title: title,
+          isBest: true
+        });
+      });
+    } else {
+      infoColumns.push({
+        value:
+          measure && measure.iter_time ? parseInt(measure.iter_time, 10) : "--",
+        title: "Iteration Time (ms)"
+      });
+      infoColumns.push({
+        value:
+          measure && measure.remain_time_str ? measure.remain_time_str : "--",
+        title: "Remaining Time"
+      });
+    }
+
     return (
       <div className="title p-4 row">
-        <div className="col-md-3">
-          <h3>{this.getValue("train_loss")}</h3>
-          <h4>Train Loss</h4>
-        </div>
-        <div className="col-md-3">
-          <h3>{measure && measure.iteration ? measure.iteration : "--"}</h3>
-          <h4>Iterations</h4>
-        </div>
-        <div className="col-md-3">
-          <h3>
-            {measure && measure.iter_time
-              ? parseInt(measure.iter_time, 10)
-              : "--"}
-          </h3>
-          <h4>Iteration Time (ms)</h4>
-        </div>
-        <div className="col-md-3">
-          <h3>
-            {measure && measure.remain_time_str
-              ? measure.remain_time_str
-              : "--"}
-          </h3>
-          <h4>Remaining Time</h4>
-        </div>
+        {infoColumns.map((col, index) => {
+          return (
+            <div key={`info-${index}`} className="col-md-3 col-sm-6">
+              <h3>{col.value}</h3>
+              {col.isBest ? <h4>{col.title} - *best</h4> : <h4>{col.title}</h4>}
+            </div>
+          );
+        })}
       </div>
     );
   }

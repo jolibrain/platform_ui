@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 
 import MeasureChart from "../MeasureChart";
-import TrainLossChart from "../TrainLossChart";
 
 @observer
 export default class GeneralInfo extends React.Component {
@@ -27,37 +26,22 @@ export default class GeneralInfo extends React.Component {
         mltype = service.respInfo.body.mltype;
     }
 
-    let bestModelInfo = null;
-    if (service.bestModel) {
-      bestModelInfo = (
-        <div>
-          <hr />
-          <p>Best Model</p>
-          <ul>
-            {Object.keys(service.bestModel).map((k, i) => {
-              let attrTitle =
-                i === 0
-                  ? k.replace(/\b\w/g, l => l.toUpperCase())
-                  : k.toUpperCase();
-
-              if (attrTitle === "MEANIOU") attrTitle = "Mean IOU";
-
-              return (
-                <li key={i}>
-                  {attrTitle}: <b>{service.bestModel[k]}</b>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      );
-    }
-
     infoCharts.push(
-      <TrainLossChart
+      <MeasureChart
         title="Train Loss"
         key="train_loss"
         attribute="train_loss"
+        showMinValue
+        {...this.props}
+      />
+    );
+
+    infoCharts.push(
+      <MeasureChart
+        title="Accuracy"
+        key="accp"
+        attribute="accp"
+        steppedLine
         {...this.props}
       />
     );
@@ -69,7 +53,7 @@ export default class GeneralInfo extends React.Component {
             title="Accuracy"
             attribute="acc"
             key="acc"
-            steppedLine={true}
+            steppedLine
             {...this.props}
           />
         );
@@ -78,7 +62,7 @@ export default class GeneralInfo extends React.Component {
             title="Mean Accuracy"
             attribute="meanacc"
             key="meanacc"
-            steppedLine={true}
+            steppedLine
             {...this.props}
           />
         );
@@ -87,7 +71,7 @@ export default class GeneralInfo extends React.Component {
             title="Mean IOU"
             attribute="meaniou"
             key="meaniou"
-            steppedLine={true}
+            steppedLine
             {...this.props}
           />
         );
@@ -98,7 +82,7 @@ export default class GeneralInfo extends React.Component {
             title="MAP"
             attribute="map"
             key="map"
-            steppedLine={true}
+            steppedLine
             {...this.props}
           />
         );
@@ -109,7 +93,7 @@ export default class GeneralInfo extends React.Component {
             title="Accuracy"
             attribute="acc"
             key="acc"
-            steppedLine={true}
+            steppedLine
             {...this.props}
           />
         );
@@ -118,7 +102,7 @@ export default class GeneralInfo extends React.Component {
             title="Mean Accuracy"
             attribute="meanacc"
             key="meanacc"
-            steppedLine={true}
+            steppedLine
             {...this.props}
           />
         );
@@ -127,7 +111,7 @@ export default class GeneralInfo extends React.Component {
             title="F1"
             attribute="f1"
             key="f1"
-            steppedLine={true}
+            steppedLine
             {...this.props}
           />
         );
@@ -136,7 +120,7 @@ export default class GeneralInfo extends React.Component {
             title="Mcll"
             attribute="mcll"
             key="mcll"
-            steppedLine={true}
+            steppedLine
             {...this.props}
           />
         );
@@ -147,7 +131,7 @@ export default class GeneralInfo extends React.Component {
             title="Eucll"
             attribute="eucll"
             key="eucll"
-            steppedLine={true}
+            steppedLine
             {...this.props}
           />
         );
@@ -158,7 +142,7 @@ export default class GeneralInfo extends React.Component {
             title="Accuracy"
             attribute="acc"
             key="acc"
-            steppedLine={true}
+            steppedLine
             {...this.props}
           />
         );
@@ -168,10 +152,7 @@ export default class GeneralInfo extends React.Component {
     }
 
     return (
-      <div className="trainingmonitor-generalinfo">
-        <div className="row charts">{infoCharts}</div>
-        <div className="row">{bestModelInfo}</div>
-      </div>
+      <div className="trainingmonitor-generalinfo row charts">{infoCharts}</div>
     );
   }
 }
