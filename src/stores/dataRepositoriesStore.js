@@ -30,6 +30,8 @@ export class dataRepositoriesStore {
       }
 
       // TODO: replace data string by regexp
+      // TODO: remove root path,
+      //  it should only contain /data/alx/test when /data/alx/ is present
       folders.forEach(f => {
         this.repositories.push({
           id: this.repositories.length,
