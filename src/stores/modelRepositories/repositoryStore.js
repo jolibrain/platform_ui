@@ -39,7 +39,14 @@ export default class RepositoryStore {
 
   @action
   async _loadRepositories(path) {
-    const { folders, files } = await this.$reqFolder(path);
+    let folders = [],
+      files = [];
+
+    try {
+      const result = await this.$reqFolder(path);
+      folders = result.folders;
+      files = result.files;
+    } catch (err) {}
 
     const isRepository =
       files.includes("model.json") ||
