@@ -33,7 +33,7 @@ export default class PerClassArray extends React.Component {
       );
 
     return (
-      <div refresh={service.refresh}>
+      <div className="perClassArray" refresh={service.refresh}>
         <h4>Measures</h4>
         {measureKeys.length > 6 ? (
           <div className="row">

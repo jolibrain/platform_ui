@@ -41,7 +41,7 @@ export default class MeasureChart extends React.Component {
       value = Math.min.apply(Math, measure_hist[`${attr}_hist`]);
     }
 
-    return value ? value.toFixed(10) : "--";
+    return value ? value.toFixed(5) : "--";
   }
 
   getValue(attr) {
@@ -145,32 +145,25 @@ export default class MeasureChart extends React.Component {
     };
 
     const minValue = this.getMinValue(attribute);
-    const description = `min_loss: ${minValue}`;
-    const controls = (
-      <div>
-        <input
-          type="checkbox"
-          id="customShowLine"
-          checked={this.state.showLine ? "checked" : ""}
-          onChange={this.toggleShowLine}
-        />
-        <label htmlFor="customShowLine">Show line</label>
-      </div>
-    );
 
     return (
       <div className="col-md-3">
-        <span>
-          <b>{title}</b>:&nbsp;{this.getValue(attribute)}
-        </span>
-        <Line
-          data={this.getChartData(attribute)}
-          legend={{ display: false }}
-          options={chartOptions}
-        />
-        <span>
-          {description} {controls}
-        </span>
+        <div className="chart container">
+          <div className="row">
+            <Line
+              data={this.getChartData(attribute)}
+              legend={{ display: false }}
+              options={chartOptions}
+            />
+          </div>
+          <div className="description row">
+            <h3>
+              {this.getValue(attribute)}{" "}
+              <span className="minValue">(min: {minValue})</span>
+            </h3>
+            <h4>{title}</h4>
+          </div>
+        </div>
       </div>
     );
   }

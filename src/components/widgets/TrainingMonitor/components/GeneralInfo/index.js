@@ -169,7 +169,7 @@ export default class GeneralInfo extends React.Component {
 
     return (
       <div className="trainingmonitor-generalinfo">
-        <div className="row">{infoCharts}</div>
+        <div className="row charts">{infoCharts}</div>
         <div className="row">{bestModelInfo}</div>
       </div>
     );

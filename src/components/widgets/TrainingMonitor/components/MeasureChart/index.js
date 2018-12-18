@@ -130,14 +130,20 @@ export default class MeasureChart extends React.Component {
 
     return (
       <div className="col-md-3">
-        <span>
-          <b>{title}</b>:&nbsp;{this.getValue(attribute)}
-        </span>
-        <Line
-          data={this.getChartData(attribute)}
-          legend={{ display: false }}
-          options={chartOptions}
-        />
+        <div className="chart container">
+          <div className="row">
+            <Line
+              data={this.getChartData(attribute)}
+              legend={{ display: false }}
+              options={chartOptions}
+            />
+          </div>
+          <div className="description row">
+            <h3>{this.getValue(attribute)}</h3>
+
+            <h4>{title}</h4>
+          </div>
+        </div>
       </div>
     );
   }
