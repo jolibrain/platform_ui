@@ -34,7 +34,7 @@ export default class Title extends React.Component {
         measure_hist[`${attr}_hist`][measure_hist[`${attr}_hist`].length - 1];
     }
 
-    return value ? value.toFixed(10) : "--";
+    return value ? parseFloat(value) : "--";
   }
 
   render() {
@@ -50,7 +50,7 @@ export default class Title extends React.Component {
 
     let infoColumns = [];
 
-    let trainLossValue = parseFloat(this.getValue("train_loss"));
+    let trainLossValue = this.getValue("train_loss");
 
     if (typeof trainLossValue.toFixed === "function") {
       if (trainLossValue > 1) {

@@ -33,7 +33,22 @@ export default class TrainingCard extends React.Component {
 
     if (value && !["remain_time_str", "iteration"].includes(attr)) {
       if (attr === "train_loss") {
-        value = value.toFixed(10);
+        value = parseFloat(value);
+
+        if (typeof value.toFixed === "function") {
+          if (value > 1) {
+            value = value.toFixed(3);
+          } else {
+            // Find position of first number after the comma
+            const zeroPosition = value
+              .toString()
+              .split("0")
+              .slice(2)
+              .findIndex(elem => elem.length > 0);
+
+            value = value.toFixed(zeroPosition + 4);
+          }
+        }
       } else {
         value = value.toFixed(5);
       }
