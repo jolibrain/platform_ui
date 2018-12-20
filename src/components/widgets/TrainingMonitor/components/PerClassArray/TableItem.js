@@ -49,8 +49,12 @@ export default class PerClassArray extends React.Component {
     }
 
     if (measureKey.includes("cmdiag_")) {
-      const diagLabel = measureKey.replace("cmdiag_", "");
-      value = measure.cmdiag[measure.labels.indexOf(diagLabel)].toFixed(5);
+      if (typeof measure[measureKey] !== "undefined") {
+        value = measure[measureKey];
+      } else {
+        const diagLabel = measureKey.replace("cmdiag_", "");
+        value = measure.cmdiag[measure.labels.indexOf(diagLabel)].toFixed(5);
+      }
     }
 
     return (

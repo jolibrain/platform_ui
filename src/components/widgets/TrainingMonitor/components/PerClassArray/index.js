@@ -32,14 +32,16 @@ export default class PerClassArray extends React.Component {
           k !== "cmdiag"
       );
 
-    //if (
-    //Object.keys(measure).includes("cmdiag") &&
-    //Object.keys(measure).includes("labels")
-    //) {
-    //measure.labels.forEach(label => {
-    //measureKeys.push(`cmdiag_${label}`);
-    //});
-    //}
+    if (
+      Object.keys(measure).includes("cmdiag") &&
+      Object.keys(measure).includes("labels")
+    ) {
+      measure.labels.forEach(label => {
+        measureKeys.push(`cmdiag_${label}`);
+      });
+    }
+
+    if (measureKeys.length === 0) return null;
 
     return (
       <div className="perClassArray" refresh={service.refresh}>
