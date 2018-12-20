@@ -37,6 +37,18 @@
         font-size: 20px;
         width: 100%;
         font-weight: 400;
+
+        span.logScale {
+          float: right;
+          font-size: 16px;
+          position: relative;
+          top: 4px;
+
+          input {
+            position: relative;
+            top: 1px;
+          }
+        }
       }
     }
   }

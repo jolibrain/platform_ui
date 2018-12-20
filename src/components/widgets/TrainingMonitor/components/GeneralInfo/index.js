@@ -32,6 +32,7 @@ export default class GeneralInfo extends React.Component {
         key="train_loss"
         attribute="train_loss"
         showMinValue
+        showLogScale
         {...this.props}
       />
     );

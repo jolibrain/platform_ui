@@ -11,17 +11,17 @@ export default class MeasureChart extends React.Component {
     super(props);
 
     this.state = {
-      showLine: false
+      logScale: false
     };
 
     this.getValue = this.getValue.bind(this);
     this.getChartData = this.getChartData.bind(this);
 
-    this.toggleShowLine = this.toggleShowLine.bind(this);
+    this.toggleLogScale = this.toggleLogScale.bind(this);
   }
 
-  toggleShowLine() {
-    this.setState({ showLine: !this.state.showLine });
+  toggleLogScale() {
+    this.setState({ logScale: !this.state.logScale });
   }
 
   getMinValue(attr) {
@@ -132,7 +132,7 @@ export default class MeasureChart extends React.Component {
     )
       return null;
 
-    const chartOptions = {
+    let chartOptions = {
       animation: {
         duration: 0
       },
@@ -159,6 +159,20 @@ export default class MeasureChart extends React.Component {
     const minValue = this.getMinValue(attribute);
 
     let displayedValue = this.getValue(attribute);
+
+    if (this.state.logScale) {
+      chartOptions.scales.yAxes = [
+        {
+          type: "logarithmic"
+        }
+      ];
+    } else {
+      chartOptions.scales.yAxes = [
+        {
+          type: "linear"
+        }
+      ];
+    }
 
     if (attribute === "train_loss") {
       displayedValue = parseFloat(displayedValue);
@@ -198,7 +212,17 @@ export default class MeasureChart extends React.Component {
                 ""
               )}
             </h3>
-            <h4>{title}</h4>
+            <h4>
+              {title}{" "}
+              {this.props.showLogScale ? (
+                <span className="logScale">
+                  <input type="checkbox" onChange={this.toggleLogScale} /> Log
+                  Scale
+                </span>
+              ) : (
+                ""
+              )}
+            </h4>
           </div>
         </div>
       </div>

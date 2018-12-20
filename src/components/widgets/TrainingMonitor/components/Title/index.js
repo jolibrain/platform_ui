@@ -109,7 +109,7 @@ export default class Title extends React.Component {
           return (
             <div key={`info-${index}`} className="col-md-3 col-sm-6">
               <h3>{col.value}</h3>
-              {col.isBest ? <h4>{col.title} - *best</h4> : <h4>{col.title}</h4>}
+              {col.isBest ? <h4>{col.title} - best</h4> : <h4>{col.title}</h4>}
             </div>
           );
         })}
