@@ -158,6 +158,27 @@ export default class MeasureChart extends React.Component {
 
     const minValue = this.getMinValue(attribute);
 
+    let displayedValue = this.getValue(attribute);
+
+    if (attribute === "train_loss") {
+      displayedValue = parseFloat(displayedValue);
+
+      if (typeof displayedValue.toFixed === "function") {
+        if (displayedValue > 1) {
+          displayedValue = displayedValue.toFixed(3);
+        } else {
+          // Find position of first number after the comma
+          const zeroPosition = displayedValue
+            .toString()
+            .split("0")
+            .slice(2)
+            .findIndex(elem => elem.length > 0);
+
+          displayedValue = displayedValue.toFixed(zeroPosition + 4);
+        }
+      }
+    }
+
     return (
       <div className="col-md-3">
         <div className="chart container">
@@ -170,7 +191,7 @@ export default class MeasureChart extends React.Component {
           </div>
           <div className="description row">
             <h3>
-              {this.getValue(attribute)}{" "}
+              {displayedValue}{" "}
               {this.props.showMinValue ? (
                 <span className="minValue">(min: {minValue})</span>
               ) : (

@@ -50,8 +50,25 @@ export default class Title extends React.Component {
 
     let infoColumns = [];
 
+    let trainLossValue = parseFloat(this.getValue("train_loss"));
+
+    if (typeof trainLossValue.toFixed === "function") {
+      if (trainLossValue > 1) {
+        trainLossValue = trainLossValue.toFixed(3);
+      } else {
+        // Find position of first number after the comma
+        const zeroPosition = trainLossValue
+          .toString()
+          .split("0")
+          .slice(2)
+          .findIndex(elem => elem.length > 0);
+
+        trainLossValue = trainLossValue.toFixed(zeroPosition + 4);
+      }
+    }
+
     infoColumns.push({
-      value: this.getValue("train_loss"),
+      value: trainLossValue,
       title: "Train Loss"
     });
 
