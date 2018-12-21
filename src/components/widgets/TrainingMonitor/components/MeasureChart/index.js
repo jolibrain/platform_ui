@@ -194,7 +194,7 @@ export default class MeasureChart extends React.Component {
     }
 
     return (
-      <div className="col-md-3">
+      <div className="trainingmonitor-chart col-md-3">
         <div className="chart container">
           <div className="row">
             <Line

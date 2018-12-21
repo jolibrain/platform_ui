@@ -44,7 +44,7 @@ export default class PerClassArray extends React.Component {
     if (measureKeys.length === 0) return null;
 
     return (
-      <div className="perClassArray" refresh={service.refresh}>
+      <div className="trainingmonitor-perclassarray" refresh={service.refresh}>
         <h4>Measures</h4>
         {measureKeys.length > 6 ? (
           <div className="row">

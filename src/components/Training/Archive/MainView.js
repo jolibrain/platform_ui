@@ -3,8 +3,9 @@ import { withRouter } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 
 import RightPanel from "../commons/RightPanel";
-import TrainingMonitor from "../../widgets/TrainingMonitor";
 import Title from "../../widgets/TrainingMonitor/components/Title";
+import GeneralInfo from "../../widgets/TrainingMonitor/components/GeneralInfo";
+import PerClassArray from "../../widgets/TrainingMonitor/components/PerClassArray";
 
 @inject("modelRepositoriesStore")
 @observer
@@ -39,7 +40,8 @@ export default class MainView extends React.Component {
         <div className="fluid-container">
           <Title service={repository} />
           <div className="content p-4">
-            <TrainingMonitor service={repository} />
+            <GeneralInfo service={repository} />
+            <PerClassArray service={repository} />
             <RightPanel includeDownloadPanel />
           </div>
         </div>
