@@ -85,7 +85,16 @@ export default class MainView extends React.Component {
             </div>
 
             <div className="col-md-3 col-sm-6">
-              <h3>{displayedArchiveRepositories.length}</h3>
+              <h3>
+                {modelRepositoriesStore.isRefreshing ? (
+                  <span>
+                    <i className="fas fa-sync fa-spin fa-xs" />{" "}
+                  </span>
+                ) : (
+                  displayedArchiveRepositories.length
+                )}
+              </h3>
+
               <h4>Archived Jobs</h4>
             </div>
 
