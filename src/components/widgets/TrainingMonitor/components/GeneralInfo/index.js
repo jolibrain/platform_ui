@@ -13,11 +13,14 @@ export default class GeneralInfo extends React.Component {
 
     if (!service.jsonMetrics && !service.respInfo) return null;
 
-    let mltype = null;
+    let measure,
+      mltype = null;
 
     if (service.jsonMetrics) {
+      measure = service.jsonMetrics.body.measure;
       mltype = service.jsonMetrics.body.mltype;
     } else {
+      measure = service.measure;
       if (
         service.respInfo &&
         service.respInfo.body &&
@@ -37,27 +40,30 @@ export default class GeneralInfo extends React.Component {
       />
     );
 
-    infoCharts.push(
-      <MeasureChart
-        title="Accuracy"
-        key="accp"
-        attribute="accp"
-        steppedLine
-        {...this.props}
-      />
-    );
+    if (typeof measure.accp !== "undefined") {
+      infoCharts.push(
+        <MeasureChart
+          title="Accuracy"
+          key="accp"
+          attribute="accp"
+          steppedLine
+          {...this.props}
+        />
+      );
+    } else if (typeof measure.acc !== "undefined") {
+      infoCharts.push(
+        <MeasureChart
+          title="Accuracy"
+          key="acc"
+          attribute="acc"
+          steppedLine
+          {...this.props}
+        />
+      );
+    }
 
     switch (mltype) {
       case "segmentation":
-        infoCharts.push(
-          <MeasureChart
-            title="Accuracy"
-            attribute="acc"
-            key="acc"
-            steppedLine
-            {...this.props}
-          />
-        );
         infoCharts.push(
           <MeasureChart
             title="Mean Accuracy"
@@ -89,15 +95,6 @@ export default class GeneralInfo extends React.Component {
         );
         break;
       case "classification":
-        infoCharts.push(
-          <MeasureChart
-            title="Accuracy"
-            attribute="acc"
-            key="acc"
-            steppedLine
-            {...this.props}
-          />
-        );
         infoCharts.push(
           <MeasureChart
             title="Mean Accuracy"
@@ -138,15 +135,6 @@ export default class GeneralInfo extends React.Component {
         );
         break;
       case "ctc":
-        infoCharts.push(
-          <MeasureChart
-            title="Accuracy"
-            attribute="acc"
-            key="acc"
-            steppedLine
-            {...this.props}
-          />
-        );
         break;
       default:
         break;
