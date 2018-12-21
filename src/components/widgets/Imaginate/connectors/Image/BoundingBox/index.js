@@ -25,16 +25,14 @@ export default class BoundingBox extends React.Component {
 
     const coord = box.coord ? box.coord : box;
 
-    let [x, y, width, height] = [0, 0, 0, 0];
-    if (coord.xmin && coord.xmax && coord.ymin && coord.ymax) {
-      [x, y, width, height] = [
-        coord.xmin,
-        coord.ymax,
-        coord.xmax - coord.xmin,
-        coord.ymin - coord.ymax
-      ];
-    } else if (coord.x && coord.y && coord.width && coord.height) {
-      [x, y, width, height] = coord;
+    let x = 0,
+      y = 0;
+    if (coord.xmin && coord.ymax) {
+      x = coord.xmin;
+      y = coord.ymax;
+    } else if (coord.x && coord.y) {
+      x = coord.x;
+      y = coord.y;
     }
 
     var c = "0x" + box.color.substring(1);
