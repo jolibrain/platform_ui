@@ -4,7 +4,6 @@ import { withRouter } from "react-router-dom";
 import moment from "moment";
 
 import ServiceCardList from "../../widgets/ServiceCardList";
-import ServiceContentList from "../../widgets/ServiceContentList";
 import RightPanel from "../commons/RightPanel";
 
 @inject("deepdetectStore")
@@ -16,15 +15,11 @@ export default class MainView extends React.Component {
     super(props);
 
     this.state = {
-      filterServiceName: "",
-      archiveLayout: "cards"
+      filterServiceName: ""
     };
 
     this.handleServiceFilter = this.handleServiceFilter.bind(this);
     this.cleanServiceFilter = this.cleanServiceFilter.bind(this);
-
-    this.handleClickLayoutCards = this.handleClickLayoutCards.bind(this);
-    this.handleClickLayoutList = this.handleClickLayoutList.bind(this);
 
     this.handleClickRefreshArchive = this.handleClickRefreshArchive.bind(this);
   }
@@ -48,23 +43,24 @@ export default class MainView extends React.Component {
     this.setState({ filterServiceName: "" });
   }
 
-  handleClickLayoutCards() {
-    this.setState({ archiveLayout: "cards" });
-  }
-
-  handleClickLayoutList() {
-    this.setState({ archiveLayout: "list" });
-  }
-
   render() {
     const { deepdetectStore, modelRepositoriesStore } = this.props;
 
     if (!deepdetectStore.isReady) return null;
 
-    const { trainingServices } = deepdetectStore;
-    const { archivedTrainingRepositories } = modelRepositoriesStore;
-
     const { filterServiceName } = this.state;
+
+    const { trainingServices } = deepdetectStore;
+    const displayedTrainingServices = trainingServices
+      .filter(r => r.name.includes(filterServiceName))
+      .slice()
+      .sort((a, b) => {
+        if (a.name < b.name) return -1;
+        if (a.name > b.name) return 1;
+        return 0;
+      });
+
+    const { archivedTrainingRepositories } = modelRepositoriesStore;
     const displayedArchiveRepositories = archivedTrainingRepositories
       .filter(r => {
         return (
@@ -82,90 +78,71 @@ export default class MainView extends React.Component {
     return (
       <div className="main-view content-wrapper">
         <div className="container-fluid">
+          <div className="page-title p-4 row">
+            <div className="col-md-3 col-sm-6">
+              <h3>{trainingServices.length}</h3>
+              <h4>Current Services</h4>
+            </div>
+
+            <div className="col-md-3 col-sm-6">
+              <h3>{displayedArchiveRepositories.length}</h3>
+              <h4>Archived Jobs</h4>
+            </div>
+
+            <div className="col-md-6 col-sm-12">
+              <form className="form-inline">
+                <button
+                  id="refreshServices"
+                  onClick={this.handleClickRefreshArchive}
+                  type="button"
+                  className="btn btn-primary"
+                >
+                  <i
+                    className={
+                      modelRepositoriesStore.isRefreshing
+                        ? "fas fa-sync fa-spin"
+                        : "fas fa-sync"
+                    }
+                  />
+                </button>
+
+                <div className="input-group">
+                  <div className="input-group-prepend">
+                    <div className="input-group-text">
+                      <i className="fas fa-search" />
+                    </div>
+                  </div>
+                  <input
+                    type="text"
+                    onChange={this.handleServiceFilter}
+                    placeholder="Filter service name..."
+                    value={this.state.filterServiceName}
+                  />
+                  <div className="input-group-append">
+                    <button
+                      className="btn btn-secondary"
+                      type="button"
+                      onClick={this.cleanServiceFilter}
+                    >
+                      <i className="fas fa-times-circle" />
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
           <div className="content">
             <div className="serviceList current">
-              {trainingServices.length === 0 ? (
-                <h4>No training service running</h4>
-              ) : (
-                <div>
-                  <h4>Current Training Services</h4>
-                  <ServiceCardList services={trainingServices} />
-                </div>
-              )}
+              <ServiceCardList services={displayedTrainingServices} />
             </div>
 
             <hr />
 
             <div className="archiveTrainingList archive">
-              <div className="float-right">
-                <form className="form-inline">
-                  <button
-                    id="refreshServices"
-                    onClick={this.handleClickRefreshArchive}
-                    type="button"
-                    className="btn btn-outline-primary"
-                  >
-                    <i
-                      className={
-                        modelRepositoriesStore.isRefreshing
-                          ? "fas fa-sync fa-spin"
-                          : "fas fa-sync"
-                      }
-                    />
-                  </button>
-
-                  <div className="input-group">
-                    <div className="input-group-prepend">
-                      <div className="input-group-text">
-                        <i className="fas fa-search" />
-                      </div>
-                    </div>
-                    <input
-                      type="text"
-                      onChange={this.handleServiceFilter}
-                      placeholder="Filter service name..."
-                      value={this.state.filterServiceName}
-                    />
-                    <div className="input-group-append">
-                      <button
-                        className="btn btn-outline-secondary"
-                        type="button"
-                        onClick={this.cleanServiceFilter}
-                      >
-                        <i className="fas fa-times-circle" />
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="layoutSelect">
-                    <i
-                      className={
-                        this.state.archiveLayout === "cards"
-                          ? "fas fa-th-large active"
-                          : "fas fa-th-large"
-                      }
-                      onClick={this.handleClickLayoutCards}
-                    />
-                    <i
-                      className={
-                        this.state.archiveLayout === "list"
-                          ? "fas fa-th-list active"
-                          : "fas fa-th-list"
-                      }
-                      onClick={this.handleClickLayoutList}
-                    />
-                  </div>
-                </form>
-              </div>
-
-              <h4>Archived Training Jobs</h4>
-
-              {this.state.archiveLayout === "cards" ? (
-                <ServiceCardList services={displayedArchiveRepositories} />
-              ) : (
-                <ServiceContentList services={displayedArchiveRepositories} />
-              )}
+              <ServiceCardList services={displayedArchiveRepositories} />
             </div>
+
             <RightPanel />
           </div>
         </div>
