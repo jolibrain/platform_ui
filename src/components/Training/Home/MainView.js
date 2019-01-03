@@ -81,7 +81,9 @@ export default class MainView extends React.Component {
           <div className="page-title p-4 row">
             <div className="col-md-3 col-sm-6">
               <h3>{trainingServices.length}</h3>
-              <h4>Current Services</h4>
+              <h4>
+                <i className="fas fa-braille" /> Training Services
+              </h4>
             </div>
 
             <div className="col-md-3 col-sm-6">
@@ -95,7 +97,9 @@ export default class MainView extends React.Component {
                 )}
               </h3>
 
-              <h4>Archived Jobs</h4>
+              <h4>
+                <i className="fas fa-archive" /> Archived Jobs
+              </h4>
             </div>
 
             <div className="col-md-6 col-sm-12">
@@ -147,6 +151,9 @@ export default class MainView extends React.Component {
             </div>
 
             <hr />
+            <h3>
+              <i className="fas fa-archive" /> Archived Jobs
+            </h3>
 
             <div className="archiveTrainingList archive">
               <ServiceCardList services={displayedArchiveRepositories} />
