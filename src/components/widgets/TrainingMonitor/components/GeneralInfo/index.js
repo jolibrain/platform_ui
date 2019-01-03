@@ -40,26 +40,28 @@ export default class GeneralInfo extends React.Component {
       />
     );
 
-    if (typeof measure.accp !== "undefined") {
-      infoCharts.push(
-        <MeasureChart
-          title="Accuracy"
-          key="accp"
-          attribute="accp"
-          steppedLine
-          {...this.props}
-        />
-      );
-    } else if (typeof measure.acc !== "undefined") {
-      infoCharts.push(
-        <MeasureChart
-          title="Accuracy"
-          key="acc"
-          attribute="acc"
-          steppedLine
-          {...this.props}
-        />
-      );
+    if (typeof measure !== "undefined") {
+      if (typeof measure.accp !== "undefined") {
+        infoCharts.push(
+          <MeasureChart
+            title="Accuracy"
+            key="accp"
+            attribute="accp"
+            steppedLine
+            {...this.props}
+          />
+        );
+      } else if (typeof measure.acc !== "undefined") {
+        infoCharts.push(
+          <MeasureChart
+            title="Accuracy"
+            key="acc"
+            attribute="acc"
+            steppedLine
+            {...this.props}
+          />
+        );
+      }
     }
 
     switch (mltype) {
