@@ -22,6 +22,14 @@ export default class PerClassArray extends React.Component {
       .sort()
       .filter(
         k =>
+          k !== "acc" &&
+          k !== "accp" &&
+          k !== "meanacc" &&
+          k !== "meaniou" &&
+          k !== "map" &&
+          k !== "f1" &&
+          k !== "mcll" &&
+          k !== "eucll" &&
           k !== "remain_time_str" &&
           k !== "remain_time" &&
           k !== "iter_time" &&
