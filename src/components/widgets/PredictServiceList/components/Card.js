@@ -83,6 +83,13 @@ export default class Card extends React.Component {
       serviceData.parameters.output = { store_config: false };
     }
 
+    // db input parameter must always be false.
+    // https://gitlab.com/jolibrain/core-ui/issues/318
+    // https://gitlab.com/jolibrain/core-ui/issues/280
+    if (serviceData.parameters.input && serviceData.parameters.input.db) {
+      serviceData.parameters.input.db = false;
+    }
+
     ddStore.newService(serviceName, serviceData, (resp, err) => {
       if (err) {
         this.setState({
