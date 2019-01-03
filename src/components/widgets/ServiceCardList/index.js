@@ -41,9 +41,7 @@ export default class ServiceCardList extends React.Component {
       return null;
 
     return (
-      <div className="serviceCardList card-columns">
-        {this.cardArray(services)}
-      </div>
+      <div className="serviceCardList row">{this.cardArray(services)}</div>
     );
   }
 }

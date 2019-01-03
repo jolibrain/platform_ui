@@ -14,17 +14,23 @@ export default class PredictCard extends React.Component {
     const serviceUrl = `/predict/${service.serverName}/${service.name}`;
 
     return (
-      <div className="card">
-        <div className="card-body">
-          <h5 className="card-title">{service.name}</h5>
-          <h6 className="card-subtitle mb-2 text-muted">
-            {service.settings.description}
-          </h6>
-        </div>
-        <div className="card-footer text-right">
-          <Link to={serviceUrl} className="btn btn-outline-primary">
-            <i className="fas fa-cube" /> Predict
-          </Link>
+      <div className="col-md-4 col-sm-12 my-2">
+        <div className="card">
+          <div className="card-body">
+            <h5 className="card-title">
+              <span className="title">
+                <i className="fas fa-cube" /> {service.name}
+              </span>
+            </h5>
+            <h6 className="card-subtitle mb-2 text-muted">
+              {service.settings.description}
+            </h6>
+          </div>
+          <div className="card-footer text-center">
+            <Link to={serviceUrl}>
+              Predict <i className="fas fa-chevron-right" />
+            </Link>
+          </div>
         </div>
       </div>
     );

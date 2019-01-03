@@ -59,23 +59,7 @@ export default class TrainingCard extends React.Component {
 
   render() {
     const { service } = this.props;
-    let badges = [];
     let status = "running";
-
-    badges.push({
-      classNames: "badge badge-info",
-      status: service.serverName
-    });
-
-    badges.push({
-      classNames: "badge badge-info",
-      status: `GPU: ${service.gpuid}`
-    });
-
-    badges.push({
-      classNames: "badge badge-secondary",
-      status: service.settings.mltype
-    });
 
     let info = [];
 
@@ -86,31 +70,10 @@ export default class TrainingCard extends React.Component {
         val: train_loss
       });
 
-    if (service.isTraining && train_loss) {
-      badges.push({
-        classNames: "badge badge-success",
-        status: "training"
-      });
-    } else if (!service.trainJob) {
-      badges.push({
-        classNames: "badge badge-warning",
-        status: "not running"
-      });
+    if (!service.trainJob) {
       status = "not-running";
     } else if (service.isTraining && !train_loss) {
-      badges.push({
-        classNames: "badge badge-warning",
-        status: "launching..."
-      });
       status = "waiting";
-    }
-
-    if (!["error", "not-running"].includes(status) && service.isRequesting) {
-      badges.push({
-        classNames: "badge badge-warning",
-        status: "",
-        spinner: true
-      });
     }
 
     const serviceUrl = `/training/${service.serverName}/${service.name}`;
@@ -142,7 +105,7 @@ export default class TrainingCard extends React.Component {
         break;
       case "ctc":
         const ctc_acc = this.getValue("acc");
-        if (ctc_acc !== null)
+        if (typeof ctc_acc !== "undefined")
           info.push({
             text: "Accuracy",
             val: ctc_acc
@@ -150,7 +113,7 @@ export default class TrainingCard extends React.Component {
         break;
       case "classification":
         const classif_acc = this.getValue("acc");
-        if (classif_acc !== null)
+        if (typeof classif_acc !== "undefined")
           info.push({
             text: "Accuracy",
             val: classif_acc
@@ -213,72 +176,100 @@ export default class TrainingCard extends React.Component {
         break;
       case "not-running":
         cardFooter = (
-          <Link to={serviceUrl} className="btn btn-outline-primary">
-            <i className="fas fa-braille" /> Monitor
-          </Link>
+          <div
+            className="card-footer text-center"
+            onClick={() => window.location.assign("#" + serviceUrl)}
+          >
+            <Link to={serviceUrl}>
+              Monitor <i className="fas fa-chevron-right" />
+            </Link>
+          </div>
         );
         break;
       case "waiting":
         cardFooter = (
-          <a className="btn btn-outline-info disabled">
-            <i className="fas fa-spinner" /> Preparing data...
-          </a>
+          <div className="card-footer text-center">
+            <i className="fas fa-spinner fa-spin" /> Preparing data...
+          </div>
         );
         break;
       case "training":
       default:
         cardContent = (
-          <div>
-            <ul className="list-group list-group-flush">
-              {info.map((i, index) => {
-                return (
-                  <li
-                    key={index}
-                    className="list-group-item d-flex justify-content-between align-items-center"
-                  >
-                    {i.text}
-                    <b>{i.val}</b>
-                  </li>
-                );
-              })}
-            </ul>
+          <div className="content row ml-2 pt-4">
+            {info.map((i, index) => {
+              return (
+                <div key={index} className="col-6">
+                  <h3>{i.val}</h3>
+                  <h4>{i.text}</h4>
+                </div>
+              );
+            })}
           </div>
         );
         cardFooter = (
-          <Link to={serviceUrl} className="btn btn-outline-primary">
-            <i className="fas fa-braille" /> Monitor
-          </Link>
+          <div
+            className="card-footer text-center"
+            onClick={() => window.location.assign("#" + serviceUrl)}
+          >
+            <Link to={serviceUrl}>
+              Monitor <i className="fas fa-chevron-right" />
+            </Link>
+          </div>
         );
         break;
     }
 
     return (
-      <div className="card">
-        <div className="card-header">
-          {badges.map((badge, key) => {
-            return (
-              <span key={key} className={badge.classNames}>
-                {badge.spinner ? <i className="fas fa-spinner" /> : ""}
-                {badge.status}
+      <div className="col-md-4 col-sm-12 my-2">
+        <div className="card">
+          <div className="card-body">
+            <h5 className="card-title">
+              <span className="title">
+                <i class="fas fa-braille" /> {service.name}
               </span>
-            );
-          })}
+            </h5>
+            <h6 className="card-subtitle mb-2 text-muted">
+              {service.settings.description}
+            </h6>
+            <div className="row process-icons">
+              <div className="col-6">
+                {!["error", "not-running"].includes(status) &&
+                service.isRequesting ? (
+                  <div>
+                    <i className="fas fa-spinner fa-spin" /> {status}
+                  </div>
+                ) : (
+                  <div>
+                    <i className={`fas fa-circle ${status}`} /> {status}
+                  </div>
+                )}
+              </div>
+              <div className="col-6">
+                <i className="fas fa-server" /> {service.serverName}
+              </div>
+              <div className="col-6">
+                <i className="fas fa-bullseye" /> {service.settings.mltype}
+              </div>
+              <div className="col-6">
+                <i className="far fa-hdd" /> GPU: {service.gpuid}
+              </div>
+              <div className="col-12">
+                <i className="fas fa-folder" />{" "}
+                {service.respInfo &&
+                service.respInfo.body &&
+                service.respInfo.body.repository
+                  ? service.respInfo.body.repository.replace(
+                      "/opt/platform/models/training/",
+                      ""
+                    )
+                  : "--"}
+              </div>
+            </div>
+            {cardContent}
+          </div>
+          {cardFooter}
         </div>
-
-        <div className="card-body">
-          <h5 className="card-title">
-            <span className="title">{service.name}</span>
-          </h5>
-          <h6 className="card-subtitle mb-2 text-muted">
-            {service.settings.description}
-          </h6>
-          {cardContent}
-        </div>
-        {cardFooter ? (
-          <div className="card-footer text-right">{cardFooter}</div>
-        ) : (
-          ""
-        )}
       </div>
     );
   }

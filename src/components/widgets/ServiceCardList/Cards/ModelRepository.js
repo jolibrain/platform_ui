@@ -111,32 +111,6 @@ export default class ModelRepositoryCard extends React.Component {
 
     const archiveUrl = `/trainingArchive${repository.path}`;
 
-    let badges = [];
-
-    if (mltype) {
-      badges.push({
-        classNames: "badge badge-secondary",
-        status: mltype
-      });
-    }
-
-    let tags = repository.trainingTags;
-    if (tags && tags.length > 0) {
-      tags.forEach(t => {
-        badges.push({
-          classNames: "badge badge-info",
-          status: t
-        });
-      });
-    }
-
-    if (repository.metricsDate) {
-      badges.push({
-        classNames: "badge badge-light",
-        status: moment(repository.metricsDate).format("L LT")
-      });
-    }
-
     let info = [];
 
     const train_loss = this.getValue("train_loss");
@@ -218,94 +192,104 @@ export default class ModelRepositoryCard extends React.Component {
     let bestModelInfo = null;
     if (repository.bestModel) {
       bestModelInfo = (
-        <div className="bestModelInfo">
-          <h6>Best Model</h6>
-          <ul className="list-group list-group-flush">
-            {Object.keys(repository.bestModel).map((k, i) => {
-              let attrTitle =
-                i === 0
-                  ? k.replace(/\b\w/g, l => l.toUpperCase())
-                  : k.toUpperCase();
+        <div className="content row ml-2 pt-4">
+          {Object.keys(repository.bestModel).map((k, i) => {
+            let attrTitle =
+              i === 0
+                ? k.replace(/\b\w/g, l => l.toUpperCase())
+                : k.toUpperCase();
 
-              if (attrTitle === "MEANIOU") attrTitle = "Mean IOU";
+            if (attrTitle === "MEANIOU") attrTitle = "Mean IOU";
 
-              return (
-                <li
-                  key={i}
-                  className="list-group-item d-flex justify-content-between align-items-center"
-                >
-                  {attrTitle}
-                  <b>{repository.bestModel[k]}</b>
-                </li>
-              );
-            })}
-          </ul>
+            return (
+              <div key={i} className="col-6">
+                <h3>{repository.bestModel[k]}</h3>
+                <h4>{attrTitle} - best</h4>
+              </div>
+            );
+          })}
         </div>
       );
     }
 
     let publishButton = repository.jsonConfig ? (
-      <a
-        onClick={this.handlePublishClick}
-        className="btn btn-outline-secondary"
-      >
+      <a onClick={this.handlePublishClick}>
         <i className="fas fa-plus" /> Publish
       </a>
     ) : null;
 
     if (this.state.isPublishing) {
       publishButton = (
-        <a className="btn btn-outline-secondary">
+        <a>
           <i className="fas fa-spinner fa-spin" /> Publishing...
         </a>
       );
     }
 
     return (
-      <div className="card">
-        {badges.length > 0 ? (
-          <div className="card-header">
-            {badges.map((badge, key) => (
-              <span key={key} className={badge.classNames}>
-                {badge.status}
+      <div className="col-md-4 col-sm-12 my-2">
+        <div className="card">
+          <div className="card-body">
+            <h5 className="card-title">
+              <span className="title">
+                <i className="fas fa-archive" /> {repository.name}
               </span>
-            ))}
-          </div>
-        ) : (
-          ""
-        )}
+            </h5>
 
-        <div className="card-body">
-          <h5 className="card-title">{repository.name}</h5>
-          <ul className="list-group list-group-flush">
-            {info.map((i, index) => {
-              return (
-                <li
-                  key={index}
-                  className="list-group-item d-flex justify-content-between align-items-center"
-                >
-                  {i.text}
-                  <b>{i.val}</b>
-                </li>
-              );
-            })}
-          </ul>
-          {bestModelInfo}
-        </div>
-        <div className="card-footer">
-          {this.state.publishError ? (
-            <div className="alert alert-danger" role="alert">
-              <i className="fas fa-exclamation-triangle" />{" "}
-              {this.state.publishError}
+            <div className="row process-icons">
+              {typeof mltype !== "undefined" ? (
+                <div className="col-12">
+                  <i className="fas fa-bullseye" /> {mltype}
+                </div>
+              ) : (
+                ""
+              )}
+              {typeof repository.metricsDate !== "undefined" ? (
+                <div className="col-12">
+                  <i className="far fa-clock" />{" "}
+                  {moment(repository.metricsDate).format("L LT")}
+                </div>
+              ) : (
+                ""
+              )}
+              <div className="col-12">
+                <i className="fas fa-folder" />{" "}
+                {repository.path
+                  ? repository.path.replace("/models/training/", "")
+                  : "--"}
+              </div>
             </div>
-          ) : (
-            ""
-          )}
-          {publishButton}
-          &nbsp;
-          <Link to={archiveUrl} className="btn btn-outline-primary">
-            <i className="fas fa-arrow-right" /> View
-          </Link>
+
+            <div className="content row ml-2 pt-4">
+              {info.map((i, index) => {
+                return (
+                  <div key={index} className="col-6">
+                    <h3>{i.val}</h3>
+                    <h4>{i.text}</h4>
+                  </div>
+                );
+              })}
+            </div>
+            {bestModelInfo}
+            {this.state.publishError ? (
+              <div className="alert alert-danger" role="alert">
+                <i className="fas fa-exclamation-triangle" />{" "}
+                {this.state.publishError}
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
+          <div className="card-footer text-center">
+            <div className="row">
+              <div className="col-6 text-center">{publishButton}</div>
+              <div className="col-6 text-center">
+                <Link to={archiveUrl}>
+                  View <i className="fas fa-chevron-right" />
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
