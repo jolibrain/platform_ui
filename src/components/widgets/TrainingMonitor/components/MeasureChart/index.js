@@ -44,6 +44,26 @@ export default class MeasureChart extends React.Component {
     return value ? value.toFixed(5) : "--";
   }
 
+  getBestValue(attr) {
+    const { service } = this.props;
+
+    const measure_hist = service.jsonMetrics
+      ? service.jsonMetrics.body.measure_hist
+      : service.measure_hist;
+
+    let value = null;
+
+    if (
+      measure_hist &&
+      measure_hist[`${attr}_hist`] &&
+      measure_hist[`${attr}_hist`].length > 0
+    ) {
+      value = Math.max.apply(Math, measure_hist[`${attr}_hist`]);
+    }
+
+    return value ? value.toFixed(5) : "--";
+  }
+
   getValue(attr) {
     const { service } = this.props;
 
@@ -105,7 +125,8 @@ export default class MeasureChart extends React.Component {
             borderColor: "hsl(210, 22%, 49%)",
             showLine:
               this.state.showLine || this.props.steppedLine ? true : false,
-            radius: this.props.steppedLine ? 0 : 2
+            radius: measures.map(x => (this.props.steppedLine ? 0 : 2)),
+            pointBackgroundColor: measures.map(x => null)
           }
         ]
       };
@@ -156,7 +177,19 @@ export default class MeasureChart extends React.Component {
       }
     };
 
-    const minValue = this.getMinValue(attribute);
+    let minValue = null;
+    if (this.props.showMinValue) {
+      minValue = this.getMinValue(attribute);
+    }
+
+    let bestValue = null;
+    if (this.props.showBest) {
+      bestValue = this.getBestValue(attribute);
+      const bestValueIndex = chartData.datasets[0].data.indexOf(bestValue);
+      chartData.datasets[0]["pointBackgroundColor"][bestValueIndex] =
+        "hsl(360, 67%, 44%)";
+      chartData.datasets[0]["radius"][bestValueIndex] = 4;
+    }
 
     let displayedValue = this.getValue(attribute);
 
@@ -208,6 +241,11 @@ export default class MeasureChart extends React.Component {
               {displayedValue}{" "}
               {this.props.showMinValue ? (
                 <span className="minValue">(min: {minValue})</span>
+              ) : (
+                ""
+              )}
+              {this.props.showBest ? (
+                <span className="bestValue">(best: {bestValue})</span>
               ) : (
                 ""
               )}

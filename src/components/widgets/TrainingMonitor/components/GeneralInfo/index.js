@@ -48,6 +48,7 @@ export default class GeneralInfo extends React.Component {
             key="accp"
             attribute="accp"
             steppedLine
+            showBest
             {...this.props}
           />
         );
@@ -58,6 +59,7 @@ export default class GeneralInfo extends React.Component {
             key="acc"
             attribute="acc"
             steppedLine
+            showBest
             {...this.props}
           />
         );
