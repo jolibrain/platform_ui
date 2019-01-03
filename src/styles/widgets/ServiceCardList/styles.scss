@@ -1,3 +1,5 @@
+@import "../../palettes/palette-1.scss";
+
 .serviceCardList {
   margin-top: 20px;
   .badge {
@@ -23,18 +25,123 @@
   }
 
   .card {
-    box-shadow: 0 2px 6px 0 hsla(0, 0%, 0%, 0.2);
+    box-shadow: 0 2px 6px 0 hsla(0, 0%, 0%, 0.6);
     border: 0;
+    height: 370px;
 
     .list-group-item {
       border: 0;
       padding: 2px 10px;
     }
 
-    .card-header,
-    .card-footer {
-      background-color: hsl(210, 9%, 96%);
-      border: 0;
+    .card-body {
+      padding: 15px;
     }
+
+    .card-title {
+      color: $neutral_blue_1;
+      font-weight: 700;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+
+      i {
+        color: $neutral_blue_4;
+        margin-right: 5px;
+      }
+    }
+
+    .card-subtitle {
+      color: $neutral_blue_8;
+    }
+
+    .process-icons {
+      background-color: $neutral_blue_10;
+      color: $neutral_blue_1;
+      padding: 10px;
+
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+
+      i {
+        color: $neutral_blue_3;
+      }
+
+      i.fa-server {
+        margin-right: 3px;
+      }
+
+      i.fa-circle.training,
+      i.fa-circle.running,
+      i.fa-spinner {
+        color: $primary_cyan_5;
+      }
+
+      i.fa-circle.error {
+        color: $support_red_5;
+      }
+
+      i.fa-circle.not-running,
+      i.fa-circle.waiting {
+        color: $support_yellow_5;
+      }
+    }
+
+    .content {
+      h3 {
+        color: $neutral_blue_1;
+        font-size: 16px;
+        font-weight: 700;
+        margin: 0;
+      }
+
+      h4 {
+        color: $neutral_blue_3;
+        font-size: 14px;
+        margin-left: 10px;
+      }
+    }
+
+    .card-footer {
+      background-color: $neutral_blue_8;
+      border-top: 0;
+      color: $neutral_blue_1 !important;
+      text-decoration: none;
+      cursor: pointer;
+
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+
+      a {
+        color: $neutral_blue_1 !important;
+        text-decoration: none;
+      }
+
+      &:hover {
+        background-color: $neutral_blue_7;
+      }
+    }
+  }
+}
+
+.predict-home-component {
+  .serviceCardList .card {
+    height: 180px;
+
+    .card-title {
+      white-space: normal;
+      word-break: break-all;
+    }
+  }
+}
+
+.archiveTrainingList {
+  .card-footer:hover {
+    background-color: transparent;
+  }
+  .card-footer.col-6:hover {
+    background-color: $neutral_blue_7;
   }
 }
