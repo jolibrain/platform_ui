@@ -221,7 +221,7 @@ const Webserver = {
           const repo = aElements[i].attributes["href"].value;
 
           // Check if files and if not parent folder
-          if (repo !== "../") files.push(repo);
+          if (repo !== "../") files.push(decodeURIComponent(repo));
         }
 
         return files;
