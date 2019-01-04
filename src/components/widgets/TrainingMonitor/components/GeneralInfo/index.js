@@ -40,7 +40,7 @@ export default class GeneralInfo extends React.Component {
       />
     );
 
-    if (typeof measure !== "undefined") {
+    if (typeof measure !== "undefined" && measure !== null) {
       if (typeof measure.accp !== "undefined") {
         infoCharts.push(
           <MeasureChart
