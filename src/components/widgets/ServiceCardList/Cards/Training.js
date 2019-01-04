@@ -221,7 +221,7 @@ export default class TrainingCard extends React.Component {
     }
 
     return (
-      <div className="col-md-4 col-sm-12 my-2">
+      <div className="col-lg-4 col-md-12 my-2">
         <div className="card">
           <div className="card-body">
             <h5 className="card-title">
