@@ -229,6 +229,7 @@ const Webserver = {
   getFile: path =>
     superagent
       .get(path)
+      .use(noCache)
       .withCredentials()
       .end(handleErrors)
       .then(res => {
@@ -245,6 +246,7 @@ const Webserver = {
   getFileMeta: path =>
     superagent
       .get(path)
+      .use(noCache)
       .withCredentials()
       .end(handleErrors)
       .then(res => {
