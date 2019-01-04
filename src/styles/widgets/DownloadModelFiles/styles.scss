@@ -7,8 +7,17 @@
 aside .downloadModelFiles {
   padding-top: 15px !important;
 
+  padding-bottom: 20px;
+  border-bottom: 1px solid $neutral_blue_8;
+
   h5 {
-    color: $neutral_blue_2;
+    margin-top: 10px;
+    font-size: 18px;
+    color: $neutral_blue_1;
+
+    i {
+      color: $neutral_blue_4;
+    }
   }
 
   h6 {
