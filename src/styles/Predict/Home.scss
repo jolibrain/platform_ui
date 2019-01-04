@@ -1,5 +1,62 @@
+@import "../palettes/palette-1.scss";
+
 .predict-home-component {
-  margin-top: 60px;
+  .page-title {
+    background-color: $neutral_blue_2;
+    color: $neutral_blue_10;
+    margin: 0 -16px;
+
+    h3 {
+      font-size: 36px;
+      margin: 0;
+      color: $neutral_blue_10;
+      font-weight: 600;
+    }
+
+    h4 {
+      font-size: 20px;
+      color: $neutral_blue_8;
+      font-weight: 400;
+
+      i {
+        color: $neutral_blue_6;
+      }
+    }
+
+    form {
+      float: right;
+      position: relative;
+      top: 25px;
+
+      button,
+      .input-group-text {
+        background-color: $neutral_blue_3;
+        border-color: $neutral_blue_4;
+
+        &:hover {
+          background-color: $neutral_blue_4;
+          border-color: $neutral_blue_5;
+        }
+      }
+      .input-group-text i {
+        color: #fff;
+      }
+    }
+  }
+
+  .layoutSelect {
+    i {
+      margin: 0 10px;
+      font-size: 18px;
+      color: #ccc;
+      cursor: pointer;
+    }
+
+    i.active {
+      color: #333;
+    }
+  }
+  margin-top: 40px;
 
   .layoutSelect {
     i {
