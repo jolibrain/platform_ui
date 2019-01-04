@@ -130,7 +130,7 @@
   .serviceCardList .card {
     height: 180px;
 
-    .card-title {
+    .card-title:hover {
       white-space: normal;
       word-break: break-all;
     }
@@ -143,5 +143,9 @@
   }
   .card-footer.col-6:hover {
     background-color: $neutral_blue_7;
+  }
+  .card-title:hover {
+    white-space: normal;
+    word-break: break-all;
   }
 }
