@@ -13,7 +13,7 @@ export default class PredictServiceList extends React.Component {
   renderCards() {
     const { services } = this.props;
     return (
-      <div id="predictServiceList" className="serviceQuickCreate card-columns">
+      <div id="predictServiceList" className="serviceQuickCreate row">
         {services.map((service, index) => {
           return <Card key={`${index}-${service.name}`} repository={service} />;
         })}

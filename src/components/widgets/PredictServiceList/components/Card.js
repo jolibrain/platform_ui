@@ -1,4 +1,5 @@
 import React from "react";
+
 import PropTypes from "prop-types";
 import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
@@ -117,102 +118,86 @@ export default class Card extends React.Component {
 
     if (!repository) return null;
 
-    let badges = [];
-
-    switch (repository.store.name) {
-      case "public":
-        badges.push({
-          classNames: "badge badge-primary",
-          status: repository.store.name
-        });
-        break;
-      default:
-        badges.push({
-          classNames: "badge badge-warning",
-          status: repository.store.name
-        });
-        break;
-    }
-
-    let tags = repository.trainingTags;
-    if (tags && tags.length > 0) {
-      tags.filter(t => t !== "private" && t !== "public").forEach(t =>
-        badges.push({
-          classNames: "badge badge-info",
-          status: t
-        })
-      );
-    }
-
-    if (repository.metricsDate) {
-      badges.push({
-        classNames: "badge badge-light",
-        status: moment(repository.metricsDate).format("L LT")
-      });
-    }
-
     return (
-      <div className="card">
-        <div className="card-header">
-          {badges.map((badge, key) => (
-            <span key={key} className={badge.classNames}>
-              {badge.status}
-            </span>
-          ))}
-        </div>
+      <div className="col-lg-4 col-md-12 my-2">
+        <div className="card">
+          <div className="card-body">
+            <h5 className="card-title">
+              <span className="title">
+                <i className="fas fa-archive" /> {repository.name}
+              </span>
+            </h5>
 
-        <div className="card-body">
-          <h5 className="card-title">{repository.name}</h5>
+            {repository.jsonConfig &&
+            repository.jsonConfig.description &&
+            repository.jsonConfig.description.length > 0 ? (
+              <h6 className="card-subtitle mb-2 text-muted">
+                {repository.jsonConfig.description}
+              </h6>
+            ) : (
+              ""
+            )}
 
-          {repository.jsonConfig &&
-          repository.jsonConfig.description &&
-          repository.jsonConfig.description.length > 0 ? (
-            <h6 className="card-subtitle mb-2 text-muted">
-              {repository.jsonConfig.description}
-            </h6>
-          ) : (
-            ""
-          )}
-
-          <DownloadModelFiles repository={repository} />
-        </div>
-
-        <div className="card-footer">
-          {this.state.errors.length > 0 ? (
-            <div className="alert alert-danger" role="alert">
-              <b>
-                <i className="fas fa-exclamation-circle" /> Error while creating
-                service
-              </b>
-              <ul>
-                {this.state.errors.map((error, i) => <li key={i}>{error}</li>)}
-              </ul>
+            <div className="row process-icons">
+              <div className="col-12">
+                <i className={`fas fa-tag ${repository.store.name}`} />{" "}
+                {repository.trainingTags.join(", ")}
+              </div>
+              {repository.metricsDate ? (
+                <div className="col-12">
+                  <i className="far fa-clock" />{" "}
+                  {moment(repository.metricsDate).format("L LT")}
+                </div>
+              ) : (
+                ""
+              )}
+              <div className="col-12">
+                <i className="fas fa-folder" /> {repository.path}
+              </div>
             </div>
-          ) : (
-            ""
-          )}
 
-          <div id="create-service" className="input-group">
-            <input
-              type="text"
-              className="form-control"
-              id="inlineFormInputName"
-              defaultValue={repository.name}
-              ref={this.serviceNameRef}
-            />
-            <div className="input-group-append">
-              <button
-                className="btn btn-outline-primary"
-                onClick={this.handleClickCreate.bind(this, repository.name)}
-              >
-                <i
-                  className={
-                    this.state.creatingService
-                      ? "fas fa-spinner fa-spin"
-                      : "fas fa-plus"
-                  }
-                />&nbsp; Add Service
-              </button>
+            <DownloadModelFiles repository={repository} hidePath />
+          </div>
+
+          <div className="card-footer">
+            {this.state.errors.length > 0 ? (
+              <div className="alert alert-danger" role="alert">
+                <b>
+                  <i className="fas fa-exclamation-circle" /> Error while
+                  creating service
+                </b>
+                <ul>
+                  {this.state.errors.map((error, i) => (
+                    <li key={i}>{error}</li>
+                  ))}
+                </ul>
+              </div>
+            ) : (
+              ""
+            )}
+
+            <div id="create-service" className="input-group">
+              <input
+                type="text"
+                className="form-control"
+                id="inlineFormInputName"
+                defaultValue={repository.name}
+                ref={this.serviceNameRef}
+              />
+              <div className="input-group-append">
+                <button
+                  className="btn btn-outline-primary"
+                  onClick={this.handleClickCreate.bind(this, repository.name)}
+                >
+                  <i
+                    className={
+                      this.state.creatingService
+                        ? "fas fa-spinner fa-spin"
+                        : "fas fa-plus"
+                    }
+                  />&nbsp; Add Service
+                </button>
+              </div>
             </div>
           </div>
         </div>
