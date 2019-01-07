@@ -72,12 +72,46 @@ export default class Repository {
     this._loadJsonConfig();
     this._loadJsonMetrics();
     this._loadBestModel();
+
+    // Set metrics date if it hasn't already been done
+    if (
+      !this.files.some(f =>
+        ["config.json", "best_model.txt", "metrics.json"].includes(f)
+      )
+    ) {
+      this._setMetricsDate();
+    }
+  }
+
+  @action.bound
+  async _setMetricsDate() {
+    // Do not try to fetch large files
+    const filenames = this.files.filter(f => {
+      return !(
+        f.includes("caffemodel") ||
+        f.includes("log") ||
+        f.includes("solverstate")
+      );
+    });
+
+    if (filenames.length > 0) {
+      try {
+        const meta = await agent.Webserver.getFileMeta(
+          `${this.path}${filenames[0]}`
+        );
+        this.metricsDate = meta.header["last-modified"];
+      } catch (e) {}
+    }
   }
 
   @action.bound
   async _loadJsonConfig() {
     try {
-      this.jsonConfig = await this.$reqJsonConfig();
+      const meta = await this.$reqJsonConfig();
+
+      this.metricsDate = meta.header["last-modified"];
+      this.jsonConfig = meta.content;
+
       // TODO : remove this line when config.json editable
       this.jsonConfig.parameters.mllib.gpuid = 0;
 
@@ -104,7 +138,9 @@ export default class Repository {
   async _loadBestModel() {
     try {
       let bestModel = {};
-      const bestModelTxt = await this.$reqBestModel();
+      const meta = await this.$reqBestModel();
+      this.metricsDate = meta.header["last-modified"];
+      const bestModelTxt = meta.content;
 
       // Transform current best_model.txt to json format
       if (bestModelTxt.length > 0) {
@@ -132,11 +168,11 @@ export default class Repository {
 
   $reqBestModel() {
     if (!this.files.includes("best_model.txt")) return null;
-    return agent.Webserver.getFile(`${this.path}best_model.txt`);
+    return agent.Webserver.getFileMeta(`${this.path}best_model.txt`);
   }
 
   $reqJsonConfig() {
     if (!this.files.includes("config.json")) return null;
-    return agent.Webserver.getFile(`${this.path}config.json`);
+    return agent.Webserver.getFileMeta(`${this.path}config.json`);
   }
 }
