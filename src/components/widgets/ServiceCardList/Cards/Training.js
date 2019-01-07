@@ -226,7 +226,7 @@ export default class TrainingCard extends React.Component {
           <div className="card-body">
             <h5 className="card-title">
               <span className="title">
-                <i class="fas fa-braille" /> {service.name}
+                <i className="fas fa-braille" /> {service.name}
               </span>
             </h5>
             <h6 className="card-subtitle mb-2 text-muted">

@@ -15,15 +15,6 @@ import Breadcrumb from "../../widgets/Breadcrumb";
 @observer
 @withRouter
 export default class MainView extends React.Component {
-  constructor(props) {
-    super(props);
-    this.openDeleteServiceModal = this.openDeleteServiceModal.bind(this);
-  }
-
-  openDeleteServiceModal() {
-    this.props.modalStore.setVisible("deleteService");
-  }
-
   render() {
     if (!this.props.deepdetectStore.isReady) return null;
 

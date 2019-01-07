@@ -7,6 +7,7 @@ import moment from "moment";
 @withRouter
 @inject("deepdetectStore")
 @inject("modelRepositoriesStore")
+@inject("modalStore")
 @observer
 export default class ModelRepositoryCard extends React.Component {
   constructor(props) {
@@ -18,55 +19,14 @@ export default class ModelRepositoryCard extends React.Component {
     };
 
     this.getValue = this.getValue.bind(this);
-    this.handlePublishClick = this.handlePublishClick.bind(this);
+    this.openPublishTrainingModal = this.openPublishTrainingModal.bind(this);
   }
 
-  handlePublishClick() {
-    this.setState({ isPublishing: true });
-
-    const { deepdetectStore, modelRepositoriesStore, service } = this.props;
-
-    const { repositoryStores } = modelRepositoriesStore;
-    const privateStore = repositoryStores.find(r => r.name === "private");
-    const targetRepository =
-      privateStore.systemPath + privateStore.nginxPath + service.name;
-
-    let serviceConfig = service.jsonConfig;
-
-    serviceConfig.model.repository = targetRepository;
-    serviceConfig.model.create_repository = true;
-
-    serviceConfig.parameters.output.store_config = true;
-    serviceConfig.parameters.mllib.from_repository = service.location;
-    delete serviceConfig.parameters.mllib.template;
-
-    const ddServer = deepdetectStore.hostableServer;
-    const existingServices = ddServer.services.map(s => s.name.toLowerCase());
-    if (existingServices.includes(service.name.toLowerCase())) {
-      this.setState({
-        isPublishing: false,
-        publishError: "Service name already exists"
-      });
-    } else {
-      ddServer.newService(
-        service.name,
-        serviceConfig,
-        async (response, err) => {
-          if (err) {
-            this.setState({
-              isPublishing: false,
-              publishError: `${err.status.msg}: ${err.status.dd_msg}`
-            });
-          } else {
-            // TODO add serviceName in ddServer.deleteService method
-            // to avoid using private request method
-            await ddServer.$reqDeleteService(service.name);
-            modelRepositoriesStore.refresh();
-            this.props.history.push(`/predict`);
-          }
-        }
-      );
-    }
+  openPublishTrainingModal() {
+    const { modalStore } = this.props;
+    modalStore.setVisible("publishTraining", true, {
+      service: this.props.service
+    });
   }
 
   getValue(attr) {
@@ -213,7 +173,7 @@ export default class ModelRepositoryCard extends React.Component {
     }
 
     let publishButton = repository.jsonConfig ? (
-      <a onClick={this.handlePublishClick}>
+      <a onClick={this.openPublishTrainingModal}>
         <i className="fas fa-plus" /> Publish
       </a>
     ) : null;
