@@ -37,7 +37,7 @@ export default class PublishTrainingModal extends React.Component {
       serviceName: service.name,
       targetRepository:
         privateStore.systemPath + privateStore.nginxPath + service.name,
-      publishError: "testing purpose - to remove"
+      publishError: null
     });
   }
 
