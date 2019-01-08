@@ -12,11 +12,9 @@ export default class DownloadModelFiles extends React.Component {
 
     return (
       <div className="downloadModelFiles">
-        <h5>
-          <i className="fas fa-download" /> Downloads
-        </h5>
-
-        <h6>{repository.path}</h6>
+        <h6>
+          <i className="fas fa-folder" /> {repository.path}
+        </h6>
 
         <div className="list-group list-group-flush">
           {files.map((f, index) => {

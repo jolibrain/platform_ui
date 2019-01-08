@@ -53,7 +53,7 @@ export default class PredictShow extends React.Component {
     return (
       <div>
         <Header />
-        <div className="layout-page page-gutter page-with-contextual-sidebar right-sidebar-collapsed page-with-icon-sidebar service-component">
+        <div className="layout-page page-gutter page-with-contextual-sidebar right-sidebar-collapsed page-with-icon-sidebar service-component predict-show-component">
           <LeftPanel />
           <MainView />
           <Modals />
