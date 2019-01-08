@@ -40,32 +40,6 @@ export default class RepositoryStore {
   }
 
   @action
-  async loadRepository(name) {
-    const existingRepository = this.repositories.some(r => r.name === name);
-
-    if (!existingRepository) {
-      const path = this.nginxPath + name;
-      let files = [];
-
-      try {
-        const result = await this.$reqFolder(path);
-        files = result.files;
-      } catch (err) {}
-
-      const isRepository =
-        files.includes("model.json") ||
-        files.includes("deploy.prototxt") ||
-        files.includes("config.json") ||
-        files.includes("metrics.json") ||
-        files.includes("best_model.txt");
-
-      if (isRepository) {
-        this.repositories.push(new Repository(path, files, this));
-      }
-    }
-  }
-
-  @action
   async _loadRepositories(path) {
     let folders = [],
       files = [];
