@@ -141,33 +141,33 @@ export default class PublishTrainingModal extends React.Component {
 
         <div className="modal-body">
           <form>
-            <div class="form-group">
-              <label for="serviceName">Service Name</label>
+            <div className="form-group">
+              <label htmlFor="serviceName">Service Name</label>
               <input
                 type="text"
-                class="form-control"
+                className="form-control"
                 id="serviceName"
                 aria-describedby="serviceNameHelp"
                 placeholder="Enter service name"
                 value={this.state.serviceName}
                 onChange={this.handleServiceNameChange}
               />
-              <small id="serviceNameHelp" class="form-text text-muted">
+              <small id="serviceNameHelp" className="form-text text-muted">
                 name of the Predict service, it must be unique.
               </small>
             </div>
-            <div class="form-group">
-              <label for="targetRepository">Target repository</label>
+            <div className="form-group">
+              <label htmlFor="targetRepository">Target repository</label>
               <input
                 type="text"
-                class="form-control"
+                className="form-control"
                 id="targetRepository"
                 aria-describedby="targetRepositoryHelp"
                 placeholder="Target repository"
                 value={this.state.targetRepository}
                 onChange={this.handleTargetRepositoryChange}
               />
-              <small id="targetRepositoryHelp" class="form-text text-muted">
+              <small id="targetRepositoryHelp" className="form-text text-muted">
                 system path where the Predict service will store its model
               </small>
             </div>
