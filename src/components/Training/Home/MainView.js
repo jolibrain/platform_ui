@@ -26,7 +26,7 @@ export default class MainView extends React.Component {
 
   componentWillMount() {
     const { modelRepositoriesStore } = this.props;
-    if (!modelRepositoriesStore.isReady) {
+    if (!modelRepositoriesStore.isReadyTraining) {
       modelRepositoriesStore.refreshTraining();
     }
   }
@@ -102,7 +102,7 @@ export default class MainView extends React.Component {
               </h4>
             </div>
 
-            <div className="col-lg-6 col-md-12">
+            <div className="col-lg-6 col-md-12 pb-2">
               <form className="form-inline">
                 <button
                   id="refreshServices"
