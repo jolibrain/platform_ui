@@ -11,40 +11,59 @@ import PerClassArray from "../../widgets/TrainingMonitor/components/PerClassArra
 @observer
 @withRouter
 export default class MainView extends React.Component {
-  componentWillMount() {
-    const { modelRepositoriesStore } = this.props;
-    if (!modelRepositoriesStore.isReady) {
-      modelRepositoriesStore.refresh();
+  constructor(props) {
+    super(props);
+
+    this.state = { repository: null };
+  }
+
+  async componentWillMount() {
+    const { match, modelRepositoriesStore } = this.props;
+    const trainingRepositoryStore = modelRepositoriesStore.repositoryStores.find(
+      r => r.name === "training"
+    );
+
+    // When using direct url, the training store will need to be refreshed
+    if (!trainingRepositoryStore.isReady) {
+      await trainingRepositoryStore.load();
+    }
+
+    if (match && match.params && match.params.modelPath) {
+      const repository = trainingRepositoryStore.repositories.find(r => {
+        return r.path === `/${match.params.modelPath}/`;
+      });
+
+      this.setState({ repository: repository });
     }
   }
 
   render() {
-    if (
-      !this.props.match ||
-      !this.props.match.params ||
-      !this.props.match.params.modelPath
-    )
-      return null;
-
-    const { modelPath } = this.props.match.params;
-    const { trainingRepositories } = this.props.modelRepositoriesStore;
-
-    const repository = trainingRepositories.find(
-      r => r.path === `/${modelPath}/`
-    );
-
-    if (!repository) return null;
+    const { repository } = this.state;
 
     return (
       <div className="main-view content-wrapper">
-        <div className="fluid-container">
-          <Title service={repository} />
-          <div className="content p-4">
-            <GeneralInfo service={repository} />
-            <PerClassArray service={repository} />
-            <RightPanel includeDownloadPanel />
+        {repository ? (
+          <div className="fluid-container">
+            <Title service={repository} />
+            <div className="content p-4">
+              <GeneralInfo service={repository} />
+              <PerClassArray service={repository} />
+              <RightPanel includeDownloadPanel />
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="fluid-container">
+            <div className="content p-4">
+              <p>
+                <button type="button" className="btn btn-outline-dark">
+                  <i className="fas fa-circle-notch fa-spin" /> loading
+                  archive...
+                </button>
+              </p>
+            </div>
+            <RightPanel />
+          </div>
+        )}
       </div>
     );
   }
