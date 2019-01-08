@@ -15,13 +15,17 @@ import DownloadModelFiles from "../../widgets/DownloadModelFiles";
 @observer
 export default class MainView extends React.Component {
   componentWillMount() {
-    const { deepdetectStore } = this.props;
+    const { deepdetectStore, modelRepositoriesStore } = this.props;
     if (!deepdetectStore.isReady) return null;
 
     const { server, service } = deepdetectStore;
 
     if (!server || !service) {
       this.props.history.push("/");
+    }
+
+    if (!modelRepositoriesStore.isReadyPredict) {
+      modelRepositoriesStore.refreshPredict();
     }
   }
 
@@ -45,12 +49,6 @@ export default class MainView extends React.Component {
     const repository = modelRepositoriesStore.privateRepositories.find(
       r => r.name === service.name
     );
-
-    if (!repository) {
-      modelRepositoriesStore.refreshPredict();
-    }
-
-    console.log(repository);
 
     return (
       <div className="main-view content-wrapper">
