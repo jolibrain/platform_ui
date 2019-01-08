@@ -79,14 +79,14 @@ export default class MainView extends React.Component {
       <div className="main-view content-wrapper">
         <div className="container-fluid">
           <div className="page-title p-4 row">
-            <div className="col-md-3 col-sm-6">
+            <div className="col-lg-3 col-md-6">
               <h3>{trainingServices.length}</h3>
               <h4>
                 <i className="fas fa-braille" /> Training Services
               </h4>
             </div>
 
-            <div className="col-md-3 col-sm-6">
+            <div className="col-lg-3 col-md-6">
               <h3>
                 {modelRepositoriesStore.isRefreshing ? (
                   <span>
@@ -102,7 +102,7 @@ export default class MainView extends React.Component {
               </h4>
             </div>
 
-            <div className="col-md-6 col-sm-12">
+            <div className="col-lg-6 col-md-12">
               <form className="form-inline">
                 <button
                   id="refreshServices"
