@@ -34,7 +34,7 @@ export default class MainView extends React.Component {
 
   componentWillMount() {
     const { modelRepositoriesStore } = this.props;
-    if (!modelRepositoriesStore.isReady) {
+    if (!modelRepositoriesStore.isReadyPredict) {
       modelRepositoriesStore.refreshPredict();
     }
   }

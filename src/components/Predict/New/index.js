@@ -14,8 +14,8 @@ import MainView from "./MainView";
 export default class PredictNew extends React.Component {
   componentWillMount() {
     const { deepdetectStore, modelRepositoriesStore } = this.props;
-    if (!modelRepositoriesStore.isReady) {
-      modelRepositoriesStore.refresh();
+    if (!modelRepositoriesStore.isReadyPredict) {
+      modelRepositoriesStore.refreshPredict();
     }
     deepdetectStore.setTrainRefreshMode(null);
   }
