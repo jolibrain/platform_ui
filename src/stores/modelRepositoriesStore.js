@@ -28,14 +28,48 @@ export class modelRepositoriesStore {
     this.repositoryStores.filter(r => r.isTraining).forEach(r => r.load());
   }
 
+  // Refresh Status
+  // when true, it is fetching models from webserver
+
   @computed
   get isRefreshing() {
-    return this.repositoryStores.map(r => r.isRefreshing).includes(true);
+    return this.repositoryStores.some(r => r.isRefreshing);
   }
 
   @computed
+  get isRefreshingPredict() {
+    return this.repositoryStores
+      .filter(r => !r.isTraining)
+      .some(r => r.isRefreshing);
+  }
+
+  @computed
+  get isRefreshingTraining() {
+    return this.repositoryStores
+      .filter(r => r.isTraining)
+      .some(r => r.isRefreshing);
+  }
+
+  // Ready Status
+  // when true, models have been fetched from webserver
+
+  @computed
   get isReady() {
-    return !this.repositoryStores.map(r => r.isReady).includes(false);
+    return this.repositoryStores.every(r => r.isReady);
+  }
+
+  @computed
+  get isReadyPredict() {
+    return this.repositoryStores
+      .filter(r => !r.isTraining)
+      .every(r => r.isReady);
+  }
+
+  @computed
+  get isReadyTraining() {
+    return this.repositoryStores
+      .filter(r => r.isTraining)
+      .every(r => r.isReady);
   }
 
   @computed
@@ -68,7 +102,7 @@ export class modelRepositoriesStore {
 
   @computed
   get archivedTrainingRepositories() {
-    return this.trainingRepositories
+    return this.trainingRepositories.length > 0
       ? this.trainingRepositories.filter(r => r.jsonMetrics || r.bestModel)
       : [];
   }
