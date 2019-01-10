@@ -1,5 +1,35 @@
 @import "../../palettes/palette-1.scss";
 
+.predict-show-component .main-view {
+  .downloadModelFiles {
+    h6 {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+
+      &:hover {
+        white-space: normal;
+        word-break: break-all;
+      }
+    }
+
+    i {
+      color: $neutral_blue_8;
+    }
+
+    .list-group-item {
+      background-color: transparent;
+      color: $neutral_blue_10;
+      margin-left: 20px;
+      border: 0;
+
+      &:hover {
+        background-color: $neutral_blue_1;
+      }
+    }
+  }
+}
+
 /*
  * Sidebar display
  * change padding and hide download icons in list-group
