@@ -191,7 +191,8 @@ export default class ImageConnector extends React.Component {
         input.json.body.predictions[0] &&
         (typeof input.json.body.predictions[0].rois !== "undefined" ||
           typeof input.json.body.predictions[0].nns !== "undefined")) ||
-      (input.postData &&
+      (input &&
+        input.postData &&
         input.postData.parameters &&
         input.postData.parameters.input &&
         input.postData.parameters.input.segmentation)
