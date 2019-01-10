@@ -7,6 +7,8 @@ import { Line } from "react-chartjs-2";
 
 @observer
 export default class MeasureChart extends React.Component {
+  chartReference = {};
+
   constructor(props) {
     super(props);
 
@@ -21,7 +23,17 @@ export default class MeasureChart extends React.Component {
   }
 
   toggleLogScale() {
-    this.setState({ logScale: !this.state.logScale });
+    const toggleScale = !this.state.logScale;
+
+    this.setState({ logScale: toggleScale });
+
+    const { chartInstance } = this.chartReference;
+
+    chartInstance.options.scales.yAxes[0].type = toggleScale
+      ? "logarithmic"
+      : "linear";
+
+    chartInstance.update();
   }
 
   getMinValue(attr) {
@@ -112,7 +124,9 @@ export default class MeasureChart extends React.Component {
       measure_hist[`${attr}_hist`] &&
       measure_hist[`${attr}_hist`].length > 0
     ) {
-      const measures = toJS(measure_hist[`${attr}_hist`]);
+      const measures = toJS(measure_hist[`${attr}_hist`]).filter(
+        x => x !== Infinity
+      );
       chartData = {
         labels: Array.apply(null, Array(measures.length)),
         datasets: [
@@ -126,7 +140,7 @@ export default class MeasureChart extends React.Component {
             showLine:
               this.state.showLine || this.props.steppedLine ? true : false,
             radius: measures.map(x => (this.props.steppedLine ? 0 : 2)),
-            pointBackgroundColor: measures.map(x => null)
+            pointBackgroundColor: measures.map(x => "hsl(210, 22%, 80%)")
           }
         ]
       };
@@ -193,20 +207,6 @@ export default class MeasureChart extends React.Component {
 
     let displayedValue = this.getValue(attribute);
 
-    if (this.state.logScale) {
-      chartOptions.scales.yAxes = [
-        {
-          type: "logarithmic"
-        }
-      ];
-    } else {
-      chartOptions.scales.yAxes = [
-        {
-          type: "linear"
-        }
-      ];
-    }
-
     if (attribute === "train_loss") {
       displayedValue = parseFloat(displayedValue);
 
@@ -234,7 +234,7 @@ export default class MeasureChart extends React.Component {
               data={chartData}
               legend={{ display: false }}
               options={chartOptions}
-              redraw={true}
+              ref={reference => (this.chartReference = reference)}
             />
           </div>
           <div className="description row">
