@@ -234,6 +234,7 @@ export default class MeasureChart extends React.Component {
               data={chartData}
               legend={{ display: false }}
               options={chartOptions}
+              redraw={true}
             />
           </div>
           <div className="description row">

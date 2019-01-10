@@ -7777,9 +7777,10 @@ react-bounding-box@^0.2.7:
     prop-types "^15.6.1"
     seedrandom "^2.4.3"
 
-react-chartjs-2@^2.7.2:
-  version "2.7.2"
-  resolved "https://registry.yarnpkg.com/react-chartjs-2/-/react-chartjs-2-2.7.2.tgz#9a9499f2943126b6ef89e7c8b93193879feb2597"
+react-chartjs-2@^2.7.4:
+  version "2.7.4"
+  resolved "https://registry.yarnpkg.com/react-chartjs-2/-/react-chartjs-2-2.7.4.tgz#e41ea4e81491dc78347111126a48e96ee57db1a6"
+  integrity sha512-lXTpBaDlk9rIMjRONjZd76dIUhEm3vOp2jOrJrsFG/UpFI5VqX8Xw83apVHTnUGJ968f8i/i/syLddls4NHy2g==
   dependencies:
     lodash "^4.17.4"
     prop-types "^15.5.8"
