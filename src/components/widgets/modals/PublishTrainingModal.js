@@ -83,7 +83,7 @@ export default class PublishTrainingModal extends React.Component {
     const privateStore = repositoryStores.find(r => r.name === "private");
     const targetPrefix = privateStore.systemPath + privateStore.nginxPath;
 
-    if (!targetRepository.startswith(targetPrefix)) {
+    if (!targetRepository.startsWith(targetPrefix)) {
       this.setState({
         spinner: false,
         publishError: `Target repository must start with prefix ${targetPrefix}`
