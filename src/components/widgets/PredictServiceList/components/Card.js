@@ -128,15 +128,13 @@ export default class Card extends React.Component {
               </span>
             </h5>
 
-            {repository.jsonConfig &&
-            repository.jsonConfig.description &&
-            repository.jsonConfig.description.length > 0 ? (
-              <h6 className="card-subtitle mb-2 text-muted">
-                {repository.jsonConfig.description}
-              </h6>
-            ) : (
-              ""
-            )}
+            <h6 className="card-subtitle mb-2 text-muted">
+              {repository.jsonConfig &&
+              repository.jsonConfig.description &&
+              repository.jsonConfig.description.length > 0
+                ? repository.jsonConfig.description
+                : " "}
+            </h6>
 
             <div className="row process-icons">
               <div className="col-12">

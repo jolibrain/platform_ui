@@ -6,7 +6,11 @@
   .card {
     box-shadow: 0 2px 6px 0 hsla(0, 0%, 0%, 0.6);
     border: 0;
-    height: 450px;
+    height: 363px;
+
+    .card-body {
+      padding: 1rem;
+    }
 
     .card-title {
       color: $neutral_blue_1;
@@ -28,6 +32,7 @@
 
     .card-subtitle {
       color: $neutral_blue_8;
+      height: 19px;
     }
 
     .process-icons {
@@ -73,6 +78,8 @@
     }
 
     .downloadModelFiles {
+      max-height: 109px;
+      overflow-y: auto;
       margin-top: 10px;
 
       h6 {
