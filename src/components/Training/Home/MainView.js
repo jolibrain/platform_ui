@@ -60,12 +60,29 @@ export default class MainView extends React.Component {
         return 0;
       });
 
+    // List of path to filter them out from displayed archive jobs
+    const displayedTrainingServicesPath = displayedTrainingServices.map(
+      service => {
+        return service.respInfo &&
+          service.respInfo.body &&
+          service.respInfo.body.repository
+          ? service.respInfo.body.repository
+              .replace("/opt/platform/models/training/", "")
+              .replace(/\/$/g, "")
+          : "";
+      }
+    );
+
     const { archivedTrainingRepositories } = modelRepositoriesStore;
     const displayedArchiveRepositories = archivedTrainingRepositories
       .filter(r => {
+        // Filter based on input form
+        // and existing path in currently training jobs
         return (
-          r.name.includes(filterServiceName) ||
-          r.trainingTags.join(" ").includes(filterServiceName)
+          r.name.includes(filterServiceName) &&
+          !displayedTrainingServicesPath.includes(
+            r.path.replace("/models/training/", "").replace(/\/$/g, "")
+          )
         );
       })
       .slice()
