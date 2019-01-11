@@ -13,10 +13,30 @@ export class dataRepositoriesStore {
 
   refresh() {
     this.load(this.settings.nginxPath);
+    this.cleanRootFolders();
   }
 
   $reqFolder(path) {
     return agent.Webserver.listFolders(path);
+  }
+
+  // Remove root folders when containing subfolders
+  // It permit to avoid selecting a data folder containing sub-structure
+  @action
+  cleanRootFolders() {
+    let deletableId = [];
+    this.repositories.forEach(r => {
+      if (
+        this.repositories.some(r2 => {
+          return r2.relativePath.startsWith(r.relativePath) && r.id !== r2.id;
+        })
+      ) {
+        deletableId.push(r.id);
+      }
+    });
+    this.repositories = this.repositories.filter(
+      r => !deletableId.includes(r.id)
+    );
   }
 
   @action
@@ -30,8 +50,6 @@ export class dataRepositoriesStore {
       }
 
       // TODO: replace data string by regexp
-      // TODO: remove root path,
-      //  it should only contain /data/alx/test when /data/alx/ is present
       folders.forEach(f => {
         this.repositories.push({
           id: this.repositories.length,
@@ -43,6 +61,7 @@ export class dataRepositoriesStore {
       });
 
       this.isLoading = false;
+      this.cleanRootFolders();
     });
   }
 }
