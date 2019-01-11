@@ -86,6 +86,10 @@
       i.fa-circle.waiting {
         color: $support_yellow_5;
       }
+
+      .fetchError {
+        color: $support_red_5;
+      }
     }
 
     .content {

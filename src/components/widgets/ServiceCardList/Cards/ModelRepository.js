@@ -197,7 +197,7 @@ export default class ModelRepositoryCard extends React.Component {
             </h5>
 
             <div className="row process-icons">
-              {typeof mltype !== "undefined" ? (
+              {typeof mltype !== "undefined" && mltype && mltype.length > 0 ? (
                 <div className="col-12">
                   <i className="fas fa-bullseye" /> {mltype}
                 </div>
@@ -218,6 +218,14 @@ export default class ModelRepositoryCard extends React.Component {
                   ? repository.path.replace("/models/training/", "")
                   : "--"}
               </div>
+              {repository.fetchError ? (
+                <div className="col-12 fetchError">
+                  <i className="fas fa-exclamation-circle" /> Error while
+                  reading repository
+                </div>
+              ) : (
+                ""
+              )}
             </div>
 
             <div className="content row ml-2 pt-4">

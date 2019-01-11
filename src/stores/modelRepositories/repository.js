@@ -6,6 +6,8 @@ export default class Repository {
   @observable files;
   @observable store;
 
+  @observable fetchError = null;
+
   @observable jsonConfig = null;
   @observable jsonMetrics = null;
   @observable bestModel = null;
@@ -14,10 +16,11 @@ export default class Repository {
 
   @observable files = [];
 
-  constructor(path, files, store) {
+  constructor(path, files, store, fetchError = null) {
     this.path = path;
     this.files = files;
     this.store = store;
+    this.fetchError = fetchError;
 
     this._load();
   }

@@ -48,7 +48,10 @@ export default class RepositoryStore {
       const result = await this.$reqFolder(path);
       folders = result.folders;
       files = result.files;
-    } catch (err) {}
+    } catch (err) {
+      const repository = new Repository(path, [], this, err);
+      return repository;
+    }
 
     const isRepository =
       files.includes("model.json") ||
