@@ -76,10 +76,12 @@ class InputForm extends React.Component {
         r => r.label === selected
       );
 
-      const store = this.props.imaginateStore;
-      store.service.addInputFromPath(folder, systemPath, () => {
-        store.predict();
-      });
+      if (folder) {
+        const store = this.props.imaginateStore;
+        store.service.addInputFromPath(folder, systemPath, () => {
+          store.predict();
+        });
+      }
     }
   }
 
