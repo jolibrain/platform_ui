@@ -46,7 +46,7 @@ export default class MainView extends React.Component {
       );
     });
 
-    const repository = modelRepositoriesStore.privateRepositories.find(
+    const repository = modelRepositoriesStore.predictRepositories.find(
       r => r.name === service.name
     );
 

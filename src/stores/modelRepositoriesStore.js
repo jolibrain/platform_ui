@@ -80,6 +80,22 @@ export class modelRepositoriesStore {
     );
   }
 
+  @computed
+  get predictRepositories() {
+    return Array.prototype.concat.apply(
+      [],
+      this.repositoryStores.filter(r => !r.isTraining).map(r => r.repositories)
+    );
+  }
+
+  @computed
+  get trainingRepositories() {
+    return Array.prototype.concat.apply(
+      [],
+      this.repositoryStores.filter(r => r.isTraining).map(r => r.repositories)
+    );
+  }
+
   storeRepositories(storeName) {
     const store = this.repositoryStores.find(r => r.name === storeName);
     return store ? store.repositories : [];
@@ -93,11 +109,6 @@ export class modelRepositoriesStore {
   @computed
   get privateRepositories() {
     return this.storeRepositories("private");
-  }
-
-  @computed
-  get trainingRepositories() {
-    return this.storeRepositories("training");
   }
 
   @computed
