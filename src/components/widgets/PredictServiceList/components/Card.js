@@ -184,7 +184,7 @@ export default class Card extends React.Component {
               />
               <div className="input-group-append">
                 <button
-                  className="btn btn-outline-primary"
+                  className="btn btn-primary"
                   onClick={this.handleClickCreate.bind(this, repository.name)}
                 >
                   <i

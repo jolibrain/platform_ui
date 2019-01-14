@@ -173,14 +173,17 @@ export default class ModelRepositoryCard extends React.Component {
     }
 
     let publishButton = repository.jsonConfig ? (
-      <a onClick={this.openPublishTrainingModal}>
+      <a
+        onClick={this.openPublishTrainingModal}
+        className="btn btn-outline-primary"
+      >
         <i className="fas fa-plus" /> Publish
       </a>
     ) : null;
 
     if (this.state.isPublishing) {
       publishButton = (
-        <a>
+        <a className="btn btn-outline-primary">
           <i className="fas fa-spinner fa-spin" /> Publishing...
         </a>
       );
@@ -248,15 +251,11 @@ export default class ModelRepositoryCard extends React.Component {
               ""
             )}
           </div>
-          <div className="card-footer text-center">
-            <div className="row">
-              <div className="col-6 text-center">{publishButton}</div>
-              <div className="col-6 text-center">
-                <Link to={archiveUrl}>
-                  View <i className="fas fa-chevron-right" />
-                </Link>
-              </div>
-            </div>
+          <div className="card-footer text-right">
+            {publishButton}{" "}
+            <Link to={archiveUrl} className="btn btn-primary">
+              View <i className="fas fa-chevron-right" />
+            </Link>
           </div>
         </div>
       </div>

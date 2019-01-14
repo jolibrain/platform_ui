@@ -11,7 +11,15 @@ export default class TrainingCard extends React.Component {
   constructor(props) {
     super(props);
 
+    this.openDeleteServiceModal = this.openDeleteServiceModal.bind(this);
     this.getValue = this.getValue.bind(this);
+  }
+
+  openDeleteServiceModal() {
+    const { modalStore } = this.props;
+    modalStore.setVisible("deleteService", true, {
+      service: this.props.service
+    });
   }
 
   getValue(attr) {
@@ -176,11 +184,8 @@ export default class TrainingCard extends React.Component {
         break;
       case "not-running":
         cardFooter = (
-          <div
-            className="card-footer text-center"
-            onClick={() => window.location.assign("#" + serviceUrl)}
-          >
-            <Link to={serviceUrl}>
+          <div className="card-footer text-right">
+            <Link to={serviceUrl} className="btn btn-primary">
               Monitor <i className="fas fa-chevron-right" />
             </Link>
           </div>
@@ -208,11 +213,18 @@ export default class TrainingCard extends React.Component {
           </div>
         );
         cardFooter = (
-          <div
-            className="card-footer text-center"
-            onClick={() => window.location.assign("#" + serviceUrl)}
-          >
-            <Link to={serviceUrl}>
+          <div className="card-footer text-right">
+            {service.serverSettings.isWritable ? (
+              <a
+                onClick={this.openDeleteServiceModal}
+                className="btn btn-outline-danger"
+              >
+                <i className="fas fa-trash" /> Delete
+              </a>
+            ) : (
+              ""
+            )}{" "}
+            <Link to={serviceUrl} className="btn btn-primary">
               Monitor <i className="fas fa-chevron-right" />
             </Link>
           </div>

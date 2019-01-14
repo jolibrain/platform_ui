@@ -40,12 +40,16 @@ export default class PredictCard extends React.Component {
             </h6>
           </div>
           <div className="card-footer text-right">
-            <a
-              onClick={this.openDeleteServiceModal}
-              className="btn btn-outline-danger"
-            >
-              <i className="fas fa-trash" /> Delete
-            </a>{" "}
+            {service.serverSettings.isWritable ? (
+              <a
+                onClick={this.openDeleteServiceModal}
+                className="btn btn-outline-danger"
+              >
+                <i className="fas fa-trash" /> Delete
+              </a>
+            ) : (
+              ""
+            )}{" "}
             <Link to={serviceUrl} className="btn btn-primary">
               Predict <i className="fas fa-chevron-right" />
             </Link>
