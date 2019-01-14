@@ -205,7 +205,9 @@ export default class ModelRepositoryCard extends React.Component {
                   <i className="fas fa-bullseye" /> {mltype}
                 </div>
               ) : (
-                ""
+                <div className="col-12">
+                  <i className="fas fa-bullseye" /> --
+                </div>
               )}
               {typeof repository.metricsDate !== "undefined" ? (
                 <div className="col-12">
@@ -231,7 +233,7 @@ export default class ModelRepositoryCard extends React.Component {
               )}
             </div>
 
-            <div className="content row py-2 pl-2">
+            <div className="content row py-2 pl-2 values">
               {info.map((i, index) => {
                 return (
                   <div key={index} className="col-6">
