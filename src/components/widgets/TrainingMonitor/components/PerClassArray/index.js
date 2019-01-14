@@ -56,7 +56,7 @@ export default class PerClassArray extends React.Component {
         <h4>Measures</h4>
         {measureKeys.length > 6 ? (
           <div className="row">
-            <div className="col-md-4 col-sm-12">
+            <div className="col-lg-4 col-md-12">
               <Table
                 measureKeys={measureKeys.slice(
                   0,
@@ -66,7 +66,7 @@ export default class PerClassArray extends React.Component {
               />
             </div>
 
-            <div className="col-md-4 col-sm-12">
+            <div className="col-lg-4 col-md-12">
               <Table
                 measureKeys={measureKeys.slice(
                   parseInt(measureKeys.length / 3, 10),
@@ -76,7 +76,7 @@ export default class PerClassArray extends React.Component {
               />
             </div>
 
-            <div className="col-md-4 col-sm-12">
+            <div className="col-lg-4 col-md-12">
               <Table
                 measureKeys={measureKeys.slice(
                   parseInt(measureKeys.length / 3, 10) * 2

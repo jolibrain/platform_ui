@@ -70,18 +70,19 @@ export default class GeneralInfo extends React.Component {
       case "segmentation":
         infoCharts.push(
           <MeasureChart
-            title="Mean Accuracy"
-            attribute="meanacc"
-            key="meanacc"
+            title="Mean IOU"
+            attribute="meaniou"
+            key="meaniou"
             steppedLine
+            showBest
             {...this.props}
           />
         );
         infoCharts.push(
           <MeasureChart
-            title="Mean IOU"
-            attribute="meaniou"
-            key="meaniou"
+            title="Mean Accuracy"
+            attribute="meanacc"
+            key="meanacc"
             steppedLine
             {...this.props}
           />
