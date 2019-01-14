@@ -111,11 +111,13 @@ export default class MeasureChart extends React.Component {
   getChartData(attr) {
     const { service } = this.props;
 
-    let measure_hist;
+    let measure_hist, measure;
     if (service.jsonMetrics) {
       measure_hist = service.jsonMetrics.body.measure_hist;
+      measure = service.jsonMetrics.body.measure;
     } else {
       measure_hist = service.measure_hist;
+      measure = service.measure;
     }
 
     let chartData = {};
@@ -124,11 +126,26 @@ export default class MeasureChart extends React.Component {
       measure_hist[`${attr}_hist`] &&
       measure_hist[`${attr}_hist`].length > 0
     ) {
-      const measures = toJS(measure_hist[`${attr}_hist`]).filter(
-        x => x !== Infinity
-      );
+      let measures = toJS(measure_hist[`${attr}_hist`]);
+      let labels = [];
+
+      // Create labels array from iteration count
+      const ratio = measure.iteration / measures.length;
+      for (var i = 0; i < measures.length; i++) {
+        labels.push(parseInt(i * ratio, 10));
+      }
+      // Force latest label to be iteration number
+      labels[labels.length - 1] = measure.iteration;
+
+      // Remove Infinity values from measure_hist
+      if (measures.some(x => x === Infinity)) {
+        measures = measure_hist[`${attr}_hist`].map(x => {
+          return x === Infinity ? 0 : x;
+        });
+      }
+
       chartData = {
-        labels: Array.apply(null, Array(measures.length)),
+        labels: labels,
         datasets: [
           {
             data: measures.map(x => (x ? x.toFixed(5) : null)),
@@ -149,7 +166,7 @@ export default class MeasureChart extends React.Component {
     // Add dummy data at the end of array to clearly see stepped line
     if (this.props.steppedLine && chartData.datasets) {
       const data = chartData.datasets[0].data;
-      chartData.labels.push(null);
+      chartData.labels.unshift(0);
       chartData.datasets[0].data.push(data[data.length - 1]);
     }
 
@@ -185,7 +202,7 @@ export default class MeasureChart extends React.Component {
       scales: {
         xAxes: [
           {
-            display: false
+            //display: false
           }
         ]
       }
