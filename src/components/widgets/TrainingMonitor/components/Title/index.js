@@ -107,7 +107,7 @@ export default class Title extends React.Component {
       <div className="title p-4 row">
         {infoColumns.map((col, index) => {
           return (
-            <div key={`info-${index}`} className="col-md-3 col-sm-6">
+            <div key={`info-${index}`} className="col-lg-3 col-md-6">
               <h3>{col.value}</h3>
               {col.isBest ? <h4>{col.title} - best</h4> : <h4>{col.title}</h4>}
             </div>
