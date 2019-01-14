@@ -152,7 +152,7 @@ export default class ModelRepositoryCard extends React.Component {
     let bestModelInfo = null;
     if (repository.bestModel) {
       bestModelInfo = (
-        <div className="content row ml-2 pt-4">
+        <div className="content row pt-2 pl-2 border-top">
           {Object.keys(repository.bestModel).map((k, i) => {
             let attrTitle =
               i === 0
@@ -175,7 +175,7 @@ export default class ModelRepositoryCard extends React.Component {
     let publishButton = repository.jsonConfig ? (
       <a
         onClick={this.openPublishTrainingModal}
-        className="btn btn-outline-primary"
+        className="btn btn-outline-primary mx-2"
       >
         <i className="fas fa-plus" /> Publish
       </a>
@@ -183,7 +183,7 @@ export default class ModelRepositoryCard extends React.Component {
 
     if (this.state.isPublishing) {
       publishButton = (
-        <a className="btn btn-outline-primary">
+        <a className="btn btn-outline-primary mx-2">
           <i className="fas fa-spinner fa-spin" /> Publishing...
         </a>
       );
@@ -231,7 +231,7 @@ export default class ModelRepositoryCard extends React.Component {
               )}
             </div>
 
-            <div className="content row ml-2 pt-4">
+            <div className="content row py-2 pl-2">
               {info.map((i, index) => {
                 return (
                   <div key={index} className="col-6">
@@ -252,7 +252,7 @@ export default class ModelRepositoryCard extends React.Component {
             )}
           </div>
           <div className="card-footer text-right">
-            {publishButton}{" "}
+            {publishButton}
             <Link to={archiveUrl} className="btn btn-primary">
               View <i className="fas fa-chevron-right" />
             </Link>

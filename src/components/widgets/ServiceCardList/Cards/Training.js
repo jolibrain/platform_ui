@@ -217,13 +217,13 @@ export default class TrainingCard extends React.Component {
             {service.serverSettings.isWritable ? (
               <a
                 onClick={this.openDeleteServiceModal}
-                className="btn btn-outline-danger"
+                className="btn btn-outline-danger mx-2"
               >
                 <i className="fas fa-trash" /> Delete
               </a>
             ) : (
               ""
-            )}{" "}
+            )}
             <Link to={serviceUrl} className="btn btn-primary">
               Monitor <i className="fas fa-chevron-right" />
             </Link>
