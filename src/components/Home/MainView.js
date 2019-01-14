@@ -13,16 +13,17 @@ export default class MainView extends React.Component {
     return (
       <div className="main-view content-wrapper">
         <div className="container-fluid">
-          <div className="content">
+          <div className="content text-center">
             <h2>{homeComponent.title}</h2>
-            <p>{homeComponent.description}</p>
+            {homeComponent.description.map((line, index) => {
+              return <p key={index}>{line}</p>;
+            })}
 
-            <p>
-              <Link to="/predict" className="btn btn-outline-primary">
+            <p className="buttons">
+              <Link to="/predict" className="btn btn-outline-primary mr-4">
                 <i className="fas fa-cube" /> Add Predict Service
               </Link>
-              &nbsp;
-              <Link to="/training" className="btn btn-outline-primary">
+              <Link to="/training" className="btn btn-primary">
                 <i className="fas fa-braille" /> Monitor Training Jobs
               </Link>
             </p>

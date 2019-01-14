@@ -1,5 +1,24 @@
+@import "./palettes/palette-1.scss";
+
+.home-component {
+  margin-top: 200px;
+
+  h2 {
+    color: $primary_cyan_1;
+    margin-bottom: 50px;
+  }
+
+  .description {
+    white-space: pre-line;
+  }
+
+  p.buttons {
+    margin-top: 50px;
+  }
+}
+
 .home {
-  margin-top: 100px;
+  margin-top: 300px;
 }
 
 .home h5 {
