@@ -9,15 +9,6 @@ import Modals from "./Modals";
 @inject("deepdetectStore")
 @inject("configStore")
 export default class TrainingHome extends React.Component {
-  constructor(props) {
-    super(props);
-    this.openPublishTrainingModal = this.openPublishTrainingModal.bind(this);
-  }
-
-  openPublishTrainingModal() {
-    this.props.modalStore.setVisible("publishTraining");
-  }
-
   componentWillMount() {
     const { deepdetectStore } = this.props;
     deepdetectStore.setTrainRefreshMode("services");

@@ -1,11 +1,24 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { observer } from "mobx-react";
+import { inject, observer } from "mobx-react";
 import { Link, withRouter } from "react-router-dom";
 
+@inject("modalStore")
 @withRouter
 @observer
 export default class PredictCard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.openDeleteServiceModal = this.openDeleteServiceModal.bind(this);
+  }
+
+  openDeleteServiceModal() {
+    const { modalStore } = this.props;
+    modalStore.setVisible("deleteService", true, {
+      service: this.props.service
+    });
+  }
+
   render() {
     const { service } = this.props;
 
@@ -26,8 +39,14 @@ export default class PredictCard extends React.Component {
               {service.settings.description}
             </h6>
           </div>
-          <div className="card-footer text-center">
-            <Link to={serviceUrl}>
+          <div className="card-footer text-right">
+            <a
+              onClick={this.openDeleteServiceModal}
+              className="btn btn-outline-danger"
+            >
+              <i className="fas fa-trash" /> Delete
+            </a>{" "}
+            <Link to={serviceUrl} className="btn btn-primary">
               Predict <i className="fas fa-chevron-right" />
             </Link>
           </div>

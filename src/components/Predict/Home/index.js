@@ -4,6 +4,7 @@ import { inject } from "mobx-react";
 import Header from "../../Header";
 import LeftPanel from "../commons/LeftPanel";
 import MainView from "./MainView";
+import Modals from "./Modals";
 
 @inject("deepdetectStore")
 @inject("configStore")
@@ -26,6 +27,7 @@ export default class PredictHome extends React.Component {
         <div className="layout-page page-gutter page-with-contextual-sidebar right-sidebar-collapsed page-with-icon-sidebar predict-home-component">
           <LeftPanel />
           <MainView />
+          <Modals />
         </div>
       </div>
     );
