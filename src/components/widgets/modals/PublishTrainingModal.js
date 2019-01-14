@@ -187,7 +187,7 @@ export default class PublishTrainingModal extends React.Component {
 
         <div className="modal-footer">
           <button
-            className="btn btn-secondary mb-2"
+            className="btn btn-outline-primary mb-2"
             onClick={this.handleCancel}
           >
             Cancel
