@@ -111,14 +111,12 @@
       background-color: $neutral_blue_10;
       border-top: 0;
       text-decoration: none;
-      cursor: pointer;
 
       position: absolute;
       bottom: 0;
       width: 100%;
 
       a {
-        color: $neutral_blue_1;
         text-decoration: none;
       }
 
@@ -129,6 +127,16 @@
       a.btn-outline-danger {
         display: none;
         color: $support_red_5;
+      }
+
+      a.btn-outline-primary {
+        color: $neutral_blue_1;
+        border-color: $neutral_blue_3;
+
+        &:hover {
+          color: $neutral_blue_10;
+          background-color: $neutral_blue_3;
+        }
       }
 
       &:hover {
