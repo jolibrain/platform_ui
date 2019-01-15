@@ -52,7 +52,7 @@ export default class Modals extends React.Component {
             "deleteService"
           )}
         >
-          <DeleteServiceModal redirect="/training" />
+          <DeleteServiceModal service={service} redirect="/training" />
         </Modal>
       </div>
     );

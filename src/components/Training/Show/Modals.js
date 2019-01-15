@@ -22,9 +22,13 @@ export default class Modals extends React.Component {
 
   render() {
     const modalStore = this.props.modalStore;
-
     const deleteServiceModal = modalStore.getModal("deleteService");
     const stopTrainingModal = modalStore.getModal("stopTraining");
+
+    let service = null;
+    if (deleteServiceModal.params && deleteServiceModal.params.service) {
+      service = deleteServiceModal.params.service;
+    }
 
     return (
       <div>
@@ -41,7 +45,7 @@ export default class Modals extends React.Component {
             "deleteService"
           )}
         >
-          <DeleteServiceModal redirect="/training" />
+          <DeleteServiceModal service={service} redirect="/training" />
         </Modal>
       </div>
     );

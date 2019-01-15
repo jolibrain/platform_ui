@@ -12,7 +12,10 @@ export default class Breadcrumb extends React.Component {
   }
 
   openDeleteServiceModal() {
-    this.props.modalStore.setVisible("deleteService");
+    const { modalStore } = this.props;
+    modalStore.setVisible("deleteService", true, {
+      service: this.props.service
+    });
   }
 
   render() {

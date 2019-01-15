@@ -16,22 +16,24 @@ export default class Modals extends React.Component {
   }
 
   modalBackdropClicked(modalName) {
-    const store = this.props.modalStore;
-    store.setVisible(modalName, false);
+    this.props.modalStore.setVisible(modalName, false);
   }
 
   render() {
     const store = this.props.modalStore;
-    const modal = store.getModal("deleteService");
+    const deleteServiceModal = store.getModal("deleteService");
 
-    if (!modal.visible) return null;
+    let service = null;
+    if (deleteServiceModal.params && deleteServiceModal.params.service) {
+      service = deleteServiceModal.params.service;
+    }
 
     return (
       <Modal
-        visible={modal.visible}
+        visible={deleteServiceModal.visible}
         onClickBackdrop={this.modalBackdropClicked.bind(this, "deleteService")}
       >
-        <DeleteServiceModal />
+        <DeleteServiceModal service={service} redirect="/predict" />
       </Modal>
     );
   }

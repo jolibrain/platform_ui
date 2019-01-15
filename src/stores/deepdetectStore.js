@@ -208,7 +208,7 @@ export class deepdetectStore {
   @action
   deleteService(callback) {
     if (this.server.isWritable) {
-      this.server.deleteService(callback);
+      this.server.deleteService(this.server.service.name, callback);
     }
   }
 
