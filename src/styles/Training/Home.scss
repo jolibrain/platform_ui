@@ -1,6 +1,12 @@
 @import "../palettes/palette-1.scss";
 
 .training-home-component {
+  h3 > .fa-spinner {
+    font-size: 12px;
+    position: relative;
+    top: -2px;
+  }
+
   .page-title {
     background-color: $neutral_blue_2;
     color: $neutral_blue_10;

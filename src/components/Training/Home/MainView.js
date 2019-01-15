@@ -169,7 +169,12 @@ export default class MainView extends React.Component {
 
             <hr />
             <h3>
-              <i className="fas fa-archive" /> Archived Jobs
+              <i className="fas fa-archive" /> Archived Jobs&nbsp;
+              {modelRepositoriesStore.isRefreshing ? (
+                <i className="fas fa-spinner fa-spin" />
+              ) : (
+                ""
+              )}
             </h3>
 
             <div className="archiveTrainingList archive">
