@@ -24,13 +24,15 @@ export default class MeasureChart extends React.Component {
 
   toggleLogScale() {
     const isLogScale = !this.state.logScale;
-
     this.setState({ logScale: isLogScale });
 
     const { chartInstance } = this.chartReference;
-
     const yAxe = chartInstance.options.scales.yAxes[0];
+
     if (isLogScale) {
+      // Add a userCallback function on logarithmic y axe
+      // to avoid issue with lots of labels on this axe
+      // https://github.com/chartjs/Chart.js/issues/4722#issuecomment-353067548
       yAxe.type = "logarithmic";
       yAxe.ticks = {
         labels: {
@@ -70,6 +72,7 @@ export default class MeasureChart extends React.Component {
         }
       };
     } else {
+      // Restore initial linear y axe, with no tick options
       yAxe.type = "linear";
       yAxe.ticks = {};
     }
