@@ -23,15 +23,56 @@ export default class MeasureChart extends React.Component {
   }
 
   toggleLogScale() {
-    const toggleScale = !this.state.logScale;
+    const isLogScale = !this.state.logScale;
 
-    this.setState({ logScale: toggleScale });
+    this.setState({ logScale: isLogScale });
 
     const { chartInstance } = this.chartReference;
 
-    chartInstance.options.scales.yAxes[0].type = toggleScale
-      ? "logarithmic"
-      : "linear";
+    const yAxe = chartInstance.options.scales.yAxes[0];
+    if (isLogScale) {
+      yAxe.type = "logarithmic";
+      yAxe.ticks = {
+        labels: {
+          index: ["min", "max"],
+          significand: [1],
+          removeEmptyLines: true
+        },
+        userCallback: function(tickValue, index, ticks) {
+          var me = this;
+          var labelOpts = me.options.ticks.labels || {};
+          var labelIndex = labelOpts.index || ["min", "max"];
+          var labelSignificand = labelOpts.significand || [1, 2, 5];
+          var significand =
+            tickValue / Math.pow(10, Math.floor(Math.log10(tickValue)));
+          var emptyTick = labelOpts.removeEmptyLines === true ? undefined : "";
+          var namedIndex = "";
+
+          if (index === 0) {
+            namedIndex = "min";
+          } else if (index === ticks.length - 1) {
+            namedIndex = "max";
+          }
+
+          if (
+            labelOpts === "all" ||
+            labelSignificand.indexOf(significand) !== -1 ||
+            labelIndex.indexOf(index) !== -1 ||
+            labelIndex.indexOf(namedIndex) !== -1
+          ) {
+            if (tickValue === 0) {
+              return "0";
+            } else {
+              return tickValue.toExponential();
+            }
+          }
+          return emptyTick;
+        }
+      };
+    } else {
+      yAxe.type = "linear";
+      yAxe.ticks = {};
+    }
 
     chartInstance.update();
   }
