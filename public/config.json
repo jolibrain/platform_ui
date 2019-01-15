@@ -7,10 +7,7 @@
     "title": "DeepDetect Platform - dev",
     "description": [
       "This is a dev platform",
-      "You can modify its title and description in public/config.json",
-      "",
-      "To set it up locally:",
-      "git clone git@gitlab.com:jolibrain/platform_docker.git; cd platform_docker/dev; docker-compose up -d"
+      "You can modify its title and this description in public/config.json"
     ],
     "headerLinks": {
       "linkJupyter": "http://10.10.77.61:18105/code/lab"

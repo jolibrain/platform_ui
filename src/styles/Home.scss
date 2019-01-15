@@ -1,23 +1,40 @@
 @import "./palettes/palette-1.scss";
 
 .home-component {
-  margin-top: 200px;
+  .content {
+    margin-top: 100px;
+    color: $neutral_blue_4;
 
-  h2 {
-    color: $neutral_blue_1;
-    margin-bottom: 50px;
-  }
+    h2 {
+      color: $neutral_blue_1;
+      margin-bottom: 20px;
+    }
 
-  .description {
-    white-space: pre-line;
-  }
+    .description {
+      white-space: pre-line;
+      margin-bottom: 100px;
 
-  p.buttons {
-    margin-top: 50px;
-  }
+      p {
+        margin: 0;
+      }
+    }
 
-  aside {
-    text-align: left;
+    .sections {
+      i.title-icon {
+        color: $neutral_blue_6;
+        font-size: 40px;
+        margin-bottom: 10px;
+      }
+
+      h3 {
+        font-size: 26px;
+      }
+
+      h3,
+      a {
+        color: $neutral_blue_1;
+      }
+    }
   }
 }
 
