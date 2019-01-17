@@ -55,9 +55,6 @@ export default class Repository {
 
   @computed
   get downloadableFiles() {
-    const configJson = this.files.filter(f => f === "config.json");
-    const protoTxtFiles = this.files.filter(f => f.includes("prototxt"));
-    const vocabDatFile = this.files.filter(f => f === "vocab.dat");
     const caffemodelFile = this.files
       .filter(f => f.includes("caffemodel"))
       .sort((a, b) => {
@@ -65,10 +62,15 @@ export default class Repository {
       })
       .slice(0, 1);
 
-    return configJson
-      .concat(protoTxtFiles)
-      .concat(vocabDatFile)
-      .concat(caffemodelFile)
+    const variousFiles = this.files.filter(f => {
+      return (
+        ["config.json", "vocab.data", "corresp.txt"].includes(f) ||
+        f.includes("prototxt")
+      );
+    });
+
+    return caffemodelFile
+      .concat(variousFiles)
       .filter(f => f.indexOf("~") === -1);
   }
 

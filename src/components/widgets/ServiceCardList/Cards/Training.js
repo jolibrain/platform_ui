@@ -233,7 +233,7 @@ export default class TrainingCard extends React.Component {
     }
 
     let bestModelInfo = null;
-    if (service.bestModel.hasOwnProperty("iteration")) {
+    if (service.bestModel !== null && service.bestModel.iteration) {
       bestModelInfo = (
         <div className="content row pt-2 pl-2 border-top">
           {Object.keys(service.bestModel).map((k, i) => {
