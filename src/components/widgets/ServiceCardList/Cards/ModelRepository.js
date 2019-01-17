@@ -149,10 +149,10 @@ export default class ModelRepositoryCard extends React.Component {
         break;
     }
 
-    let bestModelInfo = null;
+    let modelValues = null;
     if (repository.bestModel) {
-      bestModelInfo = (
-        <div className="content row pt-2 pl-2 border-top">
+      modelValues = (
+        <div className="content row py-2 pl-2">
           {Object.keys(repository.bestModel).map((k, i) => {
             let attrTitle =
               i === 0
@@ -164,7 +164,20 @@ export default class ModelRepositoryCard extends React.Component {
             return (
               <div key={i} className="col-6">
                 <h3>{repository.bestModel[k]}</h3>
-                <h4>{attrTitle} - best</h4>
+                <h4>{attrTitle}</h4>
+              </div>
+            );
+          })}
+        </div>
+      );
+    } else {
+      modelValues = (
+        <div className="content row py-2 pl-2 values">
+          {info.map((i, index) => {
+            return (
+              <div key={index} className="col-6">
+                <h3>{i.val}</h3>
+                <h4>{i.text}</h4>
               </div>
             );
           })}
@@ -232,18 +245,7 @@ export default class ModelRepositoryCard extends React.Component {
                 ""
               )}
             </div>
-
-            <div className="content row py-2 pl-2 values">
-              {info.map((i, index) => {
-                return (
-                  <div key={index} className="col-6">
-                    <h3>{i.val}</h3>
-                    <h4>{i.text}</h4>
-                  </div>
-                );
-              })}
-            </div>
-            {bestModelInfo}
+            {modelValues}
             {this.state.publishError ? (
               <div className="alert alert-danger" role="alert">
                 <i className="fas fa-exclamation-triangle" />{" "}

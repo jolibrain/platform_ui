@@ -61,14 +61,16 @@ export default class MainView extends React.Component {
 
   render() {
     const { deepdetectStore, modelRepositoriesStore } = this.props;
-    const { predictServices } = deepdetectStore;
     const { filterServiceName } = this.state;
 
+    let { predictServices } = deepdetectStore;
     let { publicRepositories, privateRepositories } = modelRepositoriesStore;
-    const availableServicesLength =
-      publicRepositories.length + privateRepositories.length;
 
     if (filterServiceName && filterServiceName.length > 0) {
+      predictServices = predictServices.filter(r => {
+        return r.name.includes(filterServiceName);
+      });
+
       publicRepositories = publicRepositories.filter(r => {
         return (
           r.name.includes(filterServiceName) ||
@@ -95,6 +97,9 @@ export default class MainView extends React.Component {
         .utc(b.metricsDate ? b.metricsDate : 1)
         .diff(moment.utc(a.metricsDate ? a.metricsDate : 1));
     });
+
+    const availableServicesLength =
+      publicRepositories.length + privateRepositories.length;
 
     return (
       <div className="main-view content-wrapper">
