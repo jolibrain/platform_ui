@@ -83,7 +83,7 @@ export default class MainView extends React.Component {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      Class names <i className="fas fa-chevron-right" />
+                      class names <i className="fas fa-chevron-right" />
                     </a>
                   </h4>
                   <h5>corresp.txt</h5>
