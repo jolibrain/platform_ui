@@ -27,7 +27,7 @@
   .card {
     box-shadow: 0 2px 6px 0 hsla(0, 0%, 0%, 0.6);
     border: 0;
-    height: 370px;
+    height: 390px;
 
     .list-group-item {
       border: 0;
@@ -36,6 +36,10 @@
 
     .card-body {
       padding: 15px;
+
+      .values {
+        height: 110px;
+      }
     }
 
     .card-title {
@@ -166,15 +170,13 @@
 }
 
 .archiveTrainingList {
+  .card {
+    height: 370px;
+  }
+
   .card-title:hover {
     white-space: normal;
     word-break: break-all;
-  }
-
-  .card-body {
-    .values {
-      height: 110px;
-    }
   }
 
   .card-footer:hover {

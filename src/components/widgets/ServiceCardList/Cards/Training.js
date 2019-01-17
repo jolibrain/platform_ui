@@ -201,7 +201,7 @@ export default class TrainingCard extends React.Component {
       case "training":
       default:
         cardContent = (
-          <div className="content row ml-2 pt-4">
+          <div className="content row py-2 pl-2 values">
             {info.map((i, index) => {
               return (
                 <div key={index} className="col-6">
@@ -230,6 +230,29 @@ export default class TrainingCard extends React.Component {
           </div>
         );
         break;
+    }
+
+    let bestModelInfo = null;
+    if (service.bestModel.hasOwnProperty("iteration")) {
+      bestModelInfo = (
+        <div className="content row pt-2 pl-2 border-top">
+          {Object.keys(service.bestModel).map((k, i) => {
+            let attrTitle =
+              i === 0
+                ? k.replace(/\b\w/g, l => l.toUpperCase())
+                : k.toUpperCase();
+
+            if (attrTitle === "MEANIOU") attrTitle = "Mean IOU";
+
+            return (
+              <div key={i} className="col-6">
+                <h3>{service.bestModel[k]}</h3>
+                <h4>{attrTitle} - best</h4>
+              </div>
+            );
+          })}
+        </div>
+      );
     }
 
     return (
@@ -279,6 +302,7 @@ export default class TrainingCard extends React.Component {
               </div>
             </div>
             {cardContent}
+            {bestModelInfo}
           </div>
           {cardFooter}
         </div>

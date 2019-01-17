@@ -1,4 +1,4 @@
-import { action, observable, computed, toJS } from "mobx";
+import { action, observable, computed, toJS, runInAction } from "mobx";
 import store from "store";
 
 import Input from "./input";
@@ -29,6 +29,9 @@ export default class deepdetectService {
   @observable respInfo = null;
   @observable respTraining = null;
   @observable respTrainMetrics = null;
+
+  @observable respBestModel = null;
+  @observable bestModel = null;
 
   @observable refresh = Math.random();
 
@@ -61,6 +64,8 @@ export default class deepdetectService {
   async trainInfo() {
     this.respTraining = await this.$reqTrainInfo();
     this.respTrainMetrics = await this.$reqTrainMetrics();
+
+    this._loadBestModel();
 
     this.refresh = Math.random();
     return this.respTraining;
@@ -473,5 +478,36 @@ export default class deepdetectService {
         input.boxes = prediction.rois.map(predict => predict.bbox);
       }
     }
+  }
+
+  @action
+  async _loadBestModel() {
+    try {
+      let bestModel = {};
+      this.respBestModel = await this.$reqBestModel();
+      const bestModelTxt = this.respBestModel.content;
+
+      // Transform current best_model.txt to json format
+      if (bestModelTxt.length > 0) {
+        bestModelTxt
+          .split("\n")
+          .filter(a => a.length > 0)
+          .map(a => a.split(":"))
+          .forEach(content => {
+            bestModel[content[0]] = content[1];
+          });
+      }
+
+      runInAction(() => {
+        this.bestModel = bestModel;
+      });
+    } catch (e) {
+      //console.log(e);
+    }
+  }
+
+  $reqBestModel() {
+    const path = this.respInfo.body.repository.replace("/opt/platform", "");
+    return agent.Webserver.getFileMeta(`${path}best_model.txt`);
   }
 }

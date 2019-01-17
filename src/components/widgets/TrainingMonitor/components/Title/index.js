@@ -77,7 +77,7 @@ export default class Title extends React.Component {
       title: "Iterations"
     });
 
-    if (service.bestModel) {
+    if (service.isRepository && service.bestModel) {
       Object.keys(service.bestModel).forEach((key, index) => {
         let title =
           index === 0
@@ -101,6 +101,27 @@ export default class Title extends React.Component {
           measure && measure.remain_time_str ? measure.remain_time_str : "--",
         title: "Remaining Time"
       });
+
+      if (service.bestModel) {
+        const bestModelKey = Object.keys(service.bestModel).find(
+          k => k !== "iteration"
+        );
+        if (bestModelKey && bestModelKey.length > 0) {
+          infoColumns.push({
+            value: service.bestModel[bestModelKey],
+            title: bestModelKey.toLocaleUpperCase(),
+            isBest: true
+          });
+        }
+
+        if (service.bestModel.iteration) {
+          infoColumns.push({
+            value: service.bestModel.iteration,
+            title: "Iterations",
+            isBest: true
+          });
+        }
+      }
     }
 
     return (
