@@ -72,6 +72,25 @@ export default class MainView extends React.Component {
                   </div>
                 );
               })}
+
+              {repository &&
+              repository.downloadableFiles &&
+              repository.downloadableFiles.includes("corresp.txt") ? (
+                <div className="row serviceCorresp">
+                  <h4>
+                    <a
+                      href={repository.path + "corresp.txt"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Class names <i className="fas fa-chevron-right" />
+                    </a>
+                  </h4>
+                  <h5>corresp.txt</h5>
+                </div>
+              ) : (
+                ""
+              )}
             </div>
 
             <div className="col-lg-4 col-md-12">

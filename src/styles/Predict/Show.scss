@@ -27,7 +27,8 @@
         color: $neutral_blue_6;
       }
     }
-    .serviceInfo {
+    .serviceInfo,
+    .serviceCorresp {
       margin-left: 10px;
       h4 {
         color: $neutral_blue_10;
@@ -35,6 +36,18 @@
         margin-bottom: 0;
         width: 100%;
         line-height: 20px;
+
+        a {
+          color: #fff;
+          text-decoration: dashed;
+
+          i {
+            color: #fff;
+            position: relative;
+            top: 1px;
+            font-size: 18px;
+          }
+        }
       }
 
       h5 {
