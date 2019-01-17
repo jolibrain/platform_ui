@@ -171,21 +171,29 @@ export default class MeasureChart extends React.Component {
       measure_hist[`${attr}_hist`].length > 0
     ) {
       let measures = toJS(measure_hist[`${attr}_hist`]);
-      let labels = [];
-
-      // Create labels array from iteration count
-      const ratio = measure.iteration / measures.length;
-      for (var i = 0; i < measures.length; i++) {
-        labels.push(parseInt(i * ratio, 10));
-      }
-      // Force latest label to be iteration number
-      labels[labels.length - 1] = measure.iteration;
-
       // Remove Infinity values from measure_hist
       if (measures.some(x => x === Infinity)) {
         measures = measure_hist[`${attr}_hist`].map(x => {
           return x === Infinity ? 0 : x;
         });
+      }
+
+      let labels = [];
+      if (measure && measure.iteration) {
+        // Create labels array from iteration count
+        const ratio = measure.iteration / measures.length;
+        for (var i = 0; i < measures.length; i++) {
+          labels.push(parseInt(i * ratio, 10));
+        }
+
+        // Force latest label to be iteration number
+        labels[labels.length - 1] = measure.iteration;
+      } else {
+        // When measure object is not available
+        // in archived jobs for example
+        for (var j = 0; j < measures.length; j++) {
+          labels.push(j);
+        }
       }
 
       chartData = {
