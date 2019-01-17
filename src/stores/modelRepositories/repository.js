@@ -17,6 +17,7 @@ export default class Repository {
   @observable files = [];
 
   constructor(path, files, store, fetchError = null) {
+    this.isRepository = true;
     this.path = path;
     this.files = files;
     this.store = store;

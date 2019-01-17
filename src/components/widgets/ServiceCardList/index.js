@@ -20,7 +20,7 @@ export default class ServiceCardList extends React.Component {
       })
       .map((service, index) => {
         let card = null;
-        if (service.jsonMetrics || service.bestModel || service.fetchError) {
+        if (service.isRepository) {
           card = <ModelRepositoryCard key={index} service={service} />;
         } else if (service.settings && service.settings.training) {
           card = <TrainingCard key={index} service={service} />;
