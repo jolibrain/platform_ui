@@ -73,8 +73,10 @@
     }
 
     .alert.alert-danger {
-      margin-bottom: 10px;
+      max-height: 109px;
+      overflow-y: auto;
       margin-top: 10px;
+      margin-bottom: 0px;
     }
 
     .downloadModelFiles {

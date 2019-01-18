@@ -154,10 +154,6 @@ export default class Card extends React.Component {
               </div>
             </div>
 
-            <DownloadModelFiles repository={repository} hidePath />
-          </div>
-
-          <div className="card-footer">
             {this.state.errors.length > 0 ? (
               <div className="alert alert-danger" role="alert">
                 <b>
@@ -171,9 +167,11 @@ export default class Card extends React.Component {
                 </ul>
               </div>
             ) : (
-              ""
+              <DownloadModelFiles repository={repository} hidePath />
             )}
+          </div>
 
+          <div className="card-footer">
             <div id="create-service" className="input-group">
               <input
                 type="text"
