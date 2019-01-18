@@ -6,7 +6,7 @@
   .card {
     box-shadow: 0 2px 6px 0 hsla(0, 0%, 0%, 0.6);
     border: 0;
-    height: 363px;
+    height: 414px;
 
     .card-body {
       padding: 1rem;
@@ -73,19 +73,39 @@
     }
 
     .alert.alert-danger {
-      max-height: 109px;
+      max-height: 161px;
       overflow-y: auto;
       margin-top: 10px;
       margin-bottom: 0px;
     }
 
     .downloadModelFiles {
-      max-height: 109px;
+      max-height: 161px;
       overflow-y: auto;
       margin-top: 10px;
 
       h6 {
         display: none;
+      }
+    }
+
+    .hasBestModel {
+      .alert.alert-danger,
+      .downloadModelFiles {
+        max-height: 109px;
+      }
+
+      h3 {
+        color: $neutral_blue_1;
+        font-size: 16px;
+        font-weight: 700;
+        margin: 0;
+      }
+
+      h4 {
+        color: $neutral_blue_3;
+        font-size: 14px;
+        margin-left: 10px;
       }
     }
   }

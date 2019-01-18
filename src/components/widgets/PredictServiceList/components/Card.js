@@ -118,10 +118,37 @@ export default class Card extends React.Component {
 
     if (!repository) return null;
 
+    let modelValues = null;
+    if (repository.bestModel) {
+      modelValues = (
+        <div className="content row pt-2 pl-2">
+          {Object.keys(repository.bestModel).map((k, i) => {
+            let attrTitle =
+              i === 0
+                ? k.replace(/\b\w/g, l => l.toUpperCase())
+                : k.toUpperCase();
+
+            if (attrTitle === "MEANIOU") attrTitle = "Mean IOU";
+
+            return (
+              <div key={i} className="col-6">
+                <h3>{repository.bestModel[k]}</h3>
+                <h4>{attrTitle}</h4>
+              </div>
+            );
+          })}
+        </div>
+      );
+    }
+
     return (
       <div className="col-lg-4 col-md-12 my-2">
         <div className="card">
-          <div className="card-body">
+          <div
+            className={
+              modelValues !== null ? "card-body hasBestModel" : "card-body"
+            }
+          >
             <h5 className="card-title">
               <span className="title">
                 <i className="fas fa-archive" /> {repository.name}
@@ -169,6 +196,7 @@ export default class Card extends React.Component {
             ) : (
               <DownloadModelFiles repository={repository} hidePath />
             )}
+            {modelValues}
           </div>
 
           <div className="card-footer">
