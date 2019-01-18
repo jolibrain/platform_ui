@@ -90,9 +90,16 @@
     }
 
     .hasBestModel {
+      padding-bottom: 0;
+
       .alert.alert-danger,
       .downloadModelFiles {
-        max-height: 109px;
+        max-height: 105px;
+      }
+
+      .content {
+        margin-top: 16px;
+        border-top: 1px solid $neutral_blue_9;
       }
 
       h3 {
