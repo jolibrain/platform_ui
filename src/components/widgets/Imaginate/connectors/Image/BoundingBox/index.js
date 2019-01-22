@@ -171,7 +171,6 @@ export default class BoundingBox extends React.Component {
     )
       return null;
 
-    const inputVals = input.json.body.predictions[0].vals;
     const classes = input.json.body.predictions[0].classes;
 
     let drawLabel = () => {},
@@ -210,6 +209,25 @@ export default class BoundingBox extends React.Component {
       });
     }
 
+    let pixelSegmentation = input.json.body.predictions[0].vals;
+
+    let segmentationMasks = [];
+    if (classes.some(c => c.mask !== null)) {
+      segmentationMasks = classes.map(c => c.mask);
+
+      boxes.forEach((b, index) => {
+        let label = null;
+        if (input.json.body.predictions[0].classes[index]) {
+          label = input.json.body.predictions[0].classes[index].cat;
+        }
+        b.label = label;
+      });
+    }
+
+    const separateSegmentation =
+      (pixelSegmentation && pixelSegmentation.length > 0) ||
+      segmentationMasks.length > 0;
+
     return (
       <Boundingbox
         className="boundingboxdisplay"
@@ -221,9 +239,10 @@ export default class BoundingBox extends React.Component {
             : -1
         }
         onSelected={this.props.onOver}
-        pixelSegmentation={inputVals ? inputVals : null}
-        separateSegmentation={inputVals ? inputVals.length > 0 : false}
+        pixelSegmentation={pixelSegmentation ? pixelSegmentation : null}
+        separateSegmentation={separateSegmentation}
         segmentationColors={this.props.displaySettings.segmentationColors}
+        segmentationMasks={segmentationMasks}
         drawLabel={drawLabel}
         drawBox={drawBox}
       />

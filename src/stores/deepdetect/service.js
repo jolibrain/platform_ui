@@ -434,6 +434,10 @@ export default class deepdetectService {
       case "classification":
         delete input.postData.parameters.output.bbox;
         break;
+      case "instance_segmentation":
+        input.postData.parameters.output.mask = true;
+        delete input.postData.parameters.output.bbox;
+        break;
       default:
         break;
     }
