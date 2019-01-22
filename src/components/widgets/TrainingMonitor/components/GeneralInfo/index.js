@@ -95,6 +95,7 @@ export default class GeneralInfo extends React.Component {
             attribute="map"
             key="map"
             steppedLine
+            showBest
             {...this.props}
           />
         );
