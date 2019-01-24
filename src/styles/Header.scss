@@ -204,6 +204,14 @@
   }
 
   .dropdown-menu.show {
+    border-top: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
     box-shadow: 0 4px 6px hsla(0, 100%, 0%, 0.1);
+    margin-top: 0;
+
+    i {
+      color: $neutral_blue_3;
+    }
   }
 }
