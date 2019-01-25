@@ -220,7 +220,7 @@ export default class BoundingBox extends React.Component {
         if (input.json.body.predictions[0].classes[index]) {
           label = input.json.body.predictions[0].classes[index].cat;
         }
-        b.label = label;
+        if (b !== null && typeof b !== "undefined") b.label = label;
       });
     }
 
