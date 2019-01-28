@@ -4,6 +4,46 @@ import { observer } from "mobx-react";
 
 import MeasureChart from "../MeasureChart";
 
+// # Training Monitor
+//
+// ## Measure values
+//
+// `measure` data is found in:
+//
+// * `metrics.json` saved file
+// * or in DeepDetect `GET /train` API call
+//
+// ## Default charts
+//
+// A default `train_loss` chart is displayed.
+//
+// An Accuracy chart can be displayed if `measure.acc` or `measure.accp` exists
+//
+// ## mltype
+//
+// `mltype` value is found in:
+//
+// * `metrics.json` saved file
+// * or DeepDetect `GET /service_name` service info API call.
+//
+// Each type pushes various charts on `TrainingShow` and `TrainingArchive` pages:
+//
+// * segmentation
+//   * meaniou
+//   * meanacc
+//
+// * detection
+//   * map
+//
+// * classification
+//   * meanacc
+//   * f1
+//   * mcll
+//
+// * regression
+//   * eucll
+//
+
 @observer
 export default class GeneralInfo extends React.Component {
   render() {
