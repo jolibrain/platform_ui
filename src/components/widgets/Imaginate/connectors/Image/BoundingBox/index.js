@@ -212,7 +212,7 @@ export default class BoundingBox extends React.Component {
     let pixelSegmentation = input.json.body.predictions[0].vals;
 
     let segmentationMasks = [];
-    if (classes && classes.some(c => c.mask !== null)) {
+    if (classes && classes.some(c => c.mask !== null && c.mask != undefined)) {
       segmentationMasks = classes.map(c => c.mask);
 
       boxes.forEach((b, index) => {
