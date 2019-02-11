@@ -58,6 +58,26 @@ export default class JsonResponse extends React.Component {
       json.body.predictions[0].vals.push("...");
     }
 
+    // Reduce length of mask data to display
+    // json without memory issues
+    if (
+      json &&
+      json.body &&
+      json.body.predictions &&
+      json.body.predictions[0] &&
+      json.body.predictions[0].classes &&
+      json.body.predictions[0].classes.some(
+        c => c.mask !== null && c.mask !== undefined
+      )
+    ) {
+      json.body.predictions[0].classes.forEach(c => {
+        if (c.mask.data.length > 100) {
+          c.mask.data = c.mask.data.slice(0, 100);
+          c.mask.data.push("...");
+        }
+      });
+    }
+
     return (
       <div>
         <div className="bd-clipboard">
