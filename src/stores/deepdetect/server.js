@@ -150,7 +150,11 @@ export default class deepdetectServer {
   async deleteService(serviceName, callback) {
     if (!this.isWritable) return null;
 
-    this.service.removeStore();
+    const service = this.services.find(s => s.name === serviceName);
+    if (service) {
+      service.removeStore();
+    }
+
     const resp = await this.$reqDeleteService(serviceName);
     await this.loadServices();
     if (callback && typeof callback === "function") callback(resp);
