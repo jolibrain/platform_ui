@@ -38,6 +38,13 @@ export default class deepdetectService {
   constructor(opts) {
     this.settings = opts.serviceSettings;
 
+    if (
+      this.settings.mltype &&
+      this.settings.mltype === "instance_segmentation"
+    ) {
+      this.settings.segmentationMask = true;
+    }
+
     if (!this.settings.request) this.settings.request = {};
 
     this.serverName = opts.serverName;
@@ -435,7 +442,12 @@ export default class deepdetectService {
         delete input.postData.parameters.output.bbox;
         break;
       case "instance_segmentation":
-        input.postData.parameters.output.mask = true;
+        if (this.settings.segmentationMask) {
+          input.postData.parameters.output.mask = true;
+        } else {
+          delete input.postData.parameters.output.mask;
+        }
+
         delete input.postData.parameters.output.bbox;
         break;
       default:

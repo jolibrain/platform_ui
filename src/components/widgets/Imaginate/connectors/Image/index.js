@@ -27,7 +27,8 @@ export default class ImageConnector extends React.Component {
       sliderBest: 1,
       sliderSearchNn: 10,
       boxFormat: "simple",
-      showLabels: false
+      showLabels: false,
+      segmentationMask: true
     };
 
     this.onOver = this.onOver.bind(this);
@@ -40,6 +41,9 @@ export default class ImageConnector extends React.Component {
     this.handleBestThreshold = this.handleBestThreshold.bind(this);
     this.handleSearchNnThreshold = this.handleSearchNnThreshold.bind(this);
     this.handleMultisearchRois = this.handleMultisearchRois.bind(this);
+    this.handleSegmentationMaskToggle = this.handleSegmentationMaskToggle.bind(
+      this
+    );
 
     this.setBoxFormat = this.setBoxFormat.bind(this);
     this.toggleLabels = this.toggleLabels.bind(this);
@@ -101,6 +105,15 @@ export default class ImageConnector extends React.Component {
     this.props.imaginateStore.predict();
   }
 
+  handleSegmentationMaskToggle(e) {
+    const { service } = this.props.imaginateStore;
+    service.settings.segmentationMask = e.target.checked;
+    this.setState({
+      segmentationMask: e.target.checked
+    });
+    this.props.imaginateStore.predict();
+  }
+
   render() {
     const { service, serviceSettings } = this.props.imaginateStore;
 
@@ -109,6 +122,22 @@ export default class ImageConnector extends React.Component {
     const input = service.selectedInput;
 
     let uiControls = [];
+
+    if (service.settings.mltype === "instance_segmentation") {
+      console.log(
+        service.settings.segmentationMask
+          ? "segmenationMask"
+          : "no segmenationMask"
+      );
+      uiControls.push(
+        <ToggleControl
+          key="settingCheckbox-display-mask"
+          title="Segmentation Mask"
+          value={this.state.segmentationMask}
+          onChange={this.handleSegmentationMaskToggle}
+        />
+      );
+    }
 
     if (
       input &&

@@ -65,14 +65,14 @@ export default class BoundingBox extends React.Component {
     const coord = box.coord ? box.coord : box;
 
     let [x, y, width, height] = [0, 0, 0, 0];
-    if (coord.xmin) {
+    if (coord.xmin && coord.xmax && coord.ymin && coord.ymax) {
       [x, y, width, height] = [
         coord.xmin,
         coord.ymax,
         coord.xmax - coord.xmin,
         coord.ymin - coord.ymax
       ];
-    } else {
+    } else if (coord.x && coord.y && coord.width && coord.height) {
       [x, y, width, height] = coord;
     }
 
@@ -212,7 +212,7 @@ export default class BoundingBox extends React.Component {
     let pixelSegmentation = input.json.body.predictions[0].vals;
 
     let segmentationMasks = [];
-    if (classes && classes.some(c => c.mask !== null && c.mask != undefined)) {
+    if (classes && classes.some(c => c.mask !== null && c.mask !== undefined)) {
       segmentationMasks = classes.map(c => c.mask);
 
       boxes.forEach((b, index) => {
