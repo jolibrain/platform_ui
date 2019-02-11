@@ -62,8 +62,8 @@ export default class PerClassArray extends React.Component {
         <th scope="row" className="sparkline">
           <Sparklines
             data={sparkData}
-            min={parseInt(Math.min(...sparkData), 10)}
-            max={parseInt(Math.max(...sparkData), 10)}
+            min={Math.floor(Math.min(...sparkData))}
+            max={Math.ceil(Math.max(...sparkData))}
           >
             <SparklinesLine color="#102a42" />
           </Sparklines>
