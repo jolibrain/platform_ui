@@ -61,6 +61,8 @@ class AboutDropdown extends React.Component {
           <a
             className="dropdown-item"
             href={`https://gitlab.com/jolibrain/core-ui/commits/${branch}`}
+            target="_blank"
+            rel="noopener noreferrer"
           >
             Build {buildCommitHash.slice(0, 6)}
             <br />
