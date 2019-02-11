@@ -60,7 +60,11 @@ export default class PerClassArray extends React.Component {
     return (
       <tr key={`measureKey-${measureKey}`}>
         <th scope="row" className="sparkline">
-          <Sparklines data={sparkData} min={0} max={100}>
+          <Sparklines
+            data={sparkData}
+            min={parseInt(Math.min(...sparkData), 10)}
+            max={parseInt(Math.max(...sparkData), 10)}
+          >
             <SparklinesLine color="#102a42" />
           </Sparklines>
         </th>
