@@ -38,6 +38,10 @@ export default class deepdetectService {
   constructor(opts) {
     this.settings = opts.serviceSettings;
 
+    if (this.settings.mltype && this.settings.mltype === "segmentation") {
+      this.settings.segmentationConfidence = false;
+    }
+
     if (
       this.settings.mltype &&
       this.settings.mltype === "instance_segmentation"
@@ -438,6 +442,11 @@ export default class deepdetectService {
       case "segmentation":
         input.postData.parameters.input = { segmentation: true };
         input.postData.parameters.output = {};
+
+        if (this.settings.segmentationConfidence) {
+          input.postData.parameters.output.confidence = "best";
+        }
+
         break;
 
       case "classification":
