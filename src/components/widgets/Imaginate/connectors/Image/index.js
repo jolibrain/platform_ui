@@ -28,7 +28,8 @@ export default class ImageConnector extends React.Component {
       sliderSearchNn: 10,
       boxFormat: "simple",
       showLabels: false,
-      segmentationMask: true
+      segmentationMask: true,
+      segmentationConfidence: false
     };
 
     this.onOver = this.onOver.bind(this);
@@ -42,6 +43,9 @@ export default class ImageConnector extends React.Component {
     this.handleSearchNnThreshold = this.handleSearchNnThreshold.bind(this);
     this.handleMultisearchRois = this.handleMultisearchRois.bind(this);
     this.handleSegmentationMaskToggle = this.handleSegmentationMaskToggle.bind(
+      this
+    );
+    this.handleSegmentationConfidenceToggle = this.handleSegmentationConfidenceToggle.bind(
       this
     );
 
@@ -114,6 +118,15 @@ export default class ImageConnector extends React.Component {
     this.props.imaginateStore.predict();
   }
 
+  handleSegmentationConfidenceToggle(e) {
+    const { service } = this.props.imaginateStore;
+    service.settings.segmentationConfidence = e.target.checked;
+    this.setState({
+      segmentationConfidence: e.target.checked
+    });
+    this.props.imaginateStore.predict();
+  }
+
   render() {
     const { service, serviceSettings } = this.props.imaginateStore;
 
@@ -124,11 +137,6 @@ export default class ImageConnector extends React.Component {
     let uiControls = [];
 
     if (service.settings.mltype === "instance_segmentation") {
-      console.log(
-        service.settings.segmentationMask
-          ? "segmenationMask"
-          : "no segmenationMask"
-      );
       uiControls.push(
         <ToggleControl
           key="settingCheckbox-display-mask"
@@ -139,11 +147,23 @@ export default class ImageConnector extends React.Component {
       );
     }
 
+    if (service.settings.mltype === "segmentation") {
+      uiControls.push(
+        <ToggleControl
+          key="settingCheckbox-display-segmentation-confidence"
+          title="Segmentation Confidence"
+          value={this.state.segmentationConfidence}
+          onChange={this.handleSegmentationConfidenceToggle}
+        />
+      );
+    }
+
     if (
       input &&
       !input.hasPredictionValues &&
       !input.isCtcOuput &&
-      !input.isSegmentationInput
+      !input.isSegmentationInput &&
+      service.settings.mltype !== "segmentation"
     ) {
       uiControls.push(<Threshold key="threshold" />);
 
