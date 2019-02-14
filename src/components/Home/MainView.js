@@ -31,7 +31,11 @@ export default class MainView extends React.Component {
                 <i className="fas fa-save title-icon" />
                 <h3>Data Upload</h3>
                 <p>Upload your data to use them in your training jobs.</p>
-                <a href="/filebrowser">
+                <a
+                  href="/filebrowser"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
                   Upload files <i className="fas fa-chevron-right" />
                 </a>
               </div>
@@ -40,7 +44,7 @@ export default class MainView extends React.Component {
                 <i className="fas fa-circle-notch title-icon" />
                 <h3>Jupyter Notebooks</h3>
                 <p>Start new training jobs from Jupyter notebooks.</p>
-                <a href="/code/lab">
+                <a href="/code/lab" target="_blank" rel="noreferrer noopener">
                   Create notebooks <i className="fas fa-chevron-right" />
                 </a>
               </div>
