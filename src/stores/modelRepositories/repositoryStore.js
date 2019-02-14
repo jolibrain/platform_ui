@@ -30,8 +30,10 @@ export default class RepositoryStore {
     let repositories = await this._loadRepositories(this.nginxPath);
 
     // flatten repositories array
-    while (repositories.find(r => r.constructor.name === "Array")) {
-      repositories = [].concat.apply([], repositories).filter(r => r);
+    if (repositories && repositories.length > 0) {
+      while (repositories.find(r => r.constructor.name === "Array")) {
+        repositories = [].concat.apply([], repositories).filter(r => r);
+      }
     }
 
     this.repositories = repositories;
