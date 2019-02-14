@@ -318,6 +318,7 @@ export default class Form extends React.Component {
                 placeholder="Model Repository location"
                 onChange={this.handleInputChange}
                 defaultSelected={this.state.selectedLocation}
+                filterBy={["name"]}
                 renderMenu={(results, menuProps) => {
                   return (
                     <Menu {...menuProps}>
