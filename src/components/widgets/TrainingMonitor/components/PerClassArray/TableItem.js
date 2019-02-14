@@ -57,6 +57,21 @@ export default class PerClassArray extends React.Component {
       }
     }
 
+    if (typeof value.toFixed === "function") {
+      if (value > 1) {
+        value = value.toFixed(5);
+      } else {
+        // Find position of first number after the comma
+        const zeroPosition = value
+          .toString()
+          .split("0")
+          .slice(2)
+          .findIndex(elem => elem.length > 0);
+
+        value = value.toFixed(zeroPosition + 5);
+      }
+    }
+
     return (
       <tr key={`measureKey-${measureKey}`}>
         <th scope="row" className="sparkline">
