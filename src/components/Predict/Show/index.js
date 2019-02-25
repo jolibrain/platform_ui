@@ -26,8 +26,6 @@ export default class PredictShow extends React.Component {
       this.props.history.push("/predict");
     } else if (!deepdetectStore.init(params)) {
       this.props.history.push("/404");
-    } else if (!deepdetectStore.server.service) {
-      this.props.history.push("/");
     } else {
       imaginateStore.connectToDdStore(deepdetectStore);
     }
