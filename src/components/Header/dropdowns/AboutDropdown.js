@@ -82,8 +82,6 @@ class AboutDropdown extends React.Component {
     }
 
     if (buildInfoStore.isUpdatable) {
-      const { dockerVersions } = buildInfoStore;
-
       updateInfo = (
         <div id="update-info">
           <div className="update-link">

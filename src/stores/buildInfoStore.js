@@ -21,6 +21,7 @@ export class buildInfoStore {
   @computed
   get isUpdatable() {
     return (
+      this.dockerVersions &&
       this.dockerVersions.local &&
       this.dockerVersions.remote &&
       this.dockerVersions.local.length > 0 &&
