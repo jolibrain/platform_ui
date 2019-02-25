@@ -6162,9 +6162,10 @@ mobx-utils@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/mobx-utils/-/mobx-utils-5.0.0.tgz#384e805064c237b9a9446788a9e68278a3437610"
 
-mobx@^5.1.2:
-  version "5.1.2"
-  resolved "https://registry.yarnpkg.com/mobx/-/mobx-5.1.2.tgz#5a3a0bc381ba155901e33eabe492c3c7482e8b35"
+mobx@^5.9.0:
+  version "5.9.0"
+  resolved "https://registry.yarnpkg.com/mobx/-/mobx-5.9.0.tgz#a08edd7132787f771409c9c33788a5df66ff7ce7"
+  integrity sha512-D3mY1uM3H9BP5duk5tTanrOq92yqetYKsprPJWvkKDrbs+fro59xrpWX+vtr10YoLgJIFz+a4A8lI+4YtqmCUQ==
 
 mocha-nightwatch@3.2.2:
   version "3.2.2"
