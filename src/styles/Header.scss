@@ -136,6 +136,57 @@
     color: $neutral_blue_9;
   }
 
+  #about-dropdown {
+    .dropdown-menu {
+      padding-bottom: 0;
+    }
+
+    i.update-available {
+      color: $support_yellow_5;
+    }
+
+    #update-info {
+      .update-link {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+
+        color: #fff;
+        background-color: $neutral_blue_3;
+        margin: 0px 0px;
+        padding: 3px 5px;
+
+        a,
+        i {
+          color: #fff;
+        }
+
+        i {
+          position: relative;
+          top: 23px;
+        }
+      }
+
+      ul {
+        list-style: none;
+        font-size: 14px;
+
+        .fa-circle {
+          color: $primary_cyan_5;
+        }
+
+        .fa-circle.updatable {
+          color: $support_yellow_5;
+        }
+
+        li:hover {
+          background-color: transparent;
+        }
+      }
+    }
+  }
+
   #servers-dropdown {
     i {
       color: $neutral_blue_9;

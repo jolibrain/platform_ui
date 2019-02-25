@@ -46,6 +46,20 @@ const BuildInfo = {
 };
 
 /* ====
+ * json version info
+ * ====
+ */
+
+const VersionInfo = {
+  get: (path = "version.json") =>
+    superagent
+      .get(path)
+      .withCredentials()
+      .end(handleErrors)
+      .then(responseBody)
+};
+
+/* ====
  * gpustats
  * ====
  */
@@ -268,6 +282,7 @@ const Webserver = {
 export default {
   Config,
   BuildInfo,
+  VersionInfo,
   GpuInfo,
   Deepdetect,
   Webserver

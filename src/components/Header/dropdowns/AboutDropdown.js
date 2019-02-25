@@ -51,6 +51,7 @@ class AboutDropdown extends React.Component {
     const { buildInfoStore } = this.props;
 
     let buildInfo = null;
+    let updateInfo = null;
 
     if (buildInfoStore.isReady) {
       const { buildCommitHash, buildDate, branch } = buildInfoStore;
@@ -80,6 +81,29 @@ class AboutDropdown extends React.Component {
       );
     }
 
+    if (buildInfoStore.isUpdatable) {
+      const { dockerVersions } = buildInfoStore;
+
+      updateInfo = (
+        <div id="update-info">
+          <div className="update-link">
+            <div className="col-2">
+              <i className="fas fa-chevron-right" />
+            </div>
+            <div className="col-10">
+              <a
+                href="https://deepdetect.com/platform/#update"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                An update is available for your Platform
+              </a>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <li
         id="about-dropdown"
@@ -96,7 +120,12 @@ class AboutDropdown extends React.Component {
           aria-expanded="false"
           onClick={this.handleAboutClick}
         >
-          About
+          {buildInfoStore.isUpdatable ? (
+            <i className="fas fa-flag update-available" />
+          ) : (
+            ""
+          )}
+          &nbsp;About
         </a>
         <div
           className={`dropdown-menu ${this.state.aboutDown ? "show" : ""}`}
@@ -128,6 +157,7 @@ class AboutDropdown extends React.Component {
             Jolibrain
           </a>
           {buildInfo}
+          {updateInfo}
         </div>
       </li>
     );
