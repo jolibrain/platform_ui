@@ -255,6 +255,20 @@ export default class MeasureChart extends React.Component {
         xAxes: [
           {
             //display: false
+            ticks: {
+              autoSkip: true,
+              maxTicksLimit: 10,
+              callback: function(value, index, values) {
+                let output = value;
+                if (value > 1000) {
+                  output = Math.ceil(value / 100) * 100;
+                }
+                if (index === values.length - 1) {
+                  output = value;
+                }
+                return output;
+              }
+            }
           }
         ]
       }
