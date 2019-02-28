@@ -1,10 +1,10 @@
 #!/bin/bash
 
 set -ex
-
-CURRENT_DIR="${PWD##*/}"
-IMAGE_NAME="platform/ui"
 TAG=$(git rev-parse --verify --short HEAD)
+
+echo ${TAG}
+#exit()
 
 ###
 ### on eris registry
@@ -17,5 +17,6 @@ TAG=$(git rev-parse --verify --short HEAD)
 IMAGE_NAME="jolibrain/platform_ui"
 
 yarn run build
-docker build -t ${IMAGE_NAME}:${TAG} -t ${IMAGE_NAME}:latest .
-docker push ${IMAGE_NAME}
+docker build -t ${IMAGE_NAME}:latest -t ${IMAGE_NAME}:${TAG} --no-cache .
+docker push ${IMAGE_NAME}:latest
+docker push ${IMAGE_NAME}:${TAG}
