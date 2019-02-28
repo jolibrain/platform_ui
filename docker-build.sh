@@ -2,18 +2,6 @@
 
 set -ex
 TAG=$(git rev-parse --verify --short HEAD)
-
-echo ${TAG}
-#exit()
-
-###
-### on eris registry
-###
-# IMAGE_NAME="eris:7750/platform/ui"
-
-###
-### on dockerhub registry
-###
 IMAGE_NAME="jolibrain/platform_ui"
 
 yarn run build
