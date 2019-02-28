@@ -444,7 +444,7 @@ export default class deepdetectService {
         input.postData.parameters.output = {};
 
         if (this.settings.segmentationConfidence) {
-          input.postData.parameters.output.confidence = "best";
+          input.postData.parameters.output.confidences = ["best"];
         }
 
         break;
