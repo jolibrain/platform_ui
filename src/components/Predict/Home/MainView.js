@@ -182,19 +182,40 @@ export default class MainView extends React.Component {
             <hr />
 
             <div className="predictServiceList">
-              <h4>Available Services</h4>
+              <h4>
+                Available Services&nbsp;
+                {modelRepositoriesStore.isRefreshing ? (
+                  <i className="fas fa-spinner fa-spin" />
+                ) : (
+                  ""
+                )}
+              </h4>
 
-              <PredictServiceList
-                services={publicRepositories}
-                layout={this.state.predictLayout}
-              />
+              {modelRepositoriesStore.isRefreshing &&
+              publicRepositories.length === 0 ? (
+                <button
+                  type="button"
+                  className="btn btn-outline-dark"
+                  onClick={this.handleClickRefreshServices}
+                >
+                  <i className="fas fa-circle-notch fa-spin" /> Syncing Public
+                  Repositories...
+                </button>
+              ) : (
+                <div>
+                  <PredictServiceList
+                    services={publicRepositories}
+                    layout={this.state.predictLayout}
+                  />
 
-              <hr />
+                  <hr />
 
-              <PredictServiceList
-                services={privateRepositories}
-                layout={this.state.predictLayout}
-              />
+                  <PredictServiceList
+                    services={privateRepositories}
+                    layout={this.state.predictLayout}
+                  />
+                </div>
+              )}
             </div>
 
             <RightPanel />
