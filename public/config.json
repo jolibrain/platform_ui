@@ -139,7 +139,7 @@
         "imageList": "random"
       },
       "threshold": {
-        "confidence": 0.5,
+        "confidence": 0.3,
         "controls": true,
         "controlSteps": [0.8, 0.41, 0.1]
       },
