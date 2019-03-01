@@ -83,22 +83,15 @@ class AboutDropdown extends React.Component {
 
     if (buildInfoStore.isUpdatable) {
       updateInfo = (
-        <div id="update-info">
-          <div className="update-link">
-            <div className="col-2">
-              <i className="fas fa-chevron-right" />
-            </div>
-            <div className="col-10">
-              <a
-                href="https://deepdetect.com/platform/#update"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                An update is available for your Platform
-              </a>
-            </div>
-          </div>
-        </div>
+        <a
+          className="dropdown-item update-link"
+          href="https://deepdetect.com/quickstart/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <i className="fas fa-chevron-right" />&nbsp; An update is available
+          for your Platform
+        </a>
       );
     }
 
