@@ -11,7 +11,7 @@ class Documentation extends React.Component {
     return (
       <li id="documentation-link" className="nav-item">
         <a
-          href="/docs/"
+          href="https://www.deepdetect.com/platform/docs/"
           target="_blank"
           rel="noreferrer noopener"
           className="nav-link"
