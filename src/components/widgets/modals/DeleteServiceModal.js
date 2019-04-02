@@ -18,16 +18,7 @@ export default class DeleteServiceModal extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    let service = null;
-    const { server } = nextProps.deepdetectStore;
-
-    if (server && server.service) {
-      service = server.service;
-    } else {
-      service = nextProps.service;
-    }
-
-    this.setState({ service: service });
+    this.setState({ service: nextProps.service });
   }
 
   handleCancel() {
@@ -44,6 +35,7 @@ export default class DeleteServiceModal extends React.Component {
     if (server) {
       this.setState({ spinner: true });
       server.deleteService(this.state.service.name, () => {
+        this.setState({ spinner: false });
         modalStore.setVisible("deleteService", false);
         history.push(redirect || "/");
       });
