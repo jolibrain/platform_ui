@@ -17,8 +17,6 @@ import ChatLink from "./links/Chat";
 @observer
 class Header extends React.Component {
   render() {
-    const { configStore } = this.props;
-
     return (
       <header className="header navbar navbar-dark bg-dark" id="header">
         <div className="container-fluid">
@@ -26,7 +24,7 @@ class Header extends React.Component {
             <div className="title-container">
               <h1 className="title">
                 <Link to="/">
-                  <img src="/logo.svg" />
+                  <img src="/logo.svg" alt="DeepDetect" />
                 </Link>
               </h1>
 
