@@ -25,7 +25,9 @@ class Header extends React.Component {
           <div className="header-content">
             <div className="title-container">
               <h1 className="title">
-                <Link to="/">{configStore.common.name}</Link>
+                <Link to="/">
+                  <img src="/logo.svg" />
+                </Link>
               </h1>
 
               <ul className="list-unstyled navbar-sub-nav">
