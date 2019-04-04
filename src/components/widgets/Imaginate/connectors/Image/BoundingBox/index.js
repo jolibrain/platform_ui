@@ -1,6 +1,7 @@
 import React from "react";
 import { observer } from "mobx-react";
 import Boundingbox from "react-bounding-box";
+import seedrandom from "seedrandom";
 
 @observer
 export default class BoundingBox extends React.Component {
@@ -158,6 +159,17 @@ export default class BoundingBox extends React.Component {
     ctx.stroke();
   }
 
+  generateColor(categoryName) {
+    const random = seedrandom(categoryName);
+    const r = Math.floor(random() * 255);
+    const g = Math.floor(random() * 255);
+    const b = Math.floor(random() * 255);
+
+    var rgb = b | (g << 8) | (r << 16);
+    console.log("#" + (0x1000000 + rgb).toString(16).slice(1));
+    return "#" + (0x1000000 + rgb).toString(16).slice(1);
+  }
+
   render() {
     const input = this.props.input;
 
@@ -185,26 +197,11 @@ export default class BoundingBox extends React.Component {
       }
       drawBox = this.drawBoxColor;
 
-      const colors = [
-        "#e41a1c",
-        "#377eb8",
-        "#4daf4a",
-        "#984ea3",
-        "#ff7f00",
-        "#ffff33",
-        "#a65628",
-        "#f781bf",
-        "#999999"
-      ];
-      const categories = classes
-        .map(pred => pred.cat)
-        .filter((value, index, self) => self.indexOf(value) === index);
-
       boxes = input.json.body.predictions[0].classes.map(pred => {
         let box = pred.bbox ? pred.bbox : {};
         box.label = pred.cat ? pred.cat : "";
         box.prob = pred.prob;
-        box.color = colors[categories.indexOf(pred.cat) % colors.length];
+        box.color = this.generateColor(pred.cat);
         return box;
       });
     }

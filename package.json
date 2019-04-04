@@ -52,6 +52,7 @@
     "react-sparklines": "^1.7.0",
     "react-syntax-highlighter": "^7.0.4",
     "react-tooltip": "^3.6.0",
+    "seedrandom": "^3.0.1",
     "store": "^2.0.12",
     "superagent": "^3.8.3",
     "superagent-no-cache": "^0.1.1",
