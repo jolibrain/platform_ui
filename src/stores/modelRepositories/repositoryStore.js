@@ -27,7 +27,10 @@ export default class RepositoryStore {
   async load() {
     this.isRefreshing = true;
 
-    let repositories = await this._loadRepositories(this.nginxPath);
+    let repositories = await this._loadRepositories(
+      this.nginxPath,
+      true // is root path
+    );
 
     // flatten repositories array
     if (repositories && repositories.length > 0) {
@@ -42,7 +45,7 @@ export default class RepositoryStore {
   }
 
   @action
-  async _loadRepositories(path) {
+  async _loadRepositories(path, isRoot = false) {
     let folders = [],
       files = [];
 
@@ -62,7 +65,7 @@ export default class RepositoryStore {
       files.includes("metrics.json") ||
       files.includes("best_model.txt");
 
-    if (isRepository) {
+    if (isRepository && !isRoot) {
       const repository = new Repository(path, files, this);
       return repository;
     } else if (folders.length > 0) {
