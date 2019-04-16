@@ -60,7 +60,7 @@ export class dataRepositoriesStore {
           name: name,
           path: path + decodeURIComponent(f.href),
           relativePath: path.replace("/data", "") + decodeURIComponent(f.href),
-          label: path.replace("/data/", "") + f.name
+          label: path.replace("/data/", "") + decodeURIComponent(f.href)
         });
       });
 
