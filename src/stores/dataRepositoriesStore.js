@@ -49,16 +49,17 @@ export class dataRepositoriesStore {
       const { folders } = content;
 
       if (level < this.settings.maxDepth) {
-        folders.forEach(f => this.load(path + f.name + "/", level + 1));
+        folders.forEach(f => this.load(path + f.href, level + 1));
       }
 
       // TODO: replace data string by regexp
       folders.forEach(f => {
+        var name = decodeURIComponent(f.href).substring(0, f.href.length - 1);
         this.repositories.push({
           id: this.repositories.length,
-          name: f.name,
-          path: path + f.name + "/",
-          relativePath: path.replace("/data", "") + f.name + "/",
+          name: name,
+          path: path + decodeURIComponent(f.href),
+          relativePath: path.replace("/data", "") + decodeURIComponent(f.href),
           label: path.replace("/data/", "") + f.name
         });
       });
