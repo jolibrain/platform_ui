@@ -33,32 +33,46 @@ export default class ImageList extends React.Component {
 
     if (!service) return null;
 
-    const inputs = service.inputs.slice(0, 100);
+    const inputs = service.inputs
+      .filter(i => {
+        return /\.(jpe?g|png|gif|bmp)$/i.test(i.content.toLowerCase());
+      })
+      .slice(0, 100);
 
-    return (
-      <div id="carousel">
-        {inputs
-          .slice()
-          .reverse()
-          .map((input, index) => {
-            const inputIndex = inputs.length - index - 1;
-            return (
-              <div key={`img-${index}`} className="slide">
-                <img
-                  src={input.content}
-                  key={`img-${index}`}
-                  className={input.isActive ? "img-block active" : "img-block"}
-                  alt=""
-                  onClick={this.selectInput.bind(this, inputIndex)}
-                />
-                <i
-                  onClick={this.handleClearInput.bind(this, inputIndex)}
-                  className="deleteImg fas fa-times-circle"
-                />
-              </div>
-            );
-          })}
-      </div>
-    );
+    if (inputs.length === 0) {
+      return (
+        <div className="alert alert-warning" role="alert">
+          No image found in selected path
+        </div>
+      );
+    } else {
+      return (
+        <div id="carousel">
+          {inputs
+            .slice()
+            .reverse()
+            .map((input, index) => {
+              const inputIndex = inputs.length - index - 1;
+              return (
+                <div key={`img-${index}`} className="slide">
+                  <img
+                    src={input.content}
+                    key={`img-${index}`}
+                    className={
+                      input.isActive ? "img-block active" : "img-block"
+                    }
+                    alt=""
+                    onClick={this.selectInput.bind(this, inputIndex)}
+                  />
+                  <i
+                    onClick={this.handleClearInput.bind(this, inputIndex)}
+                    className="deleteImg fas fa-times-circle"
+                  />
+                </div>
+              );
+            })}
+        </div>
+      );
+    }
   }
 }
