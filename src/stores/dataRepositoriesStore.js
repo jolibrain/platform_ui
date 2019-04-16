@@ -9,6 +9,9 @@ export class dataRepositoriesStore {
   @action
   setup(configStore) {
     this.settings = configStore.dataRepositories;
+
+    if (typeof this.settings.maxDepth === "undefined")
+      this.settings.maxDepth = 1;
   }
 
   refresh() {
@@ -45,7 +48,7 @@ export class dataRepositoriesStore {
     this.$reqFolder(path).then(content => {
       const { folders } = content;
 
-      if (level === 0) {
+      if (level < this.settings.maxDepth) {
         folders.forEach(f => this.load(path + f.name + "/", level + 1));
       }
 
