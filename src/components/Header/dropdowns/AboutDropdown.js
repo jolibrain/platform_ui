@@ -50,6 +50,8 @@ class AboutDropdown extends React.Component {
   render() {
     const { buildInfoStore } = this.props;
 
+    if (!buildInfoStore.isReady || !buildInfoStore.buildCommitHash) return null;
+
     let buildInfo = null;
     let updateInfo = null;
 
