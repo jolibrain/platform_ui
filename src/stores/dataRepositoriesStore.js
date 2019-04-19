@@ -31,7 +31,7 @@ export class dataRepositoriesStore {
     this.repositories.forEach(r => {
       if (
         this.repositories.some(r2 => {
-          return r2.relativePath.startsWith(r.relativePath) && r.id !== r2.id;
+          return r2.label.startsWith(r.label) && r.id !== r2.id;
         })
       ) {
         deletableId.push(r.id);
