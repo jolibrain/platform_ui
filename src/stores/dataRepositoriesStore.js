@@ -58,9 +58,8 @@ export class dataRepositoriesStore {
         this.repositories.push({
           id: this.repositories.length,
           name: name,
-          path: path + decodeURIComponent(f.href),
-          relativePath: path.replace("/data", "") + decodeURIComponent(f.href),
-          label: path.replace("/data/", "") + decodeURIComponent(f.href)
+          path: decodeURIComponent(path + f.href),
+          label: decodeURIComponent(path.replace("/data/", "") + f.href)
         });
       });
 
