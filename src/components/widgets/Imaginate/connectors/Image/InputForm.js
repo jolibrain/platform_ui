@@ -78,8 +78,11 @@ class InputForm extends React.Component {
 
       if (folder) {
         const store = this.props.imaginateStore;
-        store.service.addInputFromPath(folder, systemPath, () => {
-          store.predict();
+        store.service.addInputFromPath(folder, systemPath, inputs => {
+          // Launch predict request only if folder contains files
+          // This avoid recursive folder request on DD server
+          // bugfix #353
+          if (inputs.length > 0) store.predict();
         });
       }
     }

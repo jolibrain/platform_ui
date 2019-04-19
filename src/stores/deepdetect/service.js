@@ -264,7 +264,7 @@ export default class deepdetectService {
 
     if (this.inputs.length > 0) this.inputs[0].isActive = true;
 
-    callback();
+    callback(this.inputs);
   }
 
   @action

@@ -48,18 +48,18 @@ export class dataRepositoriesStore {
     this.$reqFolder(path).then(content => {
       const { folders } = content;
 
-      if (level < this.settings.maxDepth) {
-        folders.forEach(f => this.load(path + f.href, level + 1));
-      }
-
-      // TODO: replace data string by regexp
       folders.forEach(f => {
-        var name = decodeURIComponent(f.href).substring(0, f.href.length - 1);
+        const name = decodeURIComponent(f.href).substring(0, f.href.length - 1);
+        const folderPath = decodeURIComponent(path + f.href);
+        const folderLabel = folderPath.replace(/^\/data\//gm, "");
+
+        if (level < this.settings.maxDepth) this.load(path + f.href, level + 1);
+
         this.repositories.push({
           id: this.repositories.length,
           name: name,
-          path: decodeURIComponent(path + f.href),
-          label: decodeURIComponent(path.replace("/data/", "") + f.href)
+          path: folderPath,
+          label: folderLabel
         });
       });
 
