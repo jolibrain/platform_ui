@@ -8,10 +8,21 @@ class Data extends React.Component {
 
     if (configStore.isComponentBlacklisted("LinkData")) return null;
 
+    let href = "/filebrowser";
+
+    if (
+      configStore.homeComponent &&
+      configStore.homeComponent.headerLinks &&
+      configStore.homeComponent.headerLinks.linkData &&
+      configStore.homeComponent.headerLinks.linkData.length > 0
+    ) {
+      href = configStore.homeComponent.headerLinks.linkData;
+    }
+
     return (
       <li id="data-link">
         <a
-          href="/filebrowser"
+          href={href}
           style={{ textDecoration: "none" }}
           target="_blank"
           rel="noreferrer noopener"
