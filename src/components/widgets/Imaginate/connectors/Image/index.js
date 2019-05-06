@@ -113,7 +113,7 @@ export default class ImageConnector extends React.Component {
     const { service } = this.props.imaginateStore;
     service.settings.segmentationMask = e.target.checked;
     this.setState({
-      segmentationMask: e.target.checked
+      segmentationMask: service.settings.segmentationMask
     });
     this.props.imaginateStore.predict();
   }
