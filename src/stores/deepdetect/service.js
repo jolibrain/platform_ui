@@ -478,7 +478,6 @@ export default class deepdetectService {
       case "classification":
         delete input.postData.parameters.output.bbox;
 
-        console.log(this.uiParams.unsupervisedSearch);
         // Set parameters.output.search parameter on
         // unsupervised classification service
         // when checkbox selected on service Predict UI
