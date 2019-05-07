@@ -14,7 +14,7 @@ export default class ParamSlider extends React.Component {
     return (
       <div className="card slider">
         <div className="card-body">
-          <p class="card-title">{this.props.title}</p>
+          <p className="card-title">{this.props.title}</p>
           <SliderWithTooltip {...this.props} />
         </div>
       </div>

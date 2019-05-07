@@ -27,7 +27,7 @@ export default class ParamText extends React.Component {
           <div className="input-group mb-3">
             <input
               type="text"
-              class="form-control"
+              className="form-control"
               onChange={this.updateInput}
             />
             <div className="input-group-append">
