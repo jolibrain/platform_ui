@@ -55,7 +55,16 @@ export default class Description extends React.Component {
       ) {
         displayFormat = "category";
       }
+
+      if (
+        service.respInfo.body.mltype === "classification" &&
+        service.type === "unsupervised"
+      ) {
+        displayFormat = "nns";
+      }
     }
+
+    console.log(displayFormat);
 
     let output = "";
     switch (displayFormat) {
