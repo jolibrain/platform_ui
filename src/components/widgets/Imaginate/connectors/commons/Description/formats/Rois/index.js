@@ -101,7 +101,6 @@ export default class Rois extends React.Component {
 
     let cells = nns
       .slice()
-      .sort((a, b) => b.prob - a.prob)
       .map(this.roisItem)
       .reduce((result, element, index, array) => {
         // Add 2-columns separators
