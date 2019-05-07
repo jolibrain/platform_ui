@@ -12,9 +12,11 @@ export default class ParamSlider extends React.Component {
     if (typeof this.props.defaultValue === "undefined") return null;
 
     return (
-      <div>
-        <p>{this.props.title}</p>
-        <SliderWithTooltip {...this.props} />
+      <div className="card slider">
+        <div className="card-body">
+          <p class="card-title">{this.props.title}</p>
+          <SliderWithTooltip {...this.props} />
+        </div>
       </div>
     );
   }

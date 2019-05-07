@@ -35,12 +35,17 @@ export default class deepdetectService {
 
   @observable refresh = Math.random();
 
+  @observable uiParams = {};
+
   constructor(opts) {
     this.settings = opts.serviceSettings;
 
     // Proper settings for various mltypes
     if (typeof this.settings.mltype !== "undefined") {
       switch (this.settings.mltype) {
+        case "classification":
+          break;
+
         case "segmentation":
           this.settings.segmentationConfidence = false;
           break;
@@ -76,6 +81,10 @@ export default class deepdetectService {
       this.respInfo.body.jobs.length > 0;
 
     if (hasJobs) this.trainInfo();
+
+    // Allow search on unsupervised classification services
+    if (typeof this.type !== "undefined" && this.type === "unsupervised")
+      this.uiParams.unsupervisedSearch = false;
 
     return this.respInfo;
   }
@@ -143,6 +152,11 @@ export default class deepdetectService {
   @computed
   get name() {
     return this.settings.name;
+  }
+
+  @computed
+  get type() {
+    return this.respInfo.body.type;
   }
 
   @computed
@@ -420,11 +434,15 @@ export default class deepdetectService {
       );
     }
 
-    if (settings.request.search_nn) {
+    if (this.uiParams.search_nn) {
       input.postData.parameters.output.search_nn = parseInt(
-        settings.request.search_nn,
+        this.uiParams.search_nn,
         10
       );
+    }
+
+    if (this.uiParams.extract_layer) {
+      input.postData.parameters.mllib.extract_layer = this.uiParams.extract_layer;
     }
 
     if (settings.request.multibox_rois) {
@@ -459,6 +477,19 @@ export default class deepdetectService {
 
       case "classification":
         delete input.postData.parameters.output.bbox;
+
+        console.log(this.uiParams.unsupervisedSearch);
+        // Set parameters.output.search parameter on
+        // unsupervised classification service
+        // when checkbox selected on service Predict UI
+        if (
+          typeof this.type !== "undefined" &&
+          this.type === "unsupervised" &&
+          this.uiParams.unsupervisedSearch
+        ) {
+          input.postData.parameters.output.search = true;
+        }
+
         break;
 
       case "instance_segmentation":

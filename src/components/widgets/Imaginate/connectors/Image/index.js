@@ -11,6 +11,7 @@ import Threshold from "./Threshold";
 import InputForm from "./InputForm";
 
 import ParamSlider from "../commons/ParamSlider";
+import ParamText from "../commons/ParamText";
 import Description from "../commons/Description";
 import CardCommands from "../commons/CardCommands";
 import ToggleControl from "../commons/ToggleControl";
@@ -29,7 +30,8 @@ export default class ImageConnector extends React.Component {
       boxFormat: "simple",
       showLabels: false,
       segmentationMask: true,
-      segmentationConfidence: false
+      segmentationConfidence: false,
+      unsupervisedSearch: false
     };
 
     this.onOver = this.onOver.bind(this);
@@ -48,6 +50,11 @@ export default class ImageConnector extends React.Component {
     this.handleSegmentationConfidenceToggle = this.handleSegmentationConfidenceToggle.bind(
       this
     );
+    this.handleUnsupervisedSearchToggle = this.handleUnsupervisedSearchToggle.bind(
+      this
+    );
+    this.handleSearchNnThreshold = this.handleSearchNnThreshold.bind(this);
+    this.handleExtractLayerChange = this.handleExtractLayerChange.bind(this);
 
     this.setBoxFormat = this.setBoxFormat.bind(this);
     this.toggleLabels = this.toggleLabels.bind(this);
@@ -90,8 +97,8 @@ export default class ImageConnector extends React.Component {
   }
 
   handleSearchNnThreshold(value) {
-    const { serviceSettings } = this.props.imaginateStore;
-    serviceSettings.request.search_nn = parseInt(value, 10);
+    const { service } = this.props.imaginateStore;
+    service.uiParams.search_nn = parseInt(value, 10);
     this.setState({ sliderSearchNn: value });
     this.props.imaginateStore.predict();
   }
@@ -124,6 +131,32 @@ export default class ImageConnector extends React.Component {
     this.setState({
       segmentationConfidence: e.target.checked
     });
+    this.props.imaginateStore.predict();
+  }
+
+  handleUnsupervisedSearchToggle(e) {
+    const { service } = this.props.imaginateStore;
+
+    // Switch on search
+    if (!service.uiParams.unsupervisedSearch && e.target.checked) {
+      service.uiParams.search_nn = 10;
+    }
+
+    // Switch off search
+    if (service.uiParams.unsupervisedSearch && !e.target.checked) {
+      delete service.uiParams.search_nn;
+    }
+
+    service.uiParams.unsupervisedSearch = e.target.checked;
+    this.setState({
+      unsupervisedSearch: e.target.checked
+    });
+    this.props.imaginateStore.predict();
+  }
+
+  handleExtractLayerChange(layer) {
+    const { service } = this.props.imaginateStore;
+    service.uiParams.extract_layer = layer;
     this.props.imaginateStore.predict();
   }
 
@@ -194,6 +227,41 @@ export default class ImageConnector extends React.Component {
             onAfterChange={this.handleBestThreshold}
             min={1}
             max={20}
+          />
+        );
+
+        if (
+          typeof service.type !== "undefined" &&
+          service.type === "unsupervised"
+        ) {
+          uiControls.push(
+            <ToggleControl
+              key="settingCheckbox-display-unsupervised-search"
+              title="Search"
+              value={this.state.unsupervisedSearch}
+              onChange={this.handleUnsupervisedSearchToggle}
+            />
+          );
+        }
+        if (this.state.unsupervisedSearch) {
+          uiControls.push(
+            <ParamSlider
+              key="paramSliderSearchNn"
+              title="Search Size"
+              defaultValue={this.state.sliderSearchNn}
+              onAfterChange={this.handleSearchNnThreshold}
+              min={0}
+              max={100}
+            />
+          );
+        }
+
+        uiControls.push(
+          <ParamText
+            key="paramsUnsupervisedLayer"
+            title="Extract Layer"
+            submitText="Set Extract Layer"
+            onSubmit={this.handleExtractLayerChange}
           />
         );
       }
