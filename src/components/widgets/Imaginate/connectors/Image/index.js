@@ -193,7 +193,6 @@ export default class ImageConnector extends React.Component {
 
     if (
       input &&
-      !input.hasPredictionValues &&
       !input.isCtcOuput &&
       !input.isSegmentationInput &&
       service.settings.mltype !== "segmentation"
@@ -219,17 +218,6 @@ export default class ImageConnector extends React.Component {
       if (service.settings.mltype === "classification") {
         // && service.respInfo.body.parameters.mllib[0].nclasses.length > 0
 
-        uiControls.push(
-          <ParamSlider
-            key="paramSliderBest"
-            title="Best threshold"
-            defaultValue={this.state.sliderBest}
-            onAfterChange={this.handleBestThreshold}
-            min={1}
-            max={20}
-          />
-        );
-
         if (
           typeof service.type !== "undefined" &&
           service.type === "unsupervised"
@@ -252,6 +240,19 @@ export default class ImageConnector extends React.Component {
               onAfterChange={this.handleSearchNnThreshold}
               min={0}
               max={100}
+            />
+          );
+        } else {
+          // Only allows Best Threshold parameter when using
+          // unsupervised search parameter
+          uiControls.push(
+            <ParamSlider
+              key="paramSliderBest"
+              title="Best threshold"
+              defaultValue={this.state.sliderBest}
+              onAfterChange={this.handleBestThreshold}
+              min={1}
+              max={20}
             />
           );
         }
@@ -317,6 +318,16 @@ export default class ImageConnector extends React.Component {
       boundingBoxControls = false;
     }
 
+    // Hide segmentation values on unsupervised classification services
+    let showSegmentation = true;
+    if (
+      typeof service.type !== "undefined" &&
+      service.type === "unsupervised"
+    ) {
+      showSegmentation = false;
+    }
+
+    console.log(uiControls);
     return (
       <div className="imaginate">
         <div className="row">
@@ -356,6 +367,7 @@ export default class ImageConnector extends React.Component {
                 displaySettings={toJS(serviceSettings.display)}
                 boxFormat={this.state.boxFormat}
                 showLabels={this.state.showLabels}
+                showSegmentation={showSegmentation}
               />
             </div>
           </div>
