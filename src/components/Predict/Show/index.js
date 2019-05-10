@@ -33,7 +33,7 @@ export default class PredictShow extends React.Component {
     deepdetectStore.setTrainRefreshMode(null);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.setDeepdetectServer(this.props.match.params);
   }
 
