@@ -487,6 +487,7 @@ export default class deepdetectService {
           this.uiParams.unsupervisedSearch
         ) {
           input.postData.parameters.output.search = true;
+          delete input.postData.parameters.output.best;
         }
 
         break;
