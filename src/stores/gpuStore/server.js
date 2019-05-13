@@ -9,6 +9,7 @@ export default class GpuStatServer {
   constructor(opts) {
     this.name = opts.name;
     this.url = opts.url;
+    this.filterOutIndexes = Object.assign([], opts.filterOutIndexes);
   }
 
   @action
@@ -17,6 +18,14 @@ export default class GpuStatServer {
 
     if (gpuInfo) {
       this.error = false;
+
+      // Filter out some gpu as defined in config.json
+      if (this.filterOutIndexes.length > 0) {
+        this.filterOutIndexes.forEach(index => {
+          gpuInfo.gpus.splice(index, 1);
+        });
+      }
+
       this.gpuInfo = gpuInfo;
 
       if (gpuInfo.gpus && gpuInfo.gpus.length > 0) {
