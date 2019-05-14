@@ -55,7 +55,7 @@ export default class RepositoryStore {
       files = result.files;
     } catch (err) {
       const repository = new Repository(path, [], this, err);
-      return repository;
+      return [repository];
     }
 
     const isRepository =
