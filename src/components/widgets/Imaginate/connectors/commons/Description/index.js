@@ -64,8 +64,6 @@ export default class Description extends React.Component {
       }
     }
 
-    console.log(displayFormat);
-
     let output = "";
     switch (displayFormat) {
       default:
