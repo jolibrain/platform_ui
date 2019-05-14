@@ -191,6 +191,29 @@ export default class MainView extends React.Component {
                 )}
               </h4>
 
+              {!modelRepositoriesStore.isRefreshing &&
+              publicRepositories.length === 0 ? (
+                <div className="d-flex flex-row">
+                  <div>
+                    <button
+                      id="refreshServices"
+                      onClick={this.handleClickRefreshServices}
+                      type="button"
+                      className="btn btn-outline-secondary"
+                    >
+                      <i className="fas fa-sync" />
+                    </button>
+                  </div>
+                  <div className="small">
+                    The platform has just been installed,<br />
+                    use this button to refresh repositories synced during the
+                    installation process.
+                  </div>
+                </div>
+              ) : (
+                ""
+              )}
+
               {modelRepositoriesStore.isRefreshing &&
               publicRepositories.length === 0 ? (
                 <button
