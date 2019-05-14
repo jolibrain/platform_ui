@@ -263,7 +263,20 @@ export default class Form extends React.Component {
   render() {
     const store = this.props.deepdetectStore;
 
-    if (store.servers.length === 0) return null;
+    if (store.servers.length === 0) {
+      return (
+        <div className="alert alert-warning" role="alert">
+          <p>No deepdetect server available.</p>
+          <p>
+            Please verify your{" "}
+            <code>
+              <a href="/config.json">config.json</a>
+            </code>{" "}
+            configuration file.
+          </p>
+        </div>
+      );
+    }
 
     const curlCommand = `curl -X PUT '${window.location.origin}${
       store.server.settings.path
