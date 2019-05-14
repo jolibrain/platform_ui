@@ -207,7 +207,10 @@ export default class MainView extends React.Component {
                   <div className="small">
                     The platform has just been installed,<br />
                     use this button to refresh repositories synced during the
-                    installation process.
+                    installation process.<br />
+                    You can follow the syncing process using this command:{" "}
+                    <code>docker logs -f jolibrain_platform_data</code> and wait
+                    for <code>models/public/</code> transfer.
                   </div>
                 </div>
               ) : (
