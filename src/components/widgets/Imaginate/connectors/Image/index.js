@@ -4,7 +4,6 @@ import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
 import ImageList from "./ImageList";
-//import ImageListRandom from "./ImageListRandom";
 import BoundingBox from "./BoundingBox";
 import Controls from "./BoundingBox/Controls";
 import Threshold from "./Threshold";
@@ -327,7 +326,6 @@ export default class ImageConnector extends React.Component {
       showSegmentation = false;
     }
 
-    console.log(uiControls);
     return (
       <div className="imaginate">
         <div className="row">
@@ -374,12 +372,14 @@ export default class ImageConnector extends React.Component {
           <div className="col-md-5">
             <InputForm />
             {uiControls}
-            <div className="description">
-              <Description
-                selectedBoxIndex={this.state.selectedBoxIndex}
-                onOver={this.onOver}
-                onLeave={this.onLeave}
-              />
+            <div className="card description">
+              <div className="card-body">
+                <Description
+                  selectedBoxIndex={this.state.selectedBoxIndex}
+                  onOver={this.onOver}
+                  onLeave={this.onLeave}
+                />
+              </div>
             </div>
             <div className="commands">
               <CardCommands />
