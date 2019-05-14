@@ -7,9 +7,19 @@ export default class ImageList extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      inputs: []
+    };
+
     this.selectInput = this.selectInput.bind(this);
     this.handleClearAll = this.handleClearAll.bind(this);
     this.handleClearInput = this.handleClearInput.bind(this);
+    this.handleClickRandomize = this.handleClickRandomize.bind(this);
+  }
+
+  componentWillMount() {
+    const { service } = this.props.imaginateStore;
+    this.setState({ inputs: service.inputs });
   }
 
   selectInput(index) {
@@ -28,16 +38,23 @@ export default class ImageList extends React.Component {
     service.clearInput(index);
   }
 
+  handleClickRandomize() {
+    let inputs = this.state.inputs;
+    for (let i = inputs.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [inputs[i], inputs[j]] = [inputs[j], inputs[i]];
+    }
+    this.setState({ inputs: inputs });
+  }
+
   render() {
     const { service } = this.props.imaginateStore;
 
     if (!service) return null;
 
-    const inputs = service.inputs
-      .filter(i => {
-        return /\.(jpe?g|png|gif|bmp)$/i.test(i.content.toLowerCase());
-      })
-      .slice(0, 100);
+    let inputs = this.state.inputs.filter(i => {
+      return /\.(jpe?g|png|gif|bmp)$/i.test(i.content.toLowerCase());
+    });
 
     if (inputs.length === 0) {
       return (
@@ -46,31 +63,40 @@ export default class ImageList extends React.Component {
         </div>
       );
     } else {
+      inputs = inputs.map((input, index) => {
+        return (
+          <div key={`img-${index}`} className="slide">
+            <img
+              src={input.content}
+              key={`img-${index}`}
+              className={input.isActive ? "img-block active" : "img-block"}
+              alt=""
+              onClick={this.selectInput.bind(this, index)}
+            />
+            <i
+              onClick={this.handleClearInput.bind(this, index)}
+              className="deleteImg fas fa-times-circle"
+            />
+          </div>
+        );
+      });
+
+      if (inputs.length > 100) {
+        inputs = inputs.slice(0, 100);
+      }
+
       return (
         <div id="carousel">
-          {inputs
-            .slice()
-            .reverse()
-            .map((input, index) => {
-              const inputIndex = inputs.length - index - 1;
-              return (
-                <div key={`img-${index}`} className="slide">
-                  <img
-                    src={input.content}
-                    key={`img-${index}`}
-                    className={
-                      input.isActive ? "img-block active" : "img-block"
-                    }
-                    alt=""
-                    onClick={this.selectInput.bind(this, inputIndex)}
-                  />
-                  <i
-                    onClick={this.handleClearInput.bind(this, inputIndex)}
-                    className="deleteImg fas fa-times-circle"
-                  />
-                </div>
-              );
-            })}
+          <div className="slide">
+            <a
+              className="btn btn-outline-primary"
+              role="button"
+              onClick={this.handleClickRandomize}
+            >
+              <i className="fas fa-random" />
+            </a>
+          </div>
+          {inputs}
         </div>
       );
     }
