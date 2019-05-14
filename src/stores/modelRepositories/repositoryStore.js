@@ -67,7 +67,7 @@ export default class RepositoryStore {
 
     if (isRepository && !isRoot) {
       const repository = new Repository(path, files, this);
-      return repository;
+      return [repository];
     } else if (folders.length > 0) {
       let repositories = await Promise.all(
         folders.map(async f => {
