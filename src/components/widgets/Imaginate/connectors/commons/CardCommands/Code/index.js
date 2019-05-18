@@ -98,7 +98,7 @@ run()`;
       pythonCode += `host = '${window.location.hostname}'
 port = ${window.location.port || (window.protocol === "https" ? 443 : 80)}
 path = '${service.serverSettings.path}'
-dd = DD(host, port, path=path)
+dd = DD(host, port, ${window.protocol === "https" ? 1 : 0}, path=path)
 dd.set_return_format(dd.RETURN_PYTHON)\n\n`;
     }
 
