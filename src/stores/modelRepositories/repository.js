@@ -64,7 +64,7 @@ export default class Repository {
 
     const variousFiles = this.files.filter(f => {
       return (
-        ["config.json", "vocab.data", "corresp.txt"].includes(f) ||
+        ["config.json", "vocab.dat", "corresp.txt"].includes(f) ||
         f.includes("prototxt")
       );
     });
