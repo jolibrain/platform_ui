@@ -192,7 +192,8 @@ export default class MainView extends React.Component {
               </h4>
 
               {!modelRepositoriesStore.isRefreshing &&
-              publicRepositories.length === 0 ? (
+              publicRepositories.length === 0 &&
+              filterServiceName.length === 0 ? (
                 <div className="d-flex flex-row">
                   <div>
                     <button
