@@ -272,11 +272,27 @@ export default class TrainingCard extends React.Component {
                 {!["error", "not-running"].includes(status) &&
                 service.isRequesting ? (
                   <div>
-                    <i className="fas fa-spinner fa-spin" /> {status}
+                    <i className="fas fa-spinner fa-spin" />&nbsp;
+                    <a
+                      href={service.urlGetService}
+                      title="Service JSON"
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
+                      {status}
+                    </a>
                   </div>
                 ) : (
                   <div>
-                    <i className={`fas fa-circle ${status}`} /> {status}
+                    <i className={`fas fa-circle ${status}`} />&nbsp;
+                    <a
+                      href={service.urlGetService}
+                      title="Service JSON"
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
+                      {status}
+                    </a>
                   </div>
                 )}
               </div>

@@ -94,6 +94,12 @@
       .fetchError {
         color: $support_red_5;
       }
+
+      a {
+        text-decoration: none;
+        color: $neutral_blue_3;
+        font-weight: 600;
+      }
     }
 
     .content {
