@@ -7770,12 +7770,11 @@ react-bootstrap@^0.32.1:
     uncontrollable "^4.1.0"
     warning "^3.0.0"
 
-react-bounding-box@^0.3.2:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/react-bounding-box/-/react-bounding-box-0.3.2.tgz#a0c3e70d1625fcc5ff00fabd6e473721416a23cd"
-  integrity sha512-H/l951gnOZuHnJeUsFiWY4hhFC39QnzCX9/+HEnw2rKQ69faHmsXdIEJcBrN9BnCOrGjjOi/u8Sv9v5SlRQVPg==
+react-bounding-box@^0.4.5:
+  version "0.4.5"
+  resolved "https://registry.yarnpkg.com/react-bounding-box/-/react-bounding-box-0.4.5.tgz#7cad8b795e52ede03c1ce1e02a8dc84dda65e9b2"
+  integrity sha512-k5alJmpkTsbKqv2fG5JBL6VZFcmifzL+5sNnfwxtJgj9p0SMhKGntrErH47zcSsX76Vv7ucnoaaR1jb88QMm5A==
   dependencies:
-    babel-runtime "^6.11.6"
     prop-types "^15.6.1"
     seedrandom "^2.4.3"
 
