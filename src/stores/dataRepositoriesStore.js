@@ -1,5 +1,6 @@
 import { observable, action } from "mobx";
 import agent from "../agent";
+import path from "path";
 
 export class dataRepositoriesStore {
   @observable isLoading = false;
@@ -19,8 +20,8 @@ export class dataRepositoriesStore {
     this.cleanRootFolders();
   }
 
-  $reqFolder(path) {
-    return agent.Webserver.listFolders(path);
+  $reqFolder(rootPath) {
+    return agent.Webserver.listFolders(rootPath);
   }
 
   // Remove root folders when containing subfolders
@@ -43,17 +44,17 @@ export class dataRepositoriesStore {
   }
 
   @action
-  load(path, level = 0) {
+  load(rootPath, level = 0) {
     this.isLoading = true;
-    this.$reqFolder(path).then(content => {
+    this.$reqFolder(rootPath).then(content => {
       const { folders } = content;
 
       folders.forEach(f => {
         const name = decodeURIComponent(f.href).substring(0, f.href.length - 1);
-        const folderPath = decodeURIComponent(path + f.href);
+        const folderPath = path.join(rootPath, f.href, "/");
         const folderLabel = folderPath.replace(/^\/data\//gm, "");
 
-        if (level < this.settings.maxDepth) this.load(path + f.href, level + 1);
+        if (level < this.settings.maxDepth) this.load(folderPath, level + 1);
 
         this.repositories.push({
           id: this.repositories.length,

@@ -172,43 +172,21 @@ const Deepdetect = {
 };
 
 const autoIndex = res => {
-  const rowsReg = /<a href="(.+)">(.+)<\/a>.+(\d{2}-[a-zA-Z]{3}-\d{4} \d{2}:\d{2})\s+(\d{0,5})/g;
-  const dirReg = /href="(.*)\/"/;
-  const parentReg = /href="..\/">..\//;
+  let files = res.body.filter(f => f.type === "file").map(f => {
+    return decodeURIComponent(f.name);
+  });
 
-  let files = [],
-    folders = [];
-
-  res.text.replace(rowsReg, function(row, href, name, date, size) {
-    var obj = { href: href, name: name, date: date, size: size };
-
-    obj.name = obj.name.replace(/\/$/, "");
-
-    if (obj.date) {
-      obj.modified = new Date(obj.date);
-      delete obj.date;
-    }
-    if (!dirReg.test(row)) {
-      obj.name = obj.href;
-      files.push(obj);
-      return;
-    }
-
-    delete obj.size;
-    if (
-      !parentReg.test(row) &&
-      obj.name !== "train.lmdb" &&
-      obj.name !== "test.lmdb" &&
-      obj.name !== "names.bin"
-    ) {
-      folders.push(obj);
-      return;
-    }
+  let folders = res.body.filter(f => f.type === "directory").map(f => {
+    return {
+      href: f.name,
+      name: decodeURIComponent(f.name),
+      modified: new Date(f.mtime)
+    };
   });
 
   return {
     folders: folders,
-    files: files.map(f => f.name)
+    files: files
   };
 };
 
@@ -224,22 +202,7 @@ const Webserver = {
       .get(path)
       .withCredentials()
       .end(handleErrors)
-      .then(res => {
-        const parser = new DOMParser();
-        const htmlDoc = parser.parseFromString(res.text, "text/html");
-        const aElements = htmlDoc.getElementsByTagName("a");
-
-        let files = [];
-
-        for (var i = 0; i < aElements.length; i++) {
-          const repo = aElements[i].attributes["href"].value;
-
-          // Check if files and if not parent folder
-          if (repo !== "../") files.push(decodeURIComponent(repo));
-        }
-
-        return files;
-      }),
+      .then(res => res.body.map(f => decodeURIComponent(f.name))),
   getFile: path =>
     superagent
       .get(path)
