@@ -1,5 +1,6 @@
 import { observable, action } from "mobx";
 import agent from "../../agent";
+import path from "path";
 
 import Repository from "./repository";
 
@@ -45,12 +46,12 @@ export default class RepositoryStore {
   }
 
   @action
-  async _loadRepositories(path, isRoot = false) {
+  async _loadRepositories(rootPath, isRoot = false) {
     let folders = [],
       files = [];
 
     try {
-      const result = await this.$reqFolder(path);
+      const result = await this.$reqFolder(rootPath);
       folders = result.folders;
       files = result.files;
     } catch (err) {
@@ -65,12 +66,12 @@ export default class RepositoryStore {
       files.includes("best_model.txt");
 
     if (isRepository && !isRoot) {
-      const repository = new Repository(path, files, this);
+      const repository = new Repository(rootPath, files, this);
       return [repository];
     } else if (folders.length > 0) {
       let repositories = await Promise.all(
         folders.map(async f => {
-          return await this._loadRepositories(path + f.href);
+          return await this._loadRepositories(path.join(rootPath, f.href, "/"));
         })
       );
 
@@ -80,7 +81,7 @@ export default class RepositoryStore {
     }
   }
 
-  $reqFolder(path) {
-    return agent.Webserver.listFolders(path);
+  $reqFolder(rootPath) {
+    return agent.Webserver.listFolders(rootPath);
   }
 }

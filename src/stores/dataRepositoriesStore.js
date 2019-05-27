@@ -50,7 +50,6 @@ export class dataRepositoriesStore {
       const { folders } = content;
 
       folders.forEach(f => {
-        const name = decodeURIComponent(f.href).substring(0, f.href.length - 1);
         const folderPath = path.join(rootPath, f.href, "/");
         const folderLabel = folderPath.replace(/^\/data\//gm, "");
 
@@ -58,7 +57,7 @@ export class dataRepositoriesStore {
 
         this.repositories.push({
           id: this.repositories.length,
-          name: name,
+          name: f.name,
           path: folderPath,
           label: folderLabel
         });
