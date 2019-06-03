@@ -92,10 +92,15 @@ export default class Card extends React.Component {
     }
 
     ddStore.newService(serviceName, serviceData, (resp, err) => {
-      if (err) {
+      if (typeof err !== "undefined") {
+        const message =
+          typeof err.status !== "undefined"
+            ? `${err.status.msg}: ${err.status.dd_msg}`
+            : "Error while creating service";
+
         this.setState({
           creatingService: false,
-          errors: [`${err.status.msg}: ${err.status.dd_msg}`]
+          errors: [message]
         });
       } else {
         this.setState({
