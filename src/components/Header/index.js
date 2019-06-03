@@ -12,6 +12,7 @@ import JupyterLink from "./links/Jupyter";
 import DataLink from "./links/Data";
 import DocumentationLink from "./links/Documentation";
 import ChatLink from "./links/Chat";
+import MenusLink from "./links/Menus";
 
 @inject("configStore")
 @observer
@@ -37,6 +38,7 @@ class Header extends React.Component {
                 <JupyterLink />
                 <DataLink />
                 <ChatLink />
+                <MenusLink />
               </ul>
             </div>
 

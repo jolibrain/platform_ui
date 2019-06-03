@@ -21,17 +21,17 @@
               "url": "/labels"
             },
             {
-              "name": "Download Windows",
+              "name": "Download for Windows",
               "icon": "fab fa-windows",
               "url": "/filebrowser/vott/windows.zip"
             },
             {
-              "name": "Download OSX",
+              "name": "Download for OSX",
               "icon": "fab fa-apple",
               "url": "/filebrowser/vott/osx.zip"
             },
             {
-              "name": "Download Linux",
+              "name": "Download for Linux",
               "icon": "fab fa-linux",
               "url": "/filebrowser/vott/linux.zip"
             }
