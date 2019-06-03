@@ -10,7 +10,34 @@
       "You can modify its title and this description in public/config.json"
     ],
     "headerLinks": {
-      "linkJupyter": "http://10.10.77.61:18105/code/lab"
+      "linkJupyter": "http://10.10.77.61:18105/code/lab",
+      "linkMenus": [
+        {
+          "name": "Label Tool",
+          "items": [
+            {
+              "name": "Online",
+              "icon": "fas fa-external-link-alt",
+              "url": "/labels"
+            },
+            {
+              "name": "Download Windows",
+              "icon": "fab fa-windows",
+              "url": "/filebrowser/vott/windows.zip"
+            },
+            {
+              "name": "Download OSX",
+              "icon": "fab fa-apple",
+              "url": "/filebrowser/vott/osx.zip"
+            },
+            {
+              "name": "Download Linux",
+              "icon": "fab fa-linux",
+              "url": "/filebrowser/vott/linux.zip"
+            }
+          ]
+        }
+      ]
     }
   },
   "deepdetect": {
@@ -127,30 +154,6 @@
     }
   },
   "imaginate": {
-    "default": {
-      "display": {
-        "initImages": {},
-        "mode": "description",
-        "okClass": "",
-        "boundingBox": true,
-        "segmentation": false,
-        "separateSegmentation": false,
-        "segmentationColors": ["#1b9e77", "#d95f02"],
-        "imageList": "random"
-      },
-      "threshold": {
-        "confidence": 0.3,
-        "controls": true,
-        "controlSteps": [0.8, 0.41, 0.1]
-      },
-      "request": {
-        "objSearch": false,
-        "imgSearch": false,
-        "best": false,
-        "ctc": false,
-        "blank_label": false
-      }
-    },
     "services": [
       {
         "name": "testService",

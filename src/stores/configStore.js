@@ -18,7 +18,8 @@ export class configStore {
     title: "DeepDetect Platform",
     description: "Welcome to deepdetect",
     headerLinks: {
-      linkJupyter: "/code/lab"
+      linkJupyter: "/code/lab",
+      linkMenus: []
     }
   };
 
