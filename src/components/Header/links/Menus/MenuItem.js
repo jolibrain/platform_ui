@@ -2,12 +2,12 @@ import React from "react";
 
 class MenuItem extends React.Component {
   render() {
-    const { name, icon, link } = this.props;
+    const { name, icon, url } = this.props;
 
     return (
       <a
         className="dropdown-item"
-        href={link}
+        href={url}
         style={{ cursor: "pointer" }}
         target="_blank"
         rel="noopener noreferrer"

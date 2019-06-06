@@ -18,22 +18,13 @@
             {
               "name": "Online",
               "icon": "fas fa-external-link-alt",
-              "url": "/labels"
+              "url": "http://eris:18106"
             },
             {
-              "name": "Download for Windows",
-              "icon": "fab fa-windows",
-              "url": "/filebrowser/vott/windows.zip"
-            },
-            {
-              "name": "Download for OSX",
-              "icon": "fab fa-apple",
-              "url": "/filebrowser/vott/osx.zip"
-            },
-            {
-              "name": "Download for Linux",
+              "name": "Download for Linux (185Mo)",
               "icon": "fab fa-linux",
-              "url": "/filebrowser/vott/linux.zip"
+              "url":
+                "/filebrowser/api/download/vott/releases/vott-2.1.0-linux.snap"
             }
           ]
         }
