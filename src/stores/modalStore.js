@@ -4,6 +4,10 @@ export class modalStore {
   @observable
   modals = [
     {
+      name: "addService",
+      visible: false
+    },
+    {
       name: "publishTraining",
       visible: false
     },

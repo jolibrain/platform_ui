@@ -184,7 +184,8 @@
     "servers": [
       {
         "name": "eris",
-        "url": "/gpu/eris"
+        "url": "/gpu/eris",
+        "aliases": ["private", "public", "training"]
       },
       {
         "name": "hyperion",
