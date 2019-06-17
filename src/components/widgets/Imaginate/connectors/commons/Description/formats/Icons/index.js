@@ -64,6 +64,15 @@ export default class Icons extends React.Component {
 
   render() {
     const { input } = this.props;
+
+    if (
+      !input.json ||
+      !input.json.body ||
+      !input.json.body.predictions ||
+      !input.json.body.predictions[0]
+    )
+      return null;
+
     const { classes } = input.json.body.predictions[0];
 
     if (!classes) return null;
