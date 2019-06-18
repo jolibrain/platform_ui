@@ -172,17 +172,21 @@ const Deepdetect = {
 };
 
 const autoIndex = res => {
-  let files = res.body.filter(f => f.type === "file").map(f => {
-    return decodeURIComponent(f.name);
-  });
+  let files = res.body
+    .filter(f => f.type === "file")
+    .map(f => {
+      return decodeURIComponent(f.name);
+    });
 
-  let folders = res.body.filter(f => f.type === "directory").map(f => {
-    return {
-      href: f.name,
-      name: decodeURIComponent(f.name),
-      modified: new Date(f.mtime)
-    };
-  });
+  let folders = res.body
+    .filter(f => f.type === "directory")
+    .map(f => {
+      return {
+        href: f.name,
+        name: decodeURIComponent(f.name),
+        modified: new Date(f.mtime)
+      };
+    });
 
   return {
     folders: folders,
@@ -193,19 +197,19 @@ const autoIndex = res => {
 const Webserver = {
   listFolders: path =>
     superagent
-      .get(path)
+      .get("/json" + path)
       .withCredentials()
       .end(handleErrors)
       .then(autoIndex),
   listFiles: path =>
     superagent
-      .get(path)
+      .get("/json" + path)
       .withCredentials()
       .end(handleErrors)
       .then(res => res.body.map(f => decodeURIComponent(f.name))),
   getFile: path =>
     superagent
-      .get(path)
+      .get("/json" + path)
       .use(noCache)
       .withCredentials()
       .end(handleErrors)
@@ -222,7 +226,7 @@ const Webserver = {
       }),
   getFileMeta: path =>
     superagent
-      .get(path)
+      .get("/json" + path)
       .use(noCache)
       .withCredentials()
       .end(handleErrors)
