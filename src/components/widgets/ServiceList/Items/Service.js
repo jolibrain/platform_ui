@@ -27,7 +27,9 @@ export default class ServiceItem extends React.Component {
       match &&
       match.params &&
       match.params.serviceName &&
-      match.params.serviceName === service.name;
+      match.params.serviceName === service.name &&
+      match.params.serverName &&
+      match.params.serverName === service.serverName;
 
     return (
       <li className={selectedService ? "selected" : ""}>
