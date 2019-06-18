@@ -13,12 +13,12 @@
       "linkJupyter": "http://10.10.77.61:18105/code/lab",
       "linkMenus": [
         {
-          "name": "Label Tool",
+          "name": "Annotation Tool",
           "items": [
             {
               "name": "Online",
               "icon": "fas fa-external-link-alt",
-              "url": "http://eris:18106"
+              "url": "/annotations/"
             },
             {
               "name": "Download for Linux (185Mo)",
@@ -145,6 +145,29 @@
     }
   },
   "imaginate": {
+    "default": {
+      "display": {
+        "initImages": {},
+        "mode": "description",
+        "okClass": "",
+        "boundingBox": true,
+        "segmentation": false,
+        "separateSegmentation": false,
+        "segmentationColors": ["#1b9e77", "#d95f02"]
+      },
+      "threshold": {
+        "confidence": 0.5,
+        "controls": true,
+        "controlSteps": [0.8, 0.41, 0.1]
+      },
+      "request": {
+        "objSearch": false,
+        "imgSearch": false,
+        "best": false,
+        "ctc": false,
+        "blank_label": false
+      }
+    },
     "services": [
       {
         "name": "testService",
