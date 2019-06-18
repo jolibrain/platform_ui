@@ -9,6 +9,7 @@ export default class GpuStatServer {
   constructor(opts) {
     this.name = opts.name;
     this.url = opts.url;
+    this.aliases = opts.aliases || [];
     this.filterOutIndexes = Object.assign([], opts.filterOutIndexes);
   }
 

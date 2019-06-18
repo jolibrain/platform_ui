@@ -7,17 +7,14 @@ import moment from "moment";
 
 import DownloadModelFiles from "../../DownloadModelFiles";
 
-@inject("deepdetectStore")
+@inject("modalStore")
 @withRouter
 @observer
 export default class Card extends React.Component {
   constructor(props) {
     super(props);
 
-    this.serviceNameRef = React.createRef();
-
-    this.validateBeforeSubmit = this.validateBeforeSubmit.bind(this);
-    this.handleClickCreate = this.handleClickCreate.bind(this);
+    this.openAddServiceModal = this.openAddServiceModal.bind(this);
 
     this.state = {
       errors: [],
@@ -25,96 +22,10 @@ export default class Card extends React.Component {
     };
   }
 
-  validateBeforeSubmit() {
-    let errors = [];
-
-    let serviceName = this.serviceNameRef.current.value;
-
-    if (serviceName.length === 0) serviceName = this.props.repository.label;
-
-    if (serviceName.length === 0) {
-      errors.push("Service name can't be empty");
-    }
-
-    if (serviceName === "new") {
-      errors.push("Service name can't be named 'new'");
-    }
-    const ddStore = this.props.deepdetectStore;
-    const serviceNames = ddStore.server.services.map(s => s.name.toLowerCase());
-
-    if (serviceNames.includes(serviceName.toLowerCase())) {
-      errors.push("Service name already exists");
-    }
-
-    this.setState({ errors: errors });
-
-    return errors.length === 0;
-  }
-
-  handleClickCreate() {
-    const { repository } = this.props;
-
-    if (!repository.jsonConfig) {
-      this.props.history.push({
-        pathname: "/predict/new",
-        state: { repository: repository }
-      });
-      return null;
-    }
-
-    if (!this.validateBeforeSubmit()) {
-      return null;
-    }
-
-    let serviceName = this.serviceNameRef.current.value;
-
-    if (serviceName.length === 0) serviceName = repository.label;
-
-    serviceName = serviceName.toLowerCase();
-
-    const ddStore = this.props.deepdetectStore;
-
-    this.setState({ creatingService: true });
-
-    let serviceData = repository.jsonConfig;
-
-    if (serviceData.parameters.output) {
-      serviceData.parameters.output.store_config = false;
-    } else {
-      serviceData.parameters.output = { store_config: false };
-    }
-
-    // db input parameter must always be false.
-    // https://gitlab.com/jolibrain/core-ui/issues/318
-    // https://gitlab.com/jolibrain/core-ui/issues/280
-    if (serviceData.parameters.input && serviceData.parameters.input.db) {
-      serviceData.parameters.input.db = false;
-    }
-
-    ddStore.newService(serviceName, serviceData, (resp, err) => {
-      if (typeof err !== "undefined") {
-        const message =
-          typeof err.status !== "undefined"
-            ? `${err.status.msg}: ${err.status.dd_msg}`
-            : "Error while creating service";
-
-        this.setState({
-          creatingService: false,
-          errors: [message]
-        });
-      } else {
-        this.setState({
-          creatingService: false,
-          errors: []
-        });
-
-        ddStore.setService(serviceName);
-
-        const serviceUrl = `/predict/${
-          ddStore.hostableServer.name
-        }/${serviceName}`;
-        this.props.history.push(serviceUrl);
-      }
+  openAddServiceModal() {
+    const { modalStore, repository } = this.props;
+    modalStore.setVisible("addService", true, {
+      repository: repository
     });
   }
 
@@ -186,48 +97,17 @@ export default class Card extends React.Component {
               </div>
             </div>
 
-            {this.state.errors.length > 0 ? (
-              <div className="alert alert-danger" role="alert">
-                <b>
-                  <i className="fas fa-exclamation-circle" /> Error while
-                  creating service
-                </b>
-                <ul>
-                  {this.state.errors.map((error, i) => (
-                    <li key={i}>{error}</li>
-                  ))}
-                </ul>
-              </div>
-            ) : (
-              <DownloadModelFiles repository={repository} hidePath />
-            )}
+            <DownloadModelFiles repository={repository} hidePath />
             {modelValues}
           </div>
 
-          <div className="card-footer">
-            <div id="create-service" className="input-group">
-              <input
-                type="text"
-                className="form-control"
-                id="inlineFormInputName"
-                defaultValue={repository.name}
-                ref={this.serviceNameRef}
-              />
-              <div className="input-group-append">
-                <button
-                  className="btn btn-primary"
-                  onClick={this.handleClickCreate.bind(this, repository.name)}
-                >
-                  <i
-                    className={
-                      this.state.creatingService
-                        ? "fas fa-spinner fa-spin"
-                        : "fas fa-plus"
-                    }
-                  />&nbsp; Add Service
-                </button>
-              </div>
-            </div>
+          <div className="card-footer text-right">
+            <button
+              className="btn btn-primary"
+              onClick={this.openAddServiceModal}
+            >
+              <i className="fas fa-plus" />&nbsp; Add Service
+            </button>
           </div>
         </div>
       </div>
