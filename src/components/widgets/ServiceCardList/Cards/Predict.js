@@ -38,6 +38,9 @@ export default class PredictCard extends React.Component {
             <h6 className="card-subtitle mb-2 text-muted">
               {service.settings.description}
             </h6>
+            <p className="card-subtitle text-muted">
+              <i className="fas fa-server" /> {service.serverName}
+            </p>
           </div>
           <div className="card-footer text-right">
             {service.serverSettings.isWritable ? (
