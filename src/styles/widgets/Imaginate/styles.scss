@@ -1,6 +1,13 @@
 @import "./CurlCommand.scss";
 @import "./JsonResponse.scss";
 
+.imaginate.webcamConnector {
+  .boundingBoxCanvas {
+    position: relative;
+    top: -484px;
+  }
+}
+
 .imaginate.txtConnector {
   .inputForm {
     border: 0;

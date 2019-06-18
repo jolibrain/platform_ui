@@ -20,15 +20,16 @@ export default class Description extends React.Component {
 
     const input = service.selectedInput;
 
-    if (
-      !input.json ||
-      !input.json.body ||
-      !input.json.body.predictions ||
-      input.json.body.predictions.length === 0 ||
-      !input.json.body.predictions[0]
-    ) {
-      return null;
-    }
+    // TODO: review if change is breaking something after commit
+    //    if (
+    //      !input.json ||
+    //      !input.json.body ||
+    //      !input.json.body.predictions ||
+    //      input.json.body.predictions.length === 0 ||
+    //      !input.json.body.predictions[0]
+    //    ) {
+    //      return null;
+    //    }
 
     let displayFormat = serviceSettings.display.format;
 
