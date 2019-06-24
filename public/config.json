@@ -10,7 +10,25 @@
       "You can modify its title and this description in public/config.json"
     ],
     "headerLinks": {
-      "linkJupyter": "http://10.10.77.61:18105/code/lab"
+      "linkJupyter": "http://10.10.77.61:18105/code/lab",
+      "linkMenus": [
+        {
+          "name": "Annotation Tool",
+          "items": [
+            {
+              "name": "Online",
+              "icon": "fas fa-external-link-alt",
+              "url": "/annotations/"
+            },
+            {
+              "name": "Download for Linux (185Mo)",
+              "icon": "fab fa-linux",
+              "url":
+                "/filebrowser/api/download/vott/releases/vott-2.1.0-linux.snap"
+            }
+          ]
+        }
+      ]
     }
   },
   "deepdetect": {
@@ -135,11 +153,10 @@
         "boundingBox": true,
         "segmentation": false,
         "separateSegmentation": false,
-        "segmentationColors": ["#1b9e77", "#d95f02"],
-        "imageList": "random"
+        "segmentationColors": ["#1b9e77", "#d95f02"]
       },
       "threshold": {
-        "confidence": 0.3,
+        "confidence": 0.5,
         "controls": true,
         "controlSteps": [0.8, 0.41, 0.1]
       },
