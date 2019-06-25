@@ -22,6 +22,11 @@ export default class ImageList extends React.Component {
     this.setState({ inputs: service.inputs });
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { service } = nextProps.imaginateStore;
+    this.setState({ inputs: service.inputs });
+  }
+
   selectInput(index) {
     const store = this.props.imaginateStore;
     store.service.selectInput(index);
