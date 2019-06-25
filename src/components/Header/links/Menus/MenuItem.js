@@ -6,7 +6,7 @@ class MenuItem extends React.Component {
 
     return (
       <a
-        className="dropdown-item"
+        className={this.props.isDropdownItem ? "dropdown-item" : "nav-link"}
         href={url}
         style={{ cursor: "pointer" }}
         target="_blank"
@@ -14,7 +14,8 @@ class MenuItem extends React.Component {
       >
         {typeof icon !== "undefined" ? (
           <span>
-            <i className={icon} />&nbsp;
+            <i className={icon} />
+            &nbsp;
           </span>
         ) : (
           ""
