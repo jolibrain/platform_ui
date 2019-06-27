@@ -197,19 +197,19 @@ const autoIndex = res => {
 const Webserver = {
   listFolders: path =>
     superagent
-      .get("/json" + path)
+      .get(path)
       .withCredentials()
       .end(handleErrors)
       .then(autoIndex),
   listFiles: path =>
     superagent
-      .get("/json" + path)
+      .get(path)
       .withCredentials()
       .end(handleErrors)
       .then(res => res.body.map(f => decodeURIComponent(f.name))),
   getFile: path =>
     superagent
-      .get("/json" + path)
+      .get(path)
       .use(noCache)
       .withCredentials()
       .end(handleErrors)
@@ -226,7 +226,7 @@ const Webserver = {
       }),
   getFileMeta: path =>
     superagent
-      .get("/json" + path)
+      .get(path)
       .use(noCache)
       .withCredentials()
       .end(handleErrors)

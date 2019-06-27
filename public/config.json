@@ -11,24 +11,7 @@
     ],
     "headerLinks": {
       "linkJupyter": "http://10.10.77.61:18105/code/lab",
-      "linkMenus": [
-        {
-          "name": "Annotation Tool",
-          "items": [
-            {
-              "name": "Online",
-              "icon": "fas fa-external-link-alt",
-              "url": "/annotations/"
-            },
-            {
-              "name": "Download for Linux (185Mo)",
-              "icon": "fab fa-linux",
-              "url":
-                "/filebrowser/api/download/vott/releases/vott-2.1.0-linux.snap"
-            }
-          ]
-        }
-      ]
+      "linkMenus": []
     }
   },
   "deepdetect": {
@@ -231,23 +214,27 @@
     {
       "name": "public",
       "nginxPath": "/models/public/",
+      "jsonPath": "/json/models/public/",
       "systemPath": "/opt/platform"
     },
     {
       "name": "private",
       "nginxPath": "/models/private/",
+      "jsonPath": "/json/models/private/",
       "systemPath": "/opt/platform",
       "hasFiles": true
     },
     {
       "name": "training",
       "nginxPath": "/models/training/",
+      "jsonPath": "/json/models/training/",
       "systemPath": "/opt/platform",
       "isTraining": true
     }
   ],
   "dataRepositories": {
     "nginxPath": "/data/",
+    "jsonPath": "/json/data/",
     "systemPath": "/opt/platform",
     "maxDepth": 2
   },
