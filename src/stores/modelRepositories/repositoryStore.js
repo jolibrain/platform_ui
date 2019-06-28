@@ -31,7 +31,7 @@ export default class RepositoryStore {
     this.isRefreshing = true;
 
     let repositories = await this._loadRepositories(
-      this.jsonPath,
+      this.nginxPath,
       true // is root path
     );
 

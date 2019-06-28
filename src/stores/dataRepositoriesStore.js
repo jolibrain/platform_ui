@@ -16,7 +16,7 @@ export class dataRepositoriesStore {
   }
 
   refresh() {
-    this.load(this.settings.jsonPath);
+    this.load(this.settings.nginxPath);
     this.cleanRootFolders();
   }
 

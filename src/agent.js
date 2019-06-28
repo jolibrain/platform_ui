@@ -7,6 +7,8 @@ import DD from "deepdetect-js";
 const DD_TIMEOUT = 15000;
 const superagent = superagentPromise(_superagent, global.Promise);
 
+const URL_JSON_PREFIX = "/json";
+
 const handleErrors = err => {
   if (err && err.response && err.response.status === 401) {
     // console.log(err);
@@ -197,13 +199,13 @@ const autoIndex = res => {
 const Webserver = {
   listFolders: path =>
     superagent
-      .get(path)
+      .get(URL_JSON_PREFIX + path)
       .withCredentials()
       .end(handleErrors)
       .then(autoIndex),
   listFiles: path =>
     superagent
-      .get(path)
+      .get(URL_JSON_PREFIX + path)
       .withCredentials()
       .end(handleErrors)
       .then(res => res.body.map(f => decodeURIComponent(f.name))),
