@@ -10,8 +10,14 @@
       "You can modify its title and this description in public/config.json"
     ],
     "headerLinks": {
-      "linkJupyter": "http://10.10.77.61:18105/code/lab",
-      "linkMenus": []
+      "linkJupyter": "http://10.10.77.61:18104/code/lab",
+      "linkMenus": [
+        {
+          "name": "Annotation Tool",
+          "icon": "fas fa-external-link-alt",
+          "url": "/annotations/"
+        }
+      ]
     }
   },
   "deepdetect": {
