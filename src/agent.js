@@ -211,7 +211,7 @@ const Webserver = {
       .then(res => res.body.map(f => decodeURIComponent(f.name))),
   getFile: path =>
     superagent
-      .get(path)
+      .get(URL_JSON_PREFIX + path)
       .use(noCache)
       .withCredentials()
       .end(handleErrors)
@@ -228,7 +228,7 @@ const Webserver = {
       }),
   getFileMeta: path =>
     superagent
-      .get(path)
+      .get(URL_JSON_PREFIX + path)
       .use(noCache)
       .withCredentials()
       .end(handleErrors)
