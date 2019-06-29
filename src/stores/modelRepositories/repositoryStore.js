@@ -7,6 +7,7 @@ import Repository from "./repository";
 export default class RepositoryStore {
   @observable name;
   @observable nginxPath;
+  @observable jsonPath;
   @observable systempPath;
 
   @observable isReady = false;
@@ -18,6 +19,7 @@ export default class RepositoryStore {
   constructor(config) {
     this.name = config.name;
     this.nginxPath = config.nginxPath;
+    this.jsonPath = config.jsonPath;
     this.systemPath = config.systemPath;
 
     this.isTraining =

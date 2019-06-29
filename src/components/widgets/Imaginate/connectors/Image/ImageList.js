@@ -22,6 +22,11 @@ export default class ImageList extends React.Component {
     this.setState({ inputs: service.inputs });
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { service } = nextProps.imaginateStore;
+    this.setState({ inputs: service.inputs });
+  }
+
   selectInput(index) {
     const store = this.props.imaginateStore;
     store.service.selectInput(index);
@@ -53,7 +58,7 @@ export default class ImageList extends React.Component {
     if (!service) return null;
 
     let inputs = this.state.inputs.filter(i => {
-      return /\.(jpe?g|png|gif|bmp)$/i.test(i.content.toLowerCase());
+      return /\.(jpe?g|png|gif|bmp)/i.test(i.content.toLowerCase());
     });
 
     if (inputs.length === 0) {

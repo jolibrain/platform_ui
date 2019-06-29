@@ -44,24 +44,34 @@ class Menu extends React.Component {
   render() {
     const { name, items } = this.props;
 
-    return (
-      <li className="nav-item dropdown" ref={this.setWrapperRef}>
-        <a
-          className="nav-link dropdown-toggle"
-          style={{ cursor: "pointer" }}
-          role="button"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-          onClick={this.handleMenuClick}
-        >
-          {name}
-        </a>
-        <div className={`dropdown-menu ${this.state.menuDown ? "show" : ""}`}>
-          {items.map((item, index) => <MenuItem key={index} {...item} />)}
-        </div>
-      </li>
-    );
+    if (items && items.length > 0) {
+      return (
+        <li className="nav-item dropdown" ref={this.setWrapperRef}>
+          <a
+            className="nav-link dropdown-toggle"
+            style={{ cursor: "pointer" }}
+            role="button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            onClick={this.handleMenuClick}
+          >
+            {name}
+          </a>
+          <div className={`dropdown-menu ${this.state.menuDown ? "show" : ""}`}>
+            {items.map((item, index) => (
+              <MenuItem key={index} isDropdownItem={true} {...item} />
+            ))}
+          </div>
+        </li>
+      );
+    } else {
+      return (
+        <li>
+          <MenuItem {...this.props} />
+        </li>
+      );
+    }
   }
 }
 
