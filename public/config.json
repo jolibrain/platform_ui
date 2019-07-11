@@ -254,9 +254,5 @@
     "maxDepth": 2
   },
   "componentBlacklist": ["LinkChat"],
-  "placeholders": {
-    "sidebar_right_top": {
-      "img": "/nvidia_dgx.png"
-    }
-  }
+  "placeholders": {}
 }
