@@ -155,6 +155,15 @@
         "best": false,
         "ctc": false,
         "blank_label": false
+      },
+      "code": {
+        "display": {
+          "importLib": true,
+          "ddConfig": true,
+          "postPredict": true,
+          "hostname": null,
+          "port": null
+        }
       }
     },
     "services": [
