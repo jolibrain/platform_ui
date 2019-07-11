@@ -253,5 +253,10 @@
     "systemPath": "/opt/platform",
     "maxDepth": 2
   },
-  "componentBlacklist": ["LinkChat"]
+  "componentBlacklist": ["LinkChat"],
+  "placeholders": {
+    "sidebar_right_top": {
+      "img": "/nvidia_dgx.png"
+    }
+  }
 }

@@ -78,6 +78,8 @@ export class configStore {
 
   @observable componentBlacklist = [];
 
+  @observable placeholders = {};
+
   $req(path) {
     return agent.Config.get();
   }
@@ -99,6 +101,7 @@ export class configStore {
           this.componentBlacklist = config.componentBlacklist
             ? config.componentBlacklist
             : [];
+          this.placeholders = config.placeholders;
 
           this.isReady = true;
         }
