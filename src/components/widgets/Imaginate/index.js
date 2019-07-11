@@ -4,6 +4,7 @@ import { inject, observer } from "mobx-react";
 import ImageConnector from "./connectors/Image";
 import TxtConnector from "./connectors/Txt";
 import WebcamConnector from "./connectors/Webcam";
+import StreamConnector from "./connectors/Stream";
 
 @inject("imaginateStore")
 @inject("configStore")
@@ -34,8 +35,11 @@ export default class Imaginate extends React.Component {
         connector = serviceInfo.body.parameters.input[0].connector;
       }
 
-      if (imaginateStore.service.name.indexOf("webcam") !== -1)
+      if (imaginateStore.service.name.indexOf("_webcam") !== -1)
         connector = "webcam";
+
+      if (imaginateStore.service.name.indexOf("_stream") !== -1)
+        connector = "stream";
     }
 
     return connector;
@@ -60,6 +64,9 @@ export default class Imaginate extends React.Component {
         break;
       case "webcam":
         connectorComponent = <WebcamConnector />;
+        break;
+      case "stream":
+        connectorComponent = <StreamConnector />;
         break;
       case "csv":
         connectorComponent = (
