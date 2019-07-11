@@ -155,6 +155,15 @@
         "best": false,
         "ctc": false,
         "blank_label": false
+      },
+      "code": {
+        "display": {
+          "importLib": true,
+          "ddConfig": true,
+          "postPredict": true,
+          "hostname": null,
+          "port": null
+        }
       }
     },
     "services": [
@@ -244,5 +253,10 @@
     "systemPath": "/opt/platform",
     "maxDepth": 2
   },
-  "componentBlacklist": ["LinkChat"]
+  "componentBlacklist": ["LinkChat"],
+  "placeholders": {
+    "sidebar_right_top": {
+      "img": "/nvidia_dgx.png"
+    }
+  }
 }
