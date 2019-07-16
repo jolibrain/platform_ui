@@ -22,9 +22,9 @@ export default class GpuStatServer {
 
       // Filter out some gpu as defined in config.json
       if (this.filterOutIndexes.length > 0) {
-        this.filterOutIndexes.forEach(index => {
-          gpuInfo.gpus.splice(index, 1);
-        });
+        gpuInfo.gpus = gpuInfo.gpus.filter(
+          (value, index) => !this.filterOutIndexes.includes(index)
+        );
       }
 
       this.gpuInfo = gpuInfo;
