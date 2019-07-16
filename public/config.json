@@ -203,6 +203,11 @@
         "aliases": ["private", "public", "training"]
       },
       {
+        "name": "jetson",
+        "url": "/gpu/jetson",
+        "type": "jetson"
+      },
+      {
         "name": "hyperion",
         "url": "/gpu/hyperion"
       },
