@@ -208,7 +208,11 @@ const Webserver = {
       .get(URL_JSON_PREFIX + path)
       .withCredentials()
       .end(handleErrors)
-      .then(res => res.body.map(f => decodeURIComponent(f.name))),
+      .then(res => {
+        return res.body
+          .filter(f => f.type === "file")
+          .map(f => decodeURIComponent(f.name));
+      }),
   getFile: path =>
     superagent
       .get(URL_JSON_PREFIX + path)
