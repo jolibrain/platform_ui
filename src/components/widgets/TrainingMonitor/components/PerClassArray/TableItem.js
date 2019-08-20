@@ -6,7 +6,7 @@ import { observer } from "mobx-react";
 import { Sparklines, SparklinesLine } from "react-sparklines";
 
 @observer
-export default class PerClassArray extends React.Component {
+export default class TableItem extends React.Component {
   render() {
     const { service, measureKey } = this.props;
 
@@ -92,6 +92,6 @@ export default class PerClassArray extends React.Component {
   }
 }
 
-PerClassArray.propTypes = {
+TableItem.propTypes = {
   service: PropTypes.object.isRequired
 };
