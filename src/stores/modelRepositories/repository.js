@@ -74,6 +74,18 @@ export default class Repository {
       .filter(f => f.indexOf("~") === -1);
   }
 
+  @computed
+  get measure_hist() {
+    if (
+      !this.jsonMetrics ||
+      !this.jsonMetrics.body ||
+      !this.jsonMetrics.body.measure_hist
+    )
+      return null;
+
+    return this.jsonMetrics.body.measure_hist;
+  }
+
   _load() {
     this._loadJsonConfig();
     this._loadJsonMetrics();

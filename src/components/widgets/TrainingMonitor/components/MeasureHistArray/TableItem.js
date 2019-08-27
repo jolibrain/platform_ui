@@ -8,7 +8,8 @@ import { Sparklines, SparklinesLine } from "react-sparklines";
 @observer
 export default class TableItem extends React.Component {
   render() {
-    const { service, measureKey } = this.props;
+    const { service, measureHistKey } = this.props;
+    const measureKey = measureHistKey.replace("_hist", "");
 
     let measure, measure_hist;
     if (service.jsonMetrics) {
@@ -22,14 +23,29 @@ export default class TableItem extends React.Component {
     let classNames = [];
 
     let value = "--";
-    try {
-      value = measure[measureKey].toFixed(5);
-    } catch (e) {
-      // measure[measureKey].toFixed is not a function
-    }
 
-    let measureHistIndex = `${measureKey}_hist`;
-    let sparkData = [];
+    if (
+      typeof measure === "undefined" ||
+      typeof measure[measureKey] === "undefined"
+    ) {
+      value =
+        measure_hist[measureHistKey][measure_hist[measureHistKey].length - 1];
+    } else {
+      try {
+        value = measure[measureKey].toFixed(5);
+      } catch (e) {
+        // measure[measureKey].toFixed is not a function
+      }
+
+      if (measureKey.includes("cmdiag_")) {
+        if (typeof measure[measureKey] !== "undefined") {
+          value = measure[measureKey];
+        } else {
+          const diagLabel = measureKey.replace("cmdiag_", "");
+          value = measure.cmdiag[measure.labels.indexOf(diagLabel)].toFixed(5);
+        }
+      }
+    }
 
     // display color levels for clacc
     if (measureKey.includes("clacc")) {
@@ -38,26 +54,7 @@ export default class TableItem extends React.Component {
       if (value > 0.9) classNames.push("clacc-level-success");
     }
 
-    if (
-      measure_hist &&
-      measure_hist[measureHistIndex] &&
-      measure_hist[measureHistIndex].length > 0
-    ) {
-      sparkData = toJS(measure_hist[measureHistIndex]).map(x =>
-        parseInt(x * 100, 10)
-      );
-    }
-
-    if (measureKey.includes("cmdiag_")) {
-      if (typeof measure[measureKey] !== "undefined") {
-        value = measure[measureKey];
-      } else {
-        const diagLabel = measureKey.replace("cmdiag_", "");
-        value = measure.cmdiag[measure.labels.indexOf(diagLabel)].toFixed(5);
-      }
-    }
-
-    if (typeof value.toFixed === "function") {
+    if (typeof value !== "undefined" && typeof value.toFixed === "function") {
       if (value > 1) {
         value = value.toFixed(5);
       } else {
@@ -70,6 +67,18 @@ export default class TableItem extends React.Component {
 
         value = value.toFixed(zeroPosition + 5);
       }
+    }
+
+    let sparkData = [];
+
+    if (
+      measure_hist &&
+      measure_hist[measureHistKey] &&
+      measure_hist[measureHistKey].length > 0
+    ) {
+      sparkData = toJS(measure_hist[measureHistKey]).map(x =>
+        parseInt(x * 100, 10)
+      );
     }
 
     return (
@@ -93,5 +102,6 @@ export default class TableItem extends React.Component {
 }
 
 TableItem.propTypes = {
+  measureHistKey: PropTypes.string.isRequired,
   service: PropTypes.object.isRequired
 };
