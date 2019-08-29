@@ -25,11 +25,11 @@ export default class JtopFormat extends React.Component {
           <div className="col-sm-2">
             {alerts.length > 0 ? (
               <span className="badge badge-pill gpu-alert">
-                <i className="fas fa-fire" /> 1
+                <i className="fas fa-fire" /> 0
               </span>
             ) : (
               <span className="badge badge-pill">
-                <i className="far fa-hdd" /> 1
+                <i className="far fa-hdd" /> 0
               </span>
             )}
           </div>

@@ -10,6 +10,7 @@ export default class GpuStatServer extends React.Component {
     const { server } = this.props;
 
     let serverInfo = "Server information not available";
+    let classNames = "fas fa-server";
 
     if (server.isAvailable) {
       switch (server.type) {
@@ -26,7 +27,7 @@ export default class GpuStatServer extends React.Component {
     return (
       <div className="gpuinfo">
         <h5>
-          <i className="fas fa-server" /> {server.name}
+          <i className={classNames} /> {server.name}
         </h5>
         {serverInfo}
       </div>

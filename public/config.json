@@ -203,11 +203,6 @@
         "aliases": ["private", "public", "training"]
       },
       {
-        "name": "jetson",
-        "url": "/gpu/jetson",
-        "type": "jetson"
-      },
-      {
         "name": "hyperion",
         "url": "/gpu/hyperion"
       },
@@ -226,6 +221,11 @@
       {
         "name": "ceres",
         "url": "/gpu/ceres"
+      },
+      {
+        "name": "jetson",
+        "url": "/gpu/jetson",
+        "type": "jetson"
       }
     ],
     "refreshRate": 5000

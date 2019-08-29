@@ -12,9 +12,21 @@ export default class GpuInfo extends React.Component {
 
     const { servers } = this.props.gpuStore;
 
+    const jetsonSensors = servers.filter(s => s.type === "jetson");
+    const gpuServers = servers.filter(s => s.type === "standard");
+
     return (
       <div className="gpuinfo">
-        {servers.map((s, i) => {
+        {gpuServers.map((s, i) => {
+          return <GpuStatServer key={i} server={s} />;
+        })}
+        {jetsonSensors.length > 0 ? (
+          <div>
+            <hr />
+            <h4>Sensors</h4>
+          </div>
+        ) : null}
+        {jetsonSensors.map((s, i) => {
           return <GpuStatServer key={i} server={s} />;
         })}
       </div>
