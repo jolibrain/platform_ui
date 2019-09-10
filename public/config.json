@@ -31,77 +31,88 @@
         "settings": {
           "path": "/api/private",
           "isWritable": true,
-          "isHostable": true
+          "isHostable": true,
+          "sameOrigin": true
         }
       },
       {
         "name": "public",
         "settings": {
           "path": "/api/public",
-          "isWritable": false
+          "isWritable": false,
+          "sameOrigin": true
         }
       },
       {
         "name": "eris",
         "settings": {
           "path": "/api/eris",
-          "isWritable": true
+          "isWritable": true,
+          "sameOrigin": true
         }
       },
       {
         "name": "hyperion",
         "settings": {
           "path": "/api/hyperion",
-          "isWritable": true
+          "isWritable": true,
+          "sameOrigin": true
         }
       },
       {
         "name": "training_test",
         "settings": {
           "path": "/api/training_test",
-          "isWritable": true
+          "isWritable": true,
+          "sameOrigin": true
         }
       },
       {
         "name": "training_test_2",
         "settings": {
           "path": "/api/training_test_2",
-          "isWritable": true
+          "isWritable": true,
+          "sameOrigin": true
         }
       },
       {
         "name": "neptune02",
         "settings": {
           "path": "/api/neptune02",
-          "isWritable": true
+          "isWritable": true,
+          "sameOrigin": true
         }
       },
       {
         "name": "neptune02-test",
         "settings": {
           "path": "/api/neptune02-test",
-          "isWritable": true
+          "isWritable": true,
+          "sameOrigin": true
         }
       },
       {
         "name": "neptune04",
         "settings": {
           "path": "/api/neptune04",
-          "isWritable": true
+          "isWritable": true,
+          "sameOrigin": true
         }
       },
       {
         "name": "hydra",
         "settings": {
           "path": "/api/hydra",
-          "isWritable": true
+          "isWritable": true,
+          "sameOrigin": true
         }
       },
       {
         "name": "ceres",
         "settings": {
           "path": "/api/ceres",
-          "isWritable": true
+          "isWritable": true,
+          "sameOrigin": true
         }
       }
     ],
