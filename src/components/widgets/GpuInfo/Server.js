@@ -24,10 +24,21 @@ export default class GpuStatServer extends React.Component {
       }
     }
 
+    let externalLink;
+    if (server.externalLink) {
+      externalLink = (
+        <span class="externalLink">
+          <a href={server.externalLink} target="_blank" rel="noopener">
+            <i class="fas fa-external-link-alt" />
+          </a>
+        </span>
+      );
+    }
+
     return (
       <div className="gpuinfo">
         <h5>
-          <i className={classNames} /> {server.name}
+          <i className={classNames} /> {server.name} {externalLink}
         </h5>
         {serverInfo}
       </div>
