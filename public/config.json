@@ -234,9 +234,10 @@
         "url": "/gpu/ceres"
       },
       {
-        "name": "jetson",
+        "name": "jetson dev alx",
         "url": "/gpu/jetson",
-        "type": "jetson"
+        "type": "jetson",
+        "externalLink": "http://192.168.0.46:8888"
       }
     ],
     "refreshRate": 5000
