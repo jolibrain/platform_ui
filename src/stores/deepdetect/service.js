@@ -225,9 +225,7 @@ export default class deepdetectService {
     }
 
     const serverPath = this.serverSettings.path;
-    return `${serverPath}/train?service=${this.name}&job=${
-      this.trainJob
-    }&parameters.output.measure_hist=true&parameters.output.max_hist_points=1000`;
+    return `${serverPath}/train?service=${this.name}&job=${this.trainJob}&parameters.output.measure_hist=true&parameters.output.max_hist_points=1000`;
   }
 
   @computed
@@ -422,7 +420,8 @@ export default class deepdetectService {
 
     if (typeof input === "undefined") return null;
 
-    input.json = null;
+    if (typeof settings.keepJson === "undefined" || settings.keepJson === false)
+      input.json = null;
 
     input.postData = {
       service: this.name,

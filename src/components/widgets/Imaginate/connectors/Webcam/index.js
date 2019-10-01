@@ -23,7 +23,8 @@ export default class WebcamConnector extends React.Component {
     this.state = {
       selectedBoxIndex: -1,
       screenshot: null,
-      path: "/api/private/predict"
+      path: "/api/private/predict",
+      intervalId: null
     };
 
     this.updatePredict = this.updatePredict.bind(this);
@@ -41,13 +42,18 @@ export default class WebcamConnector extends React.Component {
   }
 
   componentDidMount() {
-    this.updatePredict();
+    var intervalId = setInterval(this.updatePredict, 500);
+    this.setState({ intervalId: intervalId });
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.intervalId);
   }
 
   updatePredict() {
     const canvas = this.webcam.getCanvas();
+
     if (!canvas) {
-      setTimeout(this.updatePredict, 2000);
       return null;
     }
 
@@ -59,7 +65,6 @@ export default class WebcamConnector extends React.Component {
     service.selectedInput.content = screenshot;
 
     this.props.imaginateStore.predict();
-    setTimeout(this.updatePredict, 3000);
   }
 
   onOver(index) {
