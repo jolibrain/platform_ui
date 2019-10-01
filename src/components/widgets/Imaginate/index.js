@@ -5,6 +5,7 @@ import ImageConnector from "./connectors/Image";
 import TxtConnector from "./connectors/Txt";
 import WebcamConnector from "./connectors/Webcam";
 import StreamConnector from "./connectors/Stream";
+import MjpegConnector from "./connectors/Mjpeg";
 
 @inject("imaginateStore")
 @inject("configStore")
@@ -20,10 +21,12 @@ export default class Imaginate extends React.Component {
 
   getServiceConnector() {
     const { imaginateStore } = this.props;
+    const { service } = imaginateStore;
+
     let connector = null;
 
-    if (imaginateStore.service) {
-      const serviceInfo = imaginateStore.service.respInfo;
+    if (service) {
+      const serviceInfo = service.respInfo;
       if (
         serviceInfo &&
         serviceInfo.body &&
@@ -40,6 +43,11 @@ export default class Imaginate extends React.Component {
 
       if (imaginateStore.service.name.indexOf("_stream") !== -1)
         connector = "stream";
+    }
+
+    console.log(service.name);
+    if (service.name.indexOf("_mjpeg") !== -1) {
+      connector = "mjpeg";
     }
 
     return connector;
@@ -67,6 +75,9 @@ export default class Imaginate extends React.Component {
         break;
       case "stream":
         connectorComponent = <StreamConnector />;
+        break;
+      case "mjpeg":
+        connectorComponent = <MjpegConnector />;
         break;
       case "csv":
         connectorComponent = (

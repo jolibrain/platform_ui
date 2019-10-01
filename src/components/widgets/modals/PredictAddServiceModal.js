@@ -41,7 +41,6 @@ export default class PredictAddServiceModal extends React.Component {
   }
 
   handleGpuIdChange(event) {
-    console.log(event);
     this.setState({ gpuId: parseInt(event.target.value, 10) });
   }
 
@@ -130,9 +129,7 @@ export default class PredictAddServiceModal extends React.Component {
 
         this.props.modalStore.setVisible("addService", false);
 
-        const serviceUrl = `/predict/${
-          ddStore.hostableServer.name
-        }/${serviceName}`;
+        const serviceUrl = `/predict/${ddStore.hostableServer.name}/${serviceName}`;
         this.props.history.push(serviceUrl);
       }
     });

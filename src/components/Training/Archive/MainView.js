@@ -5,7 +5,7 @@ import { inject, observer } from "mobx-react";
 import RightPanel from "../commons/RightPanel";
 import Title from "../../widgets/TrainingMonitor/components/Title";
 import GeneralInfo from "../../widgets/TrainingMonitor/components/GeneralInfo";
-import PerClassArray from "../../widgets/TrainingMonitor/components/PerClassArray";
+import MeasureHistArray from "../../widgets/TrainingMonitor/components/MeasureHistArray";
 
 @inject("modelRepositoriesStore")
 @observer
@@ -47,7 +47,7 @@ export default class MainView extends React.Component {
             <Title service={repository} />
             <div className="content p-4">
               <GeneralInfo service={repository} />
-              <PerClassArray service={repository} />
+              <MeasureHistArray service={repository} />
               <RightPanel includeDownloadPanel />
             </div>
           </div>

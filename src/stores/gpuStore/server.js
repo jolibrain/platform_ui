@@ -1,4 +1,4 @@
-import { observable, action } from "mobx";
+import { observable, action, computed } from "mobx";
 import agent from "../../agent";
 
 export default class GpuStatServer {
@@ -10,7 +10,19 @@ export default class GpuStatServer {
     this.name = opts.name;
     this.url = opts.url;
     this.aliases = opts.aliases || [];
+    this.type = opts.type || "standard";
     this.filterOutIndexes = Object.assign([], opts.filterOutIndexes);
+    this.externalLink = opts.externalLink || null;
+  }
+
+  @computed
+  get isAvailable() {
+    return this.type === "jetson" || this.hasGpu;
+  }
+
+  @computed
+  get hasGpu() {
+    return this.gpuInfo && this.gpuInfo.gpus && this.gpuInfo.gpus.length > 0;
   }
 
   @action
@@ -22,9 +34,9 @@ export default class GpuStatServer {
 
       // Filter out some gpu as defined in config.json
       if (this.filterOutIndexes.length > 0) {
-        this.filterOutIndexes.forEach(index => {
-          gpuInfo.gpus.splice(index, 1);
-        });
+        gpuInfo.gpus = gpuInfo.gpus.filter(
+          (value, index) => !this.filterOutIndexes.includes(index)
+        );
       }
 
       this.gpuInfo = gpuInfo;

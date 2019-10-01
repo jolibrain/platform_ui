@@ -156,7 +156,9 @@ export default class deepdetectService {
 
   @computed
   get type() {
-    return this.respInfo.body.type;
+    if (this.respInfo && this.respInfo.body) {
+      return this.respInfo.body.type;
+    }
   }
 
   @computed
@@ -269,6 +271,24 @@ export default class deepdetectService {
     input.content = content;
     input.isActive = true;
     this.inputs.push(input);
+  }
+
+  @action
+  addOrReplaceInput(index, content) {
+    let activeInput = this.inputs.find(i => i.isActive);
+    if (activeInput) {
+      activeInput.isActive = false;
+    }
+
+    const input = new Input();
+    input.content = content;
+    input.isActive = true;
+
+    if (typeof this.inputs[index] === "undefined") {
+      this.inputs.push(input);
+    } else {
+      this.inputs[index] = input;
+    }
   }
 
   @action

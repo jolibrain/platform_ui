@@ -74,6 +74,18 @@ export default class Repository {
       .filter(f => f.indexOf("~") === -1);
   }
 
+  @computed
+  get measure_hist() {
+    if (
+      !this.jsonMetrics ||
+      !this.jsonMetrics.body ||
+      !this.jsonMetrics.body.measure_hist
+    )
+      return null;
+
+    return this.jsonMetrics.body.measure_hist;
+  }
+
   _load() {
     this._loadJsonConfig();
     this._loadJsonMetrics();
@@ -93,10 +105,13 @@ export default class Repository {
   async _setMetricsDate() {
     // Do not try to fetch large files
     const filenames = this.files.filter(f => {
-      return !(
-        f.includes("caffemodel") ||
-        f.includes("log") ||
-        f.includes("solverstate")
+      return (
+        (f.includes("json") || f.includes("txt")) &&
+        !(
+          f.includes("caffemodel") ||
+          f.includes("log") ||
+          f.includes("solverstate")
+        )
       );
     });
 
