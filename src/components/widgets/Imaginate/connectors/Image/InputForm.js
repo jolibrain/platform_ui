@@ -43,7 +43,7 @@ class InputForm extends React.Component {
     document.addEventListener("mousedown", this.handleClickOutside);
     const { dataRepositoriesStore } = this.props;
 
-    if (dataRepositoriesStore.loaded == false) {
+    if (dataRepositoriesStore.loaded === false) {
       dataRepositoriesStore.refresh();
     }
   }
