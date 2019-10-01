@@ -57,9 +57,9 @@ export default class StreamConnector extends React.Component {
   }
 
   componentDidMount() {
-    const _this = this;
+    // const _this = this;
     // This code runs a video stream.
-    const video = this.video.current;
+    // const video = this.video.current;
     //		navigator.mediaDevices.getUserMedia({ video: true, audio: false })
     //			.then(function(stream) {
     //				video.srcObject = stream
