@@ -105,10 +105,13 @@ export default class Repository {
   async _setMetricsDate() {
     // Do not try to fetch large files
     const filenames = this.files.filter(f => {
-      return !(
-        f.includes("caffemodel") ||
-        f.includes("log") ||
-        f.includes("solverstate")
+      return (
+        (f.includes("json") || f.includes("txt")) &&
+        !(
+          f.includes("caffemodel") ||
+          f.includes("log") ||
+          f.includes("solverstate")
+        )
       );
     });
 
