@@ -38,17 +38,11 @@ export default class Imaginate extends React.Component {
         connector = serviceInfo.body.parameters.input[0].connector;
       }
 
-      if (imaginateStore.service.name.indexOf("_webcam") !== -1) {
-        connector = "webcam";
-        imaginateStore.settings.default.keepJson = true;
-      }
+      if (service.uiParams.mediaType === "webcam") connector = "webcam";
 
-      if (imaginateStore.service.name.indexOf("_stream") !== -1)
-        connector = "stream";
-    }
+      if (service.uiParams.mediaType === "mjpeg") connector = "mjpeg";
 
-    if (service.name.indexOf("_mjpeg") !== -1) {
-      connector = "mjpeg";
+      if (service.uiParams.mediaType === "stream") connector = "stream";
     }
 
     return connector;

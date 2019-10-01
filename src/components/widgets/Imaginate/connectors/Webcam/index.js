@@ -42,7 +42,7 @@ export default class WebcamConnector extends React.Component {
   }
 
   componentDidMount() {
-    var intervalId = setInterval(this.updatePredict, 500);
+    var intervalId = setInterval(this.updatePredict, 10);
     this.setState({ intervalId: intervalId });
   }
 

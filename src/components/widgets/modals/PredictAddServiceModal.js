@@ -14,7 +14,8 @@ export default class PredictAddServiceModal extends React.Component {
       spinner: false,
       serviceName: "",
       gpuId: 0,
-      addErrors: []
+      addErrors: [],
+      mediaType: "images"
     };
 
     this.validateBeforeSubmit = this.validateBeforeSubmit.bind(this);
@@ -23,6 +24,7 @@ export default class PredictAddServiceModal extends React.Component {
 
     this.handleServiceNameChange = this.handleServiceNameChange.bind(this);
     this.handleGpuIdChange = this.handleGpuIdChange.bind(this);
+    this.handleMediaChange = this.handleMediaChange.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -42,6 +44,10 @@ export default class PredictAddServiceModal extends React.Component {
 
   handleGpuIdChange(event) {
     this.setState({ gpuId: parseInt(event.target.value, 10) });
+  }
+
+  handleMediaChange(event) {
+    this.setState({ mediaType: event.target.value });
   }
 
   handleCancel() {
@@ -126,6 +132,7 @@ export default class PredictAddServiceModal extends React.Component {
         });
 
         ddStore.setService(serviceName);
+        ddStore.service.uiParams.mediaType = this.state.mediaType;
 
         this.props.modalStore.setVisible("addService", false);
 
@@ -208,6 +215,70 @@ export default class PredictAddServiceModal extends React.Component {
                 </small>
               </div>
             )}
+            <div className="form-group">
+              <label>Media Type</label>
+              <div className="form-group" onChange={this.handleMediaChange}>
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="inlineRadioOptions"
+                    defaultChecked="checked"
+                    value="images"
+                  />
+                  <label className="form-check-label">
+                    <span className="badge badge-pill">
+                      <i className="fas fa-images"></i> Images
+                    </span>
+                  </label>
+                </div>
+
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="inlineRadioOptions"
+                    value="webcam"
+                  />
+                  <label className="form-check-label">
+                    <span className="badge badge-pill">
+                      <i className="fas fa-camera"></i> Webcam
+                    </span>
+                  </label>
+                </div>
+
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="inlineRadioOptions"
+                    value="mjpeg"
+                  />
+                  <label className="form-check-label">
+                    <span className="badge badge-pill">
+                      <i className="fas fa-film"></i> MJpeg
+                    </span>
+                  </label>
+                </div>
+
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="inlineRadioOptions"
+                    value="stream"
+                  />
+                  <label className="form-check-label">
+                    <span className="badge badge-pill">
+                      <i className="fas fa-video"></i> Video
+                    </span>
+                  </label>
+                </div>
+              </div>
+              <small id="mediaTypeHelp" className="form-text text-muted">
+                The type of media that would be use in this service.
+              </small>
+            </div>
           </form>
 
           {this.state.addErrors && this.state.addErrors.length > 0 ? (

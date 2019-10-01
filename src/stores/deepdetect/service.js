@@ -420,8 +420,9 @@ export default class deepdetectService {
 
     if (typeof input === "undefined") return null;
 
-    if (typeof settings.keepJson === "undefined" || settings.keepJson === false)
-      input.json = null;
+    // Do not refresh input json when using webcam
+    // it avoids flickering issue
+    if (this.uiParams.mediaType !== "webcam") input.json = null;
 
     input.postData = {
       service: this.name,
