@@ -6,7 +6,6 @@ import "react-bootstrap-typeahead/css/Typeahead.css";
 import "react-bootstrap-typeahead/css/Typeahead-bs4.css";
 
 @inject("imaginateStore")
-@inject("dataRepositoriesStore")
 @observer
 class InputForm extends React.Component {
   constructor(props) {

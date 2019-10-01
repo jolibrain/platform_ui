@@ -86,7 +86,6 @@ export default class App extends React.Component {
 
         if (config.dataRepositories) {
           dataRepositoriesStore.setup(config);
-          dataRepositoriesStore.refresh();
         }
 
         buildInfoStore.loadBuildInfo();

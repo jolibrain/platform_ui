@@ -41,6 +41,11 @@ class InputForm extends React.Component {
 
   componentDidMount() {
     document.addEventListener("mousedown", this.handleClickOutside);
+    const { dataRepositoriesStore } = this.props;
+
+    if (dataRepositoriesStore.loaded == false) {
+      dataRepositoriesStore.refresh();
+    }
   }
 
   componentWillUnmount() {

@@ -3,6 +3,7 @@ import agent from "../agent";
 import path from "path";
 
 export class dataRepositoriesStore {
+  @observable loaded = false;
   @observable isLoading = false;
   @observable settings = {};
   @observable repositories = [];
@@ -64,6 +65,7 @@ export class dataRepositoriesStore {
       });
 
       this.isLoading = false;
+      this.loaded = true;
       this.cleanRootFolders();
     });
   }
