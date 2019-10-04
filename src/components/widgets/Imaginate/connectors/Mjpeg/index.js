@@ -6,8 +6,8 @@ import { withRouter } from "react-router-dom";
 import BoundingBox from "./BoundingBox";
 import Controls from "./BoundingBox/Controls";
 import Threshold from "./Threshold";
-import InputForm from "./InputForm";
 
+import InputForm from "../commons/InputForm";
 import ParamSlider from "../commons/ParamSlider";
 import ParamText from "../commons/ParamText";
 import Description from "../commons/Description";
@@ -331,7 +331,8 @@ export default class MjpegConnector extends React.Component {
           <div className="col-md-7">
             {service.isRequesting ? (
               <div className="alert alert-primary" role="alert">
-                <i className="fas fa-spinner fa-spin" />&nbsp; Loading...
+                <i className="fas fa-spinner fa-spin" />
+                &nbsp; Loading...
               </div>
             ) : (
               ""
@@ -363,7 +364,7 @@ export default class MjpegConnector extends React.Component {
             </div>
           </div>
           <div className="col-md-5">
-            <InputForm />
+            <InputForm methodId="mjpeg" />
             {uiControls}
             <div className="card description">
               <div className="card-body">

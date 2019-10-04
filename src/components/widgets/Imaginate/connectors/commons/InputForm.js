@@ -1,6 +1,7 @@
 import React from "react";
 import { toJS } from "mobx";
 import { inject, observer } from "mobx-react";
+import MjpegDecoder from "mjpeg-decoder";
 
 import { Typeahead, Menu, MenuItem } from "react-bootstrap-typeahead";
 
@@ -16,10 +17,42 @@ class InputForm extends React.Component {
 
     this.state = {
       dropdown: false,
-      method: { id: 0, label: "Image URL" },
+      method: {
+        id: "imageUrl",
+        label: "Image URL",
+        iconClassName: "fas fa-image"
+      },
       availableMethods: [
-        { id: 0, label: "Image URL" },
-        { id: 1, label: "Path" }
+        {
+          id: "imageUrl",
+          label: "Image URL",
+          iconClassName: "fas fa-image",
+          mediaType: "image"
+        },
+        {
+          id: "platformImagePath",
+          label: "Platform Folder Path",
+          iconClassName: "fas fa-folder-open",
+          mediaType: "imagePath"
+        },
+        {
+          id: "platformVideoPath",
+          label: "Platform Video URL",
+          iconClassName: "fas fa-video",
+          mediaType: "stream"
+        },
+        {
+          id: "mjpeg",
+          label: "Mjpeg Stream",
+          iconClassName: "fas fa-film",
+          mediaType: "mjpeg"
+        },
+        {
+          id: "webcam",
+          label: "Webcam",
+          iconClassName: "fas fa-camera",
+          mediaType: "webcam"
+        }
       ]
     };
 
@@ -42,6 +75,14 @@ class InputForm extends React.Component {
   componentDidMount() {
     document.addEventListener("mousedown", this.handleClickOutside);
     const { dataRepositoriesStore } = this.props;
+
+    if (this.props.selectedMethodId) {
+      this.setState({
+        method: this.state.availableMethods.find(
+          m => m.id === this.props.methodId
+        )
+      });
+    }
 
     if (dataRepositoriesStore.loaded === false) {
       dataRepositoriesStore.refresh();
@@ -101,11 +142,20 @@ class InputForm extends React.Component {
   }
 
   handleMethodChange(index) {
-    this.setState({
-      dropdown: false,
-      method: this.state.availableMethods[index],
-      focusInput: true
-    });
+    const selectedMethod = this.state.availableMethods[index];
+
+    if (this.state.availableMethods[index].mediaType) {
+      const { imaginateStore } = this.props;
+      const { service } = imaginateStore;
+
+      service.uiParams.mediaType = selectedMethod.mediaType;
+    } else {
+      this.setState({
+        dropdown: false,
+        method: selectedMethod,
+        focusInput: true
+      });
+    }
   }
 
   componentDidUpdate() {
@@ -140,8 +190,22 @@ class InputForm extends React.Component {
 
   addUrl(url) {
     const store = this.props.imaginateStore;
-    store.service.addInput(url);
-    store.predict();
+
+    if (this.method.id === "mjpeg") {
+      const decoder = new MjpegDecoder(url, { interval: 3000 });
+      decoder.start();
+
+      decoder.on("frame", (frame, seq) => {
+        const base64Img = btoa(String.fromCharCode.apply(null, frame));
+        store.service.addOrReplaceInput(0, base64Img);
+        store.predict();
+      });
+
+      this.setState({ decoder: decoder });
+    } else {
+      store.service.addInput(url);
+      store.predict();
+    }
   }
 
   render() {
@@ -158,6 +222,7 @@ class InputForm extends React.Component {
                 aria-expanded="false"
                 onClick={this.handleOpenDropdown}
               >
+                <i className={this.state.method.iconClassName}></i>&nbsp;
                 {this.state.method.label}
               </button>
               <div
@@ -172,6 +237,7 @@ class InputForm extends React.Component {
                       className="dropdown-item"
                       onClick={this.handleMethodChange.bind(this, index)}
                     >
+                      <i className={method.iconClassName}></i>&nbsp;
                       {method.label}
                     </a>
                   );
@@ -179,7 +245,9 @@ class InputForm extends React.Component {
               </div>
             </div>
             <input
-              style={{ display: this.state.method.id === 0 ? "block" : "none" }}
+              style={{
+                display: this.state.method.id === "imageUrl" ? "block" : "none"
+              }}
               ref={this.inputRef}
               type="text"
               className="form-control"
@@ -188,7 +256,9 @@ class InputForm extends React.Component {
               onKeyPress={this.handleKeyPress}
             />
             <Typeahead
-              className={this.state.method.label === "Path" ? "" : "hidden"}
+              className={
+                this.state.method.id === "platformImagePath" ? "" : "hidden"
+              }
               id="inlineFormInputModelLocation"
               ref={typeahead => (this.typeahead = typeahead)}
               options={toJS(this.props.dataRepositoriesStore.repositories)}

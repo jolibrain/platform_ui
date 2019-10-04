@@ -8,6 +8,7 @@ import BoundingBox from "./BoundingBox";
 import superagentPromise from "superagent-promise";
 import _superagent from "superagent";
 
+import InputForm from "../commons/InputForm";
 import ParamSlider from "../commons/ParamSlider";
 import Description from "../commons/Description";
 import CardCommands from "../commons/CardCommands";
@@ -93,6 +94,8 @@ export default class WebcamConnector extends React.Component {
     if (!service) return null;
 
     let uiControls = [];
+
+    uiControls.push(<InputForm key="webcamInputForm" methodId="webcam" />);
 
     // Note: the threshold confidence variable in the key attribute
     // is a hack to update the slider when user pushes

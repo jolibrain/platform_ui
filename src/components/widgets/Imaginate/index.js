@@ -38,6 +38,12 @@ export default class Imaginate extends React.Component {
         connector = serviceInfo.body.parameters.input[0].connector;
       }
 
+      if (
+        service.uiParams.mediaType === "image" ||
+        service.uiParams.mediaType === "imagePath"
+      )
+        connector = "image";
+
       if (service.uiParams.mediaType === "webcam") connector = "webcam";
 
       if (service.uiParams.mediaType === "mjpeg") connector = "mjpeg";
