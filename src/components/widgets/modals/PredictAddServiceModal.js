@@ -222,7 +222,7 @@ export default class PredictAddServiceModal extends React.Component {
                   <input
                     className="form-check-input"
                     type="radio"
-                    name="inlineRadioOptions"
+                    name="inlineRadioMediaOptions"
                     defaultChecked="checked"
                     value="images"
                   />
@@ -237,7 +237,7 @@ export default class PredictAddServiceModal extends React.Component {
                   <input
                     className="form-check-input"
                     type="radio"
-                    name="inlineRadioOptions"
+                    name="inlineRadioMediaOptions"
                     value="webcam"
                   />
                   <label className="form-check-label">
@@ -251,7 +251,7 @@ export default class PredictAddServiceModal extends React.Component {
                   <input
                     className="form-check-input"
                     type="radio"
-                    name="inlineRadioOptions"
+                    name="inlineRadioMediaOptions"
                     value="mjpeg"
                   />
                   <label className="form-check-label">
@@ -265,7 +265,7 @@ export default class PredictAddServiceModal extends React.Component {
                   <input
                     className="form-check-input"
                     type="radio"
-                    name="inlineRadioOptions"
+                    name="inlineRadioMediaOptions"
                     value="stream"
                   />
                   <label className="form-check-label">
