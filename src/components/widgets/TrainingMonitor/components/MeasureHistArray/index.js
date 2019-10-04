@@ -9,7 +9,7 @@ export default class MeasureHistArray extends React.Component {
   render() {
     const { service } = this.props;
 
-    if (!service.jsonMetrics) return null;
+    if (!service.jsonMetrics && !service.respTrainMetrics) return null;
 
     let measureHistKeys = Object.keys(service.measure_hist)
       .sort()
