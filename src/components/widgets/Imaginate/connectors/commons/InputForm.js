@@ -76,7 +76,7 @@ class InputForm extends React.Component {
     document.addEventListener("mousedown", this.handleClickOutside);
     const { dataRepositoriesStore } = this.props;
 
-    if (this.props.selectedMethodId) {
+    if (this.props.methodId) {
       this.setState({
         method: this.state.availableMethods.find(
           m => m.id === this.props.methodId

@@ -371,7 +371,7 @@ export default class ImageConnector extends React.Component {
             </div>
           </div>
           <div className="col-md-5">
-            <InputForm methodId="image" />
+            <InputForm methodId="imageUrl" />
             {uiControls}
             <div className="card description">
               <div className="card-body">
