@@ -2,9 +2,10 @@ import React from "react";
 import { inject, observer } from "mobx-react";
 
 import ImageConnector from "./connectors/Image";
+import ImagePathConnector from "./connectors/ImagePath";
 import TxtConnector from "./connectors/Txt";
 import WebcamConnector from "./connectors/Webcam";
-import StreamConnector from "./connectors/Stream";
+import VideoConnector from "./connectors/Video";
 import MjpegConnector from "./connectors/Mjpeg";
 
 @inject("imaginateStore")
@@ -38,17 +39,25 @@ export default class Imaginate extends React.Component {
         connector = serviceInfo.body.parameters.input[0].connector;
       }
 
-      if (
-        service.uiParams.mediaType === "image" ||
-        service.uiParams.mediaType === "imagePath"
-      )
-        connector = "image";
-
-      if (service.uiParams.mediaType === "webcam") connector = "webcam";
-
-      if (service.uiParams.mediaType === "mjpeg") connector = "mjpeg";
-
-      if (service.uiParams.mediaType === "stream") connector = "stream";
+      switch (service.uiParams.mediaType) {
+        case "image":
+          connector = "image";
+          break;
+        case "imagePath":
+          connector = "imagePath";
+          break;
+        case "webcam":
+          connector = "webcam";
+          break;
+        case "mjpeg":
+          connector = "mjpeg";
+          break;
+        //        case "video":
+        //          connector = "video";
+        //          break;
+        default:
+          break;
+      }
     }
 
     return connector;
@@ -71,11 +80,14 @@ export default class Imaginate extends React.Component {
       case "image":
         connectorComponent = <ImageConnector />;
         break;
+      case "imagePath":
+        connectorComponent = <ImagePathConnector />;
+        break;
       case "webcam":
         connectorComponent = <WebcamConnector />;
         break;
       case "stream":
-        connectorComponent = <StreamConnector />;
+        connectorComponent = <VideoConnector />;
         break;
       case "mjpeg":
         connectorComponent = <MjpegConnector />;

@@ -14,7 +14,7 @@ import CardCommands from "../commons/CardCommands";
 
 @inject("imaginateStore")
 @observer
-export default class StreamConnector extends React.Component {
+export default class VideoConnector extends React.Component {
   constructor(props) {
     super(props);
 
@@ -133,7 +133,7 @@ export default class StreamConnector extends React.Component {
 
     let uiControls = [];
 
-    uiControls.push(<InputForm key="streamImputform" methodId="stream" />);
+    uiControls.push(<InputForm key="streamImputform" methodId="video" />);
 
     // Note: the threshold confidence variable in the key attribute
     // is a hack to update the slider when user pushes

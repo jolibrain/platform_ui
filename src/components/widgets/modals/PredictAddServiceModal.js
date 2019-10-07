@@ -15,7 +15,7 @@ export default class PredictAddServiceModal extends React.Component {
       serviceName: "",
       gpuId: 0,
       addErrors: [],
-      mediaType: "images"
+      mediaType: "image"
     };
 
     this.validateBeforeSubmit = this.validateBeforeSubmit.bind(this);
@@ -224,11 +224,11 @@ export default class PredictAddServiceModal extends React.Component {
                     type="radio"
                     name="inlineRadioMediaOptions"
                     defaultChecked="checked"
-                    value="images"
+                    value="image"
                   />
                   <label className="form-check-label">
                     <span className="badge badge-pill">
-                      <i className="fas fa-images"></i> Images
+                      <i className="fas fa-image"></i> Images
                     </span>
                   </label>
                 </div>
@@ -257,20 +257,6 @@ export default class PredictAddServiceModal extends React.Component {
                   <label className="form-check-label">
                     <span className="badge badge-pill">
                       <i className="fas fa-film"></i> MJpeg
-                    </span>
-                  </label>
-                </div>
-
-                <div className="form-check form-check-inline">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    name="inlineRadioMediaOptions"
-                    value="stream"
-                  />
-                  <label className="form-check-label">
-                    <span className="badge badge-pill">
-                      <i className="fas fa-video"></i> Video
                     </span>
                   </label>
                 </div>

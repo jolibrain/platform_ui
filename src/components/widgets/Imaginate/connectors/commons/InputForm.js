@@ -18,29 +18,29 @@ class InputForm extends React.Component {
     this.state = {
       dropdown: false,
       method: {
-        id: "imageUrl",
+        id: "image",
         label: "Image URL",
         iconClassName: "fas fa-image"
       },
       availableMethods: [
         {
-          id: "imageUrl",
+          id: "image",
           label: "Image URL",
           iconClassName: "fas fa-image",
           mediaType: "image"
         },
         {
-          id: "platformImagePath",
+          id: "imagePath",
           label: "Platform Folder Path",
           iconClassName: "fas fa-folder-open",
           mediaType: "imagePath"
         },
-        {
-          id: "platformVideoPath",
-          label: "Platform Video URL",
-          iconClassName: "fas fa-video",
-          mediaType: "stream"
-        },
+        //        {
+        //          id: "video",
+        //          label: "Platform Video URL",
+        //          iconClassName: "fas fa-video",
+        //          mediaType: "stream"
+        //        },
         {
           id: "mjpeg",
           label: "Mjpeg Stream",
@@ -74,7 +74,6 @@ class InputForm extends React.Component {
 
   componentDidMount() {
     document.addEventListener("mousedown", this.handleClickOutside);
-    const { dataRepositoriesStore } = this.props;
 
     if (this.props.methodId) {
       this.setState({
@@ -82,10 +81,6 @@ class InputForm extends React.Component {
           m => m.id === this.props.methodId
         )
       });
-    }
-
-    if (dataRepositoriesStore.loaded === false) {
-      dataRepositoriesStore.refresh();
     }
   }
 
@@ -191,7 +186,7 @@ class InputForm extends React.Component {
   addUrl(url) {
     const store = this.props.imaginateStore;
 
-    if (this.method.id === "mjpeg") {
+    if (this.state.method.id === "mjpeg") {
       const decoder = new MjpegDecoder(url, { interval: 3000 });
       decoder.start();
 
@@ -246,7 +241,11 @@ class InputForm extends React.Component {
             </div>
             <input
               style={{
-                display: this.state.method.id === "imageUrl" ? "block" : "none"
+                display: ["image", "video", "mjpeg"].includes(
+                  this.state.method.id
+                )
+                  ? "block"
+                  : "none"
               }}
               ref={this.inputRef}
               type="text"
@@ -257,7 +256,7 @@ class InputForm extends React.Component {
             />
             <Typeahead
               className={
-                this.state.method.id === "platformImagePath" ? "" : "hidden"
+                ["imagePath"].includes(this.state.method.id) ? "" : "hidden"
               }
               id="inlineFormInputModelLocation"
               ref={typeahead => (this.typeahead = typeahead)}
