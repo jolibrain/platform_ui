@@ -17,6 +17,8 @@ export default class MainView extends React.Component {
     const chainName = this.props.match.params.chainName;
     const chain = deepdetectStore.chains.find(c => c.name === chainName);
 
+    const existingServiceNames = deepdetectStore.services.map(s => s.name);
+
     if (!chain) return null;
 
     return (
@@ -30,26 +32,29 @@ export default class MainView extends React.Component {
               <h4>{chain.description}</h4>
 
               {chain.calls.map((call, index) => {
-                let callType = null;
-                let callParent = <h5>{call.parent_id}</h5>;
+                let badge = null;
 
                 if (call.service) {
-                  callType = (
-                    <h4>
-                      {index + 1}. Service: {call.service}
-                    </h4>
-                  );
-                } else if (call.action) {
-                  callType = (
-                    <h4>
-                      {index + 1}. Action: {call.action.type}
-                    </h4>
-                  );
+                  if (!existingServiceNames.includes(call.service)) {
+                    badge = (
+                      <span className="badge badge-danger">
+                        service missing
+                      </span>
+                    );
+                  } else {
+                    badge = (
+                      <span className="badge badge-success">service ready</span>
+                    );
+                  }
                 }
+
                 return (
                   <div key={index} className="row chainInfo">
-                    {callType}
-                    {callParent}
+                    <h4>
+                      {call.service ? call.service : call.action.type}
+                      {badge}
+                    </h4>
+                    <h5>{call.service ? "Service" : "Action"}</h5>
                   </div>
                 );
               })}
