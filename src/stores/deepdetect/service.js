@@ -335,6 +335,16 @@ export default class deepdetectService {
   }
 
   @action
+  predictChain(widgetSettings = {}, chainCalls) {
+    if (this.inputs.length === 0) {
+      return null;
+    }
+
+    // this._initPredictRequest(widgetSettings);
+    this._chainRequest(widgetSettings, chainCalls);
+  }
+
+  @action
   stopTraining(callback) {
     if (this.settings.training) {
       this.$reqStopTraining().then(callback);
@@ -353,6 +363,16 @@ export default class deepdetectService {
     const info = await agent.Deepdetect.postPredict(
       this.serverSettings,
       toJS(this.selectedInput.postData)
+    );
+    this.status.client = ServiceConstants.CLIENT_STATUS.NONE;
+    return info;
+  }
+
+  async $reqPutChain() {
+    this.status.client = ServiceConstants.CLIENT_STATUS.REQUESTING_PREDICT;
+    const info = await agent.Deepdetect.putChain(
+      this.serverSettings,
+      toJS(this.selectedInput.putData)
     );
     this.status.client = ServiceConstants.CLIENT_STATUS.NONE;
     return info;
@@ -570,6 +590,45 @@ export default class deepdetectService {
         input.boxes = prediction.rois.map(predict => predict.bbox);
       }
     }
+  }
+
+  @action
+  async _chainRequest(settings, chainCalls) {
+    let input = this.inputs.find(i => i.isActive);
+
+    if (!input) return null;
+
+    chainCalls[0].data = [input.content];
+
+    input.putData = {
+      chain: {
+        calls: chainCalls
+      }
+    };
+
+    input.json = await this.$reqPutChain();
+
+    // if (typeof input.json.body !== "undefined") {
+    //   const prediction = input.json.body.predictions[0];
+    //   const classes = prediction.classes;
+
+    //   if (
+    //     typeof classes !== "undefined" &&
+    //     this.respInfo.body.mltype !== "classification"
+    //   ) {
+    //     input.boxes = classes.map(predict => predict.bbox);
+    //   }
+
+    //   if (
+    //     (settings.request.objSearch ||
+    //       settings.request.imgSearch ||
+    //       this.settings.mltype === "rois") &&
+    //     typeof input.json.body.predictions[0].rois !== "undefined" &&
+    //     this.respInfo.body.mltype !== "classification"
+    //   ) {
+    //     input.boxes = prediction.rois.map(predict => predict.bbox);
+    //   }
+    // }
   }
 
   @action

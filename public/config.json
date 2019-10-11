@@ -142,6 +142,9 @@
           }
         }
       ]
+    },
+    "chains": {
+      "path": "/chains/"
     }
   },
   "imaginate": {

@@ -1,5 +1,6 @@
 import { observable, action, computed } from "mobx";
 import async from "async";
+import agent from "../agent";
 
 import deepdetectServer from "./deepdetect/server";
 
@@ -7,6 +8,7 @@ export class deepdetectStore {
   @observable settings = {};
 
   @observable servers = [];
+  @observable chains = [];
 
   @observable refresh = 0;
   @observable isReady = false;
@@ -69,7 +71,7 @@ export class deepdetectStore {
   }
 
   @action
-  setup(configStore) {
+  async setup(configStore) {
     this.settings = configStore.deepdetect;
 
     if (this.settings.servers) {
@@ -78,8 +80,20 @@ export class deepdetectStore {
       });
     }
 
+    // Set first server as default server
     if (this.servers.length > 0 && !this.server) {
       this.servers[0].isActive = true;
+    }
+
+    // List available chains
+    if (this.settings.chains && this.settings.chains.path) {
+      const path = this.settings.chains.path;
+      const chainFiles = await agent.Webserver.listFiles(path);
+
+      chainFiles.forEach(async (chainFile, index) => {
+        const chainContent = await agent.Webserver.getFile(path + chainFile);
+        this.chains.push(chainContent);
+      });
     }
   }
 

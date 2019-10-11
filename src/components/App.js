@@ -13,6 +13,8 @@ import TrainingHome from "./Training/Home";
 import TrainingShow from "./Training/Show";
 import TrainingArchive from "./Training/Archive";
 
+import ChainShow from "./Chain/Show";
+
 import GenericNotFound from "./GenericNotFound";
 
 import Imaginate from "./widgets/Imaginate";
@@ -137,6 +139,9 @@ export default class App extends React.Component {
             path="/trainingArchive/:modelPath*"
             component={TrainingArchive}
           />
+
+          {/* Chain */}
+          <Route exact path="/chains/:chainName" component={ChainShow} />
 
           {/* 404 */}
           <Route exact path="/404" component={GenericNotFound} />

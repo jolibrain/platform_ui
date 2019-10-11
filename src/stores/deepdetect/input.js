@@ -4,6 +4,7 @@ export default class Input {
   @observable isActive = false;
   @observable content = {};
   @observable postData = {};
+  @observable putData = {};
   @observable path = null;
   @observable json = null;
   @observable boxes = [];

@@ -29,7 +29,7 @@
     "codemirror": "^5.38.0",
     "copy-to-clipboard": "^3.0.8",
     "custom-react-scripts": "^0.2.2",
-    "deepdetect-js": "^1.7.0",
+    "deepdetect-js": "^1.8.0",
     "keycloak-js": "^4.1.0",
     "mjpeg-decoder": "^1.0.3",
     "mobx": "^5.9.0",

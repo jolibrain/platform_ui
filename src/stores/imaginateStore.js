@@ -54,6 +54,8 @@ export class imaginateStore {
   @observable server = null;
   @observable service = null;
 
+  @observable chainCalls = [];
+
   @action
   setup(configStore) {
     // If both objects have a property with the same name,
@@ -71,7 +73,11 @@ export class imaginateStore {
 
   @action
   predict() {
-    this.service.predict(this.serviceSettings);
+    if (this.chainCalls.length > 0) {
+      this.service.predictChain(this.serviceSettings, this.chainCalls);
+    } else {
+      this.service.predict(this.serviceSettings);
+    }
   }
 
   @computed

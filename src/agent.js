@@ -140,6 +140,15 @@ const Deepdetect = {
       return err;
     }
   },
+  putChain: async (settings, putData) => {
+    settings.fetchTimeout = DD_TIMEOUT;
+    const dd = new DD(settings);
+    try {
+      return await dd.putChain(putData);
+    } catch (err) {
+      return err;
+    }
+  },
   getTrain: async (
     settings,
     serviceName,
@@ -209,6 +218,8 @@ const Webserver = {
       .withCredentials()
       .end(handleErrors)
       .then(res => {
+        if (!res.body) return [];
+
         return res.body
           .filter(f => f.type === "file")
           .map(f => decodeURIComponent(f.name));
