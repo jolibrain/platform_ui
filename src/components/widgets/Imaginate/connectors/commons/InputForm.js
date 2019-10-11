@@ -1,7 +1,7 @@
 import React from "react";
 import { toJS } from "mobx";
 import { inject, observer } from "mobx-react";
-import MjpegDecoder from "mjpeg-decoder";
+// import MjpegDecoder from "mjpeg-decoder";
 
 import { Typeahead, Menu, MenuItem } from "react-bootstrap-typeahead";
 
@@ -187,16 +187,16 @@ class InputForm extends React.Component {
     const store = this.props.imaginateStore;
 
     if (this.state.method.id === "mjpeg") {
-      const decoder = new MjpegDecoder(url, { interval: 3000 });
-      decoder.start();
-
-      decoder.on("frame", (frame, seq) => {
-        const base64Img = btoa(String.fromCharCode.apply(null, frame));
-        store.service.addOrReplaceInput(0, base64Img);
-        store.predict();
-      });
-
-      this.setState({ decoder: decoder });
+      //      const decoder = new MjpegDecoder(url, { interval: 3000 });
+      //      decoder.start();
+      //
+      //      decoder.on("frame", (frame, seq) => {
+      //        const base64Img = btoa(String.fromCharCode.apply(null, frame));
+      //        store.service.addOrReplaceInput(0, base64Img);
+      //        store.predict();
+      //      });
+      //
+      //      this.setState({ decoder: decoder });
     } else {
       store.service.addInput(url);
       store.predict();

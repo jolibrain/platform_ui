@@ -6,7 +6,7 @@ import ImagePathConnector from "./connectors/ImagePath";
 import TxtConnector from "./connectors/Txt";
 import WebcamConnector from "./connectors/Webcam";
 import VideoConnector from "./connectors/Video";
-import MjpegConnector from "./connectors/Mjpeg";
+// import MjpegConnector from "./connectors/Mjpeg";
 
 @inject("imaginateStore")
 @inject("configStore")
@@ -49,9 +49,9 @@ export default class Imaginate extends React.Component {
         case "webcam":
           connector = "webcam";
           break;
-        case "mjpeg":
-          connector = "mjpeg";
-          break;
+        //        case "mjpeg":
+        //          connector = "mjpeg";
+        //          break;
         //        case "video":
         //          connector = "video";
         //          break;
@@ -89,9 +89,9 @@ export default class Imaginate extends React.Component {
       case "stream":
         connectorComponent = <VideoConnector />;
         break;
-      case "mjpeg":
-        connectorComponent = <MjpegConnector />;
-        break;
+      //      case "mjpeg":
+      //        connectorComponent = <MjpegConnector />;
+      //        break;
       case "csv":
         connectorComponent = (
           <div className="alert alert-warning" role="alert">

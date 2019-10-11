@@ -152,6 +152,21 @@ export default class PredictAddServiceModal extends React.Component {
         s.aliases.includes(hostableServer.name)
     );
 
+    // TODO: restore mjpeg selector
+    //<div className="form-check form-check-inline">
+    //  <input
+    //    className="form-check-input"
+    //    type="radio"
+    //    name="inlineRadioMediaOptions"
+    //    value="mjpeg"
+    //  />
+    //  <label className="form-check-label">
+    //    <span className="badge badge-pill">
+    //      <i className="fas fa-film"></i> MJpeg
+    //    </span>
+    //  </label>
+    //</div>
+
     return (
       <div id="modal-addService">
         <div className="modal-header">
@@ -243,20 +258,6 @@ export default class PredictAddServiceModal extends React.Component {
                   <label className="form-check-label">
                     <span className="badge badge-pill">
                       <i className="fas fa-camera"></i> Webcam
-                    </span>
-                  </label>
-                </div>
-
-                <div className="form-check form-check-inline">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    name="inlineRadioMediaOptions"
-                    value="mjpeg"
-                  />
-                  <label className="form-check-label">
-                    <span className="badge badge-pill">
-                      <i className="fas fa-film"></i> MJpeg
                     </span>
                   </label>
                 </div>
