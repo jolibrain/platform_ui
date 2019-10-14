@@ -31,22 +31,22 @@ class InputForm extends React.Component {
         },
         {
           id: "imagePath",
-          label: "Platform Folder Path",
+          label: "Platform Data",
           iconClassName: "fas fa-folder-open",
           mediaType: "imagePath"
         },
-        //        {
-        //          id: "video",
-        //          label: "Platform Video URL",
-        //          iconClassName: "fas fa-video",
-        //          mediaType: "stream"
-        //        },
-        {
-          id: "mjpeg",
-          label: "Mjpeg Stream",
-          iconClassName: "fas fa-film",
-          mediaType: "mjpeg"
-        },
+        // {
+        //   id: "video",
+        //   label: "Platform Video URL",
+        //   iconClassName: "fas fa-video",
+        //   mediaType: "stream"
+        // },
+        // {
+        //   id: "mjpeg",
+        //   label: "Mjpeg Stream",
+        //   iconClassName: "fas fa-film",
+        //   mediaType: "mjpeg"
+        // },
         {
           id: "webcam",
           label: "Webcam",
