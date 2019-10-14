@@ -247,9 +247,17 @@
       .slide {
         display: inline-block;
 
+        .btn {
+          margin-right: 5px;
+        }
+
         img {
           padding: 5px;
           width: 80px;
+        }
+
+        .active {
+          border: 1px solid $support_red_7;
         }
 
         .deleteImg {
