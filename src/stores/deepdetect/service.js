@@ -1,6 +1,8 @@
 import { action, observable, computed, toJS, runInAction } from "mobx";
 import store from "store";
 
+import moment from "moment";
+
 import Input from "./input";
 
 import autoSave from "../autoSave";
@@ -372,6 +374,7 @@ export default class deepdetectService {
     this.status.client = ServiceConstants.CLIENT_STATUS.REQUESTING_PREDICT;
     const info = await agent.Deepdetect.putChain(
       this.serverSettings,
+      moment().milliseconds(),
       toJS(this.selectedInput.putData)
     );
     this.status.client = ServiceConstants.CLIENT_STATUS.NONE;

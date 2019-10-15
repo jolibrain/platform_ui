@@ -44,7 +44,13 @@ export default class Description extends React.Component {
         displayFormat = "nns";
       }
 
-      if (input.json && input.json.body.predictions[0].rois) {
+      if (
+        input.json &&
+        input.json.body &&
+        input.json.body.predictions &&
+        input.json.body.predictions[0] &&
+        input.json.body.predictions[0].rois
+      ) {
         displayFormat = "rois";
       }
 

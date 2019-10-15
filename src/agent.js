@@ -140,11 +140,11 @@ const Deepdetect = {
       return err;
     }
   },
-  putChain: async (settings, putData) => {
+  putChain: async (settings, endpoint, data) => {
     settings.fetchTimeout = DD_TIMEOUT;
     const dd = new DD(settings);
     try {
-      return await dd.putChain(putData);
+      return await dd.putChain(endpoint, data);
     } catch (err) {
       return err;
     }
