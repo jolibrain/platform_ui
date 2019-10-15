@@ -166,6 +166,12 @@ export default class PredictAddServiceModal extends React.Component {
     //    </span>
     //  </label>
     //</div>
+    //
+
+    const isWebcamAvailable =
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1" ||
+      window.location.protocol === "https:";
 
     return (
       <div id="modal-addService">
@@ -230,42 +236,45 @@ export default class PredictAddServiceModal extends React.Component {
                 </small>
               </div>
             )}
-            <div className="form-group">
-              <label>Media Type</label>
-              <div className="form-group" onChange={this.handleMediaChange}>
-                <div className="form-check form-check-inline">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    name="inlineRadioMediaOptions"
-                    defaultChecked="checked"
-                    value="image"
-                  />
-                  <label className="form-check-label">
-                    <span className="badge badge-pill">
-                      <i className="fas fa-image"></i> Images
-                    </span>
-                  </label>
-                </div>
 
-                <div className="form-check form-check-inline">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    name="inlineRadioMediaOptions"
-                    value="webcam"
-                  />
-                  <label className="form-check-label">
-                    <span className="badge badge-pill">
-                      <i className="fas fa-camera"></i> Webcam
-                    </span>
-                  </label>
+            {isWebcamAvailable ? (
+              <div className="form-group">
+                <label>Media Type</label>
+                <div className="form-group" onChange={this.handleMediaChange}>
+                  <div className="form-check form-check-inline">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="inlineRadioMediaOptions"
+                      defaultChecked="checked"
+                      value="image"
+                    />
+                    <label className="form-check-label">
+                      <span className="badge badge-pill">
+                        <i className="fas fa-image"></i> Images
+                      </span>
+                    </label>
+                  </div>
+
+                  <div className="form-check form-check-inline">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="inlineRadioMediaOptions"
+                      value="webcam"
+                    />
+                    <label className="form-check-label">
+                      <span className="badge badge-pill">
+                        <i className="fas fa-camera"></i> Webcam
+                      </span>
+                    </label>
+                  </div>
                 </div>
+                <small id="mediaTypeHelp" className="form-text text-muted">
+                  The type of media that would be use in this service.
+                </small>
               </div>
-              <small id="mediaTypeHelp" className="form-text text-muted">
-                The type of media that would be use in this service.
-              </small>
-            </div>
+            ) : null}
           </form>
 
           {this.state.addErrors && this.state.addErrors.length > 0 ? (

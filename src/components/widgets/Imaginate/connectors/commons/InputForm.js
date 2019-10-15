@@ -15,6 +15,11 @@ class InputForm extends React.Component {
   constructor(props) {
     super(props);
 
+    const isWebcamAvailable =
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1" ||
+      window.location.protocol === "https:";
+
     this.state = {
       dropdown: false,
       method: {
@@ -27,31 +32,34 @@ class InputForm extends React.Component {
           id: "image",
           label: "Image URL",
           iconClassName: "fas fa-image",
-          mediaType: "image"
+          mediaType: "image",
+          isAvailable: true
         },
         {
           id: "imagePath",
-          label: "Platform Folder Path",
+          label: "Platform Data",
           iconClassName: "fas fa-folder-open",
-          mediaType: "imagePath"
+          mediaType: "imagePath",
+          isAvailable: true
         },
-        //        {
-        //          id: "video",
-        //          label: "Platform Video URL",
-        //          iconClassName: "fas fa-video",
-        //          mediaType: "stream"
-        //        },
-        {
-          id: "mjpeg",
-          label: "Mjpeg Stream",
-          iconClassName: "fas fa-film",
-          mediaType: "mjpeg"
-        },
+        // {
+        //   id: "video",
+        //   label: "Platform Video URL",
+        //   iconClassName: "fas fa-video",
+        //   mediaType: "stream"
+        // },
+        // {
+        //   id: "mjpeg",
+        //   label: "Mjpeg Stream",
+        //   iconClassName: "fas fa-film",
+        //   mediaType: "mjpeg"
+        // },
         {
           id: "webcam",
           label: "Webcam",
           iconClassName: "fas fa-camera",
-          mediaType: "webcam"
+          mediaType: "webcam",
+          isAvailable: isWebcamAvailable
         }
       ]
     };
@@ -204,6 +212,9 @@ class InputForm extends React.Component {
   }
 
   render() {
+    const inputMethods = this.state.availableMethods.filter(m => {
+      return m.isAvailable;
+    });
     return (
       <div className="card inputUrl" ref={this.setWrapperRef}>
         <div className="card-body">
@@ -225,7 +236,7 @@ class InputForm extends React.Component {
                   this.state.dropdown ? "dropdown-menu show" : "dropdown-menu"
                 }
               >
-                {this.state.availableMethods.map((method, index) => {
+                {inputMethods.map((method, index) => {
                   return (
                     <a
                       key={index}
