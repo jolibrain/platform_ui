@@ -611,27 +611,27 @@ export default class deepdetectService {
 
     input.json = await this.$reqPutChain();
 
-    // if (typeof input.json.body !== "undefined") {
-    //   const prediction = input.json.body.predictions[0];
-    //   const classes = prediction.classes;
+    if (typeof input.json.body !== "undefined") {
+      const prediction = input.json.body.predictions[0];
+      const classes = prediction.classes;
 
-    //   if (
-    //     typeof classes !== "undefined" &&
-    //     this.respInfo.body.mltype !== "classification"
-    //   ) {
-    //     input.boxes = classes.map(predict => predict.bbox);
-    //   }
+      if (
+        typeof classes !== "undefined" &&
+        this.respInfo.body.mltype !== "classification"
+      ) {
+        input.boxes = classes.map(predict => predict.bbox);
+      }
 
-    //   if (
-    //     (settings.request.objSearch ||
-    //       settings.request.imgSearch ||
-    //       this.settings.mltype === "rois") &&
-    //     typeof input.json.body.predictions[0].rois !== "undefined" &&
-    //     this.respInfo.body.mltype !== "classification"
-    //   ) {
-    //     input.boxes = prediction.rois.map(predict => predict.bbox);
-    //   }
-    // }
+      if (
+        (settings.request.objSearch ||
+          settings.request.imgSearch ||
+          this.settings.mltype === "rois") &&
+        typeof input.json.body.predictions[0].rois !== "undefined" &&
+        this.respInfo.body.mltype !== "classification"
+      ) {
+        input.boxes = prediction.rois.map(predict => predict.bbox);
+      }
+    }
   }
 
   @action
