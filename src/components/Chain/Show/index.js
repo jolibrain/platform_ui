@@ -27,6 +27,8 @@ export default class ChainShow extends React.Component {
       const chainName = params.chainName;
       const chain = deepdetectStore.chains.find(c => c.name === chainName);
 
+      if (typeof chain.calls === "undefined") return null;
+
       const rootService = chain.calls[0].service;
 
       deepdetectStore.setService(rootService);
