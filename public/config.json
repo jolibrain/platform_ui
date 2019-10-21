@@ -52,57 +52,9 @@
         }
       },
       {
-        "name": "hyperion",
-        "settings": {
-          "path": "/api/hyperion",
-          "isWritable": true,
-          "sameOrigin": true
-        }
-      },
-      {
-        "name": "training_test",
-        "settings": {
-          "path": "/api/training_test",
-          "isWritable": true,
-          "sameOrigin": true
-        }
-      },
-      {
-        "name": "training_test_2",
-        "settings": {
-          "path": "/api/training_test_2",
-          "isWritable": true,
-          "sameOrigin": true
-        }
-      },
-      {
         "name": "neptune02",
         "settings": {
           "path": "/api/neptune02",
-          "isWritable": true,
-          "sameOrigin": true
-        }
-      },
-      {
-        "name": "neptune02-test",
-        "settings": {
-          "path": "/api/neptune02-test",
-          "isWritable": true,
-          "sameOrigin": true
-        }
-      },
-      {
-        "name": "neptune04",
-        "settings": {
-          "path": "/api/neptune04",
-          "isWritable": true,
-          "sameOrigin": true
-        }
-      },
-      {
-        "name": "hydra",
-        "settings": {
-          "path": "/api/hydra",
           "isWritable": true,
           "sameOrigin": true
         }
@@ -217,20 +169,8 @@
         "aliases": ["private", "public", "training"]
       },
       {
-        "name": "hyperion",
-        "url": "/gpu/hyperion"
-      },
-      {
         "name": "neptune02",
         "url": "/gpu/neptune02"
-      },
-      {
-        "name": "neptune04",
-        "url": "/gpu/neptune04"
-      },
-      {
-        "name": "hydra",
-        "url": "/gpu/hydra"
       },
       {
         "name": "ceres",
