@@ -93,7 +93,10 @@ export default class TableItem extends React.Component {
           </Sparklines>
         </th>
         <td>
-          <h3>{value}</h3>
+          <h3>
+            {value} (best:{" "}
+            {Math.max(...measure_hist[measureHistKey]).toFixed(5)})
+          </h3>
           <h4>{measureKey}</h4>
         </td>
       </tr>
