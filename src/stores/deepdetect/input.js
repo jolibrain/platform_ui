@@ -55,4 +55,14 @@ export default class Input {
       this.postData.parameters.input.segmentation
     );
   }
+
+  @computed
+  get isChainResult() {
+    return (
+      this.json &&
+      this.json.head &&
+      this.json.head.method &&
+      this.json.head.method === "/chain"
+    );
+  }
 }

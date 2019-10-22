@@ -8,18 +8,35 @@ export default class BoundingBox extends React.Component {
   constructor(props) {
     super(props);
 
-    this.drawLabelSimple = this.drawLabelSimple.bind(this);
-    this.drawLabelColor = this.drawLabelColor.bind(this);
+    this.drawLabel = this.drawLabel.bind(this);
 
     this.drawBoxSimple = this.drawBoxSimple.bind(this);
     this.drawBoxColor = this.drawBoxColor.bind(this);
+
+    this.findChainService = this.findChainService.bind(this);
   }
 
-  drawLabelSimple(canvas, box) {
-    return null;
+  findChainService(category) {
+    let i;
+
+    if (typeof category.classes === "undefined") {
+      for (i = 0; i < Object.keys(category).length; i += 1) {
+        const key = Object.keys(category)[i];
+        const result = this.findChainService(category[key]);
+        if (result !== false) {
+          return {
+            serviceName: key,
+            classes: result
+          };
+        }
+        return false;
+      }
+    } else {
+      return category.classes;
+    }
   }
 
-  drawLabelColor(canvas, box) {
+  drawLabel(canvas, box) {
     if (!box || typeof box === "undefined") return null;
 
     const ctx = canvas.getContext("2d");
@@ -36,26 +53,15 @@ export default class BoundingBox extends React.Component {
       y = coord.y;
     }
 
-    var c = "0x" + box.color.substring(1);
-    var rgba =
-      "rgba(" + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(",") + ",0.8)";
-
-    const label = box.label + " " + parseInt(box.prob * 100, 10) + "%";
-    const fontSize = parseInt(canvas.width, 10) * 0.04;
-
-    const measure = ctx.measureText(label);
-    ctx.fillStyle = rgba;
-    ctx.fillRect(x, y, measure.width + fontSize / 4, fontSize - 2);
+    const fontSize = parseInt(canvas.width, 10) * 0.02;
 
     ctx.fillStyle = "#fff";
     ctx.miterLimit = 2;
     ctx.lineJoin = "circle";
     ctx.font = fontSize + "px sans-serif";
 
-    ctx.lineWidth = 7;
-    ctx.strokeText(label, x + 5, y + fontSize * 0.8);
-    ctx.lineWidth = 1;
-    ctx.fillText(label, x + 5, y + fontSize * 0.8);
+    ctx.strokeText(box.label, x + 5, y + fontSize * 0.8);
+    ctx.fillText(box.label, x + 5, y + fontSize * 0.8);
   }
 
   drawBoxSimple(canvas, box, color, lineWidth) {
@@ -193,13 +199,27 @@ export default class BoundingBox extends React.Component {
       boxes = input.boxes;
     } else if (classes) {
       if (this.props.showLabels) {
-        drawLabel = this.drawLabelColor;
+        drawLabel = this.drawLabel;
       }
       drawBox = this.drawBoxColor;
 
       boxes = input.json.body.predictions[0].classes.map(pred => {
         let box = pred.bbox ? pred.bbox : {};
         box.label = pred.cat ? pred.cat : "";
+
+        let chainService = this.findChainService(pred);
+
+        if (
+          chainService &&
+          chainService.serviceName &&
+          chainService.classes &&
+          chainService.classes[0] &&
+          chainService.classes[0].cat &&
+          chainService.classes[0].prob
+        ) {
+          box.label = chainService.classes[0].cat;
+        }
+
         box.prob = pred.prob;
         box.color = this.generateColor(pred.cat);
         return box;

@@ -3,6 +3,7 @@ import { inject, observer } from "mobx-react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/styles/hljs";
 import ReactTooltip from "react-tooltip";
+import { withRouter } from "react-router-dom";
 import { withCookies } from "react-cookie";
 
 //import { Controlled as CodeMirror } from "react-codemirror2";
@@ -14,8 +15,9 @@ import copy from "copy-to-clipboard";
 @inject("imaginateStore")
 @inject("deepdetectStore")
 @inject("authTokenStore")
+@withRouter
 @observer
-class CurlCommand extends React.Component {
+class ChainCommand extends React.Component {
   constructor(props) {
     super(props);
 
@@ -27,7 +29,6 @@ class CurlCommand extends React.Component {
     };
 
     this.handleCopyClipboard = this.handleCopyClipboard.bind(this);
-    this.handleCurlChange = this.handleCurlChange.bind(this);
     this.curlCommand = this.curlCommand.bind(this);
   }
 
@@ -35,13 +36,20 @@ class CurlCommand extends React.Component {
     const { service } = this.props.imaginateStore;
     const { cookies } = this.props;
 
+    const chainName = this.props.match.params.chainName;
+    const chain = this.props.deepdetectStore.chains.find(
+      c => c.name === chainName
+    );
+
     let command = ["curl"];
 
-    command.push("-X POST");
+    command.push("-X PUT");
     command.push(
-      `'${window.location.origin}${service.serverSettings.path}/predict'`
+      `'${window.location.origin}${service.serverSettings.path}/chain/${chainName}'`
     );
-    command.push(`-d '${JSON.stringify(this.state.jsonConfig, null, 1)}'`);
+    command.push(
+      `\r\n  -d '${JSON.stringify({ chain: { calls: chain.calls } }, null, 1)}'`
+    );
 
     const session = cookies.get("session");
     if (session) {
@@ -72,16 +80,6 @@ class CurlCommand extends React.Component {
     ReactTooltip.rebuild();
   }
 
-  handleCurlChange(editor, data, value) {
-    const { service } = this.props.imaginateStore;
-    const curlCommand = `curl -X POST '${window.location.origin}${
-      service.serverSettings.path
-    }/predict' -d '`;
-
-    const jsonConfig = value.replace(curlCommand, "").slice(0, -1);
-    this.setState({ jsonConfig: jsonConfig });
-  }
-
   handleCopyClipboard() {
     copy(this.curlCommand());
 
@@ -97,14 +95,6 @@ class CurlCommand extends React.Component {
     if (service.selectedInput === null) return null;
 
     const copiedText = this.state.copied ? "Copied!" : "Copy to clipboard";
-    //<CodeMirror
-    //      value={this.curlCommand()}
-    //      onBeforeChange={this.handleCurlChange}
-    //      onChange={this.handleCurlChange}
-    //      options={{
-    //        smartIndent: false
-    //      }}
-    //    />
 
     return (
       <div>
@@ -133,4 +123,4 @@ class CurlCommand extends React.Component {
   }
 }
 
-export default withCookies(CurlCommand);
+export default withCookies(ChainCommand);
