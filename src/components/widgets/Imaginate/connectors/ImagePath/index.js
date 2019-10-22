@@ -3,10 +3,11 @@ import { toJS } from "mobx";
 import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
-import ImageList from "./ImageList";
-import BoundingBox from "./BoundingBox";
-import Controls from "./BoundingBox/Controls";
-import Threshold from "./Threshold";
+import ImageList from "../commons/ImageList";
+import Threshold from "../commons/Threshold";
+
+import BoundingBox from "../commons/BoundingBox";
+import Controls from "../commons/BoundingBox/Controls";
 
 import InputForm from "../commons/InputForm";
 import ParamSlider from "../commons/ParamSlider";
