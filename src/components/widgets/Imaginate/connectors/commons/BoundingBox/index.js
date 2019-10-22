@@ -19,20 +19,16 @@ export default class BoundingBox extends React.Component {
   findChainService(category) {
     let i;
 
-    if (typeof category.classes === "undefined") {
-      for (i = 0; i < Object.keys(category).length; i += 1) {
-        const key = Object.keys(category)[i];
-        const result = this.findChainService(category[key]);
-        if (result !== false) {
-          return {
-            serviceName: key,
-            classes: result
-          };
-        }
-        return false;
+    for (i = 0; i < Object.keys(category).length; i += 1) {
+      const key = Object.keys(category)[i];
+      const child = category[key];
+
+      if (typeof child.classes !== "undefined") {
+        return {
+          serviceName: key,
+          classes: child.classes
+        };
       }
-    } else {
-      return category.classes;
     }
   }
 
