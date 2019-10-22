@@ -11,10 +11,24 @@ import MainView from "./MainView";
 @inject("configStore")
 @withRouter
 export default class Home extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.clearAutosaveStorage = this.clearAutosaveStorage.bind(this);
+  }
+
+  clearAutosaveStorage() {
+    store.each(function(value, key) {
+      if (key.includes("autosave_service_")) {
+        store.remove(key);
+      }
+    });
+  }
+
   componentWillMount() {
     const { deepdetectStore } = this.props;
     deepdetectStore.setTrainRefreshMode(null);
-    store.clearAll();
+    this.clearAutosaveStorage();
   }
 
   render() {
