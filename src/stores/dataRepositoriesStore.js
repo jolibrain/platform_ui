@@ -50,19 +50,41 @@ export class dataRepositoriesStore {
     this.$reqFolder(rootPath).then(content => {
       const { folders } = content;
 
-      folders.forEach(f => {
-        const folderPath = path.join(rootPath, f.href, "/");
-        const folderLabel = folderPath.replace(/^\/data\//gm, "");
+      folders
+        .filter(f => {
+          let keepFolder = true;
 
-        if (level < this.settings.maxDepth) this.load(folderPath, level + 1);
+          if (this.settings.filter) {
+            if (this.settings.filter.exclude) {
+              keepFolder = this.settings.filter.exclude.every(
+                e => f.href.indexOf(e) === -1
+              );
+            }
+          }
 
-        this.repositories.push({
-          id: this.repositories.length,
-          name: f.name,
-          path: folderPath,
-          label: folderLabel
+          if (!keepFolder)
+            console.log(
+              "dataRepositoriesStore - load - folder filtered out: " +
+                rootPath +
+                " - " +
+                f.href
+            );
+
+          return keepFolder;
+        })
+        .forEach(f => {
+          const folderPath = path.join(rootPath, f.href, "/");
+          const folderLabel = folderPath.replace(/^\/data\//gm, "");
+
+          if (level < this.settings.maxDepth) this.load(folderPath, level + 1);
+
+          this.repositories.push({
+            id: this.repositories.length,
+            name: f.name,
+            path: folderPath,
+            label: folderLabel
+          });
         });
-      });
 
       this.isLoading = false;
       this.loaded = true;
