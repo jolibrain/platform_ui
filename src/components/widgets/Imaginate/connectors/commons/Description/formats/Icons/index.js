@@ -77,9 +77,6 @@ export default class Icons extends React.Component {
       dataTip += `<br/>[${chainService.serviceName}] ${
         chainService.classes[0].cat
       } - ${chainService.classes[0].prob.toFixed(4)}`;
-      console.log("good : " + chainService);
-    } else {
-      console.log("bad : " + chainService);
     }
 
     return (
