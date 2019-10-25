@@ -603,6 +603,10 @@ export default class deepdetectService {
 
     chainCalls[0].data = [input.content];
 
+    if (input.path) {
+      chainCalls[0].data = [input.path];
+    }
+
     input.putData = {
       chain: {
         calls: chainCalls
