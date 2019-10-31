@@ -43,6 +43,8 @@ export default class Nns extends React.Component {
   render() {
     const { input } = this.props;
 
+    if (!input.json || !input.json.body) return null;
+
     const prediction = input.json.body.predictions[0];
 
     if (!prediction || !prediction.nns || prediction.nns.length === 0)
