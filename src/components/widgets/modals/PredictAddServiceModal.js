@@ -132,7 +132,10 @@ export default class PredictAddServiceModal extends React.Component {
         });
 
         ddStore.setService(serviceName);
-        ddStore.service.uiParams.mediaType = this.state.mediaType;
+
+        if (ddStore.service) {
+          ddStore.service.uiParams.mediaType = this.state.mediaType;
+        }
 
         this.props.modalStore.setVisible("addService", false);
 

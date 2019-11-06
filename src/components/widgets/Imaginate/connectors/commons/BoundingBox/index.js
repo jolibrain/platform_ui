@@ -174,17 +174,19 @@ export default class BoundingBox extends React.Component {
   render() {
     const input = this.props.input;
 
-    if (
-      !input ||
-      !input.content ||
-      !input.json ||
-      !input.json.body ||
-      !input.json.body.predictions ||
-      !input.json.body.predictions[0]
-    )
-      return null;
+    if (!input) return null;
 
-    const classes = input.json.body.predictions[0].classes;
+    let prediction = null;
+
+    if (
+      input &&
+      input.json &&
+      input.json.body &&
+      input.json.body.predictions &&
+      input.json.body.predictions.length > 0
+    ) {
+      prediction = input.json.body.predictions[0];
+    }
 
     let drawLabel = () => {},
       drawBox = this.drawBoxSimple,
@@ -192,13 +194,13 @@ export default class BoundingBox extends React.Component {
 
     if (this.props.boxFormat === "simple") {
       boxes = input.boxes;
-    } else if (classes) {
+    } else if (prediction && prediction.classes) {
       if (this.props.showLabels) {
         drawLabel = this.drawLabel;
       }
       drawBox = this.drawBoxColor;
 
-      boxes = input.json.body.predictions[0].classes.map(pred => {
+      boxes = prediction.classes.map(pred => {
         let box = pred.bbox ? pred.bbox : {};
         box.label = pred.cat ? pred.cat : "";
 
@@ -222,12 +224,13 @@ export default class BoundingBox extends React.Component {
     }
 
     let segmentationColors = this.props.displaySettings.segmentationColors;
-    let pixelSegmentation = input.json.body.predictions[0].vals;
+    let pixelSegmentation = prediction ? prediction.vals : null;
 
     if (
-      input.json.body.predictions[0].confidences &&
-      input.json.body.predictions[0].confidences.best &&
-      input.json.body.predictions[0].confidences.best.length > 0
+      prediction &&
+      prediction.confidences &&
+      prediction.confidences.best &&
+      prediction.confidences.best.length > 0
     ) {
       segmentationColors = [
         "#67001f",
@@ -241,16 +244,19 @@ export default class BoundingBox extends React.Component {
         "#2166ac",
         "#053061"
       ];
-      pixelSegmentation = input.json.body.predictions[0].confidences.best.map(
-        p => {
-          return parseInt(p * 10, 10);
-        }
-      );
+      pixelSegmentation = prediction.confidences.best.map(p => {
+        return parseInt(p * 10, 10);
+      });
     }
 
     let segmentationMasks = [];
-    if (classes && classes.some(c => c.mask !== null && c.mask !== undefined)) {
-      segmentationMasks = classes.map(c => c.mask);
+
+    if (
+      prediction &&
+      prediction.classes &&
+      prediction.classes.some(c => c.mask !== null && c.mask !== undefined)
+    ) {
+      segmentationMasks = prediction.classes.map(c => c.mask);
 
       boxes.forEach((b, index) => {
         let label = null;
