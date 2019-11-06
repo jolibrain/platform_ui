@@ -337,13 +337,12 @@ export default class deepdetectService {
   }
 
   @action
-  predictChain(widgetSettings = {}, chainCalls) {
+  predictChain(widgetSettings = {}, chain) {
     if (this.inputs.length === 0) {
       return null;
     }
 
-    // this._initPredictRequest(widgetSettings);
-    this._chainRequest(widgetSettings, chainCalls);
+    this._chainRequest(widgetSettings, chain);
   }
 
   @action
@@ -370,10 +369,16 @@ export default class deepdetectService {
     return info;
   }
 
-  async $reqPutChain() {
+  async $reqPutChain(serverPath = null) {
     this.status.client = ServiceConstants.CLIENT_STATUS.REQUESTING_PREDICT;
+
+    let putServerSettings = this.serverSettings;
+    if (serverPath) {
+      putServerSettings = { path: serverPath };
+    }
+
     const info = await agent.Deepdetect.putChain(
-      this.serverSettings,
+      putServerSettings,
       moment().milliseconds(),
       toJS(this.selectedInput.putData)
     );
@@ -596,26 +601,35 @@ export default class deepdetectService {
   }
 
   @action
-  async _chainRequest(settings, chainCalls) {
+  async _chainRequest(settings, chain) {
     let input = this.inputs.find(i => i.isActive);
 
     if (!input) return null;
 
-    chainCalls[0].data = [input.content];
+    chain.calls[0].data = [input.content];
 
     if (input.path) {
-      chainCalls[0].data = [input.path];
+      chain.calls[0].data = [input.path];
     }
+
+    chain.calls[0].parameters.output.confidence_threshold =
+      settings.threshold.confidence;
 
     input.putData = {
       chain: {
-        calls: chainCalls
+        calls: chain.calls
       }
     };
 
-    input.json = await this.$reqPutChain();
+    input.json = await this.$reqPutChain(chain.serverPath);
+    input.boxes = [];
 
-    if (typeof input.json.body !== "undefined") {
+    if (
+      input.json &&
+      input.json.body &&
+      input.json.body.predictions &&
+      input.json.body.predictions.length > 0
+    ) {
       const prediction = input.json.body.predictions[0];
       const classes = prediction.classes;
 

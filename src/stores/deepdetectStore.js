@@ -128,6 +128,13 @@ export class deepdetectStore {
   }
 
   @action
+  setServerPath(serverPath) {
+    this.servers.forEach(s => (s.isActive = false));
+    let server = this.servers.find(s => s.settings.path === serverPath);
+    if (server) server.isActive = true;
+  }
+
+  @action
   setServiceIndex(serviceIndex) {
     this.server.setServiceIndex(serviceIndex);
   }

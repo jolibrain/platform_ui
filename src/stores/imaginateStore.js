@@ -12,7 +12,8 @@ export class imaginateStore {
         segmentation: false,
         separateSegmentation: false,
         segmentationColors: ["#1b9e77", "#d95f02"],
-        imageList: "random"
+        imageList: "random",
+        multicrop: false
       },
 
       threshold: {
@@ -54,7 +55,7 @@ export class imaginateStore {
   @observable server = null;
   @observable service = null;
 
-  @observable chainCalls = [];
+  @observable chain = {};
 
   @action
   setup(configStore) {
@@ -73,8 +74,8 @@ export class imaginateStore {
 
   @action
   predict() {
-    if (this.chainCalls.length > 0) {
-      this.service.predictChain(this.serviceSettings, this.chainCalls);
+    if (this.chain.calls.length > 0) {
+      this.service.predictChain(this.serviceSettings, this.chain);
     } else {
       this.service.predict(this.serviceSettings);
     }
