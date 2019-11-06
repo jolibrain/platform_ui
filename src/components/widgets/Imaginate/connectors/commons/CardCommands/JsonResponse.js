@@ -18,6 +18,7 @@ export default class JsonResponse extends React.Component {
     };
 
     this.handleCopyClipboard = this.handleCopyClipboard.bind(this);
+    this.cleanLargeJson = this.cleanLargeJson.bind(this);
   }
 
   handleCopyClipboard() {
@@ -31,6 +32,26 @@ export default class JsonResponse extends React.Component {
     }, 2000);
   }
 
+  cleanLargeJson(json) {
+    Object.keys(json).forEach(prop => {
+      const propType = {}.toString.apply(json[prop]);
+      switch (propType) {
+        case "[object Object]":
+          this.cleanLargeJson(json[prop]);
+          break;
+        case "[object Array]":
+          if (json[prop].length > 100) {
+            json[prop] = json[prop].slice(0, 100);
+            json[prop].push("...");
+          }
+          break;
+        default:
+          break;
+      }
+    });
+    return json;
+  }
+
   render() {
     const { service } = this.props.imaginateStore;
     const selectedInput = service.selectedInput;
@@ -42,41 +63,6 @@ export default class JsonResponse extends React.Component {
     const copiedText = this.state.copied ? "Copied!" : "Copy to clipboard";
 
     let json = toJS(selectedInput.json);
-
-    if (
-      json &&
-      json.body &&
-      json.body.predictions &&
-      json.body.predictions[0] &&
-      json.body.predictions[0].vals &&
-      json.body.predictions[0].vals.length > 1000
-    ) {
-      json.body.predictions[0].vals = json.body.predictions[0].vals.slice(
-        0,
-        1000
-      );
-      json.body.predictions[0].vals.push("...");
-    }
-
-    // Reduce length of mask data to display
-    // json without memory issues
-    if (
-      json &&
-      json.body &&
-      json.body.predictions &&
-      json.body.predictions[0] &&
-      json.body.predictions[0].classes &&
-      json.body.predictions[0].classes.some(
-        c => c.mask !== null && c.mask !== undefined
-      )
-    ) {
-      json.body.predictions[0].classes.forEach(c => {
-        if (c.mask.data.length > 100) {
-          c.mask.data = c.mask.data.slice(0, 100);
-          c.mask.data.push("...");
-        }
-      });
-    }
 
     return (
       <div>

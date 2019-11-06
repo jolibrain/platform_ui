@@ -48,7 +48,7 @@ class ChainCommand extends React.Component {
       `'${window.location.origin}${service.serverSettings.path}/chain/${chainName}'`
     );
     command.push(
-      `\r\n  -d '${JSON.stringify({ chain: { calls: chain.calls } }, null, 1)}'`
+      `  -d '${JSON.stringify({ chain: { calls: chain.calls } }, null, 1)}'`
     );
 
     const session = cookies.get("session");
