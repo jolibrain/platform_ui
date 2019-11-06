@@ -60,6 +60,22 @@
         }
       },
       {
+        "name": "training_test",
+        "settings": {
+          "path": "/api/training_test",
+          "isWritable": true,
+          "sameOrigin": true
+        }
+      },
+      {
+        "name": "training_test_2",
+        "settings": {
+          "path": "/api/training_test_2",
+          "isWritable": true,
+          "sameOrigin": true
+        }
+      },
+      {
         "name": "ceres",
         "settings": {
           "path": "/api/ceres",
