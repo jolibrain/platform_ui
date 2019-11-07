@@ -622,7 +622,11 @@ export default class deepdetectService {
     };
 
     // Apply min_size_ratio parameters on crop actions
-    if (this.uiParams.chain.min_size_ratio) {
+    if (
+      this.uiParams &&
+      this.uiParams.chain &&
+      this.uiParams.chain.min_size_ratio
+    ) {
       input.putData.chain.calls.forEach(call => {
         if (
           call.action &&
@@ -634,8 +638,25 @@ export default class deepdetectService {
       });
     }
 
+    // Apply random_crops parameters on crop actions
+    if (
+      this.uiParams &&
+      this.uiParams.chain &&
+      this.uiParams.chain.random_crops
+    ) {
+      input.putData.chain.calls.forEach(call => {
+        if (
+          call.action &&
+          call.action.parameters &&
+          call.action.parameters.random_crops
+        ) {
+          call.action.parameters.random_crops = this.uiParams.chain.random_crops;
+        }
+      });
+    }
+
     // Apply search_nn parameters on searchable services
-    if (this.uiParams.chain.search_nn) {
+    if (this.uiParams && this.uiParams.chain && this.uiParams.chain.search_nn) {
       input.putData.chain.calls.forEach(call => {
         if (
           call.parameters &&

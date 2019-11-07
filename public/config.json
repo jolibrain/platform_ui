@@ -128,6 +128,7 @@
         "chain": {
           "multicrop": false,
           "search_nn": 10,
+          "random_crops": 10,
           "min_size_ratio": 0.5
         }
       },

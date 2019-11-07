@@ -7,47 +7,12 @@ import Icons from "./formats/Icons";
 import List from "./formats/List";
 import ListUrl from "./formats/ListUrl";
 import Nns from "./formats/Nns";
-import ChainNns from "./formats/ChainNns";
 import Rois from "./formats/Rois";
 import Simple from "./formats/Simple";
 
 @inject("imaginateStore")
 @observer
 export default class Description extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.chainFormat = this.chainFormat.bind(this);
-  }
-
-  chainFormat(input) {
-    let chainFormat = null;
-
-    if (
-      input.json &&
-      input.json.body &&
-      input.json.body.predictions &&
-      input.json.body.predictions.length > 0 &&
-      input.json.body.predictions[0] &&
-      input.json.body.predictions[0].classes &&
-      input.json.body.predictions[0].classes.length > 0
-    ) {
-      const inputClass = input.json.body.predictions[0].classes[0];
-      for (let i = 0; i < Object.keys(inputClass).length; i += 1) {
-        const key = Object.keys(inputClass)[i];
-        const child = inputClass[key];
-
-        if (child.classes) {
-          chainFormat = "simple";
-        } else if (child.nns) {
-          chainFormat = "nns";
-        }
-      }
-    }
-
-    return chainFormat;
-  }
-
   render() {
     const { service, serviceSettings } = this.props.imaginateStore;
 
@@ -149,23 +114,6 @@ export default class Description extends React.Component {
           <Icons key="description-icons" input={input} {...this.props} />
         );
         break;
-    }
-
-    const chainFormat = this.chainFormat(input);
-    if (chainFormat) {
-      switch (chainFormat) {
-        case "nns":
-          output.push(
-            <ChainNns
-              key="description-chain-nns"
-              input={input}
-              {...this.props}
-            />
-          );
-          break;
-        default:
-          break;
-      }
     }
 
     return <div>{output}</div>;

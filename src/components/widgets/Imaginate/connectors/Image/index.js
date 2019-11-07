@@ -12,7 +12,10 @@ import Controls from "../commons/BoundingBox/Controls";
 import InputForm from "../commons/InputForm";
 import ParamSlider from "../commons/ParamSlider";
 import ParamText from "../commons/ParamText";
+
 import Description from "../commons/Description";
+import ChainControls from "../commons/ChainControls";
+
 import CardCommands from "../commons/CardCommands";
 import ToggleControl from "../commons/ToggleControl";
 
@@ -381,6 +384,11 @@ export default class ImageConnector extends React.Component {
                   onLeave={this.onLeave}
                 />
               </div>
+              <ChainControls
+                selectedBoxIndex={this.state.selectedBoxIndex}
+                onOver={this.onOver}
+                onLeave={this.onLeave}
+              />
             </div>
             <div className="commands">
               <CardCommands />
