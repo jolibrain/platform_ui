@@ -2,20 +2,70 @@ import React from "react";
 import PropTypes from "prop-types";
 import { inject, observer } from "mobx-react";
 
+import ParamSlider from "../../../ParamSlider";
+import ToggleControl from "../../../ToggleControl";
+
 @inject("imaginateStore")
 @observer
 export default class ChainNns extends React.Component {
   constructor(props) {
     super(props);
 
-    this.toggleMulticropRoi = this.toggleMulticropRoi.bind(this);
+    this.handleMulticropToggle = this.handleMulticropToggle.bind(this);
+    this.handleSearchNnThreshold = this.handleSearchNnThreshold.bind(this);
+    this.handleMinSizeRatioThreshold = this.handleMinSizeRatioThreshold.bind(
+      this
+    );
+
+    this.minSizeRatioTooltipFormatter = this.minSizeRatioTooltipFormatter.bind(
+      this
+    );
+
     this.nnsItem = this.nnsItem.bind(this);
   }
 
-  toggleMulticropRoi() {
-    const { imaginateStore } = this.props;
-    imaginateStore.settings.default.display.multicrop = !imaginateStore.settings
-      .default.display.multicrop;
+  minSizeRatioTooltipFormatter(value) {
+    return (value / 100).toFixed(2);
+  }
+
+  handleMulticropToggle() {
+    const { service, settings } = this.props.imaginateStore;
+    settings.default.display.chain.multicrop = !settings.default.display.chain
+      .multicrop;
+
+    if (!settings.default.display.chain.multicrop && service.uiParams.chain) {
+      delete service.uiParams.chain.min_size_ratio;
+    }
+  }
+
+  handleSearchNnThreshold(value) {
+    const { service, settings } = this.props.imaginateStore;
+    settings.default.display.chain.search_nn = parseInt(value, 10);
+
+    if (!service.uiParams.chain) {
+      service.uiParams.chain = {};
+    }
+    service.uiParams.chain.search_nn = settings.default.display.chain.search_nn;
+
+    this.props.imaginateStore.predict();
+  }
+
+  handleMinSizeRatioThreshold(value) {
+    const { service, settings } = this.props.imaginateStore;
+    settings.default.display.chain.min_size_ratio = parseFloat(
+      (value / 100).toFixed(2)
+    );
+    if (settings.default.display.chain.min_size_ratio === 0) {
+      settings.default.display.chain.min_size_ratio = 0.01;
+    }
+
+    if (!service.uiParams.chain) {
+      service.uiParams.chain = {};
+    }
+    service.uiParams.chain.min_size_ratio =
+      settings.default.display.chain.min_size_ratio;
+
+    this.props.imaginateStore.predict();
   }
 
   nnsItem(nns, index) {
@@ -51,23 +101,45 @@ export default class ChainNns extends React.Component {
 
   render() {
     const { input, selectedBoxIndex, imaginateStore } = this.props;
-    let output = [];
+    let uiControls = [];
 
-    const multicropStatus = imaginateStore.settings.default.display.multicrop;
+    const {
+      multicrop,
+      search_nn,
+      min_size_ratio
+    } = imaginateStore.settings.default.display.chain;
 
-    output.push(
-      <div key="multicrop_roi">
-        <input
-          id="multicropRoi"
-          type="checkbox"
-          onChange={this.toggleMulticropRoi}
-          checked={multicropStatus ? "checked" : ""}
-        />
-        <label htmlFor="multicropRoi">Multicrop</label>
-      </div>
+    uiControls.push(
+      <ParamSlider
+        key="paramSliderSearchNn"
+        title="Search Size"
+        defaultValue={search_nn}
+        onAfterChange={this.handleSearchNnThreshold}
+        min={0}
+        max={100}
+      />
     );
 
-    if (multicropStatus) {
+    uiControls.push(
+      <ToggleControl
+        key="settingCheckbox-display-unsupervised-search"
+        title="Multicrop"
+        value={multicrop}
+        onChange={this.handleMulticropToggle}
+      />
+    );
+
+    if (multicrop) {
+      uiControls.push(
+        <ParamSlider
+          key="paramSliderMinSizeRatio"
+          title="Min Size Ratio"
+          defaultValue={parseInt(min_size_ratio * 100, 10)}
+          onAfterChange={this.handleMinSizeRatioThreshold}
+          tipFormatter={this.minSizeRatioTooltipFormatter}
+        />
+      );
+
       let cells = input.json.body.predictions[0].nns
         .map(this.nnsItem)
         .reduce((result, element, index, array) => {
@@ -83,7 +155,7 @@ export default class ChainNns extends React.Component {
       if (cells.length % 2 === 1)
         cells.push(<div key="empty-col" className="col" />);
 
-      output.push(
+      uiControls.push(
         <div
           key="description-chain-nns-selected"
           className="description-nns row"
@@ -121,7 +193,7 @@ export default class ChainNns extends React.Component {
       if (cells.length % 2 === 1)
         cells.push(<div key="empty-col" className="col" />);
 
-      output.push(
+      uiControls.push(
         <div
           key="description-chain-nns-selected"
           className="description-nns row"
@@ -131,7 +203,7 @@ export default class ChainNns extends React.Component {
       );
     }
 
-    return <div>{output}</div>;
+    return <div>{uiControls}</div>;
   }
 }
 

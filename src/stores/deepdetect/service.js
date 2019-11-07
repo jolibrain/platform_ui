@@ -621,6 +621,35 @@ export default class deepdetectService {
       }
     };
 
+    // Apply min_size_ratio parameters on crop actions
+    if (this.uiParams.chain.min_size_ratio) {
+      input.putData.chain.calls.forEach(call => {
+        if (
+          call.action &&
+          call.action.parameters &&
+          call.action.parameters.min_size_ratio
+        ) {
+          call.action.parameters.min_size_ratio = this.uiParams.chain.min_size_ratio;
+        }
+      });
+    }
+
+    // Apply search_nn parameters on searchable services
+    if (this.uiParams.chain.search_nn) {
+      input.putData.chain.calls.forEach(call => {
+        if (
+          call.parameters &&
+          call.parameters.output &&
+          call.parameters.output.search
+        ) {
+          call.parameters.output.search_nn = parseInt(
+            this.uiParams.chain.search_nn,
+            10
+          );
+        }
+      });
+    }
+
     input.json = await this.$reqPutChain(chain.serverPath);
     input.boxes = [];
 

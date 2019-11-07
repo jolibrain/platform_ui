@@ -53,7 +53,6 @@ export default class ImageConnector extends React.Component {
     this.handleUnsupervisedSearchToggle = this.handleUnsupervisedSearchToggle.bind(
       this
     );
-    this.handleSearchNnThreshold = this.handleSearchNnThreshold.bind(this);
     this.handleExtractLayerChange = this.handleExtractLayerChange.bind(this);
 
     this.setBoxFormat = this.setBoxFormat.bind(this);

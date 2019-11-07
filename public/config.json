@@ -124,7 +124,12 @@
         "boundingBox": true,
         "segmentation": false,
         "separateSegmentation": false,
-        "segmentationColors": ["#1b9e77", "#d95f02"]
+        "segmentationColors": ["#1b9e77", "#d95f02"],
+        "chain": {
+          "multicrop": false,
+          "search_nn": 10,
+          "min_size_ratio": 0.5
+        }
       },
       "threshold": {
         "confidence": 0.5,

@@ -13,7 +13,11 @@ export class imaginateStore {
         separateSegmentation: false,
         segmentationColors: ["#1b9e77", "#d95f02"],
         imageList: "random",
-        multicrop: false
+        chain: {
+          multicrop: false,
+          search_nn: 10,
+          min_size_ratio: 0.5
+        }
       },
 
       threshold: {
