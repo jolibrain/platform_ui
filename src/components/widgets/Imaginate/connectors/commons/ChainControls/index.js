@@ -11,6 +11,8 @@ export default class ChainControls extends React.Component {
   constructor(props) {
     super(props);
 
+    this.chainFormat = this.chainFormat.bind(this);
+
     this.handleMulticropToggle = this.handleMulticropToggle.bind(this);
     this.handleSearchNnThreshold = this.handleSearchNnThreshold.bind(this);
     this.handleMinSizeRatioThreshold = this.handleMinSizeRatioThreshold.bind(
@@ -25,6 +27,38 @@ export default class ChainControls extends React.Component {
     );
 
     this.nnsItem = this.nnsItem.bind(this);
+  }
+
+  chainFormat(input) {
+    let chainFormat = null;
+
+    if (
+      input &&
+      input.json &&
+      input.json.body &&
+      input.json.body.predictions &&
+      input.json.body.predictions.length > 0 &&
+      input.json.body.predictions[0] &&
+      input.json.body.predictions[0].classes &&
+      input.json.body.predictions[0].classes.length > 0
+    ) {
+      const inputClass = input.json.body.predictions[0].classes[0];
+      for (let i = 0; i < Object.keys(inputClass).length; i += 1) {
+        const key = Object.keys(inputClass)[i];
+        const child = inputClass[key];
+
+        if (child.classes) {
+          chainFormat = "simple";
+        } else if (child.nns) {
+          chainFormat = "nns";
+        }
+      }
+
+      if (input.json.body.predictions[0].nns) {
+        chainFormat = "nns_multicrop";
+      }
+    }
+    return chainFormat;
   }
 
   minSizeRatioTooltipFormatter(value) {
@@ -118,6 +152,7 @@ export default class ChainControls extends React.Component {
   render() {
     const { selectedBoxIndex, imaginateStore } = this.props;
     const input = imaginateStore.service.selectedInput;
+    const chainFormat = this.chainFormat(input);
     let uiControls = [];
 
     const {
@@ -127,117 +162,112 @@ export default class ChainControls extends React.Component {
       min_size_ratio
     } = imaginateStore.settings.default.display.chain;
 
-    uiControls.push(
-      <ParamSlider
-        key="paramSliderSearchNn"
-        title="Search Size"
-        defaultValue={search_nn}
-        onAfterChange={this.handleSearchNnThreshold}
-        min={0}
-        max={100}
-      />
-    );
-
-    uiControls.push(
-      <ToggleControl
-        key="settingCheckbox-display-unsupervised-search"
-        title="Multicrop"
-        value={multicrop}
-        onChange={this.handleMulticropToggle}
-      />
-    );
-
-    if (multicrop) {
+    if (chainFormat.indexOf("nns") !== -1) {
       uiControls.push(
         <ParamSlider
-          key="paramSliderMinSizeRatio"
-          title="Random Crops"
-          defaultValue={random_crops}
-          onAfterChange={this.handleRandomCropsThreshold}
+          key="paramSliderSearchNn"
+          title="Search Size"
+          defaultValue={search_nn}
+          onAfterChange={this.handleSearchNnThreshold}
+          min={0}
+          max={100}
         />
       );
 
-      uiControls.push(
-        <ParamSlider
-          key="paramSliderMinSizeRatio"
-          title="Min Size Ratio"
-          defaultValue={parseInt(min_size_ratio * 100, 10)}
-          onAfterChange={this.handleMinSizeRatioThreshold}
-          tipFormatter={this.minSizeRatioTooltipFormatter}
-        />
-      );
-
-      if (
-        input &&
-        input.json &&
-        input.json.body &&
-        input.json.body.predictions &&
-        input.json.body.predictions[0] &&
-        input.json.body.predictions[0].nns
-      ) {
-        let cells = input.json.body.predictions[0].nns
-          .map(this.nnsItem)
-          .reduce((result, element, index, array) => {
-            // Add 2-columns separators
-            result.push(element);
-            if ((index + 1) % 2 === 0) {
-              result.push(<div key={`sep-${index}`} className="w-100" />);
-            }
-            return result;
-          }, []);
-
-        // Add empty column to fill row
-        if (cells.length % 2 === 1)
-          cells.push(<div key="empty-col" className="col" />);
-
+      if (chainFormat === "nns_multicrop") {
         uiControls.push(
-          <div
-            key="description-chain-nns-selected"
-            className="description-nns row"
-          >
-            {cells}
-          </div>
+          <ToggleControl
+            key="settingCheckbox-display-unsupervised-search"
+            title="Multicrop"
+            value={multicrop}
+            onChange={this.handleMulticropToggle}
+          />
         );
-      }
-    } else if (selectedBoxIndex !== -1) {
-      const selectedResult =
-        input.json.body.predictions[0].classes[selectedBoxIndex];
 
-      let chainService = null;
-      for (let i = 0; i < Object.keys(selectedResult).length; i += 1) {
-        const key = Object.keys(selectedResult)[i];
-        const child = selectedResult[key];
+        if (multicrop) {
+          uiControls.push(
+            <ParamSlider
+              key="paramSliderRandomCrops"
+              title="Random Crops"
+              defaultValue={random_crops}
+              onAfterChange={this.handleRandomCropsThreshold}
+            />
+          );
 
-        if (child.nns) {
-          chainService = key;
-          break;
+          uiControls.push(
+            <ParamSlider
+              key="paramSliderMinSizeRatio"
+              title="Min Size Ratio"
+              defaultValue={parseInt(min_size_ratio * 100, 10)}
+              onAfterChange={this.handleMinSizeRatioThreshold}
+              tipFormatter={this.minSizeRatioTooltipFormatter}
+            />
+          );
+
+          let cells = input.json.body.predictions[0].nns
+            .map(this.nnsItem)
+            .reduce((result, element, index, array) => {
+              // Add 2-columns separators
+              result.push(element);
+              if ((index + 1) % 2 === 0) {
+                result.push(<div key={`sep-${index}`} className="w-100" />);
+              }
+              return result;
+            }, []);
+
+          // Add empty column to fill row
+          if (cells.length % 2 === 1)
+            cells.push(<div key="empty-col" className="col" />);
+
+          uiControls.push(
+            <div
+              key="description-chain-nns-selected"
+              className="description-nns row"
+            >
+              {cells}
+            </div>
+          );
+        } else if (selectedBoxIndex !== -1) {
+          const selectedResult =
+            input.json.body.predictions[0].classes[selectedBoxIndex];
+
+          let chainService = null;
+          for (let i = 0; i < Object.keys(selectedResult).length; i += 1) {
+            const key = Object.keys(selectedResult)[i];
+            const child = selectedResult[key];
+
+            if (child.nns) {
+              chainService = key;
+              break;
+            }
+          }
+
+          let cells = selectedResult[chainService].nns
+            .map(this.nnsItem)
+            .reduce((result, element, index, array) => {
+              // Add 2-columns separators
+              result.push(element);
+              if ((index + 1) % 2 === 0) {
+                result.push(<div key={`sep-${index}`} className="w-100" />);
+              }
+              return result;
+            }, []);
+
+          // Add empty column to fill row
+          if (cells.length % 2 === 1)
+            cells.push(<div key="empty-col" className="col" />);
+
+          uiControls.push(
+            <div
+              key="description-chain-nns-selected"
+              className="description-nns row"
+            >
+              {cells}
+            </div>
+          );
         }
       }
-
-      let cells = selectedResult[chainService].nns
-        .map(this.nnsItem)
-        .reduce((result, element, index, array) => {
-          // Add 2-columns separators
-          result.push(element);
-          if ((index + 1) % 2 === 0) {
-            result.push(<div key={`sep-${index}`} className="w-100" />);
-          }
-          return result;
-        }, []);
-
-      // Add empty column to fill row
-      if (cells.length % 2 === 1)
-        cells.push(<div key="empty-col" className="col" />);
-
-      uiControls.push(
-        <div
-          key="description-chain-nns-selected"
-          className="description-nns row"
-        >
-          {cells}
-        </div>
-      );
-    }
+    } // if chainFormat.indexOf('nns') !== -1
 
     return <div>{uiControls}</div>;
   }
