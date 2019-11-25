@@ -35,10 +35,24 @@ export default class GpuStatServer extends React.Component {
       );
     }
 
+    let externalLinks = [];
+    if (server.externalLinks && server.externalLinks.length > 0) {
+      server.externalLinks.forEach((link, index) => {
+        externalLinks.push(
+          <span key={index} className="externalLink">
+            <a href={link.href} target="_blank" rel="noopener">
+              <i className={link.iconClass} />
+            </a>
+          </span>
+        );
+      });
+    }
+
     return (
       <div className="gpuinfo">
         <h5>
-          <i className={classNames} /> {server.name} {externalLink}
+          <i className={classNames} /> {server.name} {externalLink}{" "}
+          <span>{externalLinks}</span>
         </h5>
         {serverInfo}
       </div>

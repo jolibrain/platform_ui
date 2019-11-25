@@ -13,6 +13,7 @@ export default class GpuStatServer {
     this.type = opts.type || "standard";
     this.filterOutIndexes = Object.assign([], opts.filterOutIndexes);
     this.externalLink = opts.externalLink || null;
+    this.externalLinks = opts.externalLinks || [];
   }
 
   @computed
