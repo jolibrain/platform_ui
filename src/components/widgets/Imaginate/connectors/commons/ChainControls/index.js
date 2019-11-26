@@ -153,6 +153,9 @@ export default class ChainControls extends React.Component {
     const { selectedBoxIndex, imaginateStore } = this.props;
     const input = imaginateStore.service.selectedInput;
     const chainFormat = this.chainFormat(input);
+
+    if (!chainFormat) return null;
+
     let uiControls = [];
 
     const {
