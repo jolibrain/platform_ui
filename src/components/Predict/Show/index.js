@@ -28,6 +28,12 @@ export default class PredictShow extends React.Component {
       this.props.history.push("/404");
     } else {
       imaginateStore.connectToDdStore(deepdetectStore);
+
+      // Remove chain setup from imaginateStore and
+      // run predict in order to refresh currently displayed input
+      //
+      // this is necessary in order to avoid non-refreshed results
+      // when switching from non-chain Predict component
       imaginateStore.chain = {};
       imaginateStore.predict();
     }

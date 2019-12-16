@@ -39,9 +39,13 @@ export default class ChainShow extends React.Component {
       imaginateStore.connectToDdStore(deepdetectStore);
 
       imaginateStore.chain = chain;
+
+      // Run predict in order to refresh currently displayed input
+      // this is necessary in order to avoid non-refreshed results
+      // when switching from non-chain Predict component
+      imaginateStore.predict();
     }
 
-    imaginateStore.predict();
     deepdetectStore.setTrainRefreshMode(null);
   }
 
