@@ -606,6 +606,9 @@ export default class deepdetectService {
 
     if (!input) return null;
 
+    input.postData = null;
+    input.json = null;
+
     chain.calls[0].data = [input.content];
 
     if (input.path) {

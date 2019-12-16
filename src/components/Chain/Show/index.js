@@ -41,6 +41,7 @@ export default class ChainShow extends React.Component {
       imaginateStore.chain = chain;
     }
 
+    imaginateStore.predict();
     deepdetectStore.setTrainRefreshMode(null);
   }
 

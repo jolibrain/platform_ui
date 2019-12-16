@@ -28,6 +28,8 @@ export default class PredictShow extends React.Component {
       this.props.history.push("/404");
     } else {
       imaginateStore.connectToDdStore(deepdetectStore);
+      imaginateStore.chain = {};
+      imaginateStore.predict();
     }
 
     deepdetectStore.setTrainRefreshMode(null);
