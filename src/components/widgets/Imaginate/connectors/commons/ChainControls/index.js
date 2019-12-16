@@ -1,11 +1,12 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { inject, observer } from "mobx-react";
+import { withRouter } from "react-router-dom";
 
 import ParamSlider from "../ParamSlider";
 import ToggleControl from "../ToggleControl";
 
 @inject("imaginateStore")
+@withRouter
 @observer
 export default class ChainControls extends React.Component {
   constructor(props) {
@@ -150,6 +151,11 @@ export default class ChainControls extends React.Component {
   }
 
   render() {
+    const { path } = this.props.match;
+    const isChainService = path.startsWith("/chains/");
+
+    if (!isChainService) return null;
+
     const { selectedBoxIndex, imaginateStore } = this.props;
     const input = imaginateStore.service.selectedInput;
     const chainFormat = this.chainFormat(input);
@@ -275,7 +281,3 @@ export default class ChainControls extends React.Component {
     return <div>{uiControls}</div>;
   }
 }
-
-ChainControls.propTypes = {
-  input: PropTypes.object.isRequired
-};
