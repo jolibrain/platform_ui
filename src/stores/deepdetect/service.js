@@ -417,8 +417,10 @@ export default class deepdetectService {
         // If metrics.json file is not found,
         // use fetch to retrieve metrics data from deepdetect server
         if (e.status && e.status === 404) {
-          let metricResponse = await fetch(this.urlTraining);
-          metrics = await metricResponse.json();
+          try {
+            let metricResponse = await fetch(this.urlTraining);
+            metrics = await metricResponse.json();
+          } catch (f) {}
         }
       }
     }
