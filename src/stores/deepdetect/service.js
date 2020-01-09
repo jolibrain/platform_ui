@@ -414,7 +414,12 @@ export default class deepdetectService {
       try {
         metrics = await agent.Webserver.getFile(metricsPath);
       } catch (e) {
-        //console.warn("Error while fetching metrics");
+        // If metrics.json file is not found,
+        // use fetch to retrieve metrics data from deepdetect server
+        if (e.status && e.status === 404) {
+          let metricResponse = await fetch(this.urlTraining);
+          metrics = await metricResponse.json();
+        }
       }
     }
 
