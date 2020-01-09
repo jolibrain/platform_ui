@@ -87,12 +87,12 @@ class AboutDropdown extends React.Component {
       updateInfo = (
         <a
           className="dropdown-item update-link"
-          href="https://deepdetect.com/quickstart/"
+          href="https://deepdetect.com/quickstart-platform/#update"
           target="_blank"
           rel="noopener noreferrer"
         >
-          <i className="fas fa-chevron-right" />&nbsp; An update is available
-          for your Platform
+          <i className="fas fa-chevron-right" />
+          &nbsp; An update is available for your Platform
         </a>
       );
     }
