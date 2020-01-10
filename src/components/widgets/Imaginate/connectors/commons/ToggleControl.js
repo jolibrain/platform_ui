@@ -8,17 +8,19 @@ export default class ToggleControl extends React.Component {
     const { title, onChange, value } = this.props;
     const elementId = `check-${Math.random()}`;
     return (
-      <div className="custom-control custom-checkbox">
-        <input
-          id={elementId}
-          type="checkbox"
-          className="custom-control-input"
-          onChange={onChange}
-          checked={value}
-        />
-        <label className="custom-control-label" htmlFor={elementId}>
-          {title}
-        </label>
+      <div className="custom-control custom-checkbox card">
+        <div className="card-body">
+          <input
+            id={elementId}
+            type="checkbox"
+            className="custom-control-input"
+            onChange={onChange}
+            checked={value}
+          />
+          <label className="custom-control-label" htmlFor={elementId}>
+            {title}
+          </label>
+        </div>
       </div>
     );
   }

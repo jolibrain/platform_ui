@@ -14,8 +14,12 @@ export default function(_this, key) {
       }
     }
 
-    // from then on serialize and save to localStorage
-    store.set(key, toJS(_this));
+    // limit storage of objects under 1Mo
+    const obj = toJS(_this);
+    if (JSON.stringify(obj).length < 1000000) {
+      // from then on serialize and save to localStorage
+      store.set(key, obj);
+    }
   });
 
   firstRun = false;

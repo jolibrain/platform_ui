@@ -32,8 +32,15 @@ export default class MainView extends React.Component {
     );
   }
 
+  componentWillMount() {
+    const { modelRepositoriesStore } = this.props;
+    if (!modelRepositoriesStore.isReadyPredict) {
+      modelRepositoriesStore.refreshPredict();
+    }
+  }
+
   handleClickRefreshServices() {
-    this.props.modelRepositoriesStore.refresh();
+    this.props.modelRepositoriesStore.refreshPredict();
   }
 
   handleServiceFilter(event) {
@@ -54,12 +61,16 @@ export default class MainView extends React.Component {
 
   render() {
     const { deepdetectStore, modelRepositoriesStore } = this.props;
-    const { predictServices } = deepdetectStore;
     const { filterServiceName } = this.state;
 
+    let { predictServices } = deepdetectStore;
     let { publicRepositories, privateRepositories } = modelRepositoriesStore;
 
     if (filterServiceName && filterServiceName.length > 0) {
+      predictServices = predictServices.filter(r => {
+        return r.name.includes(filterServiceName);
+      });
+
       publicRepositories = publicRepositories.filter(r => {
         return (
           r.name.includes(filterServiceName) ||
@@ -87,94 +98,153 @@ export default class MainView extends React.Component {
         .diff(moment.utc(a.metricsDate ? a.metricsDate : 1));
     });
 
+    const availableServicesLength =
+      publicRepositories.length + privateRepositories.length;
+
     return (
       <div className="main-view content-wrapper">
         <div className="container-fluid">
+          <div className="page-title p-4 row">
+            <div className="col-lg-3 col-md-6">
+              <h3>{predictServices.length}</h3>
+              <h4>
+                <i className="fas fa-braille" /> Predict Services
+              </h4>
+            </div>
+
+            <div className="col-lg-3 col-md-6">
+              <h3>
+                {modelRepositoriesStore.isRefreshing ? (
+                  <span>
+                    <i className="fas fa-sync fa-spin fa-xs" />{" "}
+                  </span>
+                ) : (
+                  availableServicesLength
+                )}
+              </h3>
+
+              <h4>
+                <i className="fas fa-archive" /> Available Services
+              </h4>
+            </div>
+
+            <div className="col-lg-6 col-md-12 pb-2">
+              <form className="form-inline">
+                <Link to="/predict/new" className="btn btn-primary">
+                  <i className="fas fa-plus" /> New Service
+                </Link>
+                &nbsp;
+                <button
+                  id="refreshServices"
+                  onClick={this.handleClickRefreshServices}
+                  type="button"
+                  className="btn btn-primary"
+                >
+                  <i
+                    className={
+                      modelRepositoriesStore.isRefreshing
+                        ? "fas fa-sync fa-spin"
+                        : "fas fa-sync"
+                    }
+                  />
+                </button>
+                <div className="input-group">
+                  <div className="input-group-prepend">
+                    <div className="input-group-text">
+                      <i className="fas fa-search" />
+                    </div>
+                  </div>
+                  <input
+                    type="text"
+                    onChange={this.handleServiceFilter}
+                    placeholder="Filter service name..."
+                    value={this.state.filterServiceName}
+                  />
+                  <div className="input-group-append">
+                    <button
+                      className="btn btn-secondary"
+                      type="button"
+                      onClick={this.cleanServiceFilter}
+                    >
+                      <i className="fas fa-times-circle" />
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
           <div className="content">
             <div className="serviceList">
-              <h4>Current Predict Service</h4>
               <ServiceCardList services={predictServices} />
             </div>
 
             <hr />
 
             <div className="predictServiceList">
-              <div className="float-right">
-                <form className="serviceCreate form-inline">
-                  <Link to="/predict/new" className="btn btn-outline-primary">
-                    <i className="fas fa-plus" /> New Service
-                  </Link>
-                  &nbsp;
-                  <button
-                    onClick={this.handleClickRefreshServices}
-                    type="button"
-                    className="btn btn-outline-primary"
-                    id="refreshServices"
-                  >
-                    <i
-                      className={
-                        modelRepositoriesStore.isRefreshing
-                          ? "fas fa-sync fa-spin"
-                          : "fas fa-sync"
-                      }
-                    />
-                  </button>
-                  <div className="input-group">
-                    <div className="input-group-prepend">
-                      <div className="input-group-text">
-                        <i className="fas fa-search" />
-                      </div>
-                    </div>
-                    <input
-                      type="text"
-                      onChange={this.handleServiceFilter}
-                      placeholder="Filter service name..."
-                      value={this.state.filterServiceName}
-                    />
-                    <div className="input-group-append">
-                      <button
-                        className="btn btn-outline-secondary"
-                        type="button"
-                        onClick={this.cleanServiceFilter}
-                      >
-                        <i className="fas fa-times-circle" />
-                      </button>
-                    </div>
+              <h4>
+                Available Services&nbsp;
+                {modelRepositoriesStore.isRefreshing ? (
+                  <i className="fas fa-spinner fa-spin" />
+                ) : (
+                  ""
+                )}
+              </h4>
+
+              {!modelRepositoriesStore.isRefreshing &&
+              publicRepositories.length === 0 &&
+              filterServiceName.length === 0 ? (
+                <div className="d-flex flex-row">
+                  <div>
+                    <button
+                      id="refreshServices"
+                      onClick={this.handleClickRefreshServices}
+                      type="button"
+                      className="btn btn-outline-secondary"
+                    >
+                      <i className="fas fa-sync" />
+                    </button>
                   </div>
-                  <div className="layoutSelect">
-                    <i
-                      className={
-                        this.state.predictLayout === "cards"
-                          ? "fas fa-th-large active"
-                          : "fas fa-th-large"
-                      }
-                      onClick={this.handleClickLayoutCards}
-                    />
-                    <i
-                      className={
-                        this.state.predictLayout === "list"
-                          ? "fas fa-th-list active"
-                          : "fas fa-th-list"
-                      }
-                      onClick={this.handleClickLayoutList}
-                    />
+                  <div className="small">
+                    The platform has just been installed,
+                    <br />
+                    use this button to refresh repositories synced during the
+                    installation process.
+                    <br />
+                    You can follow the syncing process using this command:{" "}
+                    <code>docker logs -f jolibrain_platform_data</code> and wait
+                    for <code>models/public/</code> transfer.
                   </div>
-                </form>
-              </div>
+                </div>
+              ) : (
+                ""
+              )}
 
-              <h4>Available Predict Service</h4>
+              {modelRepositoriesStore.isRefreshing &&
+              publicRepositories.length === 0 ? (
+                <button
+                  type="button"
+                  className="btn btn-outline-dark"
+                  onClick={this.handleClickRefreshServices}
+                >
+                  <i className="fas fa-circle-notch fa-spin" /> Syncing Public
+                  Repositories...
+                </button>
+              ) : (
+                <div>
+                  <PredictServiceList
+                    services={publicRepositories}
+                    layout={this.state.predictLayout}
+                  />
 
-              <PredictServiceList
-                services={publicRepositories}
-                layout={this.state.predictLayout}
-              />
+                  <hr />
 
-              <hr />
-
-              <PredictServiceList
-                services={privateRepositories}
-                layout={this.state.predictLayout}
-              />
+                  <PredictServiceList
+                    services={privateRepositories}
+                    layout={this.state.predictLayout}
+                  />
+                </div>
+              )}
             </div>
 
             <RightPanel />

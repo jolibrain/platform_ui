@@ -1,5 +1,54 @@
+@import "../palettes/palette-1.scss";
+
 .training-home-component {
-  margin-top: 80px;
+  h3 > .fa-spinner {
+    font-size: 12px;
+    position: relative;
+    top: -2px;
+  }
+
+  .page-title {
+    background-color: $neutral_blue_2;
+    color: $neutral_blue_10;
+    margin: 0 -16px;
+
+    h3 {
+      font-size: 36px;
+      margin: 0;
+      color: $neutral_blue_10;
+      font-weight: 600;
+    }
+
+    h4 {
+      font-size: 20px;
+      color: $neutral_blue_8;
+      font-weight: 400;
+
+      i {
+        color: $neutral_blue_6;
+      }
+    }
+
+    form {
+      float: right;
+      position: relative;
+      top: 25px;
+
+      button,
+      .input-group-text {
+        background-color: $neutral_blue_3;
+        border-color: $neutral_blue_4;
+
+        &:hover {
+          background-color: $neutral_blue_4;
+          border-color: $neutral_blue_5;
+        }
+      }
+      .input-group-text i {
+        color: #fff;
+      }
+    }
+  }
 
   .layoutSelect {
     i {

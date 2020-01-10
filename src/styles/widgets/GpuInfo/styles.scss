@@ -1,9 +1,25 @@
+@import "../../palettes/palette-1.scss";
+
 .gpuinfo {
   margin-top: 20px;
+
+  h4 {
+    color: $neutral_blue_4;
+  }
 
   h5 {
     margin-top: 10px;
     font-size: 18px;
+    color: $neutral_blue_1;
+
+    i {
+      color: $neutral_blue_4;
+    }
+  }
+
+  .externalLink {
+    font-size: 12px;
+    margin-left: 10px;
   }
 
   .block {
@@ -11,9 +27,30 @@
     padding: 2px 0;
     font-size: 0.9rem;
 
-    .fas.fa-fire {
-      color: #3c457d;
-      margin: 0 3px;
+    i {
+      color: $neutral_blue_4;
+    }
+
+    .badge.gpu-alert {
+      background-color: $neutral_blue_5;
+      color: $neutral_blue_10;
+
+      .fas.fa-fire {
+        color: $neutral_blue_10;
+        margin: 0 3px;
+      }
+    }
+
+    .far.fa-hdd {
+      padding-left: 2px;
+    }
+
+    .text-primary {
+      color: $neutral_blue_1 !important;
+    }
+
+    .text-secondary {
+      color: $neutral_blue_4 !important;
     }
   }
 

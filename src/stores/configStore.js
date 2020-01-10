@@ -16,7 +16,11 @@ export class configStore {
   homeComponent = {
     contentType: "json", // TODO: more content types
     title: "DeepDetect Platform",
-    description: "Welcome to deepdetect"
+    description: "Welcome to deepdetect",
+    headerLinks: {
+      linkJupyter: "/code/lab",
+      linkMenus: []
+    }
   };
 
   @observable
@@ -41,16 +45,28 @@ export class configStore {
   };
 
   @observable
-  modelRepositories = {
-    nginxPath: {
-      public: "/models/public/",
-      private: "/models/private/"
+  modelRepositories = [
+    {
+      name: "public",
+      nginxPath: "/models/public/",
+      jsonPath: "/json/models/public/",
+      systemPath: "/opt/platform"
     },
-    systemPath: {
-      public: "/opt/platform/models/public/",
-      private: "/opt/platform/models/private/"
+    {
+      name: "private",
+      nginxPath: "/models/private/",
+      jsonPath: "/json/models/private/",
+      systemPath: "/opt/platform",
+      hasFiles: true
+    },
+    {
+      name: "training",
+      nginxPath: "/models/training/",
+      jsonPath: "/json/models/training/",
+      systemPath: "/opt/platform",
+      isTraining: true
     }
-  };
+  ];
 
   @observable
   dataRepositories = {
@@ -61,6 +77,8 @@ export class configStore {
   @observable modals = [];
 
   @observable componentBlacklist = [];
+
+  @observable placeholders = {};
 
   $req(path) {
     return agent.Config.get();
@@ -83,6 +101,7 @@ export class configStore {
           this.componentBlacklist = config.componentBlacklist
             ? config.componentBlacklist
             : [];
+          this.placeholders = config.placeholders;
 
           this.isReady = true;
         }

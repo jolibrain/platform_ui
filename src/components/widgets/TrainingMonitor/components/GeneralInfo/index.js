@@ -3,7 +3,46 @@ import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 
 import MeasureChart from "../MeasureChart";
-import TrainLossChart from "../TrainLossChart";
+
+// # Training Monitor
+//
+// ## Measure values
+//
+// `measure` data is found in:
+//
+// * `metrics.json` saved file
+// * or in DeepDetect `GET /train` API call
+//
+// ## Default charts
+//
+// A default `train_loss` chart is displayed.
+//
+// An Accuracy chart can be displayed if `measure.acc` or `measure.accp` exists
+//
+// ## mltype
+//
+// `mltype` value is found in:
+//
+// * `metrics.json` saved file
+// * or DeepDetect `GET /service_name` service info API call.
+//
+// Each type pushes various charts on `TrainingShow` and `TrainingArchive` pages:
+//
+// * segmentation
+//   * meaniou
+//   * meanacc
+//
+// * detection
+//   * map
+//
+// * classification
+//   * meanacc
+//   * f1
+//   * mcll
+//
+// * regression
+//   * eucll
+//
 
 @observer
 export default class GeneralInfo extends React.Component {
@@ -14,60 +53,68 @@ export default class GeneralInfo extends React.Component {
 
     if (!service.jsonMetrics && !service.respInfo) return null;
 
-    let mltype = null;
-    let measure = null;
+    let measure,
+      mltype = null;
 
     if (service.jsonMetrics) {
-      mltype = service.jsonMetrics.body.mltype;
       measure = service.jsonMetrics.body.measure;
+      mltype = service.jsonMetrics.body.mltype;
     } else {
-      mltype = service.respInfo.body.mltype;
       measure = service.measure;
-    }
-
-    let bestModelInfo = null;
-    if (service.bestModel) {
-      bestModelInfo = (
-        <div>
-          <hr />
-          <p>Best Model</p>
-          <ul>
-            {Object.keys(service.bestModel).map((k, i) => {
-              let attrTitle =
-                i === 0
-                  ? k.replace(/\b\w/g, l => l.toUpperCase())
-                  : k.toUpperCase();
-
-              if (attrTitle === "MEANIOU") attrTitle = "Mean IOU";
-
-              return (
-                <li key={i}>
-                  {attrTitle}: <b>{service.bestModel[k]}</b>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      );
+      if (
+        service.respInfo &&
+        service.respInfo.body &&
+        service.respInfo.body.mltype
+      )
+        mltype = service.respInfo.body.mltype;
     }
 
     infoCharts.push(
-      <TrainLossChart
+      <MeasureChart
         title="Train Loss"
         key="train_loss"
         attribute="train_loss"
+        showMinValue
+        showLogScale
         {...this.props}
       />
     );
+
+    if (typeof measure !== "undefined" && measure !== null) {
+      if (typeof measure.accp !== "undefined") {
+        infoCharts.push(
+          <MeasureChart
+            title="Accuracy"
+            key="accp"
+            attribute="accp"
+            steppedLine
+            showBest
+            {...this.props}
+          />
+        );
+      } else if (typeof measure.acc !== "undefined") {
+        infoCharts.push(
+          <MeasureChart
+            title="Accuracy"
+            key="acc"
+            attribute="acc"
+            steppedLine
+            showBest
+            {...this.props}
+          />
+        );
+      }
+    }
 
     switch (mltype) {
       case "segmentation":
         infoCharts.push(
           <MeasureChart
-            title="Accuracy"
-            attribute="acc"
-            key="acc"
-            steppedLine={true}
+            title="Mean IOU"
+            attribute="meaniou"
+            key="meaniou"
+            steppedLine
+            showBest
             {...this.props}
           />
         );
@@ -76,16 +123,7 @@ export default class GeneralInfo extends React.Component {
             title="Mean Accuracy"
             attribute="meanacc"
             key="meanacc"
-            steppedLine={true}
-            {...this.props}
-          />
-        );
-        infoCharts.push(
-          <MeasureChart
-            title="Mean IOU"
-            attribute="meaniou"
-            key="meaniou"
-            steppedLine={true}
+            steppedLine
             {...this.props}
           />
         );
@@ -96,7 +134,8 @@ export default class GeneralInfo extends React.Component {
             title="MAP"
             attribute="map"
             key="map"
-            steppedLine={true}
+            steppedLine
+            showBest
             {...this.props}
           />
         );
@@ -104,19 +143,10 @@ export default class GeneralInfo extends React.Component {
       case "classification":
         infoCharts.push(
           <MeasureChart
-            title="Accuracy"
-            attribute="acc"
-            key="acc"
-            steppedLine={true}
-            {...this.props}
-          />
-        );
-        infoCharts.push(
-          <MeasureChart
             title="Mean Accuracy"
             attribute="meanacc"
             key="meanacc"
-            steppedLine={true}
+            steppedLine
             {...this.props}
           />
         );
@@ -125,7 +155,7 @@ export default class GeneralInfo extends React.Component {
             title="F1"
             attribute="f1"
             key="f1"
-            steppedLine={true}
+            steppedLine
             {...this.props}
           />
         );
@@ -134,7 +164,7 @@ export default class GeneralInfo extends React.Component {
             title="Mcll"
             attribute="mcll"
             key="mcll"
-            steppedLine={true}
+            steppedLine
             {...this.props}
           />
         );
@@ -145,53 +175,19 @@ export default class GeneralInfo extends React.Component {
             title="Eucll"
             attribute="eucll"
             key="eucll"
-            steppedLine={true}
+            steppedLine
             {...this.props}
           />
         );
         break;
       case "ctc":
-        infoCharts.push(
-          <MeasureChart
-            title="Accuracy"
-            attribute="acc"
-            key="acc"
-            steppedLine={true}
-            {...this.props}
-          />
-        );
         break;
       default:
         break;
     }
 
     return (
-      <div className="trainingmonitor-generalinfo">
-        <div className="row">{infoCharts}</div>
-        <div className="row">
-          <div className="col-md-3">
-            <span>
-              <b># Iteration</b>:{" "}
-              {measure && measure.iteration ? measure.iteration : "--"}
-            </span>
-          </div>
-          <div className="col-md-3">
-            <span>
-              <b>Iteration Time</b>:{" "}
-              {measure && measure.iter_time ? measure.iter_time : "--"}
-            </span>
-          </div>
-          <div className="col-md-6">
-            <span>
-              <b>Remaining Time</b>:{" "}
-              {measure && measure.remain_time_str
-                ? measure.remain_time_str
-                : "--"}
-            </span>
-          </div>
-        </div>
-        <div className="row">{bestModelInfo}</div>
-      </div>
+      <div className="trainingmonitor-generalinfo row charts">{infoCharts}</div>
     );
   }
 }

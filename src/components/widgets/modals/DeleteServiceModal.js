@@ -10,10 +10,15 @@ export default class DeleteServiceModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      spinner: false
+      spinner: false,
+      service: null
     };
     this.handleDeleteService = this.handleDeleteService.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ service: nextProps.service });
   }
 
   handleCancel() {
@@ -22,17 +27,23 @@ export default class DeleteServiceModal extends React.Component {
 
   handleDeleteService() {
     const { deepdetectStore, modalStore, history, redirect } = this.props;
-    this.setState({ spinner: true });
-    deepdetectStore.deleteService(() => {
-      modalStore.setVisible("deleteService", false);
-      history.push(redirect || "/");
-    });
+
+    const server = deepdetectStore.servers.find(
+      s => s.name === this.state.service.serverName
+    );
+
+    if (server) {
+      this.setState({ spinner: true });
+      server.deleteService(this.state.service.name, () => {
+        this.setState({ spinner: false });
+        modalStore.setVisible("deleteService", false);
+        history.push(redirect || "/");
+      });
+    }
   }
 
   render() {
-    const { server } = this.props.deepdetectStore;
-
-    if (!server || !server.service) return null;
+    if (!this.state.service) return null;
 
     return (
       <div id="modal-deleteService">
@@ -41,14 +52,15 @@ export default class DeleteServiceModal extends React.Component {
         </div>
 
         <div className="modal-body">
-          Do you really want to delete service <pre>{server.service.name}</pre>{" "}
-          on DeepDetect server <pre>{server.name}</pre> ?
+          Do you really want to delete service{" "}
+          <pre>{this.state.service.name}</pre> on DeepDetect server{" "}
+          <pre>{this.state.service.serverName}</pre> ?
         </div>
 
         <div className="modal-footer">
           <button
             id="cancelDeleteService"
-            className="btn btn-secondary mb-2"
+            className="btn btn-outline-primary mb-2"
             onClick={this.handleCancel}
           >
             Cancel

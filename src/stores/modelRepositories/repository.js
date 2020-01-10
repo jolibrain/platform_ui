@@ -6,6 +6,8 @@ export default class Repository {
   @observable files;
   @observable store;
 
+  @observable fetchError = null;
+
   @observable jsonConfig = null;
   @observable jsonMetrics = null;
   @observable bestModel = null;
@@ -14,10 +16,12 @@ export default class Repository {
 
   @observable files = [];
 
-  constructor(path, files, store) {
+  constructor(path, files, store, fetchError = null) {
+    this.isRepository = true;
     this.path = path;
     this.files = files;
     this.store = store;
+    this.fetchError = fetchError;
 
     this._load();
   }
@@ -51,7 +55,6 @@ export default class Repository {
 
   @computed
   get downloadableFiles() {
-    const protoTxtFiles = this.files.filter(f => f.includes("prototxt"));
     const caffemodelFile = this.files
       .filter(f => f.includes("caffemodel"))
       .sort((a, b) => {
@@ -59,19 +62,77 @@ export default class Repository {
       })
       .slice(0, 1);
 
-    return protoTxtFiles.concat(caffemodelFile);
+    const variousFiles = this.files.filter(f => {
+      return (
+        ["config.json", "vocab.dat", "corresp.txt"].includes(f) ||
+        f.includes("prototxt")
+      );
+    });
+
+    return caffemodelFile
+      .concat(variousFiles)
+      .filter(f => f.indexOf("~") === -1);
+  }
+
+  @computed
+  get measure_hist() {
+    if (
+      !this.jsonMetrics ||
+      !this.jsonMetrics.body ||
+      !this.jsonMetrics.body.measure_hist
+    )
+      return null;
+
+    return this.jsonMetrics.body.measure_hist;
   }
 
   _load() {
     this._loadJsonConfig();
     this._loadJsonMetrics();
     this._loadBestModel();
+
+    // Set metrics date if it hasn't already been done
+    if (
+      !this.files.some(f =>
+        ["config.json", "best_model.txt", "metrics.json"].includes(f)
+      )
+    ) {
+      this._setMetricsDate();
+    }
+  }
+
+  @action.bound
+  async _setMetricsDate() {
+    // Do not try to fetch large files
+    const filenames = this.files.filter(f => {
+      return (
+        (f.includes("json") || f.includes("txt")) &&
+        !(
+          f.includes("caffemodel") ||
+          f.includes("log") ||
+          f.includes("solverstate")
+        )
+      );
+    });
+
+    if (filenames.length > 0) {
+      try {
+        const meta = await agent.Webserver.getFileMeta(
+          `${this.path}${filenames[0]}`
+        );
+        this.metricsDate = meta.header["last-modified"];
+      } catch (e) {}
+    }
   }
 
   @action.bound
   async _loadJsonConfig() {
     try {
-      this.jsonConfig = await this.$reqJsonConfig();
+      const meta = await this.$reqJsonConfig();
+
+      this.metricsDate = meta.header["last-modified"];
+      this.jsonConfig = meta.content;
+
       // TODO : remove this line when config.json editable
       this.jsonConfig.parameters.mllib.gpuid = 0;
 
@@ -98,7 +159,9 @@ export default class Repository {
   async _loadBestModel() {
     try {
       let bestModel = {};
-      const bestModelTxt = await this.$reqBestModel();
+      const meta = await this.$reqBestModel();
+      this.metricsDate = meta.header["last-modified"];
+      const bestModelTxt = meta.content;
 
       // Transform current best_model.txt to json format
       if (bestModelTxt.length > 0) {
@@ -126,11 +189,11 @@ export default class Repository {
 
   $reqBestModel() {
     if (!this.files.includes("best_model.txt")) return null;
-    return agent.Webserver.getFile(`${this.path}best_model.txt`);
+    return agent.Webserver.getFileMeta(`${this.path}best_model.txt`);
   }
 
   $reqJsonConfig() {
     if (!this.files.includes("config.json")) return null;
-    return agent.Webserver.getFile(`${this.path}config.json`);
+    return agent.Webserver.getFileMeta(`${this.path}config.json`);
   }
 }

@@ -1,5 +1,7 @@
-import { action, observable, computed, toJS } from "mobx";
+import { action, observable, computed, toJS, runInAction } from "mobx";
 import store from "store";
+
+import moment from "moment";
 
 import Input from "./input";
 
@@ -30,12 +32,39 @@ export default class deepdetectService {
   @observable respTraining = null;
   @observable respTrainMetrics = null;
 
+  @observable respBestModel = null;
+  @observable bestModel = null;
+
   @observable refresh = Math.random();
+
+  @observable uiParams = {};
 
   constructor(opts) {
     this.settings = opts.serviceSettings;
 
-    if (!this.settings.request) this.settings.request = {};
+    // Proper settings for various mltypes
+    if (typeof this.settings.mltype !== "undefined") {
+      switch (this.settings.mltype) {
+        case "classification":
+          break;
+
+        case "segmentation":
+          this.settings.segmentationConfidence = false;
+          break;
+
+        case "instance_segmentation":
+          // Allows segmentation mask output display
+          // It modifies parameters.output.mask boolean inside predict request
+          this.settings.segmentationMask = true;
+          break;
+
+        default:
+          break;
+      }
+    }
+
+    if (typeof this.settings.request === "undefined")
+      this.settings.request = {};
 
     this.serverName = opts.serverName;
     this.serverSettings = opts.serverSettings;
@@ -55,12 +84,18 @@ export default class deepdetectService {
 
     if (hasJobs) this.trainInfo();
 
+    // Allow search on unsupervised classification services
+    if (typeof this.type !== "undefined" && this.type === "unsupervised")
+      this.uiParams.unsupervisedSearch = false;
+
     return this.respInfo;
   }
 
   async trainInfo() {
     this.respTraining = await this.$reqTrainInfo();
     this.respTrainMetrics = await this.$reqTrainMetrics();
+
+    this._loadBestModel();
 
     this.refresh = Math.random();
     return this.respTraining;
@@ -119,6 +154,13 @@ export default class deepdetectService {
   @computed
   get name() {
     return this.settings.name;
+  }
+
+  @computed
+  get type() {
+    if (this.respInfo && this.respInfo.body) {
+      return this.respInfo.body.type;
+    }
   }
 
   @computed
@@ -185,9 +227,7 @@ export default class deepdetectService {
     }
 
     const serverPath = this.serverSettings.path;
-    return `${serverPath}/train?service=${this.name}&job=${
-      this.trainJob
-    }&parameters.output.measure_hist=true&parameters.output.max_hist_points=1000`;
+    return `${serverPath}/train?service=${this.name}&job=${this.trainJob}&parameters.output.measure_hist=true&parameters.output.max_hist_points=1000`;
   }
 
   @computed
@@ -203,7 +243,7 @@ export default class deepdetectService {
       this.respInfo.body.parameters &&
       this.respInfo.body.parameters.mllib &&
       this.respInfo.body.parameters.mllib[0] &&
-      this.respInfo.body.parameters.mllib[0].gpuid
+      typeof this.respInfo.body.parameters.mllib[0].gpuid !== "undefined"
     ) {
       gpuid = this.respInfo.body.parameters.mllib[0].gpuid;
     }
@@ -214,10 +254,10 @@ export default class deepdetectService {
   @action
   selectInput(index) {
     let input = this.inputs.find(i => i.isActive);
-    if (input) {
-      input.isActive = false;
-    }
-    this.inputs[index].isActive = true;
+
+    if (input) input.isActive = false;
+
+    if (this.inputs[index]) this.inputs[index].isActive = true;
   }
 
   @action
@@ -231,6 +271,24 @@ export default class deepdetectService {
     input.content = content;
     input.isActive = true;
     this.inputs.push(input);
+  }
+
+  @action
+  addOrReplaceInput(index, content) {
+    let activeInput = this.inputs.find(i => i.isActive);
+    if (activeInput) {
+      activeInput.isActive = false;
+    }
+
+    const input = new Input();
+    input.content = content;
+    input.isActive = true;
+
+    if (typeof this.inputs[index] === "undefined") {
+      this.inputs.push(input);
+    } else {
+      this.inputs[index] = input;
+    }
   }
 
   @action
@@ -248,7 +306,7 @@ export default class deepdetectService {
 
     if (this.inputs.length > 0) this.inputs[0].isActive = true;
 
-    callback();
+    callback(this.inputs);
   }
 
   @action
@@ -279,6 +337,15 @@ export default class deepdetectService {
   }
 
   @action
+  predictChain(widgetSettings = {}, chain) {
+    if (this.inputs.length === 0) {
+      return null;
+    }
+
+    this._chainRequest(widgetSettings, chain);
+  }
+
+  @action
   stopTraining(callback) {
     if (this.settings.training) {
       this.$reqStopTraining().then(callback);
@@ -297,6 +364,23 @@ export default class deepdetectService {
     const info = await agent.Deepdetect.postPredict(
       this.serverSettings,
       toJS(this.selectedInput.postData)
+    );
+    this.status.client = ServiceConstants.CLIENT_STATUS.NONE;
+    return info;
+  }
+
+  async $reqPutChain(serverPath = null) {
+    this.status.client = ServiceConstants.CLIENT_STATUS.REQUESTING_PREDICT;
+
+    let putServerSettings = this.serverSettings;
+    if (serverPath) {
+      putServerSettings = { path: serverPath };
+    }
+
+    const info = await agent.Deepdetect.putChain(
+      putServerSettings,
+      moment().milliseconds(),
+      toJS(this.selectedInput.putData)
     );
     this.status.client = ServiceConstants.CLIENT_STATUS.NONE;
     return info;
@@ -330,7 +414,14 @@ export default class deepdetectService {
       try {
         metrics = await agent.Webserver.getFile(metricsPath);
       } catch (e) {
-        //console.warn("Error while fetching metrics");
+        // If metrics.json file is not found,
+        // use fetch to retrieve metrics data from deepdetect server
+        if (e.status && e.status === 404) {
+          try {
+            let metricResponse = await fetch(this.urlTraining);
+            metrics = await metricResponse.json();
+          } catch (f) {}
+        }
       }
     }
 
@@ -364,7 +455,9 @@ export default class deepdetectService {
 
     if (typeof input === "undefined") return null;
 
-    input.json = null;
+    // Do not refresh input json when using webcam
+    // it avoids flickering issue
+    if (this.uiParams.mediaType !== "webcam") input.json = null;
 
     input.postData = {
       service: this.name,
@@ -396,11 +489,15 @@ export default class deepdetectService {
       );
     }
 
-    if (settings.request.search_nn) {
+    if (this.uiParams.search_nn) {
       input.postData.parameters.output.search_nn = parseInt(
-        settings.request.search_nn,
+        this.uiParams.search_nn,
         10
       );
+    }
+
+    if (this.uiParams.extract_layer) {
+      input.postData.parameters.mllib.extract_layer = this.uiParams.extract_layer;
     }
 
     if (settings.request.multibox_rois) {
@@ -422,13 +519,48 @@ export default class deepdetectService {
         input.postData.parameters.output.blank_label = 0;
         delete input.postData.parameters.output.bbox;
         break;
+
       case "segmentation":
         input.postData.parameters.input = { segmentation: true };
         input.postData.parameters.output = {};
+
+        if (this.settings.segmentationConfidence) {
+          input.postData.parameters.output.confidences = ["best"];
+        }
+
         break;
+
       case "classification":
         delete input.postData.parameters.output.bbox;
+
+        // Set parameters.output.search parameter on
+        // unsupervised classification service
+        // when checkbox selected on service Predict UI
+        if (
+          typeof this.type !== "undefined" &&
+          this.type === "unsupervised" &&
+          this.uiParams.unsupervisedSearch
+        ) {
+          input.postData.parameters.output.search = true;
+          delete input.postData.parameters.output.best;
+        }
+
         break;
+
+      case "instance_segmentation":
+        if (
+          this.settings.segmentationMask ||
+          typeof this.settings.segmentationMask === "undefined"
+        ) {
+          input.postData.parameters.output.mask = true;
+          delete input.postData.parameters.output.bbox;
+        } else {
+          input.postData.parameters.output.bbox = true;
+          delete input.postData.parameters.output.mask;
+        }
+
+        break;
+
       default:
         break;
     }
@@ -452,9 +584,7 @@ export default class deepdetectService {
 
     input.json = await this.$reqPostPredict(input.postData);
 
-    if (typeof input.json.body === "undefined") {
-      input.error = true;
-    } else {
+    if (typeof input.json.body !== "undefined") {
       const prediction = input.json.body.predictions[0];
       const classes = prediction.classes;
 
@@ -475,5 +605,141 @@ export default class deepdetectService {
         input.boxes = prediction.rois.map(predict => predict.bbox);
       }
     }
+  }
+
+  @action
+  async _chainRequest(settings, chain) {
+    let input = this.inputs.find(i => i.isActive);
+
+    if (!input) return null;
+
+    input.postData = null;
+    input.json = null;
+
+    chain.calls[0].data = [input.content];
+
+    if (input.path) {
+      chain.calls[0].data = [input.path];
+    }
+
+    chain.calls[0].parameters.output.confidence_threshold =
+      settings.threshold.confidence;
+
+    input.putData = {
+      chain: {
+        calls: chain.calls
+      }
+    };
+
+    // Apply min_size_ratio parameters on crop actions
+    if (
+      this.uiParams &&
+      this.uiParams.chain &&
+      this.uiParams.chain.min_size_ratio
+    ) {
+      input.putData.chain.calls.forEach(call => {
+        if (
+          call.action &&
+          call.action.parameters &&
+          call.action.parameters.min_size_ratio
+        ) {
+          call.action.parameters.min_size_ratio = this.uiParams.chain.min_size_ratio;
+        }
+      });
+    }
+
+    // Apply random_crops parameters on crop actions
+    if (
+      this.uiParams &&
+      this.uiParams.chain &&
+      this.uiParams.chain.random_crops
+    ) {
+      input.putData.chain.calls.forEach(call => {
+        if (
+          call.action &&
+          call.action.parameters &&
+          call.action.parameters.random_crops
+        ) {
+          call.action.parameters.random_crops = this.uiParams.chain.random_crops;
+        }
+      });
+    }
+
+    // Apply search_nn parameters on searchable services
+    if (this.uiParams && this.uiParams.chain && this.uiParams.chain.search_nn) {
+      input.putData.chain.calls.forEach(call => {
+        if (
+          call.parameters &&
+          call.parameters.output &&
+          call.parameters.output.search
+        ) {
+          call.parameters.output.search_nn = parseInt(
+            this.uiParams.chain.search_nn,
+            10
+          );
+        }
+      });
+    }
+
+    input.json = await this.$reqPutChain(chain.serverPath);
+    input.boxes = [];
+
+    if (
+      input.json &&
+      input.json.body &&
+      input.json.body.predictions &&
+      input.json.body.predictions.length > 0
+    ) {
+      const prediction = input.json.body.predictions[0];
+      const classes = prediction.classes;
+
+      if (
+        typeof classes !== "undefined" &&
+        this.respInfo.body.mltype !== "classification"
+      ) {
+        input.boxes = classes.map(predict => predict.bbox);
+      }
+
+      if (
+        (settings.request.objSearch ||
+          settings.request.imgSearch ||
+          this.settings.mltype === "rois") &&
+        typeof input.json.body.predictions[0].rois !== "undefined" &&
+        this.respInfo.body.mltype !== "classification"
+      ) {
+        input.boxes = prediction.rois.map(predict => predict.bbox);
+      }
+    }
+  }
+
+  @action
+  async _loadBestModel() {
+    try {
+      let bestModel = {};
+      this.respBestModel = await this.$reqBestModel();
+      const bestModelTxt = this.respBestModel.content;
+
+      // Transform current best_model.txt to json format
+      if (bestModelTxt.length > 0) {
+        bestModelTxt
+          .split("\n")
+          .filter(a => a.length > 0)
+          .map(a => a.split(":"))
+          .forEach(content => {
+            bestModel[content[0]] = content[1];
+          });
+      }
+
+      runInAction(() => {
+        this.bestModel = bestModel;
+      });
+    } catch (e) {
+      //console.log(e);
+    }
+  }
+
+  $reqBestModel() {
+    const path = this.respInfo.body.repository.replace("/opt/platform", "");
+    return agent.Webserver.getFileMeta(`${path}best_model.txt`);
   }
 }

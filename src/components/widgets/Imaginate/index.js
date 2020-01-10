@@ -2,7 +2,11 @@ import React from "react";
 import { inject, observer } from "mobx-react";
 
 import ImageConnector from "./connectors/Image";
+import ImagePathConnector from "./connectors/ImagePath";
 import TxtConnector from "./connectors/Txt";
+import WebcamConnector from "./connectors/Webcam";
+import VideoConnector from "./connectors/Video";
+// import MjpegConnector from "./connectors/Mjpeg";
 
 @inject("imaginateStore")
 @inject("configStore")
@@ -11,42 +15,52 @@ export default class Imaginate extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      connector: null
-    };
-
     this.getServiceConnector = this.getServiceConnector.bind(this);
   }
 
-  componentWillUnmount() {
-    this._ismounted = false;
-  }
+  componentWillReceiveProps(nextProps) {}
 
-  componentDidMount() {
-    this._ismounted = true;
-    this.getServiceConnector(this.props);
-  }
+  getServiceConnector() {
+    const { imaginateStore } = this.props;
+    const { service } = imaginateStore;
 
-  componentWillReceiveProps(nextProps) {
-    this.getServiceConnector(nextProps);
-  }
+    let connector = null;
 
-  async getServiceConnector(props) {
-    const { imaginateStore } = props;
-
-    if (imaginateStore.service) {
-      const serviceInfo = await imaginateStore.service.serviceInfo();
+    if (service) {
+      const serviceInfo = service.respInfo;
       if (
+        serviceInfo &&
         serviceInfo.body &&
         serviceInfo.body.parameters &&
         serviceInfo.body.parameters.input &&
         serviceInfo.body.parameters.input.length === 1 &&
         serviceInfo.body.parameters.input[0].connector
       ) {
-        const connector = serviceInfo.body.parameters.input[0].connector;
-        this.setState({ connector: connector });
+        connector = serviceInfo.body.parameters.input[0].connector;
+      }
+
+      switch (service.uiParams.mediaType) {
+        case "image":
+          connector = "image";
+          break;
+        case "imagePath":
+          connector = "imagePath";
+          break;
+        case "webcam":
+          connector = "webcam";
+          break;
+        //        case "mjpeg":
+        //          connector = "mjpeg";
+        //          break;
+        //        case "video":
+        //          connector = "video";
+        //          break;
+        default:
+          break;
       }
     }
+
+    return connector;
   }
 
   render() {
@@ -54,24 +68,54 @@ export default class Imaginate extends React.Component {
 
     const { imaginateStore } = this.props;
 
-    if (!imaginateStore.service || !this.state.connector) return null;
+    if (!imaginateStore.service) {
+      console.log("[ImaginateStore] missing service");
+      return null;
+    }
 
+    const connector = this.getServiceConnector();
     let connectorComponent = null;
 
-    switch (this.state.connector) {
+    switch (connector) {
       case "txt":
         connectorComponent = <TxtConnector />;
         break;
       case "image":
         connectorComponent = <ImageConnector />;
         break;
+      case "imagePath":
+        connectorComponent = <ImagePathConnector />;
+        break;
+      case "webcam":
+        connectorComponent = <WebcamConnector />;
+        break;
+      case "stream":
+        connectorComponent = <VideoConnector />;
+        break;
+      //      case "mjpeg":
+      //        connectorComponent = <MjpegConnector />;
+      //        break;
+      case "csv":
+        connectorComponent = (
+          <div className="alert alert-warning" role="alert">
+            <i className="fas fa-exclamation-circle" /> CSV connector interface
+            not available.
+          </div>
+        );
+        break;
       default:
+        connectorComponent = (
+          <div className="alert alert-warning" role="alert">
+            <i className="fas fa-exclamation-circle" /> Missing attribute{" "}
+            <code>body.parameters.input[0].connector</code> in Service json.
+          </div>
+        );
         break;
     }
 
     return (
       <div
-        className={`imaginate-${this.state.connector}`}
+        className={`imaginate-${connector}`}
         data-servicename={imaginateStore.service.name}
       >
         {connectorComponent}

@@ -1,4 +1,6 @@
 import { observable, action, computed } from "mobx";
+import async from "async";
+import agent from "../agent";
 
 import deepdetectServer from "./deepdetect/server";
 
@@ -6,9 +8,18 @@ export class deepdetectStore {
   @observable settings = {};
 
   @observable servers = [];
+  @observable chains = [];
 
   @observable refresh = 0;
   @observable isReady = false;
+  @observable firstLoad = true;
+
+  @observable trainRefreshMode = null;
+
+  @action
+  setTrainRefreshMode(mode) {
+    this.trainRefreshMode = mode;
+  }
 
   @computed
   get server() {
@@ -32,7 +43,24 @@ export class deepdetectStore {
 
   @computed
   get services() {
-    return [].concat.apply([], this.servers.map(s => s.services));
+    return [].concat
+      .apply(
+        [],
+        this.servers.map(s => s.services)
+      )
+      .sort((a, b) => {
+        // Sort by name
+        var nameA = a.settings.name.toUpperCase();
+        var nameB = b.settings.name.toUpperCase();
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        return 0;
+      });
   }
 
   @computed
@@ -46,7 +74,7 @@ export class deepdetectStore {
   }
 
   @action
-  setup(configStore) {
+  async setup(configStore) {
     this.settings = configStore.deepdetect;
 
     if (this.settings.servers) {
@@ -55,11 +83,21 @@ export class deepdetectStore {
       });
     }
 
+    // Set first server as default server
     if (this.servers.length > 0 && !this.server) {
       this.servers[0].isActive = true;
     }
 
-    this.loadServices();
+    // List available chains
+    if (this.settings.chains && this.settings.chains.path) {
+      const path = this.settings.chains.path;
+      const chainFiles = await agent.Webserver.listFiles(path);
+
+      chainFiles.forEach(async (chainFile, index) => {
+        const chainContent = await agent.Webserver.getFile(path + chainFile);
+        this.chains.push(chainContent);
+      });
+    }
   }
 
   @action
@@ -73,7 +111,7 @@ export class deepdetectStore {
       }
 
       server.isActive = true;
-      server.setService(params.serviceName);
+      server.setService(encodeURIComponent(params.serviceName));
     }
 
     return server && server.service;
@@ -93,6 +131,13 @@ export class deepdetectStore {
   }
 
   @action
+  setServerPath(serverPath) {
+    this.servers.forEach(s => (s.isActive = false));
+    let server = this.servers.find(s => s.settings.path === serverPath);
+    if (server) server.isActive = true;
+  }
+
+  @action
   setServiceIndex(serviceIndex) {
     this.server.setServiceIndex(serviceIndex);
   }
@@ -104,27 +149,79 @@ export class deepdetectStore {
 
   @action
   loadServices(status = false) {
-    const promises = [];
-    this.servers.forEach(async server => {
-      const promise = server.loadServices(status);
-      promises.push(promise);
-    });
-    Promise.all(promises).then(results => {
-      this.isReady = true;
-      this.refresh = Math.random();
-    });
+    async.forever(
+      next => {
+        const seriesArray = this.servers.map(s => {
+          return async callback => {
+            try {
+              await s.loadServices(status);
+            } finally {
+              callback();
+            }
+          };
+        });
+
+        if (!this.isReady) {
+          async.parallel(seriesArray, (errorSeries, results) => {
+            this.isReady = true;
+            next();
+          });
+        } else {
+          async.series(seriesArray, (errorSeries, results) => {
+            this.refresh = Math.random();
+            let refreshRate = 500;
+
+            if (
+              this &&
+              this.settings &&
+              this.settings.refreshRate &&
+              this.settings.refreshRate.info &&
+              parseInt(this.settings.refreshRate.info, 10) > 0
+            )
+              refreshRate = this.settings.refreshRate.info;
+
+            setTimeout(() => next(), refreshRate);
+          });
+        }
+      },
+      errorForever => {}
+    );
   }
 
   @action
   refreshTrainInfo() {
-    const promises = [];
-    this.trainingServices.forEach(async service => {
-      const promise = service.trainInfo();
-      promises.push(promise);
-    });
-    Promise.all(promises).then(results => {
-      this.refresh = Math.random();
-    });
+    async.forever(
+      next => {
+        let services = [];
+        switch (this.trainRefreshMode) {
+          case "services":
+            services = this.trainingServices;
+            break;
+          case "service":
+            services = [this.service];
+            break;
+          default:
+            break;
+        }
+
+        const seriesArray = services.map(s => {
+          return async callback => {
+            try {
+              await s.trainInfo();
+            } catch (err) {
+            } finally {
+              callback();
+            }
+          };
+        });
+
+        async.series(seriesArray, (errorSeries, results) => {
+          this.refresh = Math.random();
+          setTimeout(() => next(), 500);
+        });
+      },
+      errorForever => {}
+    );
   }
 
   @action
@@ -135,14 +232,13 @@ export class deepdetectStore {
   @action
   deleteService(callback) {
     if (this.server.isWritable) {
-      this.server.deleteService(callback);
+      this.server.deleteService(this.server.service.name, callback);
     }
   }
 
   @action
   stopTraining(callback) {
     this.service.stopTraining(callback);
-    this.loadServices();
   }
 }
 

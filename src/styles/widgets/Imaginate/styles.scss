@@ -1,5 +1,13 @@
+@import "../../palettes/palette-1.scss";
 @import "./CurlCommand.scss";
 @import "./JsonResponse.scss";
+
+.imaginate.webcamConnector {
+  .boundingBoxCanvas {
+    position: relative;
+    top: -484px;
+  }
+}
 
 .imaginate.txtConnector {
   .inputForm {
@@ -13,8 +21,16 @@
 
 .imaginate {
   .threshold.card,
+  .slider.card,
+  .custom-checkbox.card,
+  .text.card,
+  .description.card,
   .inputUrl.card {
     border: 0;
+
+    .card-body {
+      padding: 5px 20px;
+    }
   }
 
   .inputForm.card,
@@ -232,9 +248,17 @@
       .slide {
         display: inline-block;
 
+        .btn {
+          margin-right: 5px;
+        }
+
         img {
           padding: 5px;
           width: 80px;
+        }
+
+        .active {
+          border: 1px solid $support_red_7;
         }
 
         .deleteImg {
@@ -255,5 +279,17 @@
         }
       }
     }
+  }
+
+  #imaginate-image-connector-boundingbox-controls {
+    margin: 5px;
+
+    .form-check {
+      margin-left: 20px;
+    }
+  }
+
+  .dropdown-item {
+    cursor: pointer;
   }
 }

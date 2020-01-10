@@ -50,13 +50,17 @@ export default class Category extends React.Component {
           ref={c => this._nodes.set(index, c)}
         >
           {category.cat}
-        </span>&nbsp;
+        </span>
+        &nbsp;
       </div>
     );
   }
 
   render() {
     const { input } = this.props;
+
+    if (!input.json || !input.json.body) return null;
+
     const { classes } = input.json.body.predictions[0];
 
     if (!classes) return null;

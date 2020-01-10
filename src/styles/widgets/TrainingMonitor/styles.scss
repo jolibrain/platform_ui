@@ -1,11 +1,95 @@
-.trainingmonitor {
-  .trainingmonitor-generalinfo {
-    .row {
-      padding: 15px 0;
+@import "../../palettes/palette-1.scss";
+
+.trainingmonitor-chart {
+  .chart {
+    border: 1px solid $neutral_blue_9;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px hsla(0, 100%, 0%, 0.1);
+
+    canvas {
+      margin-top: 20px;
+    }
+
+    div.description {
+      background-color: $neutral_blue_3;
+      color: $neutral_blue_10;
+      padding: 10px;
+      border-radius: 0px 0px 10px 10px;
+
+      h3 {
+        margin: 0;
+        font-size: 22px;
+        font-weight: 700;
+
+        span.minValue,
+        span.bestValue {
+          color: $neutral_blue_8;
+          font-size: 16px;
+          font-weight: 500;
+        }
+      }
+
+      h4 {
+        color: $neutral_blue_8;
+        font-size: 20px;
+        width: 100%;
+        font-weight: 400;
+
+        span.logScale {
+          float: right;
+          font-size: 16px;
+          position: relative;
+          top: 4px;
+
+          input {
+            position: relative;
+            top: 1px;
+          }
+        }
+      }
     }
   }
+}
 
-  .measure-cell.hovered {
-    background-color: #b1bbec !important;
+.trainingmonitor-perclassarray {
+  margin-top: 30px;
+
+  table {
+    border: 1px solid $neutral_blue_9;
+
+    .measure-cell.hovered {
+      background-color: $neutral_blue_9;
+    }
+
+    thead {
+      background-color: $neutral_blue_10;
+      color: $neutral_blue_3;
+      text-transform: uppercase;
+    }
+
+    td {
+      h3 {
+        color: $neutral_blue_1;
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      h4 {
+        color: $neutral_blue_3;
+        margin: 0;
+        font-size: 16px;
+      }
+    }
+
+    th.sparkline {
+      padding: 0;
+      max-width: 150px;
+
+      svg {
+        position: relative;
+        left: -2px;
+      }
+    }
   }
 }

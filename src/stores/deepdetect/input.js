@@ -4,9 +4,9 @@ export default class Input {
   @observable isActive = false;
   @observable content = {};
   @observable postData = {};
+  @observable putData = {};
   @observable path = null;
   @observable json = null;
-  @observable error = false;
   @observable boxes = [];
 
   @computed
@@ -53,6 +53,16 @@ export default class Input {
       this.postData.parameters &&
       this.postData.parameters.input &&
       this.postData.parameters.input.segmentation
+    );
+  }
+
+  @computed
+  get isChainResult() {
+    return (
+      this.json &&
+      this.json.head &&
+      this.json.head.method &&
+      this.json.head.method === "/chain"
     );
   }
 }

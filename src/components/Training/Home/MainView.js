@@ -4,7 +4,6 @@ import { withRouter } from "react-router-dom";
 import moment from "moment";
 
 import ServiceCardList from "../../widgets/ServiceCardList";
-import ServiceContentList from "../../widgets/ServiceContentList";
 import RightPanel from "../commons/RightPanel";
 
 @inject("deepdetectStore")
@@ -16,21 +15,24 @@ export default class MainView extends React.Component {
     super(props);
 
     this.state = {
-      filterServiceName: "",
-      archiveLayout: "cards"
+      filterServiceName: ""
     };
 
     this.handleServiceFilter = this.handleServiceFilter.bind(this);
     this.cleanServiceFilter = this.cleanServiceFilter.bind(this);
 
-    this.handleClickLayoutCards = this.handleClickLayoutCards.bind(this);
-    this.handleClickLayoutList = this.handleClickLayoutList.bind(this);
-
     this.handleClickRefreshArchive = this.handleClickRefreshArchive.bind(this);
   }
 
+  componentWillMount() {
+    const { modelRepositoriesStore } = this.props;
+    if (!modelRepositoriesStore.isReadyTraining) {
+      modelRepositoriesStore.refreshTraining();
+    }
+  }
+
   handleClickRefreshArchive() {
-    this.props.modelRepositoriesStore.refresh();
+    this.props.modelRepositoriesStore.refreshTraining();
   }
 
   handleServiceFilter(event) {
@@ -41,28 +43,46 @@ export default class MainView extends React.Component {
     this.setState({ filterServiceName: "" });
   }
 
-  handleClickLayoutCards() {
-    this.setState({ archiveLayout: "cards" });
-  }
-
-  handleClickLayoutList() {
-    this.setState({ archiveLayout: "list" });
-  }
-
   render() {
     const { deepdetectStore, modelRepositoriesStore } = this.props;
 
     if (!deepdetectStore.isReady) return null;
 
-    const { trainingServices } = deepdetectStore;
-    const { archivedTrainingRepositories } = modelRepositoriesStore;
-
     const { filterServiceName } = this.state;
+
+    const { trainingServices } = deepdetectStore;
+    const displayedTrainingServices = trainingServices
+      .filter(r => r.name.includes(filterServiceName))
+      .slice()
+      .sort((a, b) => {
+        if (a.name < b.name) return -1;
+        if (a.name > b.name) return 1;
+        return 0;
+      });
+
+    // List of path to filter them out from displayed archive jobs
+    const displayedTrainingServicesPath = displayedTrainingServices.map(
+      service => {
+        return service.respInfo &&
+          service.respInfo.body &&
+          service.respInfo.body.repository
+          ? service.respInfo.body.repository
+              .replace("/opt/platform/models/training/", "")
+              .replace(/\/$/g, "")
+          : "";
+      }
+    );
+
+    const { archivedTrainingRepositories } = modelRepositoriesStore;
     const displayedArchiveRepositories = archivedTrainingRepositories
       .filter(r => {
+        // Filter based on input form
+        // and existing path in currently training jobs
         return (
-          r.name.includes(filterServiceName) ||
-          r.trainingTags.join(" ").includes(filterServiceName)
+          r.name.includes(filterServiceName) &&
+          !displayedTrainingServicesPath.includes(
+            r.path.replace("/models/training/", "").replace(/\/$/g, "")
+          )
         );
       })
       .slice()
@@ -75,90 +95,92 @@ export default class MainView extends React.Component {
     return (
       <div className="main-view content-wrapper">
         <div className="container-fluid">
+          <div className="page-title p-4 row">
+            <div className="col-lg-3 col-md-6">
+              <h3>{trainingServices.length}</h3>
+              <h4>
+                <i className="fas fa-braille" /> Training Services
+              </h4>
+            </div>
+
+            <div className="col-lg-3 col-md-6">
+              <h3>
+                {modelRepositoriesStore.isRefreshing ? (
+                  <span>
+                    <i className="fas fa-sync fa-spin fa-xs" />{" "}
+                  </span>
+                ) : (
+                  displayedArchiveRepositories.length
+                )}
+              </h3>
+
+              <h4>
+                <i className="fas fa-archive" /> Archived Jobs
+              </h4>
+            </div>
+
+            <div className="col-lg-6 col-md-12 pb-2">
+              <form className="form-inline">
+                <button
+                  id="refreshServices"
+                  onClick={this.handleClickRefreshArchive}
+                  type="button"
+                  className="btn btn-primary"
+                >
+                  <i
+                    className={
+                      modelRepositoriesStore.isRefreshing
+                        ? "fas fa-sync fa-spin"
+                        : "fas fa-sync"
+                    }
+                  />
+                </button>
+
+                <div className="input-group">
+                  <div className="input-group-prepend">
+                    <div className="input-group-text">
+                      <i className="fas fa-search" />
+                    </div>
+                  </div>
+                  <input
+                    type="text"
+                    onChange={this.handleServiceFilter}
+                    placeholder="Filter service name..."
+                    value={this.state.filterServiceName}
+                  />
+                  <div className="input-group-append">
+                    <button
+                      className="btn btn-secondary"
+                      type="button"
+                      onClick={this.cleanServiceFilter}
+                    >
+                      <i className="fas fa-times-circle" />
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
           <div className="content">
             <div className="serviceList current">
-              {trainingServices.length === 0 ? (
-                <h4>No training service running</h4>
-              ) : (
-                <div>
-                  <h4>Current Training Services</h4>
-                  <ServiceCardList services={trainingServices} />
-                </div>
-              )}
+              <ServiceCardList services={displayedTrainingServices} />
             </div>
 
             <hr />
+            <h3>
+              <i className="fas fa-archive" /> Archived Jobs&nbsp;
+              {modelRepositoriesStore.isRefreshing ? (
+                <i className="fas fa-spinner fa-spin" />
+              ) : (
+                ""
+              )}
+            </h3>
 
             <div className="archiveTrainingList archive">
-              <div className="float-right">
-                <form className="form-inline">
-                  <button
-                    id="refreshServices"
-                    onClick={this.handleClickRefreshArchive}
-                    type="button"
-                    className="btn btn-outline-primary"
-                  >
-                    <i
-                      className={
-                        modelRepositoriesStore.isRefreshing
-                          ? "fas fa-sync fa-spin"
-                          : "fas fa-sync"
-                      }
-                    />
-                  </button>
-
-                  <div className="input-group">
-                    <div className="input-group-prepend">
-                      <div className="input-group-text">
-                        <i className="fas fa-search" />
-                      </div>
-                    </div>
-                    <input
-                      type="text"
-                      onChange={this.handleServiceFilter}
-                      placeholder="Filter service name..."
-                      value={this.state.filterServiceName}
-                    />
-                    <div className="input-group-append">
-                      <button
-                        className="btn btn-outline-secondary"
-                        type="button"
-                        onClick={this.cleanServiceFilter}
-                      >
-                        <i className="fas fa-times-circle" />
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="layoutSelect">
-                    <i
-                      className={
-                        this.state.archiveLayout === "cards"
-                          ? "fas fa-th-large active"
-                          : "fas fa-th-large"
-                      }
-                      onClick={this.handleClickLayoutCards}
-                    />
-                    <i
-                      className={
-                        this.state.archiveLayout === "list"
-                          ? "fas fa-th-list active"
-                          : "fas fa-th-list"
-                      }
-                      onClick={this.handleClickLayoutList}
-                    />
-                  </div>
-                </form>
-              </div>
-
-              <h4>Archived Training Jobs</h4>
-
-              {this.state.archiveLayout === "cards" ? (
-                <ServiceCardList services={displayedArchiveRepositories} />
-              ) : (
-                <ServiceContentList services={displayedArchiveRepositories} />
-              )}
+              <ServiceCardList services={displayedArchiveRepositories} />
             </div>
+
             <RightPanel />
           </div>
         </div>

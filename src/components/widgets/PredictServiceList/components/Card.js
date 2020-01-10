@@ -1,4 +1,5 @@
 import React from "react";
+
 import PropTypes from "prop-types";
 import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
@@ -6,17 +7,14 @@ import moment from "moment";
 
 import DownloadModelFiles from "../../DownloadModelFiles";
 
-@inject("deepdetectStore")
+@inject("modalStore")
 @withRouter
 @observer
 export default class Card extends React.Component {
   constructor(props) {
     super(props);
 
-    this.serviceNameRef = React.createRef();
-
-    this.validateBeforeSubmit = this.validateBeforeSubmit.bind(this);
-    this.handleClickCreate = this.handleClickCreate.bind(this);
+    this.openAddServiceModal = this.openAddServiceModal.bind(this);
 
     this.state = {
       errors: [],
@@ -24,84 +22,10 @@ export default class Card extends React.Component {
     };
   }
 
-  validateBeforeSubmit() {
-    let errors = [];
-
-    let serviceName = this.serviceNameRef.current.value;
-
-    if (serviceName.length === 0) serviceName = this.props.repository.label;
-
-    if (serviceName.length === 0) {
-      errors.push("Service name can't be empty");
-    }
-
-    if (serviceName === "new") {
-      errors.push("Service name can't be named 'new'");
-    }
-    const ddStore = this.props.deepdetectStore;
-    const serviceNames = ddStore.server.services.map(s => s.name.toLowerCase());
-
-    if (serviceNames.includes(serviceName.toLowerCase())) {
-      errors.push("Service name already exists");
-    }
-
-    this.setState({ errors: errors });
-
-    return errors.length === 0;
-  }
-
-  handleClickCreate() {
-    const { repository } = this.props;
-
-    if (!repository.jsonConfig) {
-      this.props.history.push({
-        pathname: "/predict/new",
-        state: { repository: repository }
-      });
-      return null;
-    }
-
-    if (!this.validateBeforeSubmit()) {
-      return null;
-    }
-
-    let serviceName = this.serviceNameRef.current.value;
-
-    if (serviceName.length === 0) serviceName = repository.label;
-
-    serviceName = serviceName.toLowerCase();
-
-    const ddStore = this.props.deepdetectStore;
-
-    this.setState({ creatingService: true });
-
-    let serviceData = repository.jsonConfig;
-
-    if (serviceData.parameters.output) {
-      serviceData.parameters.output.store_config = false;
-    } else {
-      serviceData.parameters.output = { store_config: false };
-    }
-
-    ddStore.newService(serviceName, serviceData, resp => {
-      if (resp instanceof Error || resp.status.code !== 201) {
-        this.setState({
-          creatingService: false,
-          errors: [resp.message || resp.status.msg]
-        });
-      } else {
-        this.setState({
-          creatingService: false,
-          errors: []
-        });
-
-        ddStore.setService(serviceName);
-
-        const serviceUrl = `/predict/${
-          ddStore.hostableServer.name
-        }/${serviceName}`;
-        this.props.history.push(serviceUrl);
-      }
+  openAddServiceModal() {
+    const { modalStore, repository } = this.props;
+    modalStore.setVisible("addService", true, {
+      repository: repository
     });
   }
 
@@ -110,100 +34,81 @@ export default class Card extends React.Component {
 
     if (!repository) return null;
 
-    let badges = [];
+    let modelValues = null;
+    if (repository.bestModel) {
+      modelValues = (
+        <div className="content row pt-2 pl-2">
+          {Object.keys(repository.bestModel).map((k, i) => {
+            let attrTitle =
+              i === 0
+                ? k.replace(/\b\w/g, l => l.toUpperCase())
+                : k.toUpperCase();
 
-    switch (repository.store.name) {
-      case "public":
-        badges.push({
-          classNames: "badge badge-primary",
-          status: repository.store.name
-        });
-        break;
-      default:
-        badges.push({
-          classNames: "badge badge-warning",
-          status: repository.store.name
-        });
-        break;
-    }
+            if (attrTitle === "MEANIOU") attrTitle = "Mean IOU";
 
-    let tags = repository.trainingTags;
-    if (tags && tags.length > 0) {
-      tags.filter(t => t !== "private" && t !== "public").forEach(t =>
-        badges.push({
-          classNames: "badge badge-info",
-          status: t
-        })
+            return (
+              <div key={i} className="col-6">
+                <h3>{repository.bestModel[k]}</h3>
+                <h4>{attrTitle}</h4>
+              </div>
+            );
+          })}
+        </div>
       );
     }
 
-    if (repository.metricsDate) {
-      badges.push({
-        classNames: "badge badge-light",
-        status: moment(repository.metricsDate).format("L LT")
-      });
-    }
-
     return (
-      <div className="card">
-        <div className="card-header">
-          {badges.map((badge, key) => (
-            <span key={key} className={badge.classNames}>
-              {badge.status}
-            </span>
-          ))}
-        </div>
+      <div className="col-lg-4 col-md-12 my-2">
+        <div className="card">
+          <div
+            className={
+              modelValues !== null ? "card-body hasBestModel" : "card-body"
+            }
+          >
+            <h5 className="card-title">
+              <span className="title">
+                <i className="fas fa-archive" /> {repository.name}
+              </span>
+            </h5>
 
-        <div className="card-body">
-          <h5 className="card-title">{repository.name}</h5>
-
-          {repository.jsonConfig &&
-          repository.jsonConfig.description &&
-          repository.jsonConfig.description.length > 0 ? (
             <h6 className="card-subtitle mb-2 text-muted">
-              {repository.jsonConfig.description}
+              {repository.jsonConfig &&
+              repository.jsonConfig.description &&
+              repository.jsonConfig.description.length > 0
+                ? repository.jsonConfig.description
+                : " "}
             </h6>
-          ) : (
-            ""
-          )}
 
-          <DownloadModelFiles repository={repository} />
-        </div>
-
-        <div className="card-footer text-right">
-          {this.state.errors.length > 0 ? (
-            <div className="alert alert-danger" role="alert">
-              <b>Error while creating service</b>
-              <ul>
-                {this.state.errors.map((error, i) => <li key={i}>{error}</li>)}
-              </ul>
+            <div className="row process-icons">
+              <div className="col-12">
+                <i className={`fas fa-tag ${repository.store.name}`} />{" "}
+                {repository.trainingTags.join(", ")}
+              </div>
+              {repository.metricsDate ? (
+                <div className="col-12">
+                  <i className="far fa-clock" />{" "}
+                  {moment(repository.metricsDate).format("L LT")}
+                </div>
+              ) : (
+                ""
+              )}
+              <div className="col-12">
+                <i className="fas fa-folder" /> {repository.path}
+              </div>
             </div>
-          ) : (
-            ""
-          )}
 
-          <div id="create-service" className="input-group">
-            <input
-              type="text"
-              className="form-control"
-              id="inlineFormInputName"
-              defaultValue={repository.name}
-              ref={this.serviceNameRef}
-            />
-            <div className="input-group-append">
-              <button
-                className="btn btn-outline-primary"
-                onClick={this.handleClickCreate.bind(this, repository.name)}
-              >
-                <i
-                  className={
-                    this.state.creatingService
-                      ? "fas fa-spinner fa-spin"
-                      : "fas fa-plus"
-                  }
-                />&nbsp; Add Service
-              </button>
-            </div>
+            <DownloadModelFiles repository={repository} hidePath />
+            {modelValues}
+          </div>
+
+          <div className="card-footer text-right">
+            <button
+              className="btn btn-primary"
+              onClick={this.openAddServiceModal}
+            >
+              <i className="fas fa-plus" />
+              &nbsp; Add Service
+            </button>
           </div>
         </div>
       </div>

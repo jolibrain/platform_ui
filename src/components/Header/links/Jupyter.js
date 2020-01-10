@@ -8,15 +8,27 @@ class Jupyter extends React.Component {
 
     if (configStore.isComponentBlacklisted("LinkJupyter")) return null;
 
+    let href = "/code/lab";
+
+    if (
+      configStore.homeComponent &&
+      configStore.homeComponent.headerLinks &&
+      configStore.homeComponent.headerLinks.linkJupyter &&
+      configStore.homeComponent.headerLinks.linkJupyter.length > 0
+    ) {
+      href = configStore.homeComponent.headerLinks.linkJupyter;
+    }
+
     return (
       <li id="jupyter-link">
         <a
-          href="/code/lab"
+          href={href}
           style={{ textDecoration: "none" }}
           target="_blank"
           rel="noreferrer noopener"
         >
-          <i className="fas fa-circle-notch" />&nbsp; Jupyter
+          <i className="fas fa-circle-notch" />
+          &nbsp; Jupyter
         </a>
       </li>
     );

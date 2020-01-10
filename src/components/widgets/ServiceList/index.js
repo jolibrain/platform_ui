@@ -3,6 +3,7 @@ import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
 import ServiceItem from "./Items/Service.js";
+import ChainItem from "./Items/Chain.js";
 
 @inject("deepdetectStore")
 @inject("configStore")
@@ -13,31 +14,24 @@ export default class ServiceList extends React.Component {
     if (this.props.configStore.isComponentBlacklisted("ServiceList"))
       return null;
 
-    const ddStore = this.props.deepdetectStore;
+    const { deepdetectStore } = this.props;
 
-    if (!ddStore.isReady || ddStore.servers.length === 0) return null;
+    const serviceItems = deepdetectStore.services.map((service, index) => {
+      return <ServiceItem key={index} service={service} />;
+    });
 
-    const services = ddStore.services.filter(service => {
-      if (this.props.only) {
-        if (this.props.only === "training") {
-          return service.settings.training;
-        } else {
-          return !service.settings.training;
-        }
-      } else {
-        return true;
-      }
+    const chainItems = deepdetectStore.chains.map((chain, index) => {
+      return <ChainItem key={index} chain={chain} />;
     });
 
     return (
       <ul
         id="widget-serviceList"
         className="serviceList sidebar-top-level-items"
-        key={`serviceList-${ddStore.refresh}`}
       >
-        {services.map((service, index) => {
-          return <ServiceItem key={index} service={service} />;
-        })}
+        {serviceItems}
+        {chainItems.length > 0 ? <hr /> : null}
+        {chainItems}
       </ul>
     );
   }

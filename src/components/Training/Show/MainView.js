@@ -3,7 +3,11 @@ import { withRouter } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 
 import RightPanel from "../commons/RightPanel";
-import TrainingMonitor from "../../widgets/TrainingMonitor";
+
+import Title from "../../widgets/TrainingMonitor/components/Title";
+import GeneralInfo from "../../widgets/TrainingMonitor/components/GeneralInfo";
+import MeasureHistArray from "../../widgets/TrainingMonitor/components/MeasureHistArray";
+
 import Breadcrumb from "../../widgets/Breadcrumb";
 
 @inject("deepdetectStore")
@@ -11,30 +15,6 @@ import Breadcrumb from "../../widgets/Breadcrumb";
 @observer
 @withRouter
 export default class MainView extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      hoveredMeasure: -1
-    };
-
-    this.openDeleteServiceModal = this.openDeleteServiceModal.bind(this);
-    this.handleOverMeasure = this.handleOverMeasure.bind(this);
-    this.handleLeaveMeasure = this.handleLeaveMeasure.bind(this);
-  }
-
-  openDeleteServiceModal() {
-    this.props.modalStore.setVisible("deleteService");
-  }
-
-  handleOverMeasure(index) {
-    this.setState({ hoveredMeasure: index });
-  }
-
-  handleLeaveMeasure(index) {
-    this.setState({ hoveredMeasure: -1 });
-  }
-
   render() {
     if (!this.props.deepdetectStore.isReady) return null;
 
@@ -49,6 +29,7 @@ export default class MainView extends React.Component {
 
     if (!service) {
       this.props.history.push("/");
+
       return null;
     }
 
@@ -56,41 +37,15 @@ export default class MainView extends React.Component {
 
     return (
       <div className="main-view content-wrapper">
-        <div className="container">
-          <Breadcrumb service={service} isTraining={true} />
-          <nav className="navbar navbar-expand-lg">
-            {service.serverSettings.isWritable ? (
-              <ul
-                className="nav navbar-nav ml-auto"
-                style={{ flexDirection: "row" }}
-              >
-                <li className="nav-item">
-                  <button
-                    className="btn btn-outline-danger"
-                    onClick={this.openDeleteServiceModal}
-                  >
-                    <i className="far fa-trash-alt" /> Delete Service
-                  </button>
-                </li>
-              </ul>
-            ) : (
-              ""
-            )}
-          </nav>
-          <div className="content">
-            <TrainingMonitor
-              service={service}
-              handleOverMeasure={this.handleOverMeasure}
-              handleLeaveMeasure={this.handleLeaveMeasure}
-              hoveredMeasure={this.state.hoveredMeasure}
-            />
-            <RightPanel
-              service={service}
-              handleOverMeasure={this.handleOverMeasure}
-              handleLeaveMeasure={this.handleLeaveMeasure}
-              hoveredMeasure={this.state.hoveredMeasure}
-              includeDownloadPanel
-            />
+        <div className="fluid-container">
+          <Title service={service} />
+          <div className="training-breadcrumb px-4 py-2">
+            <Breadcrumb service={service} isTraining={true} />
+          </div>
+          <div className="content p-4">
+            <GeneralInfo service={service} />
+            <MeasureHistArray service={service} />
+            <RightPanel />
           </div>
         </div>
       </div>

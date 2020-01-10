@@ -1,16 +1,36 @@
+@import "../../palettes/palette-1.scss";
+
 .breadcrumbs a,
 .breadcrumbs {
   font-size: 12px;
-  color: rgb(112, 112, 112);
+  color: $neutral_blue_1;
   white-space: nowrap;
   line-height: 16px;
 
   .badge {
+    cursor: pointer;
+    float: right;
+    background-color: $neutral_blue_8;
     font-size: 11px;
     margin-left: 5px;
   }
 
   .badge:hover {
-    color: #fff;
+    background-color: $neutral_blue_1;
+    color: $neutral_blue_10;
+  }
+
+  .badge.delete-service {
+    background-color: $support_red_9;
+    color: $support_red_3;
+  }
+  .badge.delete-service:hover {
+    background-color: $support_red_3;
+    color: $support_red_10;
+  }
+
+  .badge.badge-requesting {
+    background-color: #fff;
+    padding-top: 5px;
   }
 }

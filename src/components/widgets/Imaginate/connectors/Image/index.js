@@ -3,14 +3,19 @@ import { toJS } from "mobx";
 import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
-import ImageList from "./ImageList";
-//import ImageListRandom from "./ImageListRandom";
-import BoundingBoxDisplay from "./BoundingBoxDisplay";
-import Threshold from "./Threshold";
-import InputForm from "./InputForm";
+import ImageList from "../commons/ImageList";
+import Threshold from "../commons/Threshold";
 
+import BoundingBox from "../commons/BoundingBox";
+import Controls from "../commons/BoundingBox/Controls";
+
+import InputForm from "../commons/InputForm";
 import ParamSlider from "../commons/ParamSlider";
+import ParamText from "../commons/ParamText";
+
 import Description from "../commons/Description";
+import ChainControls from "../commons/ChainControls";
+
 import CardCommands from "../commons/CardCommands";
 import ToggleControl from "../commons/ToggleControl";
 
@@ -24,7 +29,12 @@ export default class ImageConnector extends React.Component {
     this.state = {
       selectedBoxIndex: -1,
       sliderBest: 1,
-      sliderSearchNn: 10
+      sliderSearchNn: 10,
+      boxFormat: "simple",
+      showLabels: false,
+      segmentationMask: true,
+      segmentationConfidence: false,
+      unsupervisedSearch: false
     };
 
     this.onOver = this.onOver.bind(this);
@@ -37,6 +47,27 @@ export default class ImageConnector extends React.Component {
     this.handleBestThreshold = this.handleBestThreshold.bind(this);
     this.handleSearchNnThreshold = this.handleSearchNnThreshold.bind(this);
     this.handleMultisearchRois = this.handleMultisearchRois.bind(this);
+    this.handleSegmentationMaskToggle = this.handleSegmentationMaskToggle.bind(
+      this
+    );
+    this.handleSegmentationConfidenceToggle = this.handleSegmentationConfidenceToggle.bind(
+      this
+    );
+    this.handleUnsupervisedSearchToggle = this.handleUnsupervisedSearchToggle.bind(
+      this
+    );
+    this.handleExtractLayerChange = this.handleExtractLayerChange.bind(this);
+
+    this.setBoxFormat = this.setBoxFormat.bind(this);
+    this.toggleLabels = this.toggleLabels.bind(this);
+  }
+
+  setBoxFormat(format) {
+    this.setState({ boxFormat: format });
+  }
+
+  toggleLabels() {
+    this.setState({ showLabels: !this.state.showLabels });
   }
 
   onOver(index) {
@@ -68,16 +99,66 @@ export default class ImageConnector extends React.Component {
   }
 
   handleSearchNnThreshold(value) {
-    const { serviceSettings } = this.props.imaginateStore;
-    serviceSettings.request.search_nn = parseInt(value, 10);
+    const { service } = this.props.imaginateStore;
+    service.uiParams.search_nn = parseInt(value, 10);
     this.setState({ sliderSearchNn: value });
     this.props.imaginateStore.predict();
   }
 
   handleMultisearchRois(value) {
     const { serviceSettings } = this.props.imaginateStore;
-    this.setState({ multibox_rois: !this.state.multibox_rois });
+
+    this.setState({
+      multibox_rois: !this.state.multibox_rois,
+      boxFormat: "simple",
+      showLabels: false
+    });
+
     serviceSettings.request.multibox_rois = !this.state.multibox_rois;
+    this.props.imaginateStore.predict();
+  }
+
+  handleSegmentationMaskToggle(e) {
+    const { service } = this.props.imaginateStore;
+    service.settings.segmentationMask = e.target.checked;
+    this.setState({
+      segmentationMask: service.settings.segmentationMask
+    });
+    this.props.imaginateStore.predict();
+  }
+
+  handleSegmentationConfidenceToggle(e) {
+    const { service } = this.props.imaginateStore;
+    service.settings.segmentationConfidence = e.target.checked;
+    this.setState({
+      segmentationConfidence: e.target.checked
+    });
+    this.props.imaginateStore.predict();
+  }
+
+  handleUnsupervisedSearchToggle(e) {
+    const { service } = this.props.imaginateStore;
+
+    // Switch on search
+    if (!service.uiParams.unsupervisedSearch && e.target.checked) {
+      service.uiParams.search_nn = 10;
+    }
+
+    // Switch off search
+    if (service.uiParams.unsupervisedSearch && !e.target.checked) {
+      delete service.uiParams.search_nn;
+    }
+
+    service.uiParams.unsupervisedSearch = e.target.checked;
+    this.setState({
+      unsupervisedSearch: e.target.checked
+    });
+    this.props.imaginateStore.predict();
+  }
+
+  handleExtractLayerChange(layer) {
+    const { service } = this.props.imaginateStore;
+    service.uiParams.extract_layer = layer;
     this.props.imaginateStore.predict();
   }
 
@@ -90,11 +171,33 @@ export default class ImageConnector extends React.Component {
 
     let uiControls = [];
 
+    if (service.settings.mltype === "instance_segmentation") {
+      uiControls.push(
+        <ToggleControl
+          key="settingCheckbox-display-mask"
+          title="Segmentation Mask"
+          value={this.state.segmentationMask}
+          onChange={this.handleSegmentationMaskToggle}
+        />
+      );
+    }
+
+    if (service.settings.mltype === "segmentation") {
+      uiControls.push(
+        <ToggleControl
+          key="settingCheckbox-display-segmentation-confidence"
+          title="Segmentation Confidence"
+          value={this.state.segmentationConfidence}
+          onChange={this.handleSegmentationConfidenceToggle}
+        />
+      );
+    }
+
     if (
       input &&
-      !input.hasPredictionValues &&
       !input.isCtcOuput &&
-      !input.isSegmentationInput
+      !input.isSegmentationInput &&
+      service.settings.mltype !== "segmentation"
     ) {
       uiControls.push(<Threshold key="threshold" />);
 
@@ -117,14 +220,51 @@ export default class ImageConnector extends React.Component {
       if (service.settings.mltype === "classification") {
         // && service.respInfo.body.parameters.mllib[0].nclasses.length > 0
 
+        if (
+          typeof service.type !== "undefined" &&
+          service.type === "unsupervised"
+        ) {
+          uiControls.push(
+            <ToggleControl
+              key="settingCheckbox-display-unsupervised-search"
+              title="Search"
+              value={this.state.unsupervisedSearch}
+              onChange={this.handleUnsupervisedSearchToggle}
+            />
+          );
+        }
+        if (this.state.unsupervisedSearch) {
+          uiControls.push(
+            <ParamSlider
+              key="paramSliderSearchNn"
+              title="Search Size"
+              defaultValue={this.state.sliderSearchNn}
+              onAfterChange={this.handleSearchNnThreshold}
+              min={0}
+              max={100}
+            />
+          );
+        } else {
+          // Only allows Best Threshold parameter when using
+          // unsupervised search parameter
+          uiControls.push(
+            <ParamSlider
+              key="paramSliderBest"
+              title="Best threshold"
+              defaultValue={this.state.sliderBest}
+              onAfterChange={this.handleBestThreshold}
+              min={1}
+              max={20}
+            />
+          );
+        }
+
         uiControls.push(
-          <ParamSlider
-            key="paramSliderBest"
-            title="Best threshold"
-            defaultValue={this.state.sliderBest}
-            onAfterChange={this.handleBestThreshold}
-            min={1}
-            max={20}
+          <ParamText
+            key="paramsUnsupervisedLayer"
+            title="Extract Layer"
+            submitText="Set Extract Layer"
+            onSubmit={this.handleExtractLayerChange}
           />
         );
       }
@@ -156,6 +296,39 @@ export default class ImageConnector extends React.Component {
       );
     }
 
+    // Hide controls when displaying categories as description
+    // For example, in OCR models
+    let boundingBoxControls = true;
+    if (
+      service.settings.mltype === "ctc" ||
+      (service.respInfo &&
+        service.respInfo.body &&
+        service.respInfo.body.mltype === "classification") ||
+      (input &&
+        input.json &&
+        input.json.body &&
+        input.json.body.predictions &&
+        input.json.body.predictions[0] &&
+        (typeof input.json.body.predictions[0].rois !== "undefined" ||
+          typeof input.json.body.predictions[0].nns !== "undefined")) ||
+      (input &&
+        input.postData &&
+        input.postData.parameters &&
+        input.postData.parameters.input &&
+        input.postData.parameters.input.segmentation)
+    ) {
+      boundingBoxControls = false;
+    }
+
+    // Hide segmentation values on unsupervised classification services
+    let showSegmentation = true;
+    if (
+      typeof service.type !== "undefined" &&
+      service.type === "unsupervised"
+    ) {
+      showSegmentation = false;
+    }
+
     return (
       <div className="imaginate">
         <div className="row">
@@ -168,26 +341,50 @@ export default class ImageConnector extends React.Component {
 
             {service.isRequesting ? (
               <div className="alert alert-primary" role="alert">
-                <i className="fas fa-spinner fa-spin" />&nbsp; Loading...
+                <i className="fas fa-spinner fa-spin" />
+                &nbsp; Loading...
               </div>
             ) : (
               ""
             )}
 
             <div className="row">
-              <BoundingBoxDisplay
+              {boundingBoxControls ? (
+                <Controls
+                  handleClickBox={this.setBoxFormat.bind(this, "simple")}
+                  handleClickPalette={this.setBoxFormat.bind(this, "color")}
+                  handleClickLabels={this.toggleLabels}
+                  boxFormat={this.state.boxFormat}
+                  showLabels={this.state.showLabels}
+                />
+              ) : (
+                ""
+              )}
+            </div>
+            <div className="row">
+              <BoundingBox
                 selectedBoxIndex={this.state.selectedBoxIndex}
                 onOver={this.onOver}
                 input={toJS(service.selectedInput)}
                 displaySettings={toJS(serviceSettings.display)}
+                boxFormat={this.state.boxFormat}
+                showLabels={this.state.showLabels}
+                showSegmentation={showSegmentation}
               />
             </div>
           </div>
           <div className="col-md-5">
-            <InputForm />
+            <InputForm methodId="image" />
             {uiControls}
-            <div className="description">
-              <Description
+            <div className="card description">
+              <div className="card-body">
+                <Description
+                  selectedBoxIndex={this.state.selectedBoxIndex}
+                  onOver={this.onOver}
+                  onLeave={this.onLeave}
+                />
+              </div>
+              <ChainControls
                 selectedBoxIndex={this.state.selectedBoxIndex}
                 onOver={this.onOver}
                 onLeave={this.onLeave}

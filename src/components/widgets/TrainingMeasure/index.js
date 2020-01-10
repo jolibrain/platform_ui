@@ -43,7 +43,7 @@ export default class TrainingMeasure extends React.Component {
         <h5>
           <i className="fas fa-braille" /> Training Measures
         </h5>
-        <div className="block">
+        <div className="fluid-container">
           {measureKeys.map((key, index) => {
             return (
               <div
@@ -54,8 +54,8 @@ export default class TrainingMeasure extends React.Component {
                 onMouseEnter={this.props.handleOverMeasure.bind(this, index)}
                 onMouseLeave={this.props.handleLeaveMeasure.bind(this)}
               >
-                <b>{index + 1}</b>&nbsp;{key}
-                <br />
+                <div className="col-sm-1 text-right index">{index + 1}</div>
+                <div className="col-sm-8">{key}</div>
               </div>
             );
           })}

@@ -88,7 +88,7 @@ export default class deepdetectServer {
   @action
   async loadServices(status = false) {
     try {
-      this.respInfo = await this.$reqInfo();
+      this.respInfo = await agent.Deepdetect.info(this.settings);
 
       if (!this.isDown) {
         this.services = this.services
@@ -112,22 +112,50 @@ export default class deepdetectServer {
           }
         });
       }
-    } catch (e) {
-      this.services = [];
+    } catch (err) {
+      switch (err.name) {
+        case "Error":
+          if (err.message === "timeout") {
+            console.log("timeout on server " + this.name + " loadServices()");
+          } else {
+            console.log("Uncatched error: " + err.message);
+          }
+          break;
+        case "SyntaxError":
+          // typical 502 error code, server is responding
+          // with an html page
+          break;
+        default:
+          // uncatched error
+          console.log(err.name);
+          console.log(err.message);
+      }
     }
   }
 
   @action
   async newService(name, data, callback) {
-    const resp = await this.$reqPutService(name, data);
-    await this.loadServices();
-    callback(resp);
+    let response = null;
+    let error = null;
+    try {
+      response = await this.$reqPutService(name, data);
+      await this.loadServices();
+    } catch (e) {
+      error = e;
+    }
+    callback(response, error);
   }
 
   @action
-  async deleteService(callback) {
-    this.service.removeStore();
-    const resp = await this.$reqDeleteService(this.service.name);
+  async deleteService(serviceName, callback) {
+    if (!this.isWritable) return null;
+
+    const service = this.services.find(s => s.name === serviceName);
+    if (service) {
+      service.removeStore();
+    }
+
+    const resp = await this.$reqDeleteService(serviceName);
     await this.loadServices();
     if (callback && typeof callback === "function") callback(resp);
   }

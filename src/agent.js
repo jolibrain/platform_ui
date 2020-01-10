@@ -7,6 +7,8 @@ import DD from "deepdetect-js";
 const DD_TIMEOUT = 15000;
 const superagent = superagentPromise(_superagent, global.Promise);
 
+const URL_JSON_PREFIX = "/json";
+
 const handleErrors = err => {
   if (err && err.response && err.response.status === 401) {
     // console.log(err);
@@ -46,6 +48,20 @@ const BuildInfo = {
 };
 
 /* ====
+ * json version info
+ * ====
+ */
+
+const VersionInfo = {
+  get: (path = "version.json") =>
+    superagent
+      .get(path)
+      .withCredentials()
+      .end(handleErrors)
+      .then(responseBody)
+};
+
+/* ====
  * gpustats
  * ====
  */
@@ -67,13 +83,15 @@ const GpuInfo = {
 
 const Deepdetect = {
   info: async settings => {
+    let response = null;
     settings.fetchTimeout = 5000;
     const dd = new DD(settings);
     try {
-      return await dd.info();
+      response = await dd.info();
     } catch (err) {
-      return err;
+      throw err;
     }
+    return response;
   },
   infoStatus: async settings => {
     settings.fetchTimeout = 5000;
@@ -94,13 +112,15 @@ const Deepdetect = {
     }
   },
   putService: async (settings, name, data) => {
+    let response = null;
     settings.fetchTimeout = DD_TIMEOUT;
     const dd = new DD(settings);
     try {
-      return await dd.putService(name, data);
+      response = await dd.putService(name, data);
     } catch (err) {
-      return err;
+      throw err;
     }
+    return response;
   },
   deleteService: async (settings, name) => {
     settings.fetchTimeout = DD_TIMEOUT;
@@ -116,6 +136,15 @@ const Deepdetect = {
     const dd = new DD(settings);
     try {
       return await dd.postPredict(postData);
+    } catch (err) {
+      return err;
+    }
+  },
+  putChain: async (settings, endpoint, data) => {
+    settings.fetchTimeout = DD_TIMEOUT;
+    const dd = new DD(settings);
+    try {
+      return await dd.putChain(endpoint, data);
     } catch (err) {
       return err;
     }
@@ -154,77 +183,51 @@ const Deepdetect = {
 };
 
 const autoIndex = res => {
-  const rowsReg = /<a href="(.+)">(.+)<\/a>.+(\d{2}-[a-zA-Z]{3}-\d{4} \d{2}:\d{2})\s+(\d{0,5})/g;
-  const dirReg = /href="(.*)\/"/;
-  const parentReg = /href="..\/">..\//;
+  let files = res.body
+    .filter(f => f.type === "file")
+    .map(f => {
+      return decodeURIComponent(f.name);
+    });
 
-  let files = [],
-    folders = [];
-
-  res.text.replace(rowsReg, function(row, href, name, date, size) {
-    var obj = { href: href, name: name, date: date, size: size };
-
-    obj.name = obj.name.replace(/\/$/, "");
-
-    if (obj.date) {
-      obj.modified = new Date(obj.date);
-      delete obj.date;
-    }
-    if (!dirReg.test(row)) {
-      obj.name = obj.href;
-      files.push(obj);
-      return;
-    }
-
-    delete obj.size;
-    if (
-      !parentReg.test(row) &&
-      obj.name !== "train.lmdb" &&
-      obj.name !== "test.lmdb" &&
-      obj.name !== "names.bin"
-    ) {
-      folders.push(obj);
-      return;
-    }
-  });
+  let folders = res.body
+    .filter(f => f.type === "directory")
+    .map(f => {
+      return {
+        href: f.name,
+        name: decodeURIComponent(f.name),
+        modified: new Date(f.mtime)
+      };
+    });
 
   return {
     folders: folders,
-    files: files.map(f => f.name)
+    files: files
   };
 };
 
 const Webserver = {
   listFolders: path =>
     superagent
-      .get(path)
+      .get(URL_JSON_PREFIX + path)
       .withCredentials()
       .end(handleErrors)
       .then(autoIndex),
   listFiles: path =>
     superagent
-      .get(path)
+      .get(URL_JSON_PREFIX + path)
       .withCredentials()
       .end(handleErrors)
       .then(res => {
-        const parser = new DOMParser();
-        const htmlDoc = parser.parseFromString(res.text, "text/html");
-        const aElements = htmlDoc.getElementsByTagName("a");
+        if (!res.body) return [];
 
-        let files = [];
-
-        for (var i = 0; i < aElements.length; i++) {
-          const repo = aElements[i].attributes["href"].value;
-
-          // Check if files and if not parent folder
-          if (repo !== "../") files.push(repo);
-        }
-
-        return files;
+        return res.body
+          .filter(f => f.type === "file")
+          .map(f => decodeURIComponent(f.name));
       }),
   getFile: path =>
     superagent
-      .get(path)
+      .get(URL_JSON_PREFIX + path)
+      .use(noCache)
       .withCredentials()
       .end(handleErrors)
       .then(res => {
@@ -240,7 +243,8 @@ const Webserver = {
       }),
   getFileMeta: path =>
     superagent
-      .get(path)
+      .get(URL_JSON_PREFIX + path)
+      .use(noCache)
       .withCredentials()
       .end(handleErrors)
       .then(res => {
@@ -262,6 +266,7 @@ const Webserver = {
 export default {
   Config,
   BuildInfo,
+  VersionInfo,
   GpuInfo,
   Deepdetect,
   Webserver

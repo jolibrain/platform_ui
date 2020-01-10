@@ -100,7 +100,7 @@ export default class Rois extends React.Component {
     const { nns } = source[selectedBoxIndex];
 
     let cells = nns
-      .sort((a, b) => b.prob - a.prob)
+      .slice()
       .map(this.roisItem)
       .reduce((result, element, index, array) => {
         // Add 2-columns separators
@@ -112,7 +112,8 @@ export default class Rois extends React.Component {
       }, []);
 
     // Add empty column to fill row
-    if (cells.length % 2 === 1) cells.push(<div className="col" />);
+    if (cells.length % 2 === 1)
+      cells.push(<div key={`empty-${Math.random()}`} className="col" />);
 
     return <div className="description-rois row">{cells}</div>;
   }

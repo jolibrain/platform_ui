@@ -8,21 +8,28 @@
 // Bootstrap library
 @import "bootstrap/scss/bootstrap";
 
+// Palette
+@import "./palettes/palette-1.scss";
+
 @import "./Header.scss";
 @import "./Home.scss";
 @import "./Service.scss";
 
 @import "./Predict/Home.scss";
 @import "./Predict/New.scss";
+@import "./Predict/Show.scss";
 
 @import "./Training/Home.scss";
 @import "./Training/Show.scss";
+
+@import "./Chain/Show.scss";
 
 @import "./widgets/ServiceInfo/styles.scss";
 @import "./widgets/GpuInfo/styles.scss";
 @import "./widgets/Breadcrumb/styles.scss";
 @import "./widgets/DownloadModelFiles/styles.scss";
 @import "./widgets/Imaginate/styles.scss";
+@import "./widgets/PlaceHolder/styles.scss";
 @import "./widgets/PredictServiceList/styles.scss";
 @import "./widgets/ServiceList/styles.scss";
 @import "./widgets/ServiceCardList/styles.scss";
@@ -33,7 +40,6 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
 }
 
 .btn:focus {

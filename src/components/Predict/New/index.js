@@ -1,8 +1,10 @@
-import LeftPanel from "../commons/LeftPanel";
-import MainView from "./MainView";
 import React from "react";
 import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
+
+import Header from "../../Header";
+import LeftPanel from "../commons/LeftPanel";
+import MainView from "./MainView";
 
 @inject("modelRepositoriesStore")
 @inject("deepdetectStore")
@@ -10,6 +12,14 @@ import { withRouter } from "react-router-dom";
 @withRouter
 @observer
 export default class PredictNew extends React.Component {
+  componentWillMount() {
+    const { deepdetectStore, modelRepositoriesStore } = this.props;
+    if (!modelRepositoriesStore.isReadyPredict) {
+      modelRepositoriesStore.refreshPredict();
+    }
+    deepdetectStore.setTrainRefreshMode(null);
+  }
+
   render() {
     if (
       this.props.configStore.isComponentBlacklisted("Predict") ||
@@ -22,29 +32,38 @@ export default class PredictNew extends React.Component {
 
     if (services.length === 0) {
       return (
-        <div className="layout-page page-gutter page-with-contextual-sidebar right-sidebar-collapsed page-with-icon-sidebar service-new">
-          <div className="loading alert alert-danger" role="alert">
-            <i className="fas fa-times" /> No services configured in :{" "}
-            <code>deepdetect.services.defaultConfig</code>
-            from <code>config.json</code>
+        <div>
+          <Header />
+          <div className="layout-page page-gutter page-with-contextual-sidebar right-sidebar-collapsed page-with-icon-sidebar service-new">
+            <div className="loading alert alert-danger" role="alert">
+              <i className="fas fa-times" /> No services configured in :{" "}
+              <code>deepdetect.services.defaultConfig</code>
+              from <code>config.json</code>
+            </div>
           </div>
         </div>
       );
     } else if (repositoryStores.length === 0) {
       return (
-        <div className="layout-page page-gutter page-with-contextual-sidebar right-sidebar-collapsed page-with-icon-sidebar service-new">
-          <div className="loading alert alert-danger" role="alert">
-            <i className="fas fa-times" /> No models repository found in :{" "}
-            <code>modelRepositories</code>
-            from <code>config.json</code>
+        <div>
+          <Header />
+          <div className="layout-page page-gutter page-with-contextual-sidebar right-sidebar-collapsed page-with-icon-sidebar service-new">
+            <div className="loading alert alert-danger" role="alert">
+              <i className="fas fa-times" /> No models repository found in :{" "}
+              <code>modelRepositories</code>
+              from <code>config.json</code>
+            </div>
           </div>
         </div>
       );
     } else {
       return (
-        <div className="layout-page page-gutter page-with-contextual-sidebar right-sidebar-collapsed page-with-icon-sidebar service-new">
-          <LeftPanel />
-          <MainView />
+        <div>
+          <Header />
+          <div className="layout-page page-gutter page-with-contextual-sidebar right-sidebar-collapsed page-with-icon-sidebar service-new">
+            <LeftPanel />
+            <MainView />
+          </div>
         </div>
       );
     }

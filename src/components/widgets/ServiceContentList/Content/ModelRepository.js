@@ -46,12 +46,23 @@ export default class ModelRepositoryContent extends React.Component {
         publishError: "Service name already exists"
       });
     } else {
-      ddServer.newService(service.name, serviceConfig, async () => {
-        // TODO add serviceName in ddServer.deleteService method
-        // to avoid using private request method
-        await ddServer.$reqDeleteService(service.name);
-        this.props.history.push(`/predict`);
-      });
+      ddServer.newService(
+        service.name,
+        serviceConfig,
+        async (response, err) => {
+          if (err) {
+            this.setState({
+              isPublishing: false,
+              publishError: `${err.status.msg}: ${err.status.dd_msg}`
+            });
+          } else {
+            // TODO add serviceName in ddServer.deleteService method
+            // to avoid using private request method
+            await ddServer.$reqDeleteService(service.name);
+            this.props.history.push(`/predict`);
+          }
+        }
+      );
     }
   }
 
@@ -265,7 +276,7 @@ export default class ModelRepositoryContent extends React.Component {
           {publishButton}
           {this.state.publishError ? (
             <div className="alert alert-danger" role="alert">
-              <i class="fas fa-exclamation-triangle" />{" "}
+              <i className="fas fa-exclamation-triangle" />{" "}
               {this.state.publishError}
             </div>
           ) : (

@@ -5,8 +5,20 @@
   "homeComponent": {
     "contentType": "json",
     "title": "DeepDetect Platform - dev",
-    "description":
-      "git clone git@gitlab.com:jolibrain/platform_docker.git; cd platform_docker/dev; docker-compose up -d"
+    "description": [
+      "This is a dev platform",
+      "You can modify its title and this description in public/config.json"
+    ],
+    "headerLinks": {
+      "linkJupyter": "http://10.10.77.61:18104/code/lab",
+      "linkMenus": [
+        {
+          "name": "Annotation Tool",
+          "icon": "fas fa-external-link-alt",
+          "url": "/annotations/"
+        }
+      ]
+    }
   },
   "deepdetect": {
     "refreshRate": {
@@ -19,77 +31,56 @@
         "settings": {
           "path": "/api/private",
           "isWritable": true,
-          "isHostable": true
+          "isHostable": true,
+          "sameOrigin": true
         }
       },
       {
         "name": "public",
         "settings": {
           "path": "/api/public",
-          "isWritable": false
+          "isWritable": false,
+          "sameOrigin": true
         }
       },
       {
         "name": "eris",
         "settings": {
           "path": "/api/eris",
-          "isWritable": true
-        }
-      },
-      {
-        "name": "hyperion",
-        "settings": {
-          "path": "/api/hyperion",
-          "isWritable": true
-        }
-      },
-      {
-        "name": "training_test",
-        "settings": {
-          "path": "/api/training_test",
-          "isWritable": true
-        }
-      },
-      {
-        "name": "training_test_2",
-        "settings": {
-          "path": "/api/training_test_2",
-          "isWritable": true
-        }
-      },
-      {
-        "name": "neptune01",
-        "settings": {
-          "path": "/api/neptune01",
-          "isWritable": true
+          "isWritable": true,
+          "sameOrigin": true
         }
       },
       {
         "name": "neptune02",
         "settings": {
           "path": "/api/neptune02",
-          "isWritable": true
+          "isWritable": true,
+          "sameOrigin": true
         }
       },
       {
-        "name": "neptune02-test",
+        "name": "training_test",
         "settings": {
-          "path": "/api/neptune02-test",
-          "isWritable": true
+          "path": "/api/training_test",
+          "isWritable": true,
+          "sameOrigin": true
         }
       },
       {
-        "name": "hydra",
+        "name": "training_test_2",
         "settings": {
-          "path": "/api/hydra",
-          "isWritable": true
+          "path": "/api/training_test_2",
+          "isWritable": true,
+          "sameOrigin": true
         }
       },
       {
         "name": "ceres",
         "settings": {
           "path": "/api/ceres",
-          "isWritable": true
+          "isWritable": true,
+          "sameOrigin": true
         }
       }
     ],
@@ -119,6 +110,9 @@
           }
         }
       ]
+    },
+    "chains": {
+      "path": "/chains/"
     }
   },
   "imaginate": {
@@ -131,7 +125,12 @@
         "segmentation": false,
         "separateSegmentation": false,
         "segmentationColors": ["#1b9e77", "#d95f02"],
-        "imageList": "random"
+        "chain": {
+          "multicrop": false,
+          "search_nn": 10,
+          "random_crops": 10,
+          "min_size_ratio": 0.5
+        }
       },
       "threshold": {
         "confidence": 0.5,
@@ -144,6 +143,15 @@
         "best": false,
         "ctc": false,
         "blank_label": false
+      },
+      "code": {
+        "display": {
+          "importLib": true,
+          "ddConfig": true,
+          "postPredict": true,
+          "hostname": null,
+          "port": null
+        }
       }
     },
     "services": [
@@ -179,27 +187,22 @@
     "servers": [
       {
         "name": "eris",
-        "url": "/gpu/eris"
-      },
-      {
-        "name": "hyperion",
-        "url": "/gpu/hyperion"
-      },
-      {
-        "name": "neptune01",
-        "url": "/gpu/neptune01"
+        "url": "/gpu/eris",
+        "aliases": ["private", "public", "training"]
       },
       {
         "name": "neptune02",
         "url": "/gpu/neptune02"
       },
       {
-        "name": "hydra",
-        "url": "/gpu/hydra"
-      },
-      {
         "name": "ceres",
         "url": "/gpu/ceres"
+      },
+      {
+        "name": "jetson dev alx",
+        "url": "/gpu/jetson",
+        "type": "jetson",
+        "externalLink": "http://192.168.0.46:8888"
       }
     ],
     "refreshRate": 5000
@@ -208,24 +211,30 @@
     {
       "name": "public",
       "nginxPath": "/models/public/",
+      "jsonPath": "/json/models/public/",
       "systemPath": "/opt/platform"
     },
     {
       "name": "private",
       "nginxPath": "/models/private/",
+      "jsonPath": "/json/models/private/",
       "systemPath": "/opt/platform",
       "hasFiles": true
     },
     {
       "name": "training",
       "nginxPath": "/models/training/",
+      "jsonPath": "/json/models/training/",
       "systemPath": "/opt/platform",
       "isTraining": true
     }
   ],
   "dataRepositories": {
     "nginxPath": "/data/",
-    "systemPath": "/opt/platform"
+    "jsonPath": "/json/data/",
+    "systemPath": "/opt/platform",
+    "maxDepth": 2
   },
-  "componentBlacklist": ["LinkJupyter", "LinkChat"]
+  "componentBlacklist": ["LinkChat"],
+  "placeholders": {}
 }

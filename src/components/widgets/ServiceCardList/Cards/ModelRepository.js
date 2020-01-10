@@ -7,6 +7,7 @@ import moment from "moment";
 @withRouter
 @inject("deepdetectStore")
 @inject("modelRepositoriesStore")
+@inject("modalStore")
 @observer
 export default class ModelRepositoryCard extends React.Component {
   constructor(props) {
@@ -18,44 +19,14 @@ export default class ModelRepositoryCard extends React.Component {
     };
 
     this.getValue = this.getValue.bind(this);
-    this.handlePublishClick = this.handlePublishClick.bind(this);
+    this.openPublishTrainingModal = this.openPublishTrainingModal.bind(this);
   }
 
-  handlePublishClick() {
-    this.setState({ isPublishing: true });
-
-    const { deepdetectStore, modelRepositoriesStore, service } = this.props;
-
-    const { repositoryStores } = modelRepositoriesStore;
-    const privateStore = repositoryStores.find(r => r.name === "private");
-    const targetRepository =
-      privateStore.systemPath + privateStore.nginxPath + service.name;
-
-    let serviceConfig = service.jsonConfig;
-
-    serviceConfig.model.repository = targetRepository;
-    serviceConfig.model.create_repository = true;
-
-    serviceConfig.parameters.output.store_config = true;
-    serviceConfig.parameters.mllib.from_repository = service.location;
-    delete serviceConfig.parameters.mllib.template;
-
-    const ddServer = deepdetectStore.hostableServer;
-    const existingServices = ddServer.services.map(s => s.name.toLowerCase());
-    if (existingServices.includes(service.name.toLowerCase())) {
-      this.setState({
-        isPublishing: false,
-        publishError: "Service name already exists"
-      });
-    } else {
-      ddServer.newService(service.name, serviceConfig, async () => {
-        // TODO add serviceName in ddServer.deleteService method
-        // to avoid using private request method
-        await ddServer.$reqDeleteService(service.name);
-        modelRepositoriesStore.refresh();
-        this.props.history.push(`/predict`);
-      });
-    }
+  openPublishTrainingModal() {
+    const { modalStore } = this.props;
+    modalStore.setVisible("publishTraining", true, {
+      service: this.props.service
+    });
   }
 
   getValue(attr) {
@@ -99,32 +70,6 @@ export default class ModelRepositoryCard extends React.Component {
       : null;
 
     const archiveUrl = `/trainingArchive${repository.path}`;
-
-    let badges = [];
-
-    if (mltype) {
-      badges.push({
-        classNames: "badge badge-secondary",
-        status: mltype
-      });
-    }
-
-    let tags = repository.trainingTags;
-    if (tags && tags.length > 0) {
-      tags.forEach(t => {
-        badges.push({
-          classNames: "badge badge-info",
-          status: t
-        });
-      });
-    }
-
-    if (repository.metricsDate) {
-      badges.push({
-        classNames: "badge badge-light",
-        status: moment(repository.metricsDate).format("L LT")
-      });
-    }
 
     let info = [];
 
@@ -204,39 +149,46 @@ export default class ModelRepositoryCard extends React.Component {
         break;
     }
 
-    let bestModelInfo = null;
+    let modelValues = null;
     if (repository.bestModel) {
-      bestModelInfo = (
-        <div className="bestModelInfo">
-          <h6>Best Model</h6>
-          <ul className="list-group list-group-flush">
-            {Object.keys(repository.bestModel).map((k, i) => {
-              let attrTitle =
-                i === 0
-                  ? k.replace(/\b\w/g, l => l.toUpperCase())
-                  : k.toUpperCase();
+      modelValues = (
+        <div className="content row py-2 pl-2">
+          {Object.keys(repository.bestModel).map((k, i) => {
+            let attrTitle =
+              i === 0
+                ? k.replace(/\b\w/g, l => l.toUpperCase())
+                : k.toUpperCase();
 
-              if (attrTitle === "MEANIOU") attrTitle = "Mean IOU";
+            if (attrTitle === "MEANIOU") attrTitle = "Mean IOU";
 
-              return (
-                <li
-                  key={i}
-                  className="list-group-item d-flex justify-content-between align-items-center"
-                >
-                  {attrTitle}
-                  <b>{repository.bestModel[k]}</b>
-                </li>
-              );
-            })}
-          </ul>
+            return (
+              <div key={i} className="col-6">
+                <h3>{repository.bestModel[k]}</h3>
+                <h4>{attrTitle}</h4>
+              </div>
+            );
+          })}
+        </div>
+      );
+    } else {
+      modelValues = (
+        <div className="content row py-2 pl-2 values">
+          {info.map((i, index) => {
+            return (
+              <div key={index} className="col-6">
+                <h3>{i.val}</h3>
+                <h4>{i.text}</h4>
+              </div>
+            );
+          })}
         </div>
       );
     }
 
     let publishButton = repository.jsonConfig ? (
       <a
-        onClick={this.handlePublishClick}
-        className="btn btn-outline-secondary"
+        onClick={this.openPublishTrainingModal}
+        className="btn btn-outline-primary mx-2"
       >
         <i className="fas fa-plus" /> Publish
       </a>
@@ -244,57 +196,71 @@ export default class ModelRepositoryCard extends React.Component {
 
     if (this.state.isPublishing) {
       publishButton = (
-        <a className="btn btn-outline-secondary">
+        <a className="btn btn-outline-primary mx-2">
           <i className="fas fa-spinner fa-spin" /> Publishing...
         </a>
       );
     }
 
     return (
-      <div className="card">
-        {badges.length > 0 ? (
-          <div className="card-header">
-            {badges.map((badge, key) => (
-              <span key={key} className={badge.classNames}>
-                {badge.status}
+      <div className="col-lg-4 col-md-12 my-2">
+        <div className="card">
+          <div className="card-body">
+            <h5 className="card-title">
+              <span className="title">
+                <i className="fas fa-archive" /> {repository.name}
               </span>
-            ))}
-          </div>
-        ) : (
-          ""
-        )}
+            </h5>
 
-        <div className="card-body">
-          <h5 className="card-title">{repository.name}</h5>
-          <ul className="list-group list-group-flush">
-            {info.map((i, index) => {
-              return (
-                <li
-                  key={index}
-                  className="list-group-item d-flex justify-content-between align-items-center"
-                >
-                  {i.text}
-                  <b>{i.val}</b>
-                </li>
-              );
-            })}
-          </ul>
-          {bestModelInfo}
-        </div>
-        <div className="card-footer text-right">
-          {this.state.publishError ? (
-            <div className="alert alert-danger" role="alert">
-              <i class="fas fa-exclamation-triangle" />{" "}
-              {this.state.publishError}
+            <div className="row process-icons">
+              {typeof mltype !== "undefined" && mltype && mltype.length > 0 ? (
+                <div className="col-12">
+                  <i className="fas fa-bullseye" /> {mltype}
+                </div>
+              ) : (
+                <div className="col-12">
+                  <i className="fas fa-bullseye" /> --
+                </div>
+              )}
+              {typeof repository.metricsDate !== "undefined" ? (
+                <div className="col-12">
+                  <i className="far fa-clock" />{" "}
+                  {moment(repository.metricsDate).format("L LT")}
+                </div>
+              ) : (
+                ""
+              )}
+              <div className="col-12">
+                <i className="fas fa-folder" />{" "}
+                {repository.path
+                  ? repository.path.replace("/models/training/", "")
+                  : "--"}
+              </div>
+              {repository.fetchError ? (
+                <div className="col-12 fetchError">
+                  <i className="fas fa-exclamation-circle" /> Error while
+                  reading repository
+                </div>
+              ) : (
+                ""
+              )}
             </div>
-          ) : (
-            ""
-          )}
-          {publishButton}
-          &nbsp;
-          <Link to={archiveUrl} className="btn btn-outline-primary">
-            <i className="fas fa-arrow-right" /> View
-          </Link>
+            {modelValues}
+            {this.state.publishError ? (
+              <div className="alert alert-danger" role="alert">
+                <i className="fas fa-exclamation-triangle" />{" "}
+                {this.state.publishError}
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
+          <div className="card-footer text-right">
+            {publishButton}
+            <Link to={archiveUrl} className="btn btn-primary">
+              View <i className="fas fa-chevron-right" />
+            </Link>
+          </div>
         </div>
       </div>
     );

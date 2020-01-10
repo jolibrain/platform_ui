@@ -1,9 +1,11 @@
-import LeftPanel from "../commons/LeftPanel";
-import MainView from "./MainView";
-import Modals from "./Modals";
 import React from "react";
 import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
+
+import Header from "../../Header";
+import LeftPanel from "../commons/LeftPanel";
+import MainView from "./MainView";
+import Modals from "./Modals";
 
 @inject("deepdetectStore")
 @inject("imaginateStore")
@@ -24,14 +26,22 @@ export default class PredictShow extends React.Component {
       this.props.history.push("/predict");
     } else if (!deepdetectStore.init(params)) {
       this.props.history.push("/404");
-    } else if (!deepdetectStore.server.service) {
-      this.props.history.push("/");
     } else {
       imaginateStore.connectToDdStore(deepdetectStore);
+
+      // Remove chain setup from imaginateStore and
+      // run predict in order to refresh currently displayed input
+      //
+      // this is necessary in order to avoid non-refreshed results
+      // when switching from non-chain Predict component
+      imaginateStore.chain = {};
+      imaginateStore.predict();
     }
+
+    deepdetectStore.setTrainRefreshMode(null);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.setDeepdetectServer(this.props.match.params);
   }
 
@@ -47,10 +57,13 @@ export default class PredictShow extends React.Component {
       return null;
 
     return (
-      <div className="layout-page page-gutter page-with-contextual-sidebar right-sidebar-collapsed page-with-icon-sidebar service-component">
-        <LeftPanel />
-        <MainView />
-        <Modals />
+      <div>
+        <Header />
+        <div className="layout-page page-gutter page-with-contextual-sidebar right-sidebar-collapsed page-with-icon-sidebar service-component predict-show-component">
+          <LeftPanel />
+          <MainView />
+          <Modals />
+        </div>
       </div>
     );
   }

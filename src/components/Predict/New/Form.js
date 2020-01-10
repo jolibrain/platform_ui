@@ -56,6 +56,11 @@ export default class Form extends React.Component {
   }
 
   componentWillMount() {
+    const { modelRepositoriesStore } = this.props;
+    if (!modelRepositoriesStore.isReadyPredict) {
+      modelRepositoriesStore.refreshPredict();
+    }
+
     if (this.props.location.state && this.props.location.state.repository) {
       const repository = this.props.location.state.repository;
 
@@ -200,11 +205,11 @@ export default class Form extends React.Component {
       serviceData.parameters.output = { store_config: false };
     }
 
-    ddStore.newService(serviceName, serviceData, resp => {
-      if (resp instanceof Error || resp.status.code !== 201) {
+    ddStore.newService(serviceName, serviceData, (resp, err) => {
+      if (err) {
         this.setState({
           creatingService: false,
-          errors: [resp.message || resp.status.msg]
+          errors: [`${err.status.msg}: ${err.status.dd_msg}`]
         });
       } else {
         this.setState({
@@ -223,9 +228,7 @@ export default class Form extends React.Component {
 
   handleCopyClipboard() {
     const store = this.props.deepdetectStore;
-    const curlCommand = `curl -X PUT '${window.location.origin}${
-      store.server.settings.path
-    }/services/${this.state.serviceName}' -d '${this.state.jsonConfig}'`;
+    const curlCommand = `curl -X PUT '${window.location.origin}${store.server.settings.path}/services/${this.state.serviceName}' -d '${this.state.jsonConfig}'`;
 
     copy(curlCommand);
 
@@ -237,9 +240,7 @@ export default class Form extends React.Component {
 
   handleCurlChange(editor, data, value) {
     const store = this.props.deepdetectStore;
-    const curlCommand = `curl -X PUT '${window.location.origin}${
-      store.server.settings.path
-    }/services/${this.state.serviceName}' -d '`;
+    const curlCommand = `curl -X PUT '${window.location.origin}${store.server.settings.path}/services/${this.state.serviceName}' -d '`;
 
     const jsonConfig = value.replace(curlCommand, "").slice(0, -1);
     this.setState({ jsonConfig: jsonConfig });
@@ -258,11 +259,22 @@ export default class Form extends React.Component {
   render() {
     const store = this.props.deepdetectStore;
 
-    if (store.servers.length === 0) return null;
+    if (store.servers.length === 0) {
+      return (
+        <div className="alert alert-warning" role="alert">
+          <p>No deepdetect server available.</p>
+          <p>
+            Please verify your{" "}
+            <code>
+              <a href="/config.json">config.json</a>
+            </code>{" "}
+            configuration file.
+          </p>
+        </div>
+      );
+    }
 
-    const curlCommand = `curl -X PUT '${window.location.origin}${
-      store.server.settings.path
-    }/services/${this.state.serviceName}' -d '${this.state.jsonConfig}'`;
+    const curlCommand = `curl -X PUT '${window.location.origin}${store.server.settings.path}/services/${this.state.serviceName}' -d '${this.state.jsonConfig}'`;
 
     const copiedText = this.state.copied ? "Copied!" : "Copy to clipboard";
 
@@ -313,6 +325,7 @@ export default class Form extends React.Component {
                 placeholder="Model Repository location"
                 onChange={this.handleInputChange}
                 defaultSelected={this.state.selectedLocation}
+                filterBy={["name"]}
                 renderMenu={(results, menuProps) => {
                   return (
                     <Menu {...menuProps}>
@@ -362,7 +375,8 @@ export default class Form extends React.Component {
                       ? "fas fa-spinner fa-spin"
                       : "fas fa-angle-right"
                   }
-                />&nbsp; Add Service
+                />
+                &nbsp; Add Service
               </button>
             </div>
 
@@ -376,7 +390,9 @@ export default class Form extends React.Component {
             >
               <b>Error while creating service</b>
               <ul>
-                {this.state.errors.map((error, i) => <li key={i}>{error}</li>)}
+                {this.state.errors.map((error, i) => (
+                  <li key={i}>{error}</li>
+                ))}
               </ul>
             </div>
           </div>

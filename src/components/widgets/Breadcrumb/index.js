@@ -3,8 +3,21 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { inject } from "mobx-react";
 
+@inject("modalStore")
 @inject("configStore")
 export default class Breadcrumb extends React.Component {
+  constructor(props) {
+    super(props);
+    this.openDeleteServiceModal = this.openDeleteServiceModal.bind(this);
+  }
+
+  openDeleteServiceModal() {
+    const { modalStore } = this.props;
+    modalStore.setVisible("deleteService", true, {
+      service: this.props.service
+    });
+  }
+
   render() {
     if (this.props.configStore.isComponentBlacklisted("Breadcrumb"))
       return null;
@@ -45,7 +58,7 @@ export default class Breadcrumb extends React.Component {
           ""
         )}
         <Link to={`${root.path}/${service.serverName}/${service.name}`}>
-          {service.name}
+          {decodeURIComponent(service.name)}
         </Link>
         <a
           href={serviceJsonUrl}
@@ -53,7 +66,8 @@ export default class Breadcrumb extends React.Component {
           target="_blank"
           rel="noreferrer noopener"
         >
-          Service JSON
+          <i className="fas fa-chevron-circle-right" />
+          &nbsp; Service JSON
         </a>
         {trainingJsonUrl ? (
           <a
@@ -62,8 +76,27 @@ export default class Breadcrumb extends React.Component {
             target="_blank"
             rel="noreferrer noopener"
           >
-            Training JSON
+            <i className="fas fa-chevron-circle-right" />
+            &nbsp; Training JSON
           </a>
+        ) : (
+          ""
+        )}
+        {service.serverSettings.isWritable ? (
+          <a
+            className="badge badge-secondary delete-service"
+            onClick={this.openDeleteServiceModal}
+          >
+            <i className="far fa-trash-alt" />
+            &nbsp; Delete Service
+          </a>
+        ) : (
+          ""
+        )}
+        {service.isRequesting ? (
+          <span className="badge badge-requesting">
+            <i className="fas fa-spinner fa-spin" />
+          </span>
         ) : (
           ""
         )}

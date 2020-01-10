@@ -3,8 +3,9 @@ import { withRouter } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 
 import RightPanel from "../commons/RightPanel";
-import TrainingMonitor from "../../widgets/TrainingMonitor";
-import Breadcrumb from "../../widgets/Breadcrumb";
+import Title from "../../widgets/TrainingMonitor/components/Title";
+import GeneralInfo from "../../widgets/TrainingMonitor/components/GeneralInfo";
+import MeasureHistArray from "../../widgets/TrainingMonitor/components/MeasureHistArray";
 
 @inject("modelRepositoriesStore")
 @observer
@@ -13,60 +14,56 @@ export default class MainView extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      hoveredMeasure: -1
-    };
-
-    this.handleOverMeasure = this.handleOverMeasure.bind(this);
-    this.handleLeaveMeasure = this.handleLeaveMeasure.bind(this);
+    this.state = { repository: null };
   }
 
-  handleOverMeasure(index) {
-    this.setState({ hoveredMeasure: index });
-  }
+  async componentWillMount() {
+    const { match, modelRepositoriesStore } = this.props;
+    const trainingRepositoryStore = modelRepositoriesStore.repositoryStores.find(
+      r => r.name === "training"
+    );
 
-  handleLeaveMeasure(index) {
-    this.setState({ hoveredMeasure: -1 });
+    // When using direct url, the training store will need to be refreshed
+    if (!trainingRepositoryStore.isReady) {
+      await trainingRepositoryStore.load();
+    }
+
+    if (match && match.params && match.params.modelPath) {
+      const repository = trainingRepositoryStore.repositories.find(r => {
+        return r.path === `/${match.params.modelPath}/`;
+      });
+
+      this.setState({ repository: repository });
+    }
   }
 
   render() {
-    if (
-      !this.props.match ||
-      !this.props.match.params ||
-      !this.props.match.params.modelPath
-    )
-      return null;
-
-    const { modelPath } = this.props.match.params;
-    const { trainingRepositories } = this.props.modelRepositoriesStore;
-
-    const repository = trainingRepositories.find(
-      r => r.path === `/${modelPath}/`
-    );
-
-    if (!repository) return null;
+    const { repository } = this.state;
 
     return (
       <div className="main-view content-wrapper">
-        <div className="container">
-          <Breadcrumb repository={repository} />
-          <nav className="navbar navbar-expand-lg" />
-          <div className="content">
-            <TrainingMonitor
-              service={repository}
-              handleOverMeasure={this.handleOverMeasure}
-              handleLeaveMeasure={this.handleLeaveMeasure}
-              hoveredMeasure={this.state.hoveredMeasure}
-            />
-            <RightPanel
-              service={repository}
-              handleOverMeasure={this.handleOverMeasure}
-              handleLeaveMeasure={this.handleLeaveMeasure}
-              hoveredMeasure={this.state.hoveredMeasure}
-              includeDownloadPanel
-            />
+        {repository ? (
+          <div className="fluid-container">
+            <Title service={repository} />
+            <div className="content p-4">
+              <GeneralInfo service={repository} />
+              <MeasureHistArray service={repository} />
+              <RightPanel includeDownloadPanel />
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="fluid-container">
+            <div className="content p-4">
+              <p>
+                <button type="button" className="btn btn-outline-dark">
+                  <i className="fas fa-circle-notch fa-spin" /> loading
+                  archive...
+                </button>
+              </p>
+            </div>
+            <RightPanel />
+          </div>
+        )}
       </div>
     );
   }

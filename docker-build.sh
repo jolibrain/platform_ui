@@ -1,14 +1,10 @@
 #!/bin/bash
 
 set -ex
-
-PARENT_DIR=$(basename "${PWD%/*}")
-CURRENT_DIR="${PWD##*/}"
-IMAGE_NAME="platform/ui"
 TAG=$(git rev-parse --verify --short HEAD)
+IMAGE_NAME="jolibrain/platform_ui"
 
-REGISTRY="eris:7750"
-
-yarn run build
-docker build -t ${REGISTRY}/${IMAGE_NAME}:${TAG} -t ${REGISTRY}/${IMAGE_NAME}:latest .
-docker push ${REGISTRY}/${IMAGE_NAME}
+npm run build
+docker build -t ${IMAGE_NAME}:latest -t ${IMAGE_NAME}:${TAG} --no-cache .
+docker push ${IMAGE_NAME}:latest
+docker push ${IMAGE_NAME}:${TAG}

@@ -20,17 +20,6 @@ export default class Description extends React.Component {
 
     const input = service.selectedInput;
 
-    if (
-      input.error ||
-      !input.json ||
-      !input.json.body ||
-      !input.json.body.predictions ||
-      input.json.body.predictions.length === 0 ||
-      !input.json.body.predictions[0]
-    ) {
-      return null;
-    }
-
     let displayFormat = serviceSettings.display.format;
 
     if (this.props.displayFormat) {
@@ -44,7 +33,13 @@ export default class Description extends React.Component {
         displayFormat = "nns";
       }
 
-      if (input.json.body.predictions[0].rois) {
+      if (
+        input.json &&
+        input.json.body &&
+        input.json.body.predictions &&
+        input.json.body.predictions[0] &&
+        input.json.body.predictions[0].rois
+      ) {
         displayFormat = "rois";
       }
 
@@ -56,44 +51,71 @@ export default class Description extends React.Component {
       ) {
         displayFormat = "category";
       }
+
+      if (
+        service.respInfo.body.mltype === "classification" &&
+        service.type === "unsupervised"
+      ) {
+        displayFormat = "nns";
+      }
     }
 
-    let output = "";
+    let output = [];
     switch (displayFormat) {
       default:
       case "simple":
-        output = <Simple input={input} {...this.props} />;
+        output.push(
+          <Simple key="description-simple" input={input} {...this.props} />
+        );
         break;
 
       case "expectation":
-        output = <Expectation input={input} {...this.props} />;
+        output.push(
+          <Expectation
+            key="description-expectation"
+            input={input}
+            {...this.props}
+          />
+        );
         break;
 
       case "list":
-        output = <List input={input} {...this.props} />;
+        output.push(
+          <List key="description-list" input={input} {...this.props} />
+        );
         break;
 
       case "nns":
-        output = <Nns input={input} {...this.props} />;
+        output.push(
+          <Nns key="description-nns" input={input} {...this.props} />
+        );
         break;
 
       case "rois":
-        output = <Rois input={input} {...this.props} />;
+        output.push(
+          <Rois key="description-rois" input={input} {...this.props} />
+        );
         break;
 
       case "list-url":
-        output = <ListUrl input={input} {...this.props} />;
+        output.push(
+          <ListUrl key="description-list-url" input={input} {...this.props} />
+        );
         break;
 
       case "category":
-        output = <Category input={input} {...this.props} />;
+        output.push(
+          <Category key="description-category" input={input} {...this.props} />
+        );
         break;
 
       case "icons":
-        output = <Icons input={input} {...this.props} />;
+        output.push(
+          <Icons key="description-icons" input={input} {...this.props} />
+        );
         break;
     }
 
-    return output;
+    return <div>{output}</div>;
   }
 }

@@ -11,6 +11,7 @@ export default class Icons extends React.Component {
     super(props);
     this._nodes = new Map();
     this.categoryDisplay = this.categoryDisplay.bind(this);
+    this.findChainService = this.findChainService.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -19,6 +20,22 @@ export default class Icons extends React.Component {
     } else {
       const node = findDOMNode(this._nodes.get(nextProps.selectedBoxIndex));
       ReactTooltip.show(node);
+    }
+  }
+
+  findChainService(category) {
+    let i;
+
+    for (i = 0; i < Object.keys(category).length; i += 1) {
+      const key = Object.keys(category)[i];
+      const child = category[key];
+
+      if (typeof child.classes !== "undefined") {
+        return {
+          serviceName: key,
+          classes: child.classes
+        };
+      }
     }
   }
 
@@ -45,6 +62,23 @@ export default class Icons extends React.Component {
 
     let topClass = "fa fa-stack-1x fa-inverse fa-" + category.cat;
 
+    let dataTip = `${category.cat} - ${category.prob.toFixed(2)}`;
+
+    let chainService = this.findChainService(category);
+
+    if (
+      chainService &&
+      chainService.serviceName &&
+      chainService.classes &&
+      chainService.classes[0] &&
+      chainService.classes[0].cat &&
+      chainService.classes[0].prob
+    ) {
+      dataTip += `<br/>[${chainService.serviceName}] ${
+        chainService.classes[0].cat
+      } - ${chainService.classes[0].prob.toFixed(4)}`;
+    }
+
     return (
       <div key={index} style={{ display: "inline" }}>
         <span
@@ -52,7 +86,7 @@ export default class Icons extends React.Component {
           className="fa-stack"
           onMouseOver={onOver.bind(this, index)}
           onMouseLeave={onLeave}
-          data-tip={`${category.cat} - ${category.prob.toFixed(2)}`}
+          data-tip={dataTip}
           ref={c => this._nodes.set(index, c)}
         >
           <i className={bottomClass} style={styles} />
@@ -64,6 +98,15 @@ export default class Icons extends React.Component {
 
   render() {
     const { input } = this.props;
+
+    if (
+      !input.json ||
+      !input.json.body ||
+      !input.json.body.predictions ||
+      !input.json.body.predictions[0]
+    )
+      return null;
+
     const { classes } = input.json.body.predictions[0];
 
     if (!classes) return null;
@@ -71,7 +114,7 @@ export default class Icons extends React.Component {
     return (
       <div className="description-icons">
         {classes.map(this.categoryDisplay)}
-        <ReactTooltip effect="solid" />
+        <ReactTooltip effect="solid" html={true} />
       </div>
     );
   }

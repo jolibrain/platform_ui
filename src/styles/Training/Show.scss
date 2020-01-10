@@ -1,52 +1,32 @@
-.training-show-component .main-view .container {
-  padding-top: 20px;
+@import "../palettes/palette-1.scss";
+
+.training-show-component .main-view {
+  .title {
+    background-color: $neutral_blue_2;
+    color: $neutral_blue_10;
+
+    h3 {
+      font-size: 36px;
+      margin: 0;
+      color: $neutral_blue_10;
+      font-weight: 600;
+    }
+
+    h4 {
+      font-size: 20px;
+      color: $neutral_blue_7;
+      font-weight: 400;
+    }
+  }
+
+  .training-breadcrumb {
+    background-color: $neutral_blue_10;
+  }
 
   .main-view {
     .serviceList,
     .serviceQuickCreate {
       margin-top: 20px;
-    }
-  }
-
-  .content {
-    padding: 0 15px;
-  }
-
-  nav {
-    padding: 4px 8px;
-    border-top: 1px solid #eee;
-    border-bottom: 1px solid #eee;
-
-    .btn {
-      margin-left: 10px;
-    }
-
-    .btn-outline-primary {
-      background-color: #fff;
-      border-color: #1aaa55;
-      box-shadow: none;
-      color: #168f48 !important;
-    }
-
-    .btn-outline-primary:hover {
-      background-color: #1aaa55;
-      border-color: #168f48;
-      box-shadow: none;
-      color: #fff !important;
-    }
-
-    .btn-outline-danger {
-      background-color: #fff;
-      border-color: #fc9403;
-      box-shadow: none;
-      color: #de7e00 !important;
-    }
-
-    .btn-outline-danger:hover {
-      background-color: #fc9403;
-      border-color: #de7e00;
-      box-shadow: none;
-      color: #fff !important;
     }
   }
 }

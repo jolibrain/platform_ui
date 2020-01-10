@@ -14,13 +14,7 @@ export default class Code extends React.Component {
 
     this.state = {
       copied: false,
-      selectedLang: "python",
-      configuration: {
-        importLib: true,
-        ddConfig: true,
-        importData: true,
-        postPredict: true
-      }
+      selectedLang: "python"
     };
 
     this.handleCopyClipboard = this.handleCopyClipboard.bind(this);
@@ -47,25 +41,42 @@ export default class Code extends React.Component {
   }
 
   javascriptCode() {
-    const { service } = this.props.imaginateStore;
+    const { service, settings } = this.props.imaginateStore;
+
+    let codeSettings = settings.default.code;
+
+    const serviceSettings = settings.services.find(
+      s => s.name === service.name
+    );
+    if (serviceSettings && serviceSettings.code) {
+      codeSettings = serviceSettings.code;
+    }
 
     const postData = service.selectedInput.postData;
 
     let javascriptCode = "// https://www.npmjs.com/package/deepdetect-js\n";
 
-    if (this.state.configuration.importLib) {
+    if (codeSettings.display.importLib) {
       javascriptCode += `var DD = require('deepdetect-js');\n\n`;
     }
 
-    if (this.state.configuration.ddConfig) {
+    if (codeSettings.display.ddConfig) {
+      const host = codeSettings.hostname
+        ? codeSettings.hostname
+        : window.location.hostname;
+
+      const port = codeSettings.port
+        ? codeSettings.port
+        : window.location.port || (window.protocol === "https" ? 443 : 80);
+
       javascriptCode += `const dd = new DD({
-  host: '${window.location.hostname}',
-  port: ${window.location.port},
+  host: '${host}',
+  port: ${port},
   path: '${service.serverSettings.path}'
 })\n\n`;
     }
 
-    if (this.state.configuration.postPredict) {
+    if (codeSettings.display.postPredict) {
       javascriptCode += `const postData = ${JSON.stringify(
         postData,
         null,
@@ -83,22 +94,34 @@ run()`;
   }
 
   pythonCode() {
-    const { service } = this.props.imaginateStore;
+    const { service, settings } = this.props.imaginateStore;
+
+    let codeSettings = settings.default.code;
+
+    const serviceSettings = settings.services.find(
+      s => s.name === service.name
+    );
+    if (serviceSettings && serviceSettings.code) {
+      codeSettings = serviceSettings.code;
+    }
+
+    console.log(codeSettings);
 
     const postData = service.selectedInput.postData;
 
-    let pythonCode =
+    let pythonCode = "# Download dd_client.py from:\n";
+    pythonCode +=
       "# https://github.com/jolibrain/deepdetect/blob/master/clients/python/dd_client.py\n";
 
-    if (this.state.configuration.importLib) {
-      pythonCode += `from dd_client import DD\n`;
+    if (codeSettings.display.importLib) {
+      pythonCode += `from dd_client import DD\n\n`;
     }
 
-    if (this.state.configuration.ddConfig) {
+    if (codeSettings.display.ddConfig) {
       pythonCode += `host = '${window.location.hostname}'
-port = ${window.location.port}
+port = ${window.location.port || (window.protocol === "https" ? 443 : 80)}
 path = '${service.serverSettings.path}'
-dd = DD(host,port)
+dd = DD(host, port, ${window.protocol === "https" ? 1 : 0}, path=path)
 dd.set_return_format(dd.RETURN_PYTHON)\n\n`;
     }
 

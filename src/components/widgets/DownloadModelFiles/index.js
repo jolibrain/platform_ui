@@ -12,9 +12,9 @@ export default class DownloadModelFiles extends React.Component {
 
     return (
       <div className="downloadModelFiles">
-        <h5>
-          <i className="fas fa-download" /> Downloads
-        </h5>
+        <h6>
+          <i className="fas fa-folder" /> {repository.path}
+        </h6>
 
         <div className="list-group list-group-flush">
           {files.map((f, index) => {
@@ -25,7 +25,7 @@ export default class DownloadModelFiles extends React.Component {
                 className="list-group-item list-group-item-action d-flex justify-content-start align-items-center text-truncate"
                 download
               >
-                <i className="fas fa-download" />
+                <i className="fas fa-chevron-right" />
                 &nbsp;{f}
               </a>
             );

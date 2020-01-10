@@ -1,7 +1,9 @@
 import { observable, action } from "mobx";
 import agent from "../agent";
+import path from "path";
 
 export class dataRepositoriesStore {
+  @observable loaded = false;
   @observable isLoading = false;
   @observable settings = {};
   @observable repositories = [];
@@ -9,35 +11,84 @@ export class dataRepositoriesStore {
   @action
   setup(configStore) {
     this.settings = configStore.dataRepositories;
-    this.load(this.settings.nginxPath);
+
+    if (typeof this.settings.maxDepth === "undefined")
+      this.settings.maxDepth = 1;
   }
 
-  $reqFolder(path) {
-    return agent.Webserver.listFolders(path);
+  refresh() {
+    this.load(this.settings.nginxPath);
+    this.cleanRootFolders();
+  }
+
+  $reqFolder(rootPath) {
+    return agent.Webserver.listFolders(rootPath);
+  }
+
+  // Remove root folders when containing subfolders
+  // It permit to avoid selecting a data folder containing sub-structure
+  @action
+  cleanRootFolders() {
+    let deletableId = [];
+    this.repositories.forEach(r => {
+      if (
+        this.repositories.some(r2 => {
+          return r2.label.startsWith(r.label) && r.id !== r2.id;
+        })
+      ) {
+        deletableId.push(r.id);
+      }
+    });
+    this.repositories = this.repositories.filter(
+      r => !deletableId.includes(r.id)
+    );
   }
 
   @action
-  load(path, level = 0) {
+  load(rootPath, level = 0) {
     this.isLoading = true;
-    this.$reqFolder(path).then(content => {
+    this.$reqFolder(rootPath).then(content => {
       const { folders } = content;
 
-      if (level === 0) {
-        folders.forEach(f => this.load(path + f.name + "/", level + 1));
-      }
+      folders
+        .filter(f => {
+          let keepFolder = true;
 
-      // TODO: replace data string by regexp
-      folders.forEach(f => {
-        this.repositories.push({
-          id: this.repositories.length,
-          name: f.name,
-          path: path + f.name + "/",
-          relativePath: path.replace("/data", "") + f.name + "/",
-          label: path.replace("/data/", "") + f.name
+          if (this.settings.filter) {
+            if (this.settings.filter.exclude) {
+              keepFolder = this.settings.filter.exclude.every(
+                e => f.href.indexOf(e) === -1
+              );
+            }
+          }
+
+          if (!keepFolder)
+            console.log(
+              "dataRepositoriesStore - load - folder filtered out: " +
+                rootPath +
+                " - " +
+                f.href
+            );
+
+          return keepFolder;
+        })
+        .forEach(f => {
+          const folderPath = path.join(rootPath, f.href, "/");
+          const folderLabel = folderPath.replace(/^\/data\//gm, "");
+
+          if (level < this.settings.maxDepth) this.load(folderPath, level + 1);
+
+          this.repositories.push({
+            id: this.repositories.length,
+            name: f.name,
+            path: folderPath,
+            label: folderLabel
+          });
         });
-      });
 
       this.isLoading = false;
+      this.loaded = true;
+      this.cleanRootFolders();
     });
   }
 }

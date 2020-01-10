@@ -1,7 +1,9 @@
-import LeftPanel from "../commons/LeftPanel";
-import MainView from "./MainView";
 import React from "react";
 import { inject, observer } from "mobx-react";
+
+import Header from "../../Header";
+import LeftPanel from "../commons/LeftPanel";
+import MainView from "./MainView";
 
 @inject("configStore")
 @inject("deepdetectStore")
@@ -13,6 +15,7 @@ export default class TrainingArchive extends React.Component {
     if (!deepdetectStore.isReady) this.props.history.push("/training");
 
     deepdetectStore.init(this.props.match.params);
+    deepdetectStore.setTrainRefreshMode(null);
   }
 
   render() {
@@ -23,9 +26,12 @@ export default class TrainingArchive extends React.Component {
       return null;
 
     return (
-      <div className="layout-page page-gutter page-with-contextual-sidebar right-sidebar-collapsed page-with-icon-sidebar training-show-component">
-        <LeftPanel />
-        <MainView />
+      <div>
+        <Header />
+        <div className="layout-page page-gutter page-with-contextual-sidebar right-sidebar-collapsed page-with-icon-sidebar training-show-component">
+          <LeftPanel />
+          <MainView />
+        </div>
       </div>
     );
   }
