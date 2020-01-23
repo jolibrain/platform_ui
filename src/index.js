@@ -17,6 +17,7 @@ import deepdetectStore from "./stores/deepdetectStore";
 import imaginateStore from "./stores/imaginateStore";
 import modelRepositoriesStore from "./stores/modelRepositoriesStore";
 import dataRepositoriesStore from "./stores/dataRepositoriesStore";
+import datasetStore from "./stores/datasetStore";
 import modalStore from "./stores/modalStore";
 import authTokenStore from "./stores/authTokenStore";
 
@@ -28,6 +29,7 @@ const stores = {
   imaginateStore,
   modelRepositoriesStore,
   dataRepositoriesStore,
+  datasetStore,
   modalStore,
   authTokenStore
 };

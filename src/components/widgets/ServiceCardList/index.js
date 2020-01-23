@@ -6,6 +6,7 @@ import { withRouter } from "react-router-dom";
 import PredictCard from "./Cards/Predict";
 import TrainingCard from "./Cards/Training";
 import ModelRepositoryCard from "./Cards/ModelRepository";
+import DatasetCard from "./Cards/Dataset";
 
 @inject("configStore")
 @withRouter
@@ -22,6 +23,8 @@ export default class ServiceCardList extends React.Component {
         let card = null;
         if (service.isRepository) {
           card = <ModelRepositoryCard key={index} service={service} />;
+        } else if (service.isDataset) {
+          card = <DatasetCard key={index} dataset={service} />;
         } else if (service.settings && service.settings.training) {
           card = <TrainingCard key={index} service={service} />;
         } else {

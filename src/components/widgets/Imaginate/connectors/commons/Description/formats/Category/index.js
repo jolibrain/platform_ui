@@ -39,10 +39,9 @@ export default class Category extends React.Component {
     }
 
     return (
-      <div>
+      <div key={index}>
         <span
           style={styles}
-          key={index}
           className="badge badge-success"
           onMouseOver={onOver.bind(this, index)}
           onMouseLeave={onLeave}

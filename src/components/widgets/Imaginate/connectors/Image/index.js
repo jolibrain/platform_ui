@@ -348,8 +348,8 @@ export default class ImageConnector extends React.Component {
               ""
             )}
 
-            <div className="row">
-              {boundingBoxControls ? (
+            {boundingBoxControls ? (
+              <div className="row">
                 <Controls
                   handleClickBox={this.setBoxFormat.bind(this, "simple")}
                   handleClickPalette={this.setBoxFormat.bind(this, "color")}
@@ -357,10 +357,11 @@ export default class ImageConnector extends React.Component {
                   boxFormat={this.state.boxFormat}
                   showLabels={this.state.showLabels}
                 />
-              ) : (
-                ""
-              )}
-            </div>
+              </div>
+            ) : (
+              ""
+            )}
+
             <div className="row">
               <BoundingBox
                 selectedBoxIndex={this.state.selectedBoxIndex}
