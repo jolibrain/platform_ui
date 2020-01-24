@@ -584,6 +584,10 @@ export default class deepdetectService {
 
     input.json = await this.$reqPostPredict(input.postData);
 
+    // Remove existing boxes from input
+    // Avoid keeping boxes from latest predict request
+    input.boxes = null;
+
     if (typeof input.json.body !== "undefined") {
       const prediction = input.json.body.predictions[0];
       const classes = prediction.classes;
