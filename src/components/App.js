@@ -15,7 +15,7 @@ import TrainingArchive from "./Training/Archive";
 
 import ChainShow from "./Chain/Show";
 
-//import DatasetHome from "./Dataset/Home";
+import DatasetHome from "./Dataset/Home";
 
 import GenericNotFound from "./GenericNotFound";
 
@@ -146,9 +146,8 @@ export default class App extends React.Component {
           {/* Chain */}
           <Route exact path="/chains/:chainName" component={ChainShow} />
 
-          {/* Dataset
+          {/* Dataset */}
           <Route exact path="/datasets/" component={DatasetHome} />
-          */}
 
           {/* 404 */}
           <Route exact path="/404" component={GenericNotFound} />
