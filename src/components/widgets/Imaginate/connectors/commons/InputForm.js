@@ -215,6 +215,9 @@ class InputForm extends React.Component {
     const inputMethods = this.state.availableMethods.filter(m => {
       return m.isAvailable;
     });
+
+    const { dataRepositoriesStore } = this.props;
+
     return (
       <div className="card inputUrl" ref={this.setWrapperRef}>
         <div className="card-body">
@@ -269,9 +272,14 @@ class InputForm extends React.Component {
               className={
                 ["imagePath"].includes(this.state.method.id) ? "" : "hidden"
               }
-              id="inlineFormInputModelLocation"
+              id="inlineFormInputPlatformDataLocation"
               ref={typeahead => (this.typeahead = typeahead)}
-              options={toJS(this.props.dataRepositoriesStore.repositories)}
+              placeholder={
+                dataRepositoriesStore.isLoading
+                  ? "Fetching data repositories..."
+                  : ""
+              }
+              options={toJS(dataRepositoriesStore.repositories)}
               onChange={this.handleInputChange}
               renderMenu={(results, menuProps) => (
                 <Menu {...menuProps}>
