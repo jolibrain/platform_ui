@@ -74,38 +74,70 @@ export class configStore {
     systemPath: "/opt/platform/data/"
   };
 
-  @observable modals = [];
+  @observable
+  datasets = {
+    nginxPath: "/data/datasets/",
+    systemPath: "/opt/platform/data/datasets/"
+  };
 
-  @observable componentBlacklist = [];
+  @observable
+  modals = [];
 
-  @observable placeholders = {};
+  @observable
+  componentBlacklist = [];
 
-  $req(path) {
+  @observable
+  placeholders = {};
+
+  $reqConfig(path) {
     return agent.Config.get();
   }
 
   @action
-  loadConfig(callback = () => {}) {
-    this.$req().then(
+  loadConfig(callbackAfterLoad = () => {}) {
+    this.$reqConfig().then(
       action(config => {
         if (config) {
-          this.layout = config.layout;
-          this.common = config.common;
-          this.gpuInfo = config.gpuInfo;
-          this.deepdetect = config.deepdetect;
-          this.imaginate = config.imaginate;
-          this.modelRepositories = config.modelRepositories;
-          this.dataRepositories = config.dataRepositories;
-          this.homeComponent = config.homeComponent;
-          this.modals = config.modals;
+          this.layout = config.layout ? config.layout : this.layout;
+
+          this.common = config.common ? config.common : this.common;
+
+          this.gpuInfo = config.gpuInfo ? config.gpuInfo : this.gpuInfo;
+
+          this.deepdetect = config.deepdetect
+            ? config.deepdetect
+            : this.deepdetect;
+
+          this.imaginate = config.imaginate ? config.imaginate : this.imaginate;
+
+          this.modelRepositories = config.modelRepositories
+            ? config.modelRepositories
+            : this.modelRepositories;
+
+          this.dataRepositories = config.dataRepositories
+            ? config.dataRepositories
+            : this.dataRepositories;
+
+          this.datasets = config.datasets ? config.datasets : this.datasets;
+
+          this.homeComponent = config.homeComponent
+            ? config.homeComponent
+            : this.homeComponent;
+
+          this.modals = config.modals ? config.modals : this.modals;
+
           this.componentBlacklist = config.componentBlacklist
             ? config.componentBlacklist
-            : [];
-          this.placeholders = config.placeholders;
+            : this.componentBlacklist;
+
+          this.placeholders = config.placeholders
+            ? config.placeholders
+            : this.placeholders;
 
           this.isReady = true;
         }
-        callback(this);
+
+        callbackAfterLoad(this);
       })
     );
   }
