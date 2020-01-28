@@ -39,10 +39,10 @@ export default class PredictCard extends React.Component {
               {service.settings.description}
             </h6>
             <p className="card-subtitle text-muted row">
-              <div className="col-4">
+              <div className="col-6">
                 <i className="fas fa-server" /> {service.serverName}
               </div>
-              <div className="col-4">
+              <div className="col-6">
                 <i className="far fa-hdd" /> GPU: {service.gpuid}
               </div>
             </p>
