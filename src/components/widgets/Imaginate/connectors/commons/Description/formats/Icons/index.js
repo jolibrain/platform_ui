@@ -11,7 +11,7 @@ export default class Icons extends React.Component {
     super(props);
     this._nodes = new Map();
     this.categoryDisplay = this.categoryDisplay.bind(this);
-    this.findChainService = this.findChainService.bind(this);
+    this.findChainServices = this.findChainServices.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -23,20 +23,29 @@ export default class Icons extends React.Component {
     }
   }
 
-  findChainService(category) {
-    let i;
+  //
+  // Find chain services in current category
+  //
+  // A chain service is a object is current json object
+  // that contains a classes array
+  //
+  findChainServices(category) {
+    let i,
+      chainServices = [];
 
     for (i = 0; i < Object.keys(category).length; i += 1) {
       const key = Object.keys(category)[i];
       const child = category[key];
 
       if (typeof child.classes !== "undefined") {
-        return {
+        chainServices.push({
           serviceName: key,
           classes: child.classes
-        };
+        });
       }
     }
+
+    return chainServices;
   }
 
   categoryDisplay(category, index) {
@@ -62,21 +71,18 @@ export default class Icons extends React.Component {
 
     let topClass = "fa fa-stack-1x fa-inverse fa-" + category.cat;
 
-    let dataTip = `${category.cat} - ${category.prob.toFixed(2)}`;
+    let dataTip = [`${category.cat} - ${category.prob.toFixed(2)}`];
 
-    let chainService = this.findChainService(category);
-
-    if (
-      chainService &&
-      chainService.serviceName &&
-      chainService.classes &&
-      chainService.classes[0] &&
-      chainService.classes[0].cat &&
-      chainService.classes[0].prob
-    ) {
-      dataTip += `<br/>[${chainService.serviceName}] ${
-        chainService.classes[0].cat
-      } - ${chainService.classes[0].prob.toFixed(4)}`;
+    // Find children chain service descriptions
+    const chainServices = this.findChainService(category);
+    if (chainServices.length > 0) {
+      chainServices.forEach(service => {
+        dataTip.push(
+          `[${service.serviceName}] ${
+            service.classes[0].cat
+          } - ${service.classes[0].prob.toFixed(4)}`
+        );
+      });
     }
 
     return (
@@ -86,7 +92,7 @@ export default class Icons extends React.Component {
           className="fa-stack"
           onMouseOver={onOver.bind(this, index)}
           onMouseLeave={onLeave}
-          data-tip={dataTip}
+          data-tip={dataTip.join("<br/>")}
           ref={c => this._nodes.set(index, c)}
         >
           <i className={bottomClass} style={styles} />
