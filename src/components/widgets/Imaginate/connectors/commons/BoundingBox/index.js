@@ -13,23 +13,30 @@ export default class BoundingBox extends React.Component {
     this.drawBoxSimple = this.drawBoxSimple.bind(this);
     this.drawBoxColor = this.drawBoxColor.bind(this);
 
-    this.findChainService = this.findChainService.bind(this);
+    this.findChainServices = this.findChainServices.bind(this);
   }
 
-  findChainService(category) {
-    let i;
+  // Find child chain services for current bounding box
+  //
+  // A child chain service is an object in the current prediction
+  // that contains a `classes` attribute
+  findChainServices(category) {
+    let i,
+      chainServices = [];
 
     for (i = 0; i < Object.keys(category).length; i += 1) {
       const key = Object.keys(category)[i];
       const child = category[key];
 
       if (typeof child.classes !== "undefined") {
-        return {
+        chainServices.push({
           serviceName: key,
           classes: child.classes
-        };
+        });
       }
     }
+
+    return chainServices;
   }
 
   drawLabel(canvas, box) {
@@ -202,20 +209,24 @@ export default class BoundingBox extends React.Component {
 
       boxes = prediction.classes.map(pred => {
         let box = pred.bbox ? pred.bbox : {};
-        box.label = pred.cat ? pred.cat : "";
+        box.label = pred.cat ? [pred.cat] : [""];
 
-        let chainService = this.findChainService(pred);
-
-        if (
-          chainService &&
-          chainService.serviceName &&
-          chainService.classes &&
-          chainService.classes[0] &&
-          chainService.classes[0].cat &&
-          chainService.classes[0].prob
-        ) {
-          box.label = chainService.classes[0].cat;
+        // Finc children chain services
+        // and concat their cat prediction on display box label
+        const chainServices = this.findChainServices(pred);
+        if (chainServices.length > 0) {
+          chainServices.forEach(service => {
+            if (
+              service.classes &&
+              service.classes[0] &&
+              service.classes[0].cat
+            ) {
+              box.label.push(service.classes[0].cat);
+            }
+          });
         }
+
+        box.label = box.label.join(" ");
 
         box.prob = pred.prob;
         box.color = this.generateColor(pred.cat);

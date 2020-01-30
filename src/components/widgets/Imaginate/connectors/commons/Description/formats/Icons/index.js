@@ -74,14 +74,16 @@ export default class Icons extends React.Component {
     let dataTip = [`${category.cat} - ${category.prob.toFixed(2)}`];
 
     // Find children chain service descriptions
-    const chainServices = this.findChainService(category);
+    const chainServices = this.findChainServices(category);
     if (chainServices.length > 0) {
       chainServices.forEach(service => {
-        dataTip.push(
-          `[${service.serviceName}] ${
-            service.classes[0].cat
-          } - ${service.classes[0].prob.toFixed(4)}`
-        );
+        if (service.classes && service.classes[0] && service.classes[0].cat) {
+          dataTip.push(
+            `[${service.serviceName}] ${
+              service.classes[0].cat
+            } - ${service.classes[0].prob.toFixed(4)}`
+          );
+        }
       });
     }
 
