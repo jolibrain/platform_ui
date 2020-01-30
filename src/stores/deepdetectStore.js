@@ -93,10 +93,14 @@ export class deepdetectStore {
       const path = this.settings.chains.path;
       const chainFiles = await agent.Webserver.listFiles(path);
 
-      chainFiles.forEach(async (chainFile, index) => {
-        const chainContent = await agent.Webserver.getFile(path + chainFile);
-        this.chains.push(chainContent);
-      });
+      // filter temp files - ending with ~ symbol - from chainFiles
+      // and load corresponding file in this.chains array
+      chainFiles
+        .filter(chainName => /~$/.test(chainName) === false)
+        .forEach(async (chainFile, index) => {
+          const chainContent = await agent.Webserver.getFile(path + chainFile);
+          this.chains.push(chainContent);
+        });
     }
   }
 
