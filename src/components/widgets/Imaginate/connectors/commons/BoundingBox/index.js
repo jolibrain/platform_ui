@@ -278,9 +278,13 @@ export default class BoundingBox extends React.Component {
       });
     }
 
-    const separateSegmentation =
-      (pixelSegmentation && pixelSegmentation.length > 0) ||
-      segmentationMasks.length > 0;
+    // TODO temporary fix on segmentation display
+    // investigate usefulness of previous code in order to maintain this fix
+    const separateSegmentation = true;
+
+    //    const separateSegmentation =
+    //      (pixelSegmentation && pixelSegmentation.length > 0) ||
+    //      segmentationMasks.length > 0;
 
     return (
       <Boundingbox
