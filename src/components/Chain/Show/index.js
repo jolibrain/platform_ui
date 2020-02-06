@@ -35,7 +35,12 @@ export default class ChainShow extends React.Component {
         deepdetectStore.setServerPath(chain.serverPath);
       }
 
+      // Chain server must be specified in order for services to be called
+      // TODO allows other servers to be used in chains
+      deepdetectStore.setServerIndex(0);
+      // Set root service from chain
       deepdetectStore.setService(rootService);
+
       imaginateStore.connectToDdStore(deepdetectStore);
 
       imaginateStore.chain = chain;
