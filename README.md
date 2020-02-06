@@ -280,3 +280,29 @@ Then you can run the integration testing cases:
 ```
 yarn test:e2e
 ```
+
+## Changelog
+
+### v0.9.6 - 06/02/2020
+
+- Chains
+
+  - Display multiple chain service in boundingbox labels
+  - Remove temporary files from chains array
+  - Set default deepdetect server in ChainShow
+  - Check `this.service` in imaginateStore to avoid issue when loading ChainShow with unavailable service
+
+- UI
+
+  - Word-wrap service title in PredictShow
+  - Full row width on Predict ServiceCard
+  - Remove bounding-boxes when no result
+  - Display gpuid on PredictHome running services
+
+- Upgrade to react-bounding-box@0.5.11
+  - Correct canvas dimension on redraw
+  - Fix segmentation display
+
+### v0.9.5 - 10/01/2020
+
+- Sync release version with DeepDetect release version number: https://github.com/jolibrain/deepdetect/releases/tag/v0.9.5
