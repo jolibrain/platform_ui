@@ -10,7 +10,6 @@ import PredictLink from "./links/Predict";
 import TrainingLink from "./links/Training";
 import JupyterLink from "./links/Jupyter";
 import DataLink from "./links/Data";
-import DatasetLink from "./links/Dataset";
 import DocumentationLink from "./links/Documentation";
 import ChatLink from "./links/Chat";
 import MenusLink from "./links/Menus";
@@ -33,7 +32,6 @@ class Header extends React.Component {
               <ul className="list-unstyled navbar-sub-nav">
                 <PredictLink />
                 <TrainingLink />
-                <DatasetLink />
                 <li>
                   <span className="separator">|</span>
                 </li>
