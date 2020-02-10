@@ -115,9 +115,7 @@ export default class MainView extends React.Component {
             <div className="col-lg-3 col-md-6">
               <h3>
                 {modelRepositoriesStore.isRefreshing ? (
-                  <span>
-                    <i className="fas fa-sync fa-spin fa-xs" />{" "}
-                  </span>
+                  <i className="fas fa-circle-notch fa-spin" />
                 ) : (
                   availableServicesLength
                 )}
@@ -182,14 +180,7 @@ export default class MainView extends React.Component {
             <hr />
 
             <div className="predictServiceList">
-              <h4>
-                Available Services&nbsp;
-                {modelRepositoriesStore.isRefreshing ? (
-                  <i className="fas fa-spinner fa-spin" />
-                ) : (
-                  ""
-                )}
-              </h4>
+              <h4>Available Services</h4>
 
               {!modelRepositoriesStore.isRefreshing &&
               publicRepositories.length === 0 &&
@@ -227,8 +218,7 @@ export default class MainView extends React.Component {
                   className="btn btn-outline-dark"
                   onClick={this.handleClickRefreshServices}
                 >
-                  <i className="fas fa-circle-notch fa-spin" /> Syncing Public
-                  Repositories...
+                  Syncing Public Repositories...
                 </button>
               ) : (
                 <div>
