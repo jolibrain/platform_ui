@@ -48,10 +48,16 @@ export default class BoundingBox extends React.Component {
 
     let x = 0,
       y = 0;
-    if (coord.xmin && coord.ymax) {
+    if (
+      typeof coord.xmin !== "undefined" &&
+      typeof coord.ymax !== "undefined"
+    ) {
       x = coord.xmin;
       y = coord.ymax;
-    } else if (coord.x && coord.y) {
+    } else if (
+      typeof coord.x !== "undefined" &&
+      typeof coord.y !== "undefined"
+    ) {
       x = coord.x;
       y = coord.y;
     }
@@ -75,14 +81,24 @@ export default class BoundingBox extends React.Component {
     const coord = box.coord ? box.coord : box;
 
     let [x, y, width, height] = [0, 0, 0, 0];
-    if (coord.xmin && coord.xmax && coord.ymin && coord.ymax) {
+    if (
+      typeof coord.xmin !== "undefined" &&
+      typeof coord.xmax !== "undefined" &&
+      typeof coord.ymin !== "undefined" &&
+      typeof coord.ymax !== "undefined"
+    ) {
       [x, y, width, height] = [
         coord.xmin,
         coord.ymax,
         coord.xmax - coord.xmin,
         coord.ymin - coord.ymax
       ];
-    } else if (coord.x && coord.y && coord.width && coord.height) {
+    } else if (
+      typeof coord.x !== "undefined" &&
+      typeof coord.y !== "undefined" &&
+      typeof coord.width !== "undefined" &&
+      typeof coord.height !== "undefined"
+    ) {
       [x, y, width, height] = coord;
     }
 
@@ -129,14 +145,24 @@ export default class BoundingBox extends React.Component {
     const coord = box.coord ? box.coord : box;
 
     let [x, y, width, height] = [0, 0, 0, 0];
-    if (coord.xmin && coord.xmax && coord.ymin && coord.ymax) {
+    if (
+      typeof coord.xmin !== "undefined" &&
+      typeof coord.xmax !== "undefined" &&
+      typeof coord.ymin !== "undefined" &&
+      typeof coord.ymax !== "undefined"
+    ) {
       [x, y, width, height] = [
         coord.xmin,
         coord.ymax,
         coord.xmax - coord.xmin,
         coord.ymin - coord.ymax
       ];
-    } else if (coord.x && coord.y && coord.width && coord.height) {
+    } else if (
+      typeof coord.x !== "undefined" &&
+      typeof coord.y !== "undefined" &&
+      typeof coord.width !== "undefined" &&
+      typeof coord.height !== "undefined"
+    ) {
       [x, y, width, height] = coord;
     }
 
