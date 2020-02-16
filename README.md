@@ -283,6 +283,17 @@ yarn test:e2e
 
 ## Changelog
 
+### v0.9.6.1 - 14/02/2020
+
+- UI
+
+  - PredictHome: remove multiple spinners
+  - Imaginate widget: display bounding boxes when xmin/ymin equal 0
+
+- Dependencies
+
+  - upgrade `react-bounding-box` to `v0.5.14`
+
 ### v0.9.6 - 06/02/2020
 
 - Chains
