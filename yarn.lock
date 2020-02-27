@@ -3131,10 +3131,10 @@ deep-is@~0.1.3:
   resolved "https://registry.yarnpkg.com/deep-is/-/deep-is-0.1.3.tgz#b369d6fb5dbc13eecf524f91b070feedc357cf34"
   integrity sha1-s2nW+128E+7PUk+RsHD+7cNXzzQ=
 
-deepdetect-js@^1.8.1:
-  version "1.8.1"
-  resolved "https://registry.yarnpkg.com/deepdetect-js/-/deepdetect-js-1.8.1.tgz#d74db5369e67e815848f32f1c2a6ec2dbfd5a592"
-  integrity sha512-AO3G2qVKaUFAJl2cn+Chyh9p/vamOH8kMKQ6vZSAyHj8akxNVFixpwM/3Pd88Ypjy/ILwR1g17Khgb2ZsnsF5g==
+deepdetect-js@^1.8.2:
+  version "1.8.2"
+  resolved "https://registry.yarnpkg.com/deepdetect-js/-/deepdetect-js-1.8.2.tgz#e9516cd0fcca3569ef5dd61faa9b472fdd0a1439"
+  integrity sha512-GxS+/GsYpkK+DLRZRG9i/9Yn4i3hc3PCydnDW3EiauR747cT/cy4fS6NHyZ/jldQvlDyC87kRL7/uBll+yKUHA==
   dependencies:
     babel-runtime "^6.26.0"
     braces "^3.0.2"
