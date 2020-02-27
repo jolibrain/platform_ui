@@ -4,7 +4,6 @@ import noCache from "superagent-no-cache";
 
 import DD from "deepdetect-js";
 
-const DD_TIMEOUT = 15000;
 const superagent = superagentPromise(_superagent, global.Promise);
 
 const URL_JSON_PREFIX = "/json";
@@ -84,7 +83,6 @@ const GpuInfo = {
 const Deepdetect = {
   info: async settings => {
     let response = null;
-    settings.fetchTimeout = 5000;
     const dd = new DD(settings);
     try {
       response = await dd.info();
@@ -94,7 +92,6 @@ const Deepdetect = {
     return response;
   },
   infoStatus: async settings => {
-    settings.fetchTimeout = 5000;
     const dd = new DD(settings);
     try {
       return await dd.info({ status: true });
@@ -103,7 +100,6 @@ const Deepdetect = {
     }
   },
   getService: async (settings, name) => {
-    settings.fetchTimeout = DD_TIMEOUT;
     const dd = new DD(settings);
     try {
       return await dd.getService(name);
@@ -113,7 +109,6 @@ const Deepdetect = {
   },
   putService: async (settings, name, data) => {
     let response = null;
-    settings.fetchTimeout = DD_TIMEOUT;
     const dd = new DD(settings);
     try {
       response = await dd.putService(name, data);
@@ -123,7 +118,6 @@ const Deepdetect = {
     return response;
   },
   deleteService: async (settings, name) => {
-    settings.fetchTimeout = DD_TIMEOUT;
     const dd = new DD(settings);
     try {
       return await dd.deleteService(name);
@@ -132,7 +126,6 @@ const Deepdetect = {
     }
   },
   postPredict: async (settings, postData) => {
-    settings.fetchTimeout = DD_TIMEOUT;
     const dd = new DD(settings);
     try {
       return await dd.postPredict(postData);
@@ -141,7 +134,6 @@ const Deepdetect = {
     }
   },
   putChain: async (settings, endpoint, data) => {
-    settings.fetchTimeout = DD_TIMEOUT;
     const dd = new DD(settings);
     try {
       return await dd.putChain(endpoint, data);
@@ -157,7 +149,6 @@ const Deepdetect = {
     history = false,
     maxHistPoints = null
   ) => {
-    settings.fetchTimeout = DD_TIMEOUT;
     const dd = new DD(settings);
     try {
       return await dd.getTrain(
@@ -172,7 +163,6 @@ const Deepdetect = {
     }
   },
   stopTraining: async (settings, serviceName) => {
-    settings.fetchTimeout = DD_TIMEOUT;
     const dd = new DD(settings);
     try {
       return await dd.deleteTrain(serviceName);
