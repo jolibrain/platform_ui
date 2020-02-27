@@ -283,6 +283,13 @@ yarn test:e2e
 
 ## Changelog
 
+### v0.9.6.2 - 27/02/2020
+
+- Deepdetect-js
+
+  - use default timeout from deepdetect-js, possible overwrite in config.json
+    commit dcd7f18d
+
 ### v0.9.6.1 - 14/02/2020
 
 - UI
