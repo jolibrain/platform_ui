@@ -20,8 +20,6 @@ export class dataRepositoriesStore {
     this.isLoading = true;
     let repositories = await this.load(this.settings.nginxPath);
 
-    console.log(repositories);
-
     // Append id attribute to new repositories
     repositories.forEach((o, i) => (o.id = i));
     this.repositories = repositories;
