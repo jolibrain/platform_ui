@@ -114,10 +114,17 @@ export default class PublishTrainingModal extends React.Component {
     } else {
       ddServer.newService(serviceName, serviceConfig, async (response, err) => {
         if (err) {
-          this.setState({
-            spinner: false,
-            publishError: `${err.status.msg}: ${err.status.dd_msg}`
-          });
+          if (err.status) {
+            this.setState({
+              spinner: false,
+              publishError: `${err.status.msg}: ${err.status.dd_msg}`
+            });
+          } else {
+            this.setState({
+              spinner: false,
+              publishError: `Error publishing model.`
+            });
+          }
         } else {
           // TODO add serviceName in ddServer.deleteService method
           // to avoid using private request method
