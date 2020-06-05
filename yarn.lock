@@ -9198,10 +9198,10 @@ react-bootstrap@^0.32.1:
     uncontrollable "^5.0.0"
     warning "^3.0.0"
 
-react-bounding-box@^0.5.14:
-  version "0.5.14"
-  resolved "https://registry.yarnpkg.com/react-bounding-box/-/react-bounding-box-0.5.14.tgz#a5d1a62f0ef433cc2ef6712240d7fcb4f86321ad"
-  integrity sha512-tVx6utYcSq/XjzXrCj15DAGPcBS8mzHCTkhFY49TetbzY0ygbc/3IP1HmtDM3fnZvYZAy+7QOkKRBY/gXVbX8A==
+react-bounding-box@^0.5.18:
+  version "0.5.18"
+  resolved "https://registry.yarnpkg.com/react-bounding-box/-/react-bounding-box-0.5.18.tgz#b44437a202728e5dfe71ddf36087e246b5e267f3"
+  integrity sha512-yyfsiWPcPlMl9ZuOexduK/qc2nzH5WM+d3o1cCM1FD6+TYlj5OnX4AcymYVXoEbuMLesq97zku/n3ji2atkhkg==
   dependencies:
     prop-types "^15.6.1"
     seedrandom "^2.4.3"

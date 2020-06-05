@@ -324,9 +324,9 @@ export default class BoundingBox extends React.Component {
         }
         onSelected={this.props.onOver}
         pixelSegmentation={
-          this.props.showSegmentation && pixelSegmentation
+          this.props.showSegmentation && pixelSegmentation !== null
             ? pixelSegmentation
-            : null
+            : []
         }
         separateSegmentation={separateSegmentation}
         segmentationColors={segmentationColors}
