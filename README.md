@@ -283,6 +283,17 @@ yarn test:e2e
 
 ## Changelog
 
+### v0.9.7 - 05/06/2020
+
+- UI
+
+  - Imaginate component hides segmentation switching to bbox display
+  - display model publishing error when no status
+
+- Deepdetect-js
+
+  - use 15s as default fetchTimeout
+
 ### v0.9.6.2 - 27/02/2020
 
 - Deepdetect-js
