@@ -180,6 +180,8 @@ export default class BoundingBox extends React.Component {
       height = canvas.height - lineWidth - y;
     }
 
+    if (!box.color) box.color = "#FFFFFF";
+
     var c = "0x" + box.color.substring(1);
     var rgba =
       "rgba(" + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(",") + ",0.8)";
