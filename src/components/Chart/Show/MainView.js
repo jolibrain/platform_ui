@@ -29,9 +29,9 @@ export default class MainView extends React.Component {
       await trainingRepositoryStore.load();
     }
 
-    if (match && match.params && match.params.modelList) {
+    if (match && match.params && match.params.modelPath) {
       const repository = trainingRepositoryStore.repositories.find(r => {
-        return r.path === `/${match.params.modelList}/`;
+        return r.path === `/${match.params.modelPath}/`;
       });
 
       this.setState({ repository: repository });

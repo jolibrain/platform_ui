@@ -13,7 +13,7 @@ import TrainingHome from "./Training/Home";
 import TrainingShow from "./Training/Show";
 import TrainingArchive from "./Training/Archive";
 
-import ChartingShow from "./Charting/Show";
+import ChartShow from "./Chart/Show";
 
 import ChainShow from "./Chain/Show";
 
@@ -145,12 +145,8 @@ export default class App extends React.Component {
             component={TrainingArchive}
           />
 
-          {/* Charting */}
-          <Route
-            exact
-            path="/charting/:chartingPath"
-            component={ChartingShow}
-          />
+          {/* Chart */}
+          <Route exact path="/charts/:modelPath*" component={ChartShow} />
 
           {/* Chain */}
           <Route exact path="/chains/:chainName" component={ChainShow} />
