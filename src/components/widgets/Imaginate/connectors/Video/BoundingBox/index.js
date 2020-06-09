@@ -68,10 +68,10 @@ export default class BoundingBox extends React.Component {
     let [x, y, width, height] = [0, 0, 0, 0];
     if (coord.xmin && coord.xmax && coord.ymin && coord.ymax) {
       [x, y, width, height] = [
-        coord.xmin,
-        coord.ymax,
-        coord.xmax - coord.xmin,
-        coord.ymin - coord.ymax
+        Math.min(coord.xmin, coord.xmax),
+        Math.min(coord.ymin, coord.ymax),
+        Math.max(coord.xmin, coord.xmax) - Math.min(coord.xmin, coord.xmax),
+        Math.max(coord.ymin, coord.ymax) - Math.min(coord.ymin, coord.ymax)
       ];
     } else if (coord.x && coord.y && coord.width && coord.height) {
       [x, y, width, height] = coord;
@@ -122,10 +122,10 @@ export default class BoundingBox extends React.Component {
     let [x, y, width, height] = [0, 0, 0, 0];
     if (coord.xmin && coord.xmax && coord.ymin && coord.ymax) {
       [x, y, width, height] = [
-        coord.xmin,
-        coord.ymax,
-        coord.xmax - coord.xmin,
-        coord.ymin - coord.ymax
+        Math.min(coord.xmin, coord.xmax),
+        Math.min(coord.ymin, coord.ymax),
+        Math.max(coord.xmin, coord.xmax) - Math.min(coord.xmin, coord.xmax),
+        Math.max(coord.ymin, coord.ymax) - Math.min(coord.ymin, coord.ymax)
       ];
     } else if (coord.x && coord.y && coord.width && coord.height) {
       [x, y, width, height] = coord;
