@@ -80,6 +80,8 @@ export default class GeneralInfo extends React.Component {
       />
     );
 
+    let hasMap = false;
+
     if (typeof measure !== "undefined" && measure !== null) {
       if (typeof measure.accp !== "undefined") {
         infoCharts.push(
@@ -98,6 +100,18 @@ export default class GeneralInfo extends React.Component {
             title="Accuracy"
             key="acc"
             attribute="acc"
+            steppedLine
+            showBest
+            {...this.props}
+          />
+        );
+      } else if (typeof measure.map !== "undefined") {
+        hasMap = true;
+        infoCharts.push(
+          <MeasureChart
+            title="Map"
+            key="map"
+            attribute="map"
             steppedLine
             showBest
             {...this.props}
@@ -129,16 +143,17 @@ export default class GeneralInfo extends React.Component {
         );
         break;
       case "detection":
-        infoCharts.push(
-          <MeasureChart
-            title="MAP"
-            attribute="map"
-            key="map"
-            steppedLine
-            showBest
-            {...this.props}
-          />
-        );
+        if (!hasMap)
+          infoCharts.push(
+            <MeasureChart
+              title="MAP"
+              attribute="map"
+              key="map"
+              steppedLine
+              showBest
+              {...this.props}
+            />
+          );
         break;
       case "classification":
         infoCharts.push(
