@@ -11,7 +11,6 @@ import PredictShow from "./Predict/Show";
 
 import TrainingHome from "./Training/Home";
 import TrainingShow from "./Training/Show";
-import TrainingArchive from "./Training/Archive";
 
 import ChartShow from "./Chart/Show";
 
@@ -139,14 +138,13 @@ export default class App extends React.Component {
             path="/training/:serverName/:serviceName*"
             component={TrainingShow}
           />
-          <Route
-            exact
-            path="/trainingArchive/:modelPath*"
-            component={TrainingArchive}
-          />
 
           {/* Chart */}
-          <Route exact path="/charts/:modelPath*" component={ChartShow} />
+          <Route
+            exact
+            path="/charts/:chartType/:chartParams*"
+            component={ChartShow}
+          />
 
           {/* Chain */}
           <Route exact path="/chains/:chainName" component={ChainShow} />

@@ -106,7 +106,7 @@ export default class ModelRepositoryContent extends React.Component {
       ? repository.jsonMetrics.body.mltype
       : null;
 
-    const archiveUrl = `/trainingArchive${repository.path}`;
+    const archiveUrl = `/charts/trainingArchive${repository.path}`;
 
     let badges = [];
 
