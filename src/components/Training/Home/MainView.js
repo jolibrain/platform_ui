@@ -1,6 +1,6 @@
 import React from "react";
 import { inject, observer } from "mobx-react";
-import { withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import moment from "moment";
 
 import ServiceCardList from "../../widgets/ServiceCardList";
@@ -175,6 +175,19 @@ export default class MainView extends React.Component {
               ) : (
                 ""
               )}
+              {!modelRepositoriesStore.isRefreshing &&
+              displayedArchiveRepositories.length > 0 &&
+              displayedArchiveRepositories.length < 8 ? (
+                <Link
+                  to={`/charts/modelCompare/${displayedArchiveRepositories
+                    .map(r => r.path.replace(/^\/+|\/+$/g, ""))
+                    .join("+")}`}
+                  className="btn btn-primary"
+                  type="button"
+                >
+                  Compare
+                </Link>
+              ) : null}
             </h3>
 
             <div className="archiveTrainingList archive">
