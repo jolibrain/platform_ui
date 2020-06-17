@@ -14,15 +14,31 @@ export default class ServiceList extends React.Component {
     if (this.props.configStore.isComponentBlacklisted("ServiceList"))
       return null;
 
-    const { deepdetectStore } = this.props;
+    const { deepdetectStore, match } = this.props;
 
-    const serviceItems = deepdetectStore.services.map((service, index) => {
-      return <ServiceItem key={index} service={service} />;
-    });
+    const predictPatt = /^\/predict/g;
+    const trainingPatt = /^\/training/g;
 
-    const chainItems = deepdetectStore.chains.map((chain, index) => {
-      return <ChainItem key={index} chain={chain} />;
-    });
+    const serviceItems = deepdetectStore.services
+      .filter((service, index) => {
+        // Select training services on training page,
+        // and predict services on predict page
+        return (
+          (trainingPatt.test(match.path) && service.settings.training) ||
+          (predictPatt.test(match.path) && !service.settings.training)
+        );
+      })
+      .map((service, index) => {
+        return <ServiceItem key={index} service={service} />;
+      });
+
+    // Show chain items only on predict page
+    let chainItems = [];
+    if (predictPatt.test(match.path)) {
+      chainItems = deepdetectStore.chains.map((chain, index) => {
+        return <ChainItem key={index} chain={chain} />;
+      });
+    }
 
     return (
       <ul
@@ -30,7 +46,7 @@ export default class ServiceList extends React.Component {
         className="serviceList sidebar-top-level-items"
       >
         {serviceItems}
-        {chainItems.length > 0 ? <hr /> : null}
+        {serviceItems.length > 0 && chainItems.length > 0 ? <hr /> : null}
         {chainItems}
       </ul>
     );

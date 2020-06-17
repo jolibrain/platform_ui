@@ -6,16 +6,7 @@ import { Link, withRouter } from "react-router-dom";
 @observer
 export default class Chain extends React.Component {
   render() {
-    const { chain, match } = this.props;
-
-    if (match && match.path) {
-      const trainingPatt = /^\/training/g;
-
-      // hide chains in training section
-      if (trainingPatt.test(match.path)) {
-        return null;
-      }
-    }
+    const { chain } = this.props;
 
     return (
       <li>
