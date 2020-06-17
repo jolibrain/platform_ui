@@ -4,6 +4,20 @@ import { inject, observer } from "mobx-react";
 import { Link, withRouter } from "react-router-dom";
 import moment from "moment";
 
+/*
+ * # Workflow: publishing after training"
+ *
+ * Documentation of the process triggered by this modal:
+ * it fetches the selected service `config.json` and modifies it:
+ * `model.repository` to `privateStore.systemPath + privateStore.nginxPath + service.name`
+ * `model.create_repository`` to `true`
+ * `parameters.output.store_config` to `true`
+ * `parameters.mllib.from_repository` to `service.location`
+ * it deletes value at `parameters.mllib.template`
+ * it creates a new service on the hostable server
+ * it deletes the existing service from the training server
+ */
+
 @withRouter
 @inject("deepdetectStore")
 @inject("modelRepositoriesStore")
