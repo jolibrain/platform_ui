@@ -10,6 +10,7 @@
 
 // Palette
 @import "./palettes/palette-1.scss";
+@import "./palettes/chart-badges.scss";
 
 @import "./Header.scss";
 @import "./Home.scss";
@@ -21,6 +22,8 @@
 
 @import "./Training/Home.scss";
 @import "./Training/Show.scss";
+
+@import "./Chart/Show.scss";
 
 @import "./Chain/Show.scss";
 

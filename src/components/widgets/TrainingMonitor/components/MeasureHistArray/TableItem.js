@@ -7,22 +7,52 @@ import { Sparklines, SparklinesLine } from "react-sparklines";
 
 @observer
 export default class TableItem extends React.Component {
-  render() {
-    const { service, measureHistKey } = this.props;
+  constructor(props) {
+    super(props);
+
+    // colors froms src/styles/palettes/chart-badges.scss
+    this.state = {
+      logScale: false,
+      colors: [
+        "rgb(166,206,227)",
+        "rgb(178,223,138)",
+        "rgb(251,154,153)",
+        "rgb(253,191,111)",
+        "rgb(202,178,214)",
+        "rgb(255,255,153)",
+        "rgb(31,120,180)",
+        "rgb(51,160,44)",
+        "rgb(227,26,28)",
+        "rgb(255,127,0)",
+        "rgb(106,61,154)",
+        "rgb(177,89,40)"
+      ]
+    };
+
+    this.getSparklines = this.getSparklines.bind(this);
+    this.getServiceSparkline = this.getServiceSparkline.bind(this);
+
+    this.getValues = this.getValues.bind(this);
+    this.getServiceValues = this.getServiceValues.bind(this);
+  }
+
+  getServiceValues(service, index) {
+    const { measureHistKey } = this.props;
     const measureKey = measureHistKey.replace("_hist", "");
 
-    let measure, measure_hist;
+    let value = "--",
+      measure,
+      measure_hist;
+
     if (service.jsonMetrics) {
-      measure = service.jsonMetrics.body.measure;
       measure_hist = service.jsonMetrics.body.measure_hist;
+      measure = service.jsonMetrics.body.measure;
     } else {
-      measure = service.measure;
       measure_hist = service.measure_hist;
+      measure = service.measure;
     }
 
-    let classNames = [];
-
-    let value = "--";
+    if (!measure_hist) return null;
 
     if (
       typeof measure === "undefined" ||
@@ -47,13 +77,6 @@ export default class TableItem extends React.Component {
       }
     }
 
-    // display color levels for clacc
-    if (measureKey.includes("clacc")) {
-      if (value > 0) classNames.push("clacc-level-0");
-      if (value > 0.55) classNames.push("clacc-level-warning");
-      if (value > 0.9) classNames.push("clacc-level-success");
-    }
-
     if (typeof value !== "undefined" && typeof value.toFixed === "function") {
       if (value > 1) {
         value = value.toFixed(5);
@@ -69,7 +92,24 @@ export default class TableItem extends React.Component {
       }
     }
 
-    let sparkData = [];
+    return (
+      <h4>
+        <i className={`fa fa-circle chart-badge-${index}`} />
+        {value} (best: {Math.max(...measure_hist[measureHistKey]).toFixed(5)})
+      </h4>
+    );
+  }
+
+  getServiceSparkline(service, index) {
+    const { measureHistKey } = this.props;
+    let sparkData = [],
+      measure_hist;
+
+    if (service.jsonMetrics) {
+      measure_hist = service.jsonMetrics.body.measure_hist;
+    } else {
+      measure_hist = service.measure_hist;
+    }
 
     if (
       measure_hist &&
@@ -82,22 +122,65 @@ export default class TableItem extends React.Component {
     }
 
     return (
+      <Sparklines
+        data={sparkData}
+        min={Math.floor(Math.min(...sparkData))}
+        max={Math.ceil(Math.max(...sparkData))}
+      >
+        <SparklinesLine
+          color={this.state.colors[index]}
+          style={{ strokeWidth: 3 }}
+        />
+      </Sparklines>
+    );
+  }
+
+  getValues() {
+    let { service, services } = this.props;
+
+    // When multiple services,
+    // use first service as referential to know which chart will be displayed
+    if (services && services.length > 0 && !service) {
+      service = services[0];
+    } else {
+      // Create array with only service in order to build dataset
+      services = [service];
+    }
+
+    console.log(services);
+
+    return services.map((s, index) => this.getServiceValues(s, index));
+  }
+
+  getSparklines() {
+    let { service, services } = this.props;
+
+    // When multiple services,
+    // use first service as referential to know which chart will be displayed
+    if (services && services.length > 0 && !service) {
+      service = services[0];
+    } else {
+      // Create array with only service in order to build dataset
+      services = [service];
+    }
+
+    console.log(services);
+
+    return services.map((s, index) => this.getServiceSparkline(s, index));
+  }
+
+  render() {
+    const { measureHistKey } = this.props;
+    const measureKey = measureHistKey.replace("_hist", "");
+
+    return (
       <tr key={`measureKey-${measureKey}`}>
         <th scope="row" className="sparkline">
-          <Sparklines
-            data={sparkData}
-            min={Math.floor(Math.min(...sparkData))}
-            max={Math.ceil(Math.max(...sparkData))}
-          >
-            <SparklinesLine color="#102a42" />
-          </Sparklines>
+          {this.getSparklines()}
         </th>
         <td>
-          <h3>
-            {value} (best:{" "}
-            {Math.max(...measure_hist[measureHistKey]).toFixed(5)})
-          </h3>
-          <h4>{measureKey}</h4>
+          {this.getValues()}
+          <h3>{measureKey}</h3>
         </td>
       </tr>
     );
@@ -106,5 +189,6 @@ export default class TableItem extends React.Component {
 
 TableItem.propTypes = {
   measureHistKey: PropTypes.string.isRequired,
-  service: PropTypes.object.isRequired
+  service: PropTypes.object,
+  services: PropTypes.array
 };

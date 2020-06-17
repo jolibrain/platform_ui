@@ -26,6 +26,43 @@ export default class RepositoryStore {
       typeof config.isTraining === "undefined" ? false : config.isTraining;
   }
 
+  repositoryExists(path) {
+    return this.repositories.some(r => r.path === path);
+  }
+
+  _isRepository(fileList) {
+    return (
+      fileList.includes("model.json") ||
+      fileList.includes("deploy.prototxt") ||
+      fileList.includes("config.json") ||
+      fileList.includes("metrics.json") ||
+      fileList.includes("best_model.txt")
+    );
+  }
+
+  // Fast load an unique repository
+  @action
+  async fastLoad(repoPath) {
+    let files = [],
+      repository = null;
+
+    try {
+      const result = await this.$reqFolder(repoPath);
+      files = result.files;
+
+      if (this._isRepository(files) && !this.repositoryExists(repoPath)) {
+        repository = new Repository(repoPath, files, this);
+        this.repositories = [repository];
+      }
+    } catch (err) {
+      console.log(
+        `Error while fast-loading repository from repositoryStore - path: ${repoPath}`
+      );
+    }
+
+    return repository;
+  }
+
   @action
   async load() {
     this.isRefreshing = true;
@@ -42,7 +79,13 @@ export default class RepositoryStore {
       }
     }
 
-    this.repositories = repositories;
+    // Merge new repositories
+    const repoPaths = new Set(this.repositories.map(r => r.path));
+    this.repositories = [
+      ...this.repositories,
+      ...repositories.filter(r => !repoPaths.has(r.path))
+    ];
+
     this.isReady = true;
     this.isRefreshing = false;
   }
@@ -60,14 +103,7 @@ export default class RepositoryStore {
       return [];
     }
 
-    const isRepository =
-      files.includes("model.json") ||
-      files.includes("deploy.prototxt") ||
-      files.includes("config.json") ||
-      files.includes("metrics.json") ||
-      files.includes("best_model.txt");
-
-    if (isRepository && !isRoot) {
+    if (this._isRepository(files) && !isRoot) {
       const repository = new Repository(rootPath, files, this);
       return [repository];
     } else if (folders.length > 0) {

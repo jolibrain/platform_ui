@@ -49,7 +49,11 @@ export default class GeneralInfo extends React.Component {
   render() {
     let infoCharts = [];
 
-    const { service } = this.props;
+    let { service, services } = this.props;
+
+    // When multiple services,
+    // use first service as referential to know which chart will be displayed
+    if (services && services.length > 0 && !service) service = services[0];
 
     if (!service.jsonMetrics && !service.respInfo) return null;
 
@@ -80,6 +84,8 @@ export default class GeneralInfo extends React.Component {
       />
     );
 
+    let hasMap = false;
+
     if (typeof measure !== "undefined" && measure !== null) {
       if (typeof measure.accp !== "undefined") {
         infoCharts.push(
@@ -98,6 +104,18 @@ export default class GeneralInfo extends React.Component {
             title="Accuracy"
             key="acc"
             attribute="acc"
+            steppedLine
+            showBest
+            {...this.props}
+          />
+        );
+      } else if (typeof measure.map !== "undefined") {
+        hasMap = true;
+        infoCharts.push(
+          <MeasureChart
+            title="Map"
+            key="map"
+            attribute="map"
             steppedLine
             showBest
             {...this.props}
@@ -129,16 +147,17 @@ export default class GeneralInfo extends React.Component {
         );
         break;
       case "detection":
-        infoCharts.push(
-          <MeasureChart
-            title="MAP"
-            attribute="map"
-            key="map"
-            steppedLine
-            showBest
-            {...this.props}
-          />
-        );
+        if (!hasMap)
+          infoCharts.push(
+            <MeasureChart
+              title="MAP"
+              attribute="map"
+              key="map"
+              steppedLine
+              showBest
+              {...this.props}
+            />
+          );
         break;
       case "classification":
         infoCharts.push(
@@ -193,5 +212,6 @@ export default class GeneralInfo extends React.Component {
 }
 
 GeneralInfo.propTypes = {
-  service: PropTypes.object.isRequired
+  service: PropTypes.object,
+  services: PropTypes.array
 };

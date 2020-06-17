@@ -1,0 +1,101 @@
+// https://colorbrewer2.org/#type=qualitative&scheme=Paired&n=12
+
+$chart_badge_light_0: rgba(166, 206, 227, 0.2);
+$chart_badge_light_1: rgba(178, 223, 138, 0.2);
+$chart_badge_light_2: rgba(251, 154, 153, 0.2);
+$chart_badge_light_3: rgba(253, 191, 111, 0.2);
+$chart_badge_light_4: rgba(202, 178, 214, 0.2);
+$chart_badge_light_5: rgba(255, 255, 153, 0.2);
+$chart_badge_light_6: rgba(31, 120, 180, 0.2);
+$chart_badge_light_7: rgba(51, 160, 44, 0.2);
+$chart_badge_light_8: rgba(227, 26, 28, 0.2);
+$chart_badge_light_9: rgba(255, 127, 0, 0.2);
+$chart_badge_light_10: rgba(106, 61, 154, 0.2);
+$chart_badge_light_11: rgba(177, 89, 40, 0.2);
+
+$chart_badge_0: rgb(166, 206, 227);
+$chart_badge_1: rgb(178, 223, 138);
+$chart_badge_2: rgb(251, 154, 153);
+$chart_badge_3: rgb(253, 191, 111);
+$chart_badge_4: rgb(202, 178, 214);
+$chart_badge_5: rgb(255, 255, 153);
+$chart_badge_6: rgb(31, 120, 180);
+$chart_badge_7: rgb(51, 160, 44);
+$chart_badge_8: rgb(227, 26, 28);
+$chart_badge_9: rgb(255, 127, 0);
+$chart_badge_10: rgb(106, 61, 154);
+$chart_badge_11: rgb(177, 89, 40);
+
+.chart-badge-0 {
+  color: $chart_badge_0;
+}
+.chart-badge-1 {
+  color: $chart_badge_1;
+}
+.chart-badge-2 {
+  color: $chart_badge_2;
+}
+.chart-badge-3 {
+  color: $chart_badge_3;
+}
+.chart-badge-4 {
+  color: $chart_badge_4;
+}
+.chart-badge-5 {
+  color: $chart_badge_5;
+}
+.chart-badge-6 {
+  color: $chart_badge_6;
+}
+.chart-badge-7 {
+  color: $chart_badge_7;
+}
+.chart-badge-8 {
+  color: $chart_badge_8;
+}
+.chart-badge-9 {
+  color: $chart_badge_9;
+}
+.chart-badge-10 {
+  color: $chart_badge_10;
+}
+.chart-badge-11 {
+  color: $chart_badge_11;
+}
+
+.chart-badge-light-0 {
+  color: $chart_badge_light_0;
+}
+.chart-badge-light-1 {
+  color: $chart_badge_light_1;
+}
+.chart-badge-light-2 {
+  color: $chart_badge_light_2;
+}
+.chart-badge-light-3 {
+  color: $chart_badge_light_3;
+}
+.chart-badge-light-4 {
+  color: $chart_badge_light_4;
+}
+.chart-badge-light-5 {
+  color: $chart_badge_light_5;
+}
+.chart-badge-light-6 {
+  color: $chart_badge_light_6;
+}
+.chart-badge-light-7 {
+  color: $chart_badge_light_7;
+}
+.chart-badge-light-8 {
+  color: $chart_badge_light_8;
+}
+.chart-badge-light-9 {
+  color: $chart_badge_light_9;
+}
+.chart-badge-light-10 {
+  color: $chart_badge_light_10;
+}
+.chart-badge-light-11 {
+  color: $chart_badge_light_11;
+}

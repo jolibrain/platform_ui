@@ -1,0 +1,40 @@
+@import "../palettes/palette-1.scss";
+
+.chart-show-component .main-view {
+  .title {
+    background-color: $neutral_blue_2;
+    color: $neutral_blue_10;
+
+    h3 {
+      font-size: 36px;
+      margin: 0;
+      color: $neutral_blue_10;
+      font-weight: 600;
+    }
+
+    h4 {
+      font-size: 20px;
+      color: $neutral_blue_7;
+      font-weight: 400;
+    }
+
+    h5 {
+      width: 100%;
+
+      i {
+        margin-right: 10px;
+      }
+    }
+  }
+
+  .chart-breadcrumb {
+    background-color: $neutral_blue_10;
+  }
+
+  .main-view {
+    .serviceList,
+    .serviceQuickCreate {
+      margin-top: 20px;
+    }
+  }
+}
