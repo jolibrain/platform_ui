@@ -152,7 +152,9 @@ export default class Repository {
       const meta = await this.$reqJsonMetrics();
       this.jsonMetrics = meta.content;
       this.metricsDate = meta.header["last-modified"];
-    } catch (e) {}
+    } catch (err) {
+      //console.log(`Error while loading repository json metrics - ${this.name} - ${err}`)
+    }
   }
 
   @action
