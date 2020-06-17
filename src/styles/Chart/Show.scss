@@ -17,6 +17,14 @@
       color: $neutral_blue_7;
       font-weight: 400;
     }
+
+    h5 {
+      width: 100%;
+
+      i {
+        margin-right: 10px;
+      }
+    }
   }
 
   .chart-breadcrumb {

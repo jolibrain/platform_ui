@@ -38,7 +38,7 @@ export default class Title extends React.Component {
   }
 
   render() {
-    const { service } = this.props;
+    const { service, serviceIndex, hasTitle } = this.props;
 
     let measure = null;
 
@@ -126,6 +126,15 @@ export default class Title extends React.Component {
 
     return (
       <div className="title p-4 row">
+        {hasTitle ? (
+          <h5>
+            <i
+              className={`fa fa-circle chart-badge-${serviceIndex}`}
+              aria-hidden="true"
+            />
+            {service.name}
+          </h5>
+        ) : null}
         {infoColumns.map((col, index) => {
           return (
             <div key={`info-${index}`} className="col-lg-3 col-md-6">
@@ -140,5 +149,7 @@ export default class Title extends React.Component {
 }
 
 Title.propTypes = {
-  service: PropTypes.object.isRequired
+  service: PropTypes.object.isRequired,
+  serviceIndex: PropTypes.number,
+  hasTitle: PropTypes.bool
 };

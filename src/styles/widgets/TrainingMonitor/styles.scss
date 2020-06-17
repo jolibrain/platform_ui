@@ -21,6 +21,11 @@
         font-size: 22px;
         font-weight: 700;
 
+        i {
+          margin-right: 5px;
+          font-size: 18px;
+        }
+
         span.minValue,
         span.bestValue {
           color: $neutral_blue_8;
@@ -79,6 +84,13 @@
         color: $neutral_blue_3;
         margin: 0;
         font-size: 16px;
+
+        i {
+          margin-right: 3px;
+          font-size: 12px;
+          position: relative;
+          bottom: 2px;
+        }
       }
     }
 

@@ -7,7 +7,16 @@ import Table from "./Table";
 @observer
 export default class MeasureHistArray extends React.Component {
   render() {
-    const { service } = this.props;
+    let { service, services } = this.props;
+
+    // When multiple services,
+    // use first service as referential to know which chart will be displayed
+    if (services && services.length > 0 && !service) {
+      service = services[0];
+    } else {
+      // Create array with only service in order to build dataset
+      services = [service];
+    }
 
     if (!service.jsonMetrics && !service.respTrainMetrics) return null;
 

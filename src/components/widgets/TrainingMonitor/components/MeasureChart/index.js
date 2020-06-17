@@ -12,12 +12,46 @@ export default class MeasureChart extends React.Component {
   constructor(props) {
     super(props);
 
+    // colors from src/styles/palettes/chart-badges.scss
     this.state = {
-      logScale: false
+      logScale: false,
+      colors: {
+        light: [
+          "rgba(166,206,227,0.2)",
+          "rgba(178,223,138,0.2)",
+          "rgba(251,154,153,0.2)",
+          "rgba(253,191,111,0.2)",
+          "rgba(202,178,214,0.2)",
+          "rgba(255,255,153,0.2)",
+          "rgba(31,120,180,0.2)",
+          "rgba(51,160,44,0.2)",
+          "rgba(227,26,28,0.2)",
+          "rgba(255,127,0,0.2)",
+          "rgba(106,61,154,0.2)",
+          "rgba(177,89,40,0.2)"
+        ],
+        dark: [
+          "rgb(166,206,227)",
+          "rgb(178,223,138)",
+          "rgb(251,154,153)",
+          "rgb(253,191,111)",
+          "rgb(202,178,214)",
+          "rgb(255,255,153)",
+          "rgb(31,120,180)",
+          "rgb(51,160,44)",
+          "rgb(227,26,28)",
+          "rgb(255,127,0)",
+          "rgb(106,61,154)",
+          "rgb(177,89,40)"
+        ]
+      }
     };
 
+    this.getServiceValue = this.getServiceValue.bind(this);
     this.getValue = this.getValue.bind(this);
+
     this.getChartData = this.getChartData.bind(this);
+    this.getChartDataset = this.getChartDataset.bind(this);
 
     this.toggleLogScale = this.toggleLogScale.bind(this);
   }
@@ -80,9 +114,7 @@ export default class MeasureChart extends React.Component {
     chartInstance.update();
   }
 
-  getMinValue(attr) {
-    const { service } = this.props;
-
+  getMinValue(service, attr) {
     const measure_hist = service.jsonMetrics
       ? service.jsonMetrics.body.measure_hist
       : service.measure_hist;
@@ -100,9 +132,7 @@ export default class MeasureChart extends React.Component {
     return value ? value.toFixed(5) : "--";
   }
 
-  getBestValue(attr) {
-    const { service } = this.props;
-
+  getBestValue(service, attr) {
     const measure_hist = service.jsonMetrics
       ? service.jsonMetrics.body.measure_hist
       : service.measure_hist;
@@ -120,9 +150,7 @@ export default class MeasureChart extends React.Component {
     return value ? value.toFixed(5) : "--";
   }
 
-  getValue(attr) {
-    const { service } = this.props;
-
+  getValue(service, attr) {
     let measure, measure_hist;
     if (service.jsonMetrics) {
       measure = service.jsonMetrics.body.measure;
@@ -152,8 +180,62 @@ export default class MeasureChart extends React.Component {
     return value !== null ? value : "--";
   }
 
+  getChartDataset(service, attr, index) {
+    let measure_hist, measures;
+    if (service.jsonMetrics) {
+      measure_hist = service.jsonMetrics.body.measure_hist;
+    } else {
+      measure_hist = service.measure_hist;
+    }
+
+    if (
+      measure_hist &&
+      measure_hist[`${attr}_hist`] &&
+      measure_hist[`${attr}_hist`].length > 0
+    ) {
+      measures = toJS(measure_hist[`${attr}_hist`]);
+      // Remove Infinity values from measure_hist
+      if (measures.some(x => x === Infinity)) {
+        measures = measure_hist[`${attr}_hist`].map(x => {
+          return x === Infinity ? 0 : x;
+        });
+      }
+    }
+
+    // old colors
+    // light: hsl(210, 22%, 49%)
+    // dark: hsl(210, 22%, 80%)
+
+    return {
+      label: service.name,
+      data: measures ? measures.map(x => (x ? x.toFixed(5) : null)) : [],
+      fill: false,
+      lineTension: 0,
+      steppedLine: this.props.steppedLine,
+      backgroundColor: this.state.colors.dark[index],
+      borderColor: this.state.colors.dark[index],
+      showLine: this.state.showLine || this.props.steppedLine ? true : false,
+      radius: measures
+        ? measures.map(x => (this.props.steppedLine ? 0 : 2))
+        : [],
+      pointBackgroundColor: measures
+        ? measures.map(x => this.state.colors.light[index])
+        : [],
+      order: index
+    };
+  }
+
   getChartData(attr) {
-    const { service } = this.props;
+    let { service, services } = this.props;
+
+    // When multiple services,
+    // use first service as referential to know which chart will be displayed
+    if (services && services.length > 0 && !service) {
+      service = services[0];
+    } else {
+      // Create array with only service in order to build dataset
+      services = [service];
+    }
 
     let measure_hist, measure;
     if (service.jsonMetrics) {
@@ -196,22 +278,27 @@ export default class MeasureChart extends React.Component {
         }
       }
 
+      let datasets = services.map((s, index) =>
+        this.getChartDataset(s, attr, index)
+      );
+
+      // Fill chartData with missing items
+      const maxDatasetLength = Math.max.apply(
+        null,
+        datasets.map(d => d.data.length)
+      );
+      datasets.forEach(d => {
+        if (d.data.length < maxDatasetLength) {
+          const emptyItems = new Array(maxDatasetLength - d.data.length);
+          d.data.push(...emptyItems);
+          d.radius.push(...emptyItems);
+          d.pointBackgroundColor.push(...emptyItems);
+        }
+      });
+
       chartData = {
         labels: labels,
-        datasets: [
-          {
-            data: measures.map(x => (x ? x.toFixed(5) : null)),
-            fill: false,
-            lineTension: 0,
-            steppedLine: this.props.steppedLine,
-            backgroundColor: "hsl(210, 22%, 49%)",
-            borderColor: "hsl(210, 22%, 49%)",
-            showLine:
-              this.state.showLine || this.props.steppedLine ? true : false,
-            radius: measures.map(x => (this.props.steppedLine ? 0 : 2)),
-            pointBackgroundColor: measures.map(x => "hsl(210, 22%, 80%)")
-          }
-        ]
+        datasets: datasets
       };
     }
 
@@ -225,8 +312,77 @@ export default class MeasureChart extends React.Component {
     return chartData;
   }
 
+  getServiceValue(service, index, attribute, chartData = null) {
+    let displayedValue = this.getValue(service, attribute);
+
+    if (attribute === "train_loss") {
+      displayedValue = parseFloat(displayedValue);
+
+      if (typeof displayedValue.toFixed === "function") {
+        if (displayedValue > 1) {
+          displayedValue = displayedValue.toFixed(3);
+        } else {
+          // Find position of first number after the comma
+          const zeroPosition = displayedValue
+            .toString()
+            .split("0")
+            .slice(2)
+            .findIndex(elem => elem.length > 0);
+
+          displayedValue = displayedValue.toFixed(zeroPosition + 4);
+        }
+      }
+    }
+
+    let minValue = null;
+    if (this.props.showMinValue) {
+      minValue = this.getMinValue(service, attribute);
+    }
+
+    let bestValue = null;
+    if (this.props.showBest) {
+      bestValue = this.getBestValue(service, attribute);
+      const bestValueIndex = chartData.datasets[index].data.indexOf(bestValue);
+      chartData.datasets[index]["pointBackgroundColor"][bestValueIndex] =
+        "hsl(360, 67%, 44%)";
+      chartData.datasets[index]["radius"][bestValueIndex] = 4;
+    }
+
+    const badge =
+      this.props.services && this.props.services.length > 0 ? (
+        <i className={`fa fa-circle chart-badge-${index}`} />
+      ) : null;
+
+    return (
+      <h3>
+        {badge}
+        {displayedValue}{" "}
+        {this.props.showMinValue ? (
+          <span className="minValue">(min: {minValue})</span>
+        ) : (
+          ""
+        )}
+        {this.props.showBest ? (
+          <span className="bestValue">(best: {bestValue})</span>
+        ) : (
+          ""
+        )}
+      </h3>
+    );
+  }
+
   render() {
     const { title, attribute } = this.props;
+    let { service, services } = this.props;
+
+    // When multiple services,
+    // use first service as referential to know which chart will be displayed
+    if (services && services.length > 0 && !service) {
+      service = services[0];
+    } else {
+      // Create array with only service in order to build dataset
+      services = [service];
+    }
 
     const chartData = this.getChartData(attribute);
 
@@ -274,40 +430,9 @@ export default class MeasureChart extends React.Component {
       }
     };
 
-    let minValue = null;
-    if (this.props.showMinValue) {
-      minValue = this.getMinValue(attribute);
-    }
-
-    let bestValue = null;
-    if (this.props.showBest) {
-      bestValue = this.getBestValue(attribute);
-      const bestValueIndex = chartData.datasets[0].data.indexOf(bestValue);
-      chartData.datasets[0]["pointBackgroundColor"][bestValueIndex] =
-        "hsl(360, 67%, 44%)";
-      chartData.datasets[0]["radius"][bestValueIndex] = 4;
-    }
-
-    let displayedValue = this.getValue(attribute);
-
-    if (attribute === "train_loss") {
-      displayedValue = parseFloat(displayedValue);
-
-      if (typeof displayedValue.toFixed === "function") {
-        if (displayedValue > 1) {
-          displayedValue = displayedValue.toFixed(3);
-        } else {
-          // Find position of first number after the comma
-          const zeroPosition = displayedValue
-            .toString()
-            .split("0")
-            .slice(2)
-            .findIndex(elem => elem.length > 0);
-
-          displayedValue = displayedValue.toFixed(zeroPosition + 4);
-        }
-      }
-    }
+    const values = services.map((service, index) =>
+      this.getServiceValue(service, index, attribute, chartData)
+    );
 
     return (
       <div className="trainingmonitor-chart col-lg-3 col-md-6">
@@ -321,19 +446,7 @@ export default class MeasureChart extends React.Component {
             />
           </div>
           <div className="description row">
-            <h3>
-              {displayedValue}{" "}
-              {this.props.showMinValue ? (
-                <span className="minValue">(min: {minValue})</span>
-              ) : (
-                ""
-              )}
-              {this.props.showBest ? (
-                <span className="bestValue">(best: {bestValue})</span>
-              ) : (
-                ""
-              )}
-            </h3>
+            {values}
             <h4>
               {title}{" "}
               {this.props.showLogScale ? (
@@ -356,5 +469,6 @@ MeasureChart.propTypes = {
   title: PropTypes.string.isRequired,
   attribute: PropTypes.string.isRequired,
   steppedLine: PropTypes.bool,
-  service: PropTypes.object.isRequired
+  service: PropTypes.object,
+  services: PropTypes.array
 };

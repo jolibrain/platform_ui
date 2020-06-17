@@ -4,7 +4,7 @@ import { inject, observer } from "mobx-react";
 
 import RightPanel from "../../../commons/RightPanel";
 
-import Title from "../../../../widgets/TrainingMonitor/components/Title";
+import MultiTitle from "../../../../widgets/TrainingMonitor/components/MultiTitle";
 import GeneralInfo from "../../../../widgets/TrainingMonitor/components/GeneralInfo";
 import MeasureHistArray from "../../../../widgets/TrainingMonitor/components/MeasureHistArray";
 
@@ -30,7 +30,6 @@ export default class ModelCompare extends React.Component {
     try {
       let repositories = [];
       let paths = match.params.chartParams.split("+");
-      console.log(paths);
 
       for (let i = 0; i < paths.length; i++) {
         let path = paths[i];
@@ -66,18 +65,12 @@ export default class ModelCompare extends React.Component {
       <div className="main-view content-wrapper">
         {repositories.length > 0 ? (
           <div className="fluid-container">
-            {repositories.map(repository => {
-              return (
-                <div key={repository.path}>
-                  <Title service={repository} />
-                  <div className="content p-4">
-                    <GeneralInfo service={repository} />
-                    <MeasureHistArray service={repository} />
-                    <RightPanel includeDownloadPanel />
-                  </div>
-                </div>
-              );
-            })}
+            <MultiTitle services={repositories} />
+            <div className="content p-4">
+              <GeneralInfo services={repositories} />
+              <MeasureHistArray services={repositories} />
+              <RightPanel includeDownloadPanel />
+            </div>
           </div>
         ) : (
           <div className="fluid-container">

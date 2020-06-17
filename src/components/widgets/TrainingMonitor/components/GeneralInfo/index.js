@@ -49,7 +49,11 @@ export default class GeneralInfo extends React.Component {
   render() {
     let infoCharts = [];
 
-    const { service } = this.props;
+    let { service, services } = this.props;
+
+    // When multiple services,
+    // use first service as referential to know which chart will be displayed
+    if (services && services.length > 0 && !service) service = services[0];
 
     if (!service.jsonMetrics && !service.respInfo) return null;
 
@@ -208,5 +212,6 @@ export default class GeneralInfo extends React.Component {
 }
 
 GeneralInfo.propTypes = {
-  service: PropTypes.object.isRequired
+  service: PropTypes.object,
+  services: PropTypes.array
 };
