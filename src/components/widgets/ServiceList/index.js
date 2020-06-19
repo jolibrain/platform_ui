@@ -15,30 +15,36 @@ export default class ServiceList extends React.Component {
       return null;
 
     const { deepdetectStore, match } = this.props;
+    const { trainingServices, predictServices } = deepdetectStore;
 
     const predictPatt = /^\/predict/g;
     const trainingPatt = /^\/training/g;
 
-    const serviceItems = deepdetectStore.services
-      .filter((service, index) => {
-        // Select training services on training page,
-        // and predict services on predict page
-        return (
-          (trainingPatt.test(match.path) && service.settings.training) ||
-          (predictPatt.test(match.path) && !service.settings.training)
-        );
-      })
-      .map((service, index) => {
-        return <ServiceItem key={index} service={service} />;
-      });
+    let selectedServices = [];
 
-    // Show chain items only on predict page
-    let chainItems = [];
+    let chainItems = deepdetectStore.chains.map((chain, index) => {
+      return <ChainItem key={index} chain={chain} />;
+    });
+
+    // Test if on predict page
     if (predictPatt.test(match.path)) {
-      chainItems = deepdetectStore.chains.map((chain, index) => {
-        return <ChainItem key={index} chain={chain} />;
-      });
+      selectedServices = predictServices;
+
+      // test if on training page
+    } else if (trainingPatt.test(match.path)) {
+      selectedServices = trainingServices;
+
+      // Disable chainItems on training pages
+      chainItems = [];
+
+      // Display all services, usually on frontpage
+    } else {
+      selectedServices = [...predictServices, ...trainingServices];
     }
+
+    const serviceItems = selectedServices.map((service, index) => {
+      return <ServiceItem key={index} service={service} />;
+    });
 
     return (
       <ul
