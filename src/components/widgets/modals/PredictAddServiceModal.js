@@ -176,6 +176,7 @@ export default class PredictAddServiceModal extends React.Component {
       window.location.hostname === "127.0.0.1" ||
       window.location.protocol === "https:";
 
+    console.log(gpuStoreServer.recommendedGpuIndex);
     return (
       <div id="modal-addService">
         <div className="modal-header">
@@ -220,6 +221,9 @@ export default class PredictAddServiceModal extends React.Component {
                         >
                           <span className="badge badge-pill">
                             <i className="far fa-hdd" /> {index}
+                            {index === gpuStoreServer.recommendedGpuIndex
+                              ? " (*)"
+                              : null}
                           </span>
                         </label>
                       </div>
@@ -229,6 +233,8 @@ export default class PredictAddServiceModal extends React.Component {
                 <small id="gpuIdHelp" className="form-text text-muted">
                   GPU id of the GPU to use for this service, see right sidebar
                   indexes
+                  <br />
+                  *: recommended GPU to use based on current stats
                 </small>
               </div>
             ) : (
