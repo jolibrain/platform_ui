@@ -561,6 +561,11 @@ export default class deepdetectService {
 
         break;
 
+      case "regression":
+        delete input.postData.parameters.output.bbox;
+        input.postData.parameters.mllib.regression = true;
+        break;
+
       default:
         break;
     }
