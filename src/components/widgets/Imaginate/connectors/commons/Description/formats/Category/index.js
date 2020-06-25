@@ -38,6 +38,12 @@ export default class Category extends React.Component {
         serviceSettings.display.okClass === category.cat ? "#0C0" : "#C00";
     }
 
+    const value = category.prob
+      ? category.prob
+      : category.val
+      ? category.val
+      : 0;
+
     return (
       <div key={index}>
         <span
@@ -45,7 +51,7 @@ export default class Category extends React.Component {
           className="badge badge-success"
           onMouseOver={onOver.bind(this, index)}
           onMouseLeave={onLeave}
-          data-tip={`${category.prob.toFixed(2)}`}
+          data-tip={`${value.toFixed(2)}`}
           ref={c => this._nodes.set(index, c)}
         >
           {category.cat}
@@ -60,13 +66,15 @@ export default class Category extends React.Component {
 
     if (!input.json || !input.json.body) return null;
 
-    const { classes } = input.json.body.predictions[0];
+    const content = input.json.body.predictions[0].vector
+      ? input.json.body.predictions[0].vector
+      : input.json.body.predictions[0].classes;
 
-    if (!classes) return null;
+    if (!content) return null;
 
     return (
       <div className="description-category">
-        {classes.map(this.categoryDisplay)}
+        {content.map(this.categoryDisplay)}
         <ReactTooltip effect="solid" />
       </div>
     );

@@ -47,7 +47,10 @@ export default class Description extends React.Component {
         service.settings.mltype === "ctc" ||
         (service.respInfo &&
           service.respInfo.body &&
-          service.respInfo.body.mltype === "classification")
+          service.respInfo.body.mltype === "classification") ||
+        (service.respInfo &&
+          service.respInfo.body &&
+          service.respInfo.body.mltype === "regression")
       ) {
         displayFormat = "category";
       }
