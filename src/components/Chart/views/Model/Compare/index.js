@@ -17,8 +17,24 @@ export default class ModelCompare extends React.Component {
 
     this.state = {
       repositories: [],
+      hiddenRepositoriesIndexes: [],
       error: null
     };
+
+    this.handleRepositoryVisibility = this.handleRepositoryVisibility.bind(
+      this
+    );
+  }
+
+  handleRepositoryVisibility(index) {
+    let indexes = [...this.state.hiddenRepositoriesIndexes];
+
+    if (indexes.includes(index)) {
+      indexes.splice(indexes.indexOf(index), 1);
+      this.setState({ hiddenRepositoriesIndexes: indexes });
+    } else {
+      this.setState({ hiddenRepositoriesIndexes: [...indexes, index] });
+    }
   }
 
   async componentWillMount() {
@@ -59,16 +75,24 @@ export default class ModelCompare extends React.Component {
   }
 
   render() {
-    const { repositories, error } = this.state;
+    const { repositories, hiddenRepositoriesIndexes, error } = this.state;
+
+    const visibleRepositories = repositories.map((repository, index) => {
+      return hiddenRepositoriesIndexes.includes(index) ? null : repository;
+    });
 
     return (
       <div className="main-view content-wrapper">
         {repositories.length > 0 ? (
           <div className="fluid-container">
-            <MultiTitle services={repositories} />
+            <MultiTitle
+              services={repositories}
+              hiddenRepositoriesIndexes={hiddenRepositoriesIndexes}
+              handleRepositoryVisibility={this.handleRepositoryVisibility}
+            />
             <div className="content p-4">
-              <GeneralInfo services={repositories} />
-              <MeasureHistArray services={repositories} />
+              <GeneralInfo services={visibleRepositories} />
+              <MeasureHistArray services={visibleRepositories} />
               <RightPanel includeDownloadPanel />
             </div>
           </div>
