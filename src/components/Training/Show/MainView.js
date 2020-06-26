@@ -43,8 +43,8 @@ export default class MainView extends React.Component {
             <Breadcrumb service={service} isTraining={true} />
           </div>
           <div className="content p-4">
-            <GeneralInfo service={service} />
-            <MeasureHistArray service={service} />
+            <GeneralInfo services={[service]} />
+            <MeasureHistArray services={[service]} />
             <RightPanel />
           </div>
         </div>

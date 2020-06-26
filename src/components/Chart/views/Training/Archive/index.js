@@ -60,8 +60,8 @@ export default class TrainingArchive extends React.Component {
           <div className="fluid-container">
             <Title service={repository} />
             <div className="content p-4">
-              <GeneralInfo service={repository} />
-              <MeasureHistArray service={repository} />
+              <GeneralInfo services={[repository]} />
+              <MeasureHistArray services={[repository]} />
               <RightPanel includeDownloadPanel />
             </div>
           </div>
