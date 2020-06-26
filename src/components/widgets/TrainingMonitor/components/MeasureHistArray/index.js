@@ -7,18 +7,13 @@ import Table from "./Table";
 @observer
 export default class MeasureHistArray extends React.Component {
   render() {
-    let { service, services } = this.props;
+    let { services } = this.props;
 
-    // When multiple services,
-    // use first service as referential to know which chart will be displayed
-    if (services && services.length > 0 && !service) {
-      service = services[0];
-    } else {
-      // Create array with only service in order to build dataset
-      services = [service];
-    }
+    // get first not null service
+    const service = services.filter(s => s)[0];
 
-    if (!service.jsonMetrics && !service.respTrainMetrics) return null;
+    if (!service || (!service.jsonMetrics && !service.respTrainMetrics))
+      return null;
 
     let measureHistKeys = Object.keys(service.measure_hist)
       .sort()
@@ -73,5 +68,5 @@ export default class MeasureHistArray extends React.Component {
 }
 
 MeasureHistArray.propTypes = {
-  service: PropTypes.object.isRequired
+  services: PropTypes.array.isRequired
 };

@@ -46,16 +46,30 @@ import MeasureChart from "../MeasureChart";
 
 @observer
 export default class GeneralInfo extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      layout: "col-md-6"
+    };
+
+    this.selectedLayout = this.selectLayout.bind(this);
+  }
+
+  selectLayout(layout) {
+    this.setState({ layout: layout });
+  }
+
   render() {
     let infoCharts = [];
 
-    let { service, services } = this.props;
+    const { layout } = this.state;
+    let { services } = this.props;
 
-    // When multiple services,
-    // use first service as referential to know which chart will be displayed
-    if (services && services.length > 0 && !service) service = services[0];
+    // get first not null service
+    const service = services.filter(s => s)[0];
 
-    if (!service.jsonMetrics && !service.respInfo) return null;
+    if (!service || (!service.jsonMetrics && !service.respInfo)) return null;
 
     let measure,
       mltype = null;
@@ -80,6 +94,7 @@ export default class GeneralInfo extends React.Component {
         attribute="train_loss"
         showMinValue
         showLogScale
+        layout={layout}
         {...this.props}
       />
     );
@@ -95,6 +110,7 @@ export default class GeneralInfo extends React.Component {
             attribute="accp"
             steppedLine
             showBest
+            layout={layout}
             {...this.props}
           />
         );
@@ -106,6 +122,7 @@ export default class GeneralInfo extends React.Component {
             attribute="acc"
             steppedLine
             showBest
+            layout={layout}
             {...this.props}
           />
         );
@@ -118,6 +135,7 @@ export default class GeneralInfo extends React.Component {
             attribute="map"
             steppedLine
             showBest
+            layout={layout}
             {...this.props}
           />
         );
@@ -133,6 +151,7 @@ export default class GeneralInfo extends React.Component {
             key="meaniou"
             steppedLine
             showBest
+            layout={layout}
             {...this.props}
           />
         );
@@ -142,6 +161,7 @@ export default class GeneralInfo extends React.Component {
             attribute="meanacc"
             key="meanacc"
             steppedLine
+            layout={layout}
             {...this.props}
           />
         );
@@ -155,6 +175,7 @@ export default class GeneralInfo extends React.Component {
               key="map"
               steppedLine
               showBest
+              layout={layout}
               {...this.props}
             />
           );
@@ -166,6 +187,7 @@ export default class GeneralInfo extends React.Component {
             attribute="meanacc"
             key="meanacc"
             steppedLine
+            layout={layout}
             {...this.props}
           />
         );
@@ -175,6 +197,7 @@ export default class GeneralInfo extends React.Component {
             attribute="f1"
             key="f1"
             steppedLine
+            layout={layout}
             {...this.props}
           />
         );
@@ -184,6 +207,7 @@ export default class GeneralInfo extends React.Component {
             attribute="mcll"
             key="mcll"
             steppedLine
+            layout={layout}
             {...this.props}
           />
         );
@@ -195,6 +219,7 @@ export default class GeneralInfo extends React.Component {
             attribute="eucll"
             key="eucll"
             steppedLine
+            layout={layout}
             {...this.props}
           />
         );
@@ -206,12 +231,35 @@ export default class GeneralInfo extends React.Component {
     }
 
     return (
-      <div className="trainingmonitor-generalinfo row charts">{infoCharts}</div>
+      <div>
+        <div className="trainingmonitor-layout row">
+          <i
+            className={`text-right fa fa-stop ${
+              layout === "col-md-12" ? "selected-layout" : ""
+            }`}
+            onClick={() => this.selectLayout("col-md-12")}
+          />
+          <i
+            className={`text-right fa fa-th-large ${
+              layout === "col-md-6" ? "selected-layout" : ""
+            }`}
+            onClick={() => this.selectLayout("col-md-6")}
+          />
+          <i
+            className={`text-right fa fa-th ${
+              layout === "col-md-3" ? "selected-layout" : ""
+            }`}
+            onClick={() => this.selectLayout("col-md-3")}
+          />
+        </div>
+        <div className="trainingmonitor-generalinfo row charts">
+          {infoCharts}
+        </div>
+      </div>
     );
   }
 }
 
 GeneralInfo.propTypes = {
-  service: PropTypes.object,
-  services: PropTypes.array
+  services: PropTypes.array.isRequired
 };

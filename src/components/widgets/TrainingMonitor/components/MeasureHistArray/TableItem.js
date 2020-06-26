@@ -44,6 +44,8 @@ export default class TableItem extends React.Component {
       measure,
       measure_hist;
 
+    if (!service) return null;
+
     if (service.jsonMetrics) {
       measure_hist = service.jsonMetrics.body.measure_hist;
       measure = service.jsonMetrics.body.measure;
@@ -105,6 +107,8 @@ export default class TableItem extends React.Component {
     let sparkData = [],
       measure_hist;
 
+    if (!service) return null;
+
     if (service.jsonMetrics) {
       measure_hist = service.jsonMetrics.body.measure_hist;
     } else {
@@ -147,8 +151,6 @@ export default class TableItem extends React.Component {
       services = [service];
     }
 
-    console.log(services);
-
     return services.map((s, index) => this.getServiceValues(s, index));
   }
 
@@ -163,8 +165,6 @@ export default class TableItem extends React.Component {
       // Create array with only service in order to build dataset
       services = [service];
     }
-
-    console.log(services);
 
     return services.map((s, index) => this.getServiceSparkline(s, index));
   }

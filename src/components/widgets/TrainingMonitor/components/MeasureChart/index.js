@@ -115,6 +115,8 @@ export default class MeasureChart extends React.Component {
   }
 
   getMinValue(service, attr) {
+    if (!service) return "--";
+
     const measure_hist = service.jsonMetrics
       ? service.jsonMetrics.body.measure_hist
       : service.measure_hist;
@@ -133,6 +135,8 @@ export default class MeasureChart extends React.Component {
   }
 
   getBestValue(service, attr) {
+    if (!service) return "--";
+
     const measure_hist = service.jsonMetrics
       ? service.jsonMetrics.body.measure_hist
       : service.measure_hist;
@@ -152,6 +156,9 @@ export default class MeasureChart extends React.Component {
 
   getValue(service, attr) {
     let measure, measure_hist;
+
+    if (!service) return "--";
+
     if (service.jsonMetrics) {
       measure = service.jsonMetrics.body.measure;
       measure_hist = service.jsonMetrics.body.measure_hist;
@@ -226,16 +233,10 @@ export default class MeasureChart extends React.Component {
   }
 
   getChartData(attr) {
-    let { service, services } = this.props;
+    const { services } = this.props;
 
-    // When multiple services,
-    // use first service as referential to know which chart will be displayed
-    if (services && services.length > 0 && !service) {
-      service = services[0];
-    } else {
-      // Create array with only service in order to build dataset
-      services = [service];
-    }
+    // get first not null service
+    const service = services.filter(s => s)[0];
 
     let measure_hist, measure;
     if (service.jsonMetrics) {
@@ -278,17 +279,17 @@ export default class MeasureChart extends React.Component {
         }
       }
 
-      let datasets = services.map((s, index) =>
-        this.getChartDataset(s, attr, index)
-      );
+      let datasets = services.map((s, index) => {
+        return s ? this.getChartDataset(s, attr, index) : {};
+      });
 
       // Fill chartData with missing items
       const maxDatasetLength = Math.max.apply(
         null,
-        datasets.map(d => d.data.length)
+        datasets.map(d => (d.data ? d.data.length : 0))
       );
       datasets.forEach(d => {
-        if (d.data.length < maxDatasetLength) {
+        if (d.data && d.data.length < maxDatasetLength) {
           const emptyItems = new Array(maxDatasetLength - d.data.length);
           d.data.push(...emptyItems);
           d.radius.push(...emptyItems);
@@ -306,56 +307,59 @@ export default class MeasureChart extends React.Component {
     if (this.props.steppedLine && chartData.datasets) {
       const data = chartData.datasets[0].data;
       chartData.labels.unshift(0);
-      chartData.datasets[0].data.push(data[data.length - 1]);
+
+      if (chartData.datasets[0].data)
+        chartData.datasets[0].data.push(data[data.length - 1]);
     }
 
     return chartData;
   }
 
   getServiceValue(service, index, attribute, chartData = null) {
-    let displayedValue = this.getValue(service, attribute);
+    let displayedValue = "--",
+      minValue = null,
+      bestValue = null;
 
-    if (attribute === "train_loss") {
-      displayedValue = parseFloat(displayedValue);
+    if (service) {
+      displayedValue = this.getValue(service, attribute);
 
-      if (typeof displayedValue.toFixed === "function") {
-        if (displayedValue > 1) {
-          displayedValue = displayedValue.toFixed(3);
-        } else {
-          // Find position of first number after the comma
-          const zeroPosition = displayedValue
-            .toString()
-            .split("0")
-            .slice(2)
-            .findIndex(elem => elem.length > 0);
+      if (attribute === "train_loss" && displayedValue !== "--") {
+        displayedValue = parseFloat(displayedValue);
 
-          displayedValue = displayedValue.toFixed(zeroPosition + 4);
+        if (typeof displayedValue.toFixed === "function") {
+          if (displayedValue > 1) {
+            displayedValue = displayedValue.toFixed(3);
+          } else {
+            // Find position of first number after the comma
+            const zeroPosition = displayedValue
+              .toString()
+              .split("0")
+              .slice(2)
+              .findIndex(elem => elem.length > 0);
+
+            displayedValue = displayedValue.toFixed(zeroPosition + 4);
+          }
         }
+      }
+
+      if (this.props.showMinValue) {
+        minValue = this.getMinValue(service, attribute);
+      }
+
+      if (this.props.showBest && chartData.datasets[index].data) {
+        bestValue = this.getBestValue(service, attribute);
+        const bestValueIndex = chartData.datasets[index].data.indexOf(
+          bestValue
+        );
+        chartData.datasets[index]["pointBackgroundColor"][bestValueIndex] =
+          "hsl(360, 67%, 44%)";
+        chartData.datasets[index]["radius"][bestValueIndex] = 4;
       }
     }
 
-    let minValue = null;
-    if (this.props.showMinValue) {
-      minValue = this.getMinValue(service, attribute);
-    }
-
-    let bestValue = null;
-    if (this.props.showBest) {
-      bestValue = this.getBestValue(service, attribute);
-      const bestValueIndex = chartData.datasets[index].data.indexOf(bestValue);
-      chartData.datasets[index]["pointBackgroundColor"][bestValueIndex] =
-        "hsl(360, 67%, 44%)";
-      chartData.datasets[index]["radius"][bestValueIndex] = 4;
-    }
-
-    const badge =
-      this.props.services && this.props.services.length > 0 ? (
-        <i className={`fa fa-circle chart-badge-${index}`} />
-      ) : null;
-
     return (
       <h3>
-        {badge}
+        <i className={`fa fa-circle chart-badge-${index}`} />
         {displayedValue}{" "}
         {this.props.showMinValue ? (
           <span className="minValue">(min: {minValue})</span>
@@ -373,24 +377,9 @@ export default class MeasureChart extends React.Component {
 
   render() {
     const { title, attribute } = this.props;
-    let { service, services } = this.props;
-
-    // When multiple services,
-    // use first service as referential to know which chart will be displayed
-    if (services && services.length > 0 && !service) {
-      service = services[0];
-    } else {
-      // Create array with only service in order to build dataset
-      services = [service];
-    }
+    const { services } = this.props;
 
     const chartData = this.getChartData(attribute);
-
-    if (
-      typeof chartData.datasets === "undefined" ||
-      chartData.datasets[0].data.length === 0
-    )
-      return null;
 
     let chartOptions = {
       animation: {
@@ -435,7 +424,7 @@ export default class MeasureChart extends React.Component {
     );
 
     return (
-      <div className="trainingmonitor-chart col-lg-3 col-md-6">
+      <div className={`trainingmonitor-chart ${this.props.layout}`}>
         <div className="chart container">
           <div className="row">
             <Line
@@ -468,7 +457,7 @@ export default class MeasureChart extends React.Component {
 MeasureChart.propTypes = {
   title: PropTypes.string.isRequired,
   attribute: PropTypes.string.isRequired,
+  layout: PropTypes.string.isRequired,
   steppedLine: PropTypes.bool,
-  service: PropTypes.object,
-  services: PropTypes.array
+  services: PropTypes.array.isRequired
 };
