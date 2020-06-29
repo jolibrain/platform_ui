@@ -283,6 +283,18 @@ yarn test:e2e
 
 ## Changelog
 
+### v0.9.7.2 - 29/06/2020
+
+- UI
+
+  - add regression predict response display
+  - add modelCompare charting page, displayes multiple training job results
+  - add MAP chart when measure.map is available
+
+- docker
+
+  - update docker-build.sh script with --dev and --tag parameters
+
 ### v0.9.7 - 05/06/2020
 
 - UI
