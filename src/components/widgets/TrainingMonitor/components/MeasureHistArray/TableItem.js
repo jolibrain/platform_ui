@@ -54,7 +54,7 @@ export default class TableItem extends React.Component {
       measure = service.measure;
     }
 
-    if (!measure_hist) return null;
+    if (!measure_hist || !measure_hist[measureHistKey]) return null;
 
     if (
       typeof measure === "undefined" ||
