@@ -14,7 +14,7 @@ export default class TableItem extends React.Component {
     this.state = {
       logScale: false,
       colors: [
-        "rgb(166,206,227)",
+        "hsl(210, 22%, 49%)",
         "rgb(178,223,138)",
         "rgb(251,154,153)",
         "rgb(253,191,111)",

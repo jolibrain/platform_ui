@@ -31,7 +31,7 @@ export default class MeasureChart extends React.Component {
           "rgba(177,89,40,0.2)"
         ],
         dark: [
-          "rgb(166,206,227)",
+          "hsl(210, 22%, 49%)",
           "rgb(178,223,138)",
           "rgb(251,154,153)",
           "rgb(253,191,111)",

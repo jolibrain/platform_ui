@@ -1,4 +1,5 @@
 // https://colorbrewer2.org/#type=qualitative&scheme=Paired&n=12
+@import "./palette-1.scss";
 
 $chart_badge_light_0: rgba(166, 206, 227, 0.2);
 $chart_badge_light_1: rgba(178, 223, 138, 0.2);
@@ -13,7 +14,7 @@ $chart_badge_light_9: rgba(255, 127, 0, 0.2);
 $chart_badge_light_10: rgba(106, 61, 154, 0.2);
 $chart_badge_light_11: rgba(177, 89, 40, 0.2);
 
-$chart_badge_0: rgb(166, 206, 227);
+$chart_badge_0: hsl(210, 22%, 49%);
 $chart_badge_1: rgb(178, 223, 138);
 $chart_badge_2: rgb(251, 154, 153);
 $chart_badge_3: rgb(253, 191, 111);
