@@ -29,11 +29,19 @@ export default class ModelRepositoryCard extends React.Component {
 
     this.state = {
       isPublishing: false,
-      publishError: null
+      publishError: null,
+      compareSelected: false
     };
 
     this.getValue = this.getValue.bind(this);
     this.openPublishTrainingModal = this.openPublishTrainingModal.bind(this);
+    this.toggleCompareState = this.toggleCompareState.bind(this);
+  }
+
+  toggleCompareState() {
+    const repository = this.props.service;
+    this.setState({ compareSelected: !this.state.compareSelected });
+    this.props.handleCompareStateChange(repository.path);
   }
 
   openPublishTrainingModal() {
@@ -199,6 +207,27 @@ export default class ModelRepositoryCard extends React.Component {
       );
     }
 
+    let compareButton = (
+      <a
+        onClick={this.toggleCompareState}
+        className={
+          this.state.compareSelected
+            ? "btn btn-compare-selected mx-2"
+            : "btn btn-compare mx-2"
+        }
+      >
+        {this.state.compareSelected ? (
+          <span>
+            <i className="far fa-check-square" /> Selected
+          </span>
+        ) : (
+          <span>
+            <i className="far fa-square" /> Compare
+          </span>
+        )}
+      </a>
+    );
+
     let publishButton = repository.jsonConfig ? (
       <a
         onClick={this.openPublishTrainingModal}
@@ -270,6 +299,7 @@ export default class ModelRepositoryCard extends React.Component {
             )}
           </div>
           <div className="card-footer text-right">
+            {compareButton}
             {publishButton}
             <Link to={archiveUrl} className="btn btn-primary">
               View <i className="fas fa-chevron-right" />
@@ -282,5 +312,6 @@ export default class ModelRepositoryCard extends React.Component {
 }
 
 ModelRepositoryCard.propTypes = {
-  repository: PropTypes.object
+  repository: PropTypes.object,
+  handleCompareStateChange: PropTypes.func
 };

@@ -22,7 +22,13 @@ export default class ServiceCardList extends React.Component {
       .map((service, index) => {
         let card = null;
         if (service.isRepository) {
-          card = <ModelRepositoryCard key={index} service={service} />;
+          card = (
+            <ModelRepositoryCard
+              key={index}
+              service={service}
+              handleCompareStateChange={this.props.handleCompareStateChange}
+            />
+          );
         } else if (service.isDataset) {
           card = <DatasetCard key={index} dataset={service} />;
         } else if (service.settings && service.settings.training) {
@@ -51,5 +57,6 @@ export default class ServiceCardList extends React.Component {
 
 ServiceCardList.propTypes = {
   services: PropTypes.array.isRequired,
-  filterServiceName: PropTypes.string
+  filterServiceName: PropTypes.string,
+  handleCompareStateChange: PropTypes.func
 };

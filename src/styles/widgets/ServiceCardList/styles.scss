@@ -145,6 +145,26 @@
         }
       }
 
+      a.btn-compare {
+        color: $neutral_blue_1;
+        border-color: $neutral_blue_3;
+
+        &:hover {
+          color: $neutral_blue_10;
+          background-color: $neutral_blue_3;
+        }
+      }
+
+      a.btn-compare-selected {
+        color: $neutral_blue_10;
+        background-color: $neutral_blue_3;
+
+        &:hover {
+          color: $neutral_blue_9;
+          background-color: $neutral_blue_4;
+        }
+      }
+
       &:hover {
         a.btn-outline-danger {
           display: inline;
@@ -181,7 +201,6 @@
   }
 
   .card-footer:hover {
-    background-color: transparent;
   }
 
   .card-footer.col-6:hover {

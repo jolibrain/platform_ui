@@ -15,19 +15,36 @@ export default class MainView extends React.Component {
     super(props);
 
     this.state = {
-      filterServiceName: ""
+      filterServiceName: "",
+      selectedComparePath: []
     };
 
     this.handleServiceFilter = this.handleServiceFilter.bind(this);
     this.cleanServiceFilter = this.cleanServiceFilter.bind(this);
 
     this.handleClickRefreshArchive = this.handleClickRefreshArchive.bind(this);
+
+    this.handleCompareStateChange = this.handleCompareStateChange.bind(this);
   }
 
   componentWillMount() {
     const { modelRepositoriesStore } = this.props;
     if (!modelRepositoriesStore.isReadyTraining) {
       modelRepositoriesStore.refreshTraining();
+    }
+  }
+
+  handleCompareStateChange(path) {
+    // Copy array of selectedComparePath
+    let selectedComparePath = [...this.state.selectedComparePath];
+
+    if (this.state.selectedComparePath.includes(path)) {
+      // delete existing path
+      selectedComparePath.splice(selectedComparePath.indexOf(path), 1);
+      this.setState({ selectedComparePath: selectedComparePath });
+    } else {
+      // append new path
+      this.setState({ selectedComparePath: [...selectedComparePath, path] });
     }
   }
 
@@ -176,7 +193,7 @@ export default class MainView extends React.Component {
                 ""
               )}
               {!modelRepositoriesStore.isRefreshing &&
-              displayedArchiveRepositories.length > 0 &&
+              displayedArchiveRepositories.length > 1 &&
               displayedArchiveRepositories.length < 8 ? (
                 <Link
                   to={`/charts/modelCompare/${displayedArchiveRepositories
@@ -185,13 +202,28 @@ export default class MainView extends React.Component {
                   className="btn btn-primary"
                   type="button"
                 >
-                  Compare
+                  Compare All
+                </Link>
+              ) : null}
+              {!modelRepositoriesStore.isRefreshing &&
+              this.state.selectedComparePath.length > 1 ? (
+                <Link
+                  to={`/charts/modelCompare/${this.state.selectedComparePath
+                    .map(path => path.replace(/^\/+|\/+$/g, ""))
+                    .join("+")}`}
+                  className="btn btn-primary"
+                  type="button"
+                >
+                  Compare Selected
                 </Link>
               ) : null}
             </h3>
 
             <div className="archiveTrainingList archive">
-              <ServiceCardList services={displayedArchiveRepositories} />
+              <ServiceCardList
+                services={displayedArchiveRepositories}
+                handleCompareStateChange={this.handleCompareStateChange}
+              />
             </div>
 
             <RightPanel />
