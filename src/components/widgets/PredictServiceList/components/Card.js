@@ -15,6 +15,7 @@ export default class Card extends React.Component {
     super(props);
 
     this.openAddServiceModal = this.openAddServiceModal.bind(this);
+    this.openBenchmarkModal = this.openBenchmarkModal.bind(this);
 
     this.state = {
       errors: [],
@@ -25,6 +26,13 @@ export default class Card extends React.Component {
   openAddServiceModal() {
     const { modalStore, repository } = this.props;
     modalStore.setVisible("addService", true, {
+      repository: repository
+    });
+  }
+
+  openBenchmarkModal() {
+    const { modalStore, repository } = this.props;
+    modalStore.setVisible("benchmarkDisplay", true, {
       repository: repository
     });
   }
@@ -102,6 +110,15 @@ export default class Card extends React.Component {
           </div>
 
           <div className="card-footer text-right">
+            {repository.benchmarks.length > 0 ? (
+              <button
+                className="btn btn-outline-secondary"
+                onClick={this.openBenchmarkModal}
+              >
+                <i className="fas fa-chart-line" />
+                &nbsp; Benchmarks
+              </button>
+            ) : null}
             <button
               className="btn btn-primary"
               onClick={this.openAddServiceModal}

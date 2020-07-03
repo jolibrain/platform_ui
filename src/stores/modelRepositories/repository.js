@@ -15,6 +15,7 @@ export default class Repository {
   @observable metricsDate = null;
 
   @observable files = [];
+  @observable benchmarks = [];
 
   constructor(path, files, store, fetchError = null) {
     this.isRepository = true;
@@ -90,6 +91,7 @@ export default class Repository {
     this._loadJsonConfig();
     this._loadJsonMetrics();
     this._loadBestModel();
+    this._loadBenchmarks();
 
     // Set metrics date if it hasn't already been done
     if (
@@ -184,6 +186,37 @@ export default class Repository {
     }
   }
 
+  @action
+  async _loadBenchmarks() {
+    try {
+      let benchmarks = [];
+
+      const benchmarkFiles = await this.$reqBenchmarks();
+      const benchmarkJsons = benchmarkFiles.files.filter(f =>
+        f.endsWith(".json")
+      );
+
+      if (benchmarkJsons && benchmarkJsons.length > 0) {
+        for (let i = 0; i < benchmarkJsons.length; i++) {
+          const href = benchmarkJsons[i];
+          const benchmark = await this.$reqBenchmarkJson(href);
+
+          benchmarks.push({
+            name: href.replace(".json", ""),
+            href: href,
+            benchmark: benchmark
+          });
+        }
+      }
+
+      runInAction(() => {
+        this.benchmarks = benchmarks;
+      });
+    } catch (e) {
+      //console.log(e);
+    }
+  }
+
   $reqJsonMetrics() {
     if (!this.files.includes("metrics.json")) return null;
     return agent.Webserver.getFileMeta(`${this.path}metrics.json`);
@@ -192,6 +225,14 @@ export default class Repository {
   $reqBestModel() {
     if (!this.files.includes("best_model.txt")) return null;
     return agent.Webserver.getFileMeta(`${this.path}best_model.txt`);
+  }
+
+  $reqBenchmarks() {
+    return agent.Webserver.listFolders(`${this.path}benchmarks/`);
+  }
+
+  $reqBenchmarkJson(href) {
+    return agent.Webserver.getFile(`${this.path}benchmarks/${href}`);
   }
 
   $reqJsonConfig() {

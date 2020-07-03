@@ -18,6 +18,10 @@ export class modalStore {
     {
       name: "deleteService",
       visible: false
+    },
+    {
+      name: "benchmarkDisplay",
+      visible: false
     }
   ];
 

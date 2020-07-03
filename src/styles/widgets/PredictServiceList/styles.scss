@@ -66,6 +66,10 @@
     .card-footer {
       background-color: hsl(210, 9%, 96%);
       border: 0;
+
+      .btn-outline-secondary {
+        margin-right: 8px;
+      }
     }
 
     .card-header .badge {

@@ -3,6 +3,7 @@ import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 import Modal from "react-bootstrap4-modal";
 
+import BenchmarkDisplayModal from "../../widgets/modals/BenchmarkDisplayModal";
 import DeleteServiceModal from "../../widgets/modals/DeleteServiceModal";
 import PredictAddServiceModal from "../../widgets/modals/PredictAddServiceModal";
 
@@ -23,11 +24,19 @@ export default class Modals extends React.Component {
   render() {
     const modalStore = this.props.modalStore;
 
+    const benchmarkDisplayModal = modalStore.getModal("benchmarkDisplay");
     const addServiceModal = modalStore.getModal("addService");
     const deleteServiceModal = modalStore.getModal("deleteService");
 
     let repository = null;
     let service = null;
+
+    if (
+      benchmarkDisplayModal.params &&
+      benchmarkDisplayModal.params.repository
+    ) {
+      repository = benchmarkDisplayModal.params.repository;
+    }
 
     if (addServiceModal.params && addServiceModal.params.repository) {
       repository = addServiceModal.params.repository;
@@ -39,6 +48,15 @@ export default class Modals extends React.Component {
 
     return (
       <div>
+        <Modal
+          visible={benchmarkDisplayModal.visible}
+          onClickBackdrop={this.modalBackdropClicked.bind(
+            this,
+            "benchmarkDisplay"
+          )}
+        >
+          <BenchmarkDisplayModal repository={repository} />
+        </Modal>
         <Modal
           visible={addServiceModal.visible}
           onClickBackdrop={this.modalBackdropClicked.bind(this, "addService")}
