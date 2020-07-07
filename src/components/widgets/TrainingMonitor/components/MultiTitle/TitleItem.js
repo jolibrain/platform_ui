@@ -89,6 +89,23 @@ export default class TitleItem extends React.Component {
         <td>{iterationBestValue}</td>
         <td>{mapBestValue}</td>
         <td>
+          <a
+            href={`${service.path}config.json`}
+            className="badge badge-dark"
+            target="_blank"
+          >
+            config
+          </a>
+          <br />
+          <a
+            href={`${service.path}metrics.json`}
+            className="badge badge-dark"
+            target="_blank"
+          >
+            metrics
+          </a>
+        </td>
+        <td>
           <i
             className={`chart-badge-${serviceIndex} fa fa-2x fa-toggle-${
               isVisible ? "off" : "on"

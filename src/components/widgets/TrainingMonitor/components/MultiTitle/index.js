@@ -22,6 +22,7 @@ export default class MultiTitle extends React.Component {
             <th>Iterations</th>
             <th>Iteration (best)</th>
             <th>MAP (best)</th>
+            <th>JSON</th>
             <th></th>
           </tr>
         </thead>
