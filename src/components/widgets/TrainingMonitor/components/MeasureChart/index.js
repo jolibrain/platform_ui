@@ -318,7 +318,8 @@ export default class MeasureChart extends React.Component {
   getServiceValue(service, index, attribute, chartData = null) {
     let displayedValue = "--",
       minValue = null,
-      bestValue = null;
+      bestValue = null,
+      bestValueIndex = null;
 
     if (service) {
       displayedValue = this.getValue(service, attribute);
@@ -348,25 +349,28 @@ export default class MeasureChart extends React.Component {
 
       if (this.props.showBest && chartData.datasets[index].data) {
         bestValue = this.getBestValue(service, attribute);
-        const bestValueIndex = chartData.datasets[index].data.indexOf(
-          bestValue
-        );
+        bestValueIndex = chartData.datasets[index].data.indexOf(bestValue);
         chartData.datasets[index]["pointBackgroundColor"][bestValueIndex] =
           "hsl(360, 67%, 44%)";
         chartData.datasets[index]["radius"][bestValueIndex] = 4;
       }
     }
 
+    if (this.props.useBestValue && bestValue) {
+      displayedValue = bestValue;
+      bestValue = null;
+    }
+
     return (
       <h3>
         <i className={`fa fa-circle chart-badge-${index}`} />
         {displayedValue}{" "}
-        {this.props.showMinValue ? (
+        {this.props.showMinValue && minValue ? (
           <span className="minValue">(min: {minValue})</span>
         ) : (
           ""
         )}
-        {this.props.showBest ? (
+        {this.props.showBest && bestValue ? (
           <span className="bestValue">(best: {bestValue})</span>
         ) : (
           ""
@@ -437,7 +441,7 @@ export default class MeasureChart extends React.Component {
           <div className="description row">
             {values}
             <h4>
-              {title}{" "}
+              {title} {this.props.useBestValue ? "(best)" : null}
               {this.props.showLogScale ? (
                 <span className="logScale">
                   <input type="checkbox" onChange={this.toggleLogScale} /> Log

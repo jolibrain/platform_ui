@@ -135,6 +135,7 @@ export default class GeneralInfo extends React.Component {
             attribute="map"
             steppedLine
             showBest
+            useBestValue
             layout={layout}
             {...this.props}
           />
@@ -175,6 +176,7 @@ export default class GeneralInfo extends React.Component {
               key="map"
               steppedLine
               showBest
+              useBestValue
               layout={layout}
               {...this.props}
             />
