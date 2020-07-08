@@ -26,12 +26,21 @@ export default class ServiceList extends React.Component {
       return <ChainItem key={index} chain={chain} />;
     });
 
+    // Flag to enable/disable section filter
+    //
+    // when set to true, it displays predict services on /predict page
+    // and training services on /training page
+    //
+    // when set to false, it displays all services on all pages
+    //
+    const enableSectionFilter = false;
+
     // Test if on predict page
-    if (predictPatt.test(match.path)) {
+    if (enableSectionFilter && predictPatt.test(match.path)) {
       selectedServices = predictServices;
 
       // test if on training page
-    } else if (trainingPatt.test(match.path)) {
+    } else if (enableSectionFilter && trainingPatt.test(match.path)) {
       selectedServices = trainingServices;
 
       // Disable chainItems on training pages
