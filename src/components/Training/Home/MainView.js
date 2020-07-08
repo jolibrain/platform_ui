@@ -194,7 +194,7 @@ export default class MainView extends React.Component {
               )}
               {!modelRepositoriesStore.isRefreshing &&
               displayedArchiveRepositories.length > 1 &&
-              displayedArchiveRepositories.length < 8 ? (
+              displayedArchiveRepositories.length <= 12 ? (
                 <Link
                   to={`/charts/modelCompare/${displayedArchiveRepositories
                     .map(r => r.path.replace(/^\/+|\/+$/g, ""))
