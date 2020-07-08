@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { observer } from "mobx-react";
 import { toJS } from "mobx";
-import { Line } from "react-chartjs-2";
+import { Chart, Line } from "react-chartjs-2";
 
 @observer
 export default class MeasureChart extends React.Component {
@@ -44,6 +44,13 @@ export default class MeasureChart extends React.Component {
           "rgb(106,61,154)",
           "rgb(177,89,40)"
         ]
+      },
+      bestValue: {
+        pointBackgroundColor: "#e31a1c",
+        radius: 4
+      },
+      verticalLine: {
+        strokeStyle: "#e31a1c"
       }
     };
 
@@ -248,12 +255,18 @@ export default class MeasureChart extends React.Component {
     }
 
     let chartData = {};
+
     if (
       measure_hist &&
       measure_hist[`${attr}_hist`] &&
       measure_hist[`${attr}_hist`].length > 0
     ) {
-      let measures = toJS(measure_hist[`${attr}_hist`]);
+      let labels = [],
+        measures = toJS(measure_hist[`${attr}_hist`]),
+        datasets = services.map((s, index) => {
+          return s ? this.getChartDataset(s, attr, index) : {};
+        });
+
       // Remove Infinity values from measure_hist
       if (measures.some(x => x === Infinity)) {
         measures = measure_hist[`${attr}_hist`].map(x => {
@@ -261,7 +274,6 @@ export default class MeasureChart extends React.Component {
         });
       }
 
-      let labels = [];
       if (measure && measure.iteration) {
         // Create labels array from iteration count
         const ratio = measure.iteration / measures.length;
@@ -279,15 +291,12 @@ export default class MeasureChart extends React.Component {
         }
       }
 
-      let datasets = services.map((s, index) => {
-        return s ? this.getChartDataset(s, attr, index) : {};
-      });
-
       // Fill chartData with missing items
       const maxDatasetLength = Math.max.apply(
         null,
         datasets.map(d => (d.data ? d.data.length : 0))
       );
+
       datasets.forEach(d => {
         if (d.data && d.data.length < maxDatasetLength) {
           const emptyItems = new Array(maxDatasetLength - d.data.length);
@@ -350,9 +359,14 @@ export default class MeasureChart extends React.Component {
       if (this.props.showBest && chartData.datasets[index].data) {
         bestValue = this.getBestValue(service, attribute);
         bestValueIndex = chartData.datasets[index].data.indexOf(bestValue);
-        chartData.datasets[index]["pointBackgroundColor"][bestValueIndex] =
-          "hsl(360, 67%, 44%)";
-        chartData.datasets[index]["radius"][bestValueIndex] = 4;
+
+        // Add colored circle at best value on chart
+        chartData.datasets[index]["pointBackgroundColor"][
+          bestValueIndex
+        ] = this.state.bestValue.pointBackgroundColor;
+        chartData.datasets[index]["radius"][
+          bestValueIndex
+        ] = this.state.bestValue.radius;
       }
     }
 
@@ -379,6 +393,29 @@ export default class MeasureChart extends React.Component {
     );
   }
 
+  componentWillMount() {
+    // Add vertical line drawing when moving cursor around the chart
+    Chart.pluginService.register({
+      afterDraw: (chart, easing) => {
+        if (chart.tooltip._active && chart.tooltip._active.length) {
+          const activePoint = chart.controller.tooltip._active[0];
+          const ctx = chart.ctx;
+          const x = activePoint.tooltipPosition().x;
+          const topY = chart.scales["y-axis-0"].top;
+          const bottomY = chart.scales["y-axis-0"].bottom;
+          ctx.save();
+          ctx.beginPath();
+          ctx.moveTo(x, topY);
+          ctx.lineTo(x, bottomY);
+          ctx.lineWidth = 1;
+          ctx.strokeStyle = this.state.verticalLine.strokeStyle;
+          ctx.stroke();
+          ctx.restore();
+        }
+      }
+    });
+  }
+
   render() {
     const { title, attribute } = this.props;
     const { services } = this.props;
@@ -386,10 +423,17 @@ export default class MeasureChart extends React.Component {
     const chartData = this.getChartData(attribute);
 
     let chartOptions = {
+      showAllTooltips: true,
+      hover: {
+        intersect: false,
+        animationDuration: 0
+      },
       animation: {
         duration: 0
       },
       tooltips: {
+        mode: "index",
+        intersect: false,
         callbacks: {
           title: (tooltipItem, data) => {},
           beforeLabel: (tooltipItem, data) => {},
