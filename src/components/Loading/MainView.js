@@ -19,7 +19,7 @@ export default class MainView extends React.Component {
 
             <p>
               <button type="button" className="btn btn-outline-dark">
-                <i className="fas fa-circle-notch fa-spin" /> loading...
+                <i className="fas fa-spinner fa-spin" /> loading...
               </button>
             </p>
             <RightPanel />

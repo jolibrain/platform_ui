@@ -102,7 +102,7 @@ export default class ModelBenchmark extends React.Component {
                   </span>
                 ) : (
                   <button type="button" className="btn btn-outline-dark">
-                    <i className="fas fa-circle-notch fa-spin" /> loading
+                    <i className="fas fa-spinner fa-spin" /> loading
                     benchmarks...
                   </button>
                 )}

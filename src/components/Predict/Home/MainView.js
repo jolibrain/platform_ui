@@ -135,7 +135,7 @@ export default class MainView extends React.Component {
             <div className="col-lg-3 col-md-6">
               <h3>
                 {modelRepositoriesStore.isRefreshing ? (
-                  <i className="fas fa-circle-notch fa-spin" />
+                  <i className="fas fa-spinner fa-spin" />
                 ) : (
                   availableServicesLength
                 )}

@@ -124,7 +124,7 @@ export default class MainView extends React.Component {
               <h3>
                 {modelRepositoriesStore.isRefreshing ? (
                   <span>
-                    <i className="fas fa-sync fa-spin fa-xs" />{" "}
+                    <i className="fas fa-spinner fa-spin fa-xs" />{" "}
                   </span>
                 ) : (
                   displayedArchiveRepositories.length
@@ -147,8 +147,8 @@ export default class MainView extends React.Component {
                   <i
                     className={
                       modelRepositoriesStore.isRefreshing
-                        ? "fas fa-sync fa-spin"
-                        : "fas fa-sync"
+                        ? "fas fa-spinner fa-spin"
+                        : "fas fa-spinner"
                     }
                   />
                 </button>
