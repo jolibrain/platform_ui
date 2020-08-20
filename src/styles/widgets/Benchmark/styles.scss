@@ -1,0 +1,46 @@
+table.benchmark-multititle {
+  border-spacing: 0 4px;
+  color: #e2e2e2;
+  padding: 10px;
+  width: 100%;
+
+  th,
+  td {
+    padding: 15px;
+    text-align: left;
+  }
+
+  tbody tr {
+    background-color: #1c223b;
+    color: #e2e2e2;
+  }
+
+  tbody tr:hover {
+    background-color: #151b31;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+  }
+
+  tbody tr td:first-of-type {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
+
+  tbody tr td:last-of-type {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    text-align: center;
+
+    i {
+      cursor: pointer;
+    }
+  }
+
+  tbody td:first-of-type {
+    border-left-width: 10px;
+    border-left-style: solid;
+  }
+
+  tbody tr:hover .delete {
+    opacity: 1;
+  }
+}
