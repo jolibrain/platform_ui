@@ -4,11 +4,8 @@ import { inject, observer } from "mobx-react";
 import Header from "../../Header";
 import LeftPanel from "../commons/LeftPanel";
 
-import TrainingMonitor from "../views/Training/Monitor";
 import TrainingArchive from "../views/Training/Archive";
-
 import ModelBenchmark from "../views/Model/Benchmark";
-import ModelCompare from "../views/Model/Compare";
 
 @inject("configStore")
 @inject("deepdetectStore")
@@ -23,17 +20,11 @@ export default class ChartShow extends React.Component {
     console.log(chartType);
 
     switch (chartType) {
-      case "trainingMonitor":
-        mainView = <TrainingMonitor {...this.props} />;
-        break;
-      case "trainingArchive":
-        mainView = <TrainingArchive {...this.props} />;
-        break;
-      case "modelBenchmark":
+      case "benchmark":
         mainView = <ModelBenchmark {...this.props} />;
         break;
-      case "modelCompare":
-        mainView = <ModelCompare {...this.props} />;
+      case "archive":
+        mainView = <TrainingArchive {...this.props} />;
         break;
       default:
         break;

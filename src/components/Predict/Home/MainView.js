@@ -18,7 +18,8 @@ export default class MainView extends React.Component {
 
     this.state = {
       filterServiceName: "",
-      predictLayout: "cards"
+      predictLayout: "cards",
+      selectedBenchmarkPath: []
     };
 
     this.handleServiceFilter = this.handleServiceFilter.bind(this);
@@ -30,12 +31,31 @@ export default class MainView extends React.Component {
     this.handleClickRefreshServices = this.handleClickRefreshServices.bind(
       this
     );
+    this.handleBenchmarkStateChange = this.handleBenchmarkStateChange.bind(
+      this
+    );
   }
 
   componentWillMount() {
     const { modelRepositoriesStore } = this.props;
     if (!modelRepositoriesStore.isReadyPredict) {
       modelRepositoriesStore.refreshPredict();
+    }
+  }
+
+  handleBenchmarkStateChange(path) {
+    // Copy array of selectedBenchmarkPath
+    let selectedBenchmarkPath = [...this.state.selectedBenchmarkPath];
+
+    if (this.state.selectedBenchmarkPath.includes(path)) {
+      // delete existing path
+      selectedBenchmarkPath.splice(selectedBenchmarkPath.indexOf(path), 1);
+      this.setState({ selectedBenchmarkPath: selectedBenchmarkPath });
+    } else {
+      // append new path
+      this.setState({
+        selectedBenchmarkPath: [...selectedBenchmarkPath, path]
+      });
     }
   }
 
@@ -179,8 +199,22 @@ export default class MainView extends React.Component {
 
             <hr />
 
-            <div className="predictServiceList">
-              <h4>Available Services</h4>
+            <div id="predictServiceList">
+              <h4>
+                Available Services
+                {!modelRepositoriesStore.isRefreshing &&
+                this.state.selectedBenchmarkPath.length > 0 ? (
+                  <Link
+                    to={`/charts/benchmark/${this.state.selectedBenchmarkPath
+                      .map(path => path.replace(/^\/+|\/+$/g, ""))
+                      .join("+")}`}
+                    className="btn btn-primary"
+                    type="button"
+                  >
+                    <i className="fas fa-chart-line" /> Show Benchmarks
+                  </Link>
+                ) : null}
+              </h4>
 
               {!modelRepositoriesStore.isRefreshing &&
               publicRepositories.length === 0 &&
@@ -225,6 +259,7 @@ export default class MainView extends React.Component {
                   <PredictServiceList
                     services={publicRepositories}
                     layout={this.state.predictLayout}
+                    handleBenchmarkStateChange={this.handleBenchmarkStateChange}
                   />
 
                   <hr />
@@ -232,6 +267,7 @@ export default class MainView extends React.Component {
                   <PredictServiceList
                     services={privateRepositories}
                     layout={this.state.predictLayout}
+                    handleBenchmarkStateChange={this.handleBenchmarkStateChange}
                   />
                 </div>
               )}

@@ -91,7 +91,7 @@ export default class ModelRepositoryCard extends React.Component {
       ? repository.jsonMetrics.body.mltype
       : null;
 
-    const archiveUrl = `/charts/trainingArchive${repository.path}`;
+    const archiveUrl = `/charts/archive${repository.path}`;
 
     let info = [];
 

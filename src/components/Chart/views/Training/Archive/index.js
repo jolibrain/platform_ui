@@ -4,21 +4,37 @@ import { inject, observer } from "mobx-react";
 
 import RightPanel from "../../../commons/RightPanel";
 
-import Title from "../../../../widgets/TrainingMonitor/components/Title";
+import MultiTitle from "../../../../widgets/TrainingMonitor/components/MultiTitle";
 import GeneralInfo from "../../../../widgets/TrainingMonitor/components/GeneralInfo";
 import MeasureHistArray from "../../../../widgets/TrainingMonitor/components/MeasureHistArray";
 
 @inject("modelRepositoriesStore")
 @observer
 @withRouter
-export default class TrainingArchive extends React.Component {
+export default class ModelCompare extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      repository: null,
+      repositories: [],
+      hiddenRepositoriesIndexes: [],
       error: null
     };
+
+    this.handleRepositoryVisibility = this.handleRepositoryVisibility.bind(
+      this
+    );
+  }
+
+  handleRepositoryVisibility(index) {
+    let indexes = [...this.state.hiddenRepositoriesIndexes];
+
+    if (indexes.includes(index)) {
+      indexes.splice(indexes.indexOf(index), 1);
+      this.setState({ hiddenRepositoriesIndexes: indexes });
+    } else {
+      this.setState({ hiddenRepositoriesIndexes: [...indexes, index] });
+    }
   }
 
   async componentWillMount() {
@@ -28,40 +44,55 @@ export default class TrainingArchive extends React.Component {
     );
 
     try {
-      let repository = null;
-      let path = match.params.chartParams;
+      let repositories = [];
+      let paths = match.params.chartParams.split("+");
 
-      // Sanitize path
-      if (!path.startsWith("/")) path = "/" + path;
-      if (!path.endsWith("/")) path = path + "/";
+      for (let i = 0; i < paths.length; i++) {
+        let path = paths[i];
+        let repository = null;
 
-      if (trainingRepositoryStore.repositoryExists(path)) {
-        repository = trainingRepositoryStore.repositories.find(
-          r => r.path === path
-        );
-      } else {
-        repository = await trainingRepositoryStore.fastLoad(path);
+        // Sanitize path
+        if (!path.startsWith("/")) path = "/" + path;
+        if (!path.endsWith("/")) path = path + "/";
+
+        if (trainingRepositoryStore.repositoryExists(path)) {
+          repository = trainingRepositoryStore.repositories.find(
+            r => r.path === path
+          );
+        } else {
+          repository = await trainingRepositoryStore.fastLoad(path);
+        }
+
+        if (repository) repositories.push(repository);
       }
 
-      this.setState({ repository: repository });
+      this.setState({ repositories: repositories });
     } catch (err) {
       this.setState({
-        error: `Error while mounting TrainingArchive chart - ${err}`
+        error: `Error while mounting ModelCompare chart - ${err}`
       });
     }
   }
 
   render() {
-    const { repository, error } = this.state;
+    const { repositories, hiddenRepositoriesIndexes, error } = this.state;
+
+    const visibleRepositories = repositories.map((repository, index) => {
+      return hiddenRepositoriesIndexes.includes(index) ? null : repository;
+    });
 
     return (
       <div className="main-view content-wrapper">
-        {repository ? (
+        {repositories.length > 0 ? (
           <div className="fluid-container">
-            <Title service={repository} />
+            <MultiTitle
+              services={repositories}
+              hiddenRepositoriesIndexes={hiddenRepositoriesIndexes}
+              handleRepositoryVisibility={this.handleRepositoryVisibility}
+            />
             <div className="content p-4">
-              <GeneralInfo services={[repository]} />
-              <MeasureHistArray services={[repository]} />
+              <GeneralInfo services={visibleRepositories} />
+              <MeasureHistArray services={visibleRepositories} />
               <RightPanel includeDownloadPanel />
             </div>
           </div>

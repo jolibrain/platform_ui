@@ -13,9 +13,15 @@ export default class PredictServiceList extends React.Component {
   renderCards() {
     const { services } = this.props;
     return (
-      <div id="predictServiceList" className="serviceQuickCreate row">
+      <div id="predictServiceList-cards" className="serviceQuickCreate row">
         {services.map((service, index) => {
-          return <Card key={`${index}-${service.name}`} repository={service} />;
+          return (
+            <Card
+              key={`${index}-${service.name}`}
+              repository={service}
+              {...this.props}
+            />
+          );
         })}
       </div>
     );
@@ -25,12 +31,16 @@ export default class PredictServiceList extends React.Component {
     const { services } = this.props;
     return (
       <div
-        id="predictServiceList"
+        id="predictServiceList-list"
         className="serviceQuickCreate container-fluid"
       >
         {services.map((service, index) => {
           return (
-            <ListItem key={`${index}-${service.name}`} repository={service} />
+            <ListItem
+              key={`${index}-${service.name}`}
+              repository={service}
+              {...this.props}
+            />
           );
         })}
       </div>

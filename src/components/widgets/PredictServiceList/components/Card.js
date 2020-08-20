@@ -14,13 +14,14 @@ export default class Card extends React.Component {
   constructor(props) {
     super(props);
 
-    this.openAddServiceModal = this.openAddServiceModal.bind(this);
-    this.openBenchmarkModal = this.openBenchmarkModal.bind(this);
-
     this.state = {
       errors: [],
-      creatingService: false
+      creatingService: false,
+      benchmarkSelected: false
     };
+
+    this.openAddServiceModal = this.openAddServiceModal.bind(this);
+    this.toggleBenchmarkState = this.toggleBenchmarkState.bind(this);
   }
 
   openAddServiceModal() {
@@ -30,11 +31,10 @@ export default class Card extends React.Component {
     });
   }
 
-  openBenchmarkModal() {
-    const { modalStore, repository } = this.props;
-    modalStore.setVisible("benchmarkDisplay", true, {
-      repository: repository
-    });
+  toggleBenchmarkState() {
+    const { repository } = this.props;
+    this.setState({ benchmarkSelected: !this.state.benchmarkSelected });
+    this.props.handleBenchmarkStateChange(repository.path);
   }
 
   render() {
@@ -111,13 +111,24 @@ export default class Card extends React.Component {
 
           <div className="card-footer text-right">
             {repository.benchmarks.length > 0 ? (
-              <button
-                className="btn btn-outline-secondary"
-                onClick={this.openBenchmarkModal}
+              <a
+                onClick={this.toggleBenchmarkState}
+                className={
+                  this.state.benchmarkSelected
+                    ? "btn btn-benchmark-selected mx-2"
+                    : "btn btn-benchmark mx-2"
+                }
               >
-                <i className="fas fa-chart-line" />
-                &nbsp; Benchmarks
-              </button>
+                {this.state.benchmarkSelected ? (
+                  <span>
+                    <i className="fas fa-chart-line" /> Selected
+                  </span>
+                ) : (
+                  <span>
+                    <i className="far fa-square" /> Benchmark
+                  </span>
+                )}
+              </a>
             ) : null}
             <button
               className="btn btn-primary"
