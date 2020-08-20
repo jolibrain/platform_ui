@@ -70,6 +70,26 @@
       .btn-outline-secondary {
         margin-right: 8px;
       }
+
+      a.btn-benchmark {
+        color: $neutral_blue_1;
+        border-color: $neutral_blue_3;
+
+        &:hover {
+          color: $neutral_blue_10;
+          background-color: $neutral_blue_3;
+        }
+      }
+
+      a.btn-benchmark-selected {
+        color: $neutral_blue_10;
+        background-color: $neutral_blue_3;
+
+        &:hover {
+          color: $neutral_blue_9;
+          background-color: $neutral_blue_4;
+        }
+      }
     }
 
     .card-header .badge {
