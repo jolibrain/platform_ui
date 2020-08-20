@@ -1,5 +1,5 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 
 @inject("deepdetectStore")
@@ -13,14 +13,20 @@ export default class PublishTrainingModal extends React.Component {
     this.state = {
       spinner: false,
       serviceName: "",
-      targetRepository: ""
+      targetRepository: "",
+      deleteAfterPublish: true
     };
+
+    this.renderPublishMessage = this.renderPublishMessage.bind(this);
 
     this.handlePublishTraining = this.handlePublishTraining.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
 
     this.handleServiceNameChange = this.handleServiceNameChange.bind(this);
     this.handleTargetRepositoryChange = this.handleTargetRepositoryChange.bind(
+      this
+    );
+    this.handleToggleDeleteAfterPublish = this.handleToggleDeleteAfterPublish.bind(
       this
     );
   }
@@ -37,8 +43,12 @@ export default class PublishTrainingModal extends React.Component {
       serviceName: service.name,
       targetRepository:
         privateStore.systemPath + privateStore.nginxPath + service.name,
-      publishError: null
+      publishMessage: null
     });
+  }
+
+  handleToggleDeleteAfterPublish(event) {
+    this.setState({ deleteAfterPublish: !event.target.value });
   }
 
   handleServiceNameChange(event) {
@@ -50,23 +60,21 @@ export default class PublishTrainingModal extends React.Component {
   }
 
   handleCancel() {
-    this.setState({ publishError: null });
+    this.setState({ publishMessage: null });
     this.props.modalStore.setVisible("publishTraining", false);
   }
 
   handlePublishTraining() {
-    const {
-      deepdetectStore,
-      modelRepositoriesStore,
-      modalStore,
-      history
-    } = this.props;
+    const { deepdetectStore, modelRepositoriesStore } = this.props;
     const { serviceName, targetRepository } = this.state;
 
     if (serviceName.length === 0) {
       this.setState({
         spinner: false,
-        publishError: "Service name can't be empty"
+        publishMessage: {
+          isError: true,
+          content: "Service name can't be empty"
+        }
       });
       return null;
     }
@@ -74,7 +82,10 @@ export default class PublishTrainingModal extends React.Component {
     if (targetRepository.length === 0) {
       this.setState({
         spinner: false,
-        publishError: "Target repository can't be empty"
+        publishMessage: {
+          isError: true,
+          content: "Target repository can't be empty"
+        }
       });
       return null;
     }
@@ -86,12 +97,15 @@ export default class PublishTrainingModal extends React.Component {
     if (!targetRepository.startsWith(targetPrefix)) {
       this.setState({
         spinner: false,
-        publishError: `Target repository must start with prefix ${targetPrefix}`
+        publishMessage: {
+          isError: true,
+          content: `Target repository must start with prefix ${targetPrefix}`
+        }
       });
       return null;
     }
 
-    this.setState({ spinner: true, publishError: null });
+    this.setState({ spinner: true, publishMessage: null });
 
     const service = this.props.service;
 
@@ -109,7 +123,10 @@ export default class PublishTrainingModal extends React.Component {
     if (existingServices.includes(serviceName.toLowerCase())) {
       this.setState({
         spinner: false,
-        publishError: "Service name already exists"
+        publishMessage: {
+          isError: true,
+          content: "Service name already exists"
+        }
       });
     } else {
       ddServer.newService(serviceName, serviceConfig, async (response, err) => {
@@ -117,26 +134,85 @@ export default class PublishTrainingModal extends React.Component {
           if (err.status) {
             this.setState({
               spinner: false,
-              publishError: `${err.status.msg}: ${err.status.dd_msg}`
+              publishMessage: {
+                isError: true,
+                content: `${err.status.msg}: ${err.status.dd_msg}`
+              }
             });
           } else {
             this.setState({
               spinner: false,
-              publishError: `Error publishing model.`
+              publishMessage: {
+                isError: true,
+                content: `Error publishing model.`
+              }
             });
           }
         } else {
-          // TODO add serviceName in ddServer.deleteService method
-          // to avoid using private request method
-          await ddServer.$reqDeleteService(service.name);
           modelRepositoriesStore.refresh();
-          modalStore.setVisible("publishTraining", false);
-          history.push(`/predict`);
-          // TODO allow to direct link to predict page of newly created service
-          //history.push(`/predict/private/${serviceName}`);
+          if (this.state.deleteAfterPublish) {
+            // TODO add serviceName in ddServer.deleteService method
+            // to avoid using private request method
+            await ddServer.$reqDeleteService(service.name);
+
+            this.setState({
+              spinner: false,
+              publishMessage: {
+                isError: false,
+                content: `Service is now available on Predict page.`
+              }
+            });
+          } else {
+            this.setState({
+              spinner: false,
+              publishMessage: {
+                isError: false,
+                content: `Service has been published.`,
+                serviceName: serviceName
+              }
+            });
+          }
         }
       });
     }
+  }
+
+  renderPublishMessage() {
+    const { publishMessage } = this.state;
+    let message = "";
+
+    if (publishMessage) {
+      if (publishMessage.isError) {
+        message = (
+          <div className="alert alert-danger" role="alert">
+            <p>
+              <b>Error while publishing service</b>
+            </p>
+            <p>{publishMessage.content}</p>
+          </div>
+        );
+      } else {
+        message = (
+          <div className="alert alert-success" role="alert">
+            <p>
+              <b>Success!</b>
+            </p>
+            <p>{publishMessage.content}</p>
+            <p>
+              {publishMessage.serviceName ? (
+                <Link to={`/predict/private/${publishMessage.serviceName}`}>
+                  Open <b>{publishMessage.serviceName}</b> service
+                </Link>
+              ) : (
+                <Link to={`/predict`}>View available Predict services</Link>
+              )}
+            </p>
+          </div>
+        );
+      }
+    }
+
+    return message;
   }
 
   render() {
@@ -178,18 +254,24 @@ export default class PublishTrainingModal extends React.Component {
                 system path where the Predict service will store its model
               </small>
             </div>
+            <div className="form-group">
+              <input
+                type="checkbox"
+                defaultChecked={this.state.deleteAfterPublish}
+                onChange={this.handleToggleDeleteAfterPublish}
+              />{" "}
+              Delete service after publishing
+              <small
+                id="deleteAfterPublishHelp"
+                className="form-text text-muted"
+              >
+                If checked, service will be deleted after it's been published as
+                an available Predict service
+              </small>
+            </div>
           </form>
 
-          {this.state.publishError ? (
-            <div className="alert alert-danger" role="alert">
-              <p>
-                <b>Error while publishing service</b>
-              </p>
-              <p>{this.state.publishError}</p>
-            </div>
-          ) : (
-            ""
-          )}
+          {this.renderPublishMessage()}
         </div>
 
         <div className="modal-footer">
