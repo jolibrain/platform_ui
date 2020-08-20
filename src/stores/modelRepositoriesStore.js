@@ -28,6 +28,25 @@ export class modelRepositoriesStore {
     this.repositoryStores.filter(r => r.isTraining).forEach(r => r.load());
   }
 
+  async findAndLoad(path) {
+    let repository = null;
+
+    // Get parent folder path
+    let parentFolder = path.substring(
+      0,
+      path.replace(/\/$/, "").lastIndexOf("/")
+    );
+    if (!parentFolder.endsWith("/")) parentFolder = parentFolder + "/";
+
+    const store = this.repositoryStores.find(r => r.nginxPath === parentFolder);
+
+    if (store) {
+      repository = await store.fastLoad(path);
+    }
+
+    return repository;
+  }
+
   // Refresh Status
   // when true, it is fetching models from webserver
 
