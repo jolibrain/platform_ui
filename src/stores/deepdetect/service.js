@@ -524,7 +524,7 @@ export default class deepdetectService {
         input.postData.parameters.input = { segmentation: true };
         input.postData.parameters.output = {};
 
-        if (this.settings.segmentationConfidence) {
+        if (settings.request.segmentationConfidence) {
           input.postData.parameters.output.confidences = ["best"];
         }
 
@@ -548,10 +548,7 @@ export default class deepdetectService {
         break;
 
       case "instance_segmentation":
-        if (
-          this.settings.segmentationMask ||
-          typeof this.settings.segmentationMask === "undefined"
-        ) {
+        if (settings.request.segmentationMask) {
           input.postData.parameters.output.mask = true;
           delete input.postData.parameters.output.bbox;
         } else {
