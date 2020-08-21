@@ -176,7 +176,6 @@ export default class PredictAddServiceModal extends React.Component {
       window.location.hostname === "127.0.0.1" ||
       window.location.protocol === "https:";
 
-    console.log(gpuStoreServer.recommendedGpuIndex);
     return (
       <div id="modal-addService">
         <div className="modal-header">
@@ -221,7 +220,8 @@ export default class PredictAddServiceModal extends React.Component {
                         >
                           <span className="badge badge-pill">
                             <i className="far fa-hdd" /> {index}
-                            {index === gpuStoreServer.recommendedGpuIndex
+                            {gpuStoreServer.recommendedGpuIndex &&
+                            index === gpuStoreServer.recommendedGpuIndex
                               ? " (*)"
                               : null}
                           </span>
