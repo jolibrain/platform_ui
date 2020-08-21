@@ -15,7 +15,7 @@ export default class PredictAddServiceModal extends React.Component {
       serviceName: "",
       gpuId: 0,
       addErrors: [],
-      mediaType: "image"
+      mediaType: null
     };
 
     this.validateBeforeSubmit = this.validateBeforeSubmit.bind(this);
@@ -133,7 +133,7 @@ export default class PredictAddServiceModal extends React.Component {
 
         ddStore.setService(serviceName);
 
-        if (ddStore.service) {
+        if (ddStore.service && this.state.mediaType) {
           ddStore.service.uiParams.mediaType = this.state.mediaType;
         }
 
@@ -250,6 +250,21 @@ export default class PredictAddServiceModal extends React.Component {
               <div className="form-group">
                 <label>Media Type</label>
                 <div className="form-group" onChange={this.handleMediaChange}>
+                  <div className="form-check form-check-inline">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="inlineRadioMediaOptions"
+                      defaultChecked="checked"
+                      value="txt"
+                    />
+                    <label className="form-check-label">
+                      <span className="badge badge-pill">
+                        <i className="fas fa-quote-right"></i> Text
+                      </span>
+                    </label>
+                  </div>
+
                   <div className="form-check form-check-inline">
                     <input
                       className="form-check-input"
