@@ -80,11 +80,16 @@ export class imaginateStore {
   predict() {
     if (!this.service) return null;
 
-    if (this.chain && this.chain.calls && this.chain.calls.length > 0) {
+    if (this.isChain) {
       this.service.predictChain(this.serviceSettings, this.chain);
     } else {
       this.service.predict(this.serviceSettings);
     }
+  }
+
+  @computed
+  get isChain() {
+    return this.chain && this.chain.calls && this.chain.calls.length > 0;
   }
 
   @computed
