@@ -343,15 +343,6 @@ export default class ImageConnector extends React.Component {
               </div>
             </div>
 
-            {service.isRequesting ? (
-              <div className="alert alert-primary" role="alert">
-                <i className="fas fa-spinner fa-spin" />
-                &nbsp; Loading...
-              </div>
-            ) : (
-              ""
-            )}
-
             {boundingBoxControls ? (
               <div className="row">
                 <Controls

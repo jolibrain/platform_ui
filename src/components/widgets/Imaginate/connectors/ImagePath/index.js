@@ -350,15 +350,6 @@ export default class ImagePathConnector extends React.Component {
               </div>
             </div>
 
-            {service.isRequesting ? (
-              <div className="alert alert-primary" role="alert">
-                <i className="fas fa-spinner fa-spin" />
-                &nbsp; Loading...
-              </div>
-            ) : (
-              ""
-            )}
-
             <div className="row">
               {boundingBoxControls ? (
                 <Controls

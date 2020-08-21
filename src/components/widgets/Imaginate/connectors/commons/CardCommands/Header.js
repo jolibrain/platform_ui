@@ -22,6 +22,15 @@ export default class Header extends React.Component {
         ) : (
           ""
         )}
+
+        {this.props.isRequesting ? (
+          <span className="badge badge-secondary float-right">
+            <i className="fas fa-spinner fa-spin fa-sm" />
+          </span>
+        ) : (
+          ""
+        )}
+
         <ul className="nav nav-tabs card-header-tabs">
           <li className="nav-item">
             <a
@@ -31,11 +40,6 @@ export default class Header extends React.Component {
               onClick={this.props.onTabClick.bind(this, "curl")}
             >
               Curl&nbsp;
-              {this.props.isRequesting ? (
-                <i className="fas fa-spinner fa-spin" />
-              ) : (
-                ""
-              )}
             </a>
           </li>
 

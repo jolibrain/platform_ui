@@ -333,15 +333,6 @@ export default class MjpegConnector extends React.Component {
       <div className="imaginate">
         <div className="row">
           <div className="col-md-7">
-            {service.isRequesting ? (
-              <div className="alert alert-primary" role="alert">
-                <i className="fas fa-spinner fa-spin" />
-                &nbsp; Loading...
-              </div>
-            ) : (
-              ""
-            )}
-
             <div className="row">
               {boundingBoxControls ? (
                 <Controls
