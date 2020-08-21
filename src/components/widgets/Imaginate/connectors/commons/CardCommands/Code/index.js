@@ -43,7 +43,7 @@ export default class Code extends React.Component {
   javascriptCode() {
     const { service, settings } = this.props.imaginateStore;
 
-    let codeSettings = settings.default.code;
+    let codeSettings = settings.default.code || {};
 
     const serviceSettings = settings.services.find(
       s => s.name === service.name
@@ -56,11 +56,15 @@ export default class Code extends React.Component {
 
     let javascriptCode = "// https://www.npmjs.com/package/deepdetect-js\n";
 
-    if (codeSettings.display.importLib) {
+    // if codeSettings.display is not setup
+    // or if it's setup and true
+    if (!codeSettings.display || codeSettings.display.importLib) {
       javascriptCode += `var DD = require('deepdetect-js');\n\n`;
     }
 
-    if (codeSettings.display.ddConfig) {
+    // if codeSettings.display is not setup
+    // or if it's setup and true
+    if (!codeSettings.display || codeSettings.display.ddConfig) {
       const host = codeSettings.hostname
         ? codeSettings.hostname
         : window.location.hostname;
@@ -76,7 +80,9 @@ export default class Code extends React.Component {
 })\n\n`;
     }
 
-    if (codeSettings.display.postPredict) {
+    // if codeSettings.display is not setup
+    // or if it's setup and true
+    if (!codeSettings.display || codeSettings.display.postPredict) {
       javascriptCode += `const postData = ${JSON.stringify(
         postData,
         null,
@@ -96,7 +102,7 @@ run()`;
   pythonCode() {
     const { service, settings } = this.props.imaginateStore;
 
-    let codeSettings = settings.default.code;
+    let codeSettings = settings.default.code || {};
 
     const serviceSettings = settings.services.find(
       s => s.name === service.name
@@ -105,19 +111,21 @@ run()`;
       codeSettings = serviceSettings.code;
     }
 
-    console.log(codeSettings);
-
     const postData = service.selectedInput.postData;
 
     let pythonCode = "# Download dd_client.py from:\n";
     pythonCode +=
       "# https://github.com/jolibrain/deepdetect/blob/master/clients/python/dd_client.py\n";
 
-    if (codeSettings.display.importLib) {
+    // if codeSettings.display is not setup
+    // or if it's setup and true
+    if (!codeSettings.display || codeSettings.display.importLib) {
       pythonCode += `from dd_client import DD\n\n`;
     }
 
-    if (codeSettings.display.ddConfig) {
+    // if codeSettings.display is not setup
+    // or if it's setup and true
+    if (!codeSettings.display || codeSettings.display.ddConfig) {
       pythonCode += `host = '${window.location.hostname}'
 port = ${window.location.port || (window.protocol === "https" ? 443 : 80)}
 path = '${service.serverSettings.path}'
