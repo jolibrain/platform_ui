@@ -41,7 +41,7 @@ export default class Code extends React.Component {
   }
 
   javascriptCode() {
-    const { service, settings } = this.props.imaginateStore;
+    const { service, settings, chain } = this.props.imaginateStore;
 
     let codeSettings = settings.default.code || {};
 
@@ -80,20 +80,34 @@ export default class Code extends React.Component {
 })\n\n`;
     }
 
-    // if codeSettings.display is not setup
-    // or if it's setup and true
-    if (!codeSettings.display || codeSettings.display.postPredict) {
-      javascriptCode += `const postData = ${JSON.stringify(
-        postData,
+    if (chain && chain.calls && chain.calls.length > 0) {
+      javascriptCode += `const putData = ${JSON.stringify(
+        chain.calls,
         null,
         2
       )}\n\n`;
       javascriptCode += `async function run() {
+  const predict = await dd.putChain(putData);
+  console.log(predict);
+}
+
+run()`;
+    } else {
+      // if codeSettings.display is not setup
+      // or if it's setup and true
+      if (!codeSettings.display || codeSettings.display.postPredict) {
+        javascriptCode += `const postData = ${JSON.stringify(
+          postData,
+          null,
+          2
+        )}\n\n`;
+        javascriptCode += `async function run() {
   const predict = await dd.postPredict(postData);
   console.log(predict);
 }
 
 run()`;
+      }
     }
 
     return javascriptCode;
