@@ -100,7 +100,7 @@ run()`;
   }
 
   pythonCode() {
-    const { service, settings } = this.props.imaginateStore;
+    const { service, settings, chain } = this.props.imaginateStore;
 
     let codeSettings = settings.default.code || {};
 
@@ -111,7 +111,7 @@ run()`;
       codeSettings = serviceSettings.code;
     }
 
-    const postData = service.selectedInput.postData;
+    const { postData, content } = service.selectedInput;
 
     let pythonCode = "# Download dd_client.py from:\n";
     pythonCode +=
@@ -133,39 +133,98 @@ dd = DD(host, port, ${window.protocol === "https" ? 1 : 0}, path=path)
 dd.set_return_format(dd.RETURN_PYTHON)\n\n`;
     }
 
-    if (postData.parameters.input) {
-      pythonCode += `parameters_input = ${JSON.stringify(
-        postData.parameters.input
-      )
-        .replace("true", "True")
-        .replace("false", "False")}\n`;
-    } else {
-      pythonCode += `parameters_input = {}\n`;
-    }
+    if (chain && chain.calls && chain.calls.length > 0) {
+      let chain_calls = [];
+      chain.calls.forEach((call, call_index) => {
+        let call_id = "";
 
-    if (postData.parameters.mlllib) {
-      pythonCode += `parameters_mllib = ${JSON.stringify(
-        postData.parameters.mllib
-      )
-        .replace("true", "True")
-        .replace("false", "False")}\n`;
-    } else {
-      pythonCode += `parameters_mllib = {}\n`;
-    }
+        if (call.action) {
+          call_id = `action_${call_index}`;
 
-    if (postData.parameters.output) {
-      pythonCode += `parameters_output = ${JSON.stringify(
-        postData.parameters.output
-      )
-        .replace("true", "True")
-        .replace("false", "False")}\n`;
-    } else {
-      pythonCode += `parameters_output = {}\n`;
-    }
+          if (call.action.parameters) {
+            pythonCode += `${call_id} = dd.make_action(\n  "${
+              call.action.type
+            }",\n  ${JSON.stringify(call.action.parameters)
+              .replace("true", "True")
+              .replace("false", "False")}\n)\n\n`;
+          } else {
+            pythonCode += `${call_id} = dd.make_action("${call.action.type}")\n\n`;
+          }
+        } else {
+          call_id = `service_${call_index}`;
 
-    pythonCode += `data = ${JSON.stringify(postData.data)}\n`;
-    pythonCode += `sname = '${service.name}'\n`;
-    pythonCode += `classif = dd.post_predict(sname,data,parameters_input,parameters_mllib,parameters_output)`;
+          pythonCode += `parameters_input = ${
+            call.parameters.input
+              ? JSON.stringify(call.parameters.input)
+                  .replace("true", "True")
+                  .replace("false", "False")
+              : "{}"
+          }\n`;
+          pythonCode += `parameters_mllib = ${
+            call.parameters.mllib
+              ? JSON.stringify(call.parameters.mllib)
+                  .replace("true", "True")
+                  .replace("false", "False")
+              : "{}"
+          }\n`;
+          pythonCode += `parameters_output = ${
+            call.parameters.output
+              ? JSON.stringify(call.parameters.output)
+                  .replace("true", "True")
+                  .replace("false", "False")
+              : "{}"
+          }\n`;
+
+          if (call_index == 0) {
+            pythonCode += `data = ${JSON.stringify(content ? content : "")}\n`;
+            pythonCode += `${call_id} = dd.make_call(\n  "${call.service}",\n  data,\n  parameters_input,\n  parameters_mllib,\n  parameters_output\n)\n\n`;
+          } else {
+            pythonCode += `${call_id} = dd.make_call(\n  "${call.service}",\n  {},\n  parameters_input,\n  parameters_mllib,\n  parameters_output\n)\n\n`;
+          }
+        }
+
+        chain_calls.push(call_id);
+      });
+
+      pythonCode += `chain_calls = [\n  ${chain_calls.join(", \n  ")}\n]\n`;
+      pythonCode += `chain_output = dd.post_chain(\n  "${chain.name}",\n  chain_calls\n)\n`;
+      pythonCode += `print(chain_output)`;
+    } else {
+      if (postData.parameters.input) {
+        pythonCode += `parameters_input = ${JSON.stringify(
+          postData.parameters.input
+        )
+          .replace("true", "True")
+          .replace("false", "False")}\n`;
+      } else {
+        pythonCode += `parameters_input = {}\n`;
+      }
+
+      if (postData.parameters.mlllib) {
+        pythonCode += `parameters_mllib = ${JSON.stringify(
+          postData.parameters.mllib
+        )
+          .replace("true", "True")
+          .replace("false", "False")}\n`;
+      } else {
+        pythonCode += `parameters_mllib = {}\n`;
+      }
+
+      if (postData.parameters.output) {
+        pythonCode += `parameters_output = ${JSON.stringify(
+          postData.parameters.output
+        )
+          .replace("true", "True")
+          .replace("false", "False")}\n`;
+      } else {
+        pythonCode += `parameters_output = {}\n`;
+      }
+
+      pythonCode += `data = ${JSON.stringify(postData.data)}\n`;
+      pythonCode += `data = ${JSON.stringify(postData.data)}\n`;
+      pythonCode += `sname = '${service.name}'\n`;
+      pythonCode += `classif = dd.post_predict(sname,data,parameters_input,parameters_mllib,parameters_output)`;
+    }
 
     return pythonCode;
   }

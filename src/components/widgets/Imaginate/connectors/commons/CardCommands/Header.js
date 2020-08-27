@@ -8,11 +8,6 @@ export default class Header extends React.Component {
     const { service } = this.props.imaginateStore;
     const input = service.selectedInput;
 
-    let method = null;
-
-    if (input && input.json && input.json.head && input.json.head.method)
-      method = input.json.head.method;
-
     return (
       <div className="card-header">
         {this.props.requestTime !== -1 ? (
@@ -59,18 +54,16 @@ export default class Header extends React.Component {
             </a>
           </li>
 
-          {method === "/chain" ? null : (
-            <li className="nav-item">
-              <a
-                className={
-                  this.props.tab === "code" ? "nav-link active" : "nav-link"
-                }
-                onClick={this.props.onTabClick.bind(this, "code")}
-              >
-                Code
-              </a>
-            </li>
-          )}
+          <li className="nav-item">
+            <a
+              className={
+                this.props.tab === "code" ? "nav-link active" : "nav-link"
+              }
+              onClick={this.props.onTabClick.bind(this, "code")}
+            >
+              Code
+            </a>
+          </li>
         </ul>
       </div>
     );
