@@ -148,7 +148,7 @@ export default class MainView extends React.Component {
                     className={
                       modelRepositoriesStore.isRefreshing
                         ? "fas fa-spinner fa-spin"
-                        : "fas fa-spinner"
+                        : "fas fa-sync"
                     }
                   />
                 </button>
