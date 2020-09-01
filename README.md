@@ -283,6 +283,15 @@ yarn test:e2e
 
 ## Changelog
 
+### v0.9.7.3 - 01/09/2020
+
+- UI
+
+  - Benchmark: add feature to compare training job results
+  - Segmentation: fix mask and confidence display when changing inpuit
+  - Imaginate widget: fix display of chain code
+  - Consistency of spinning icons
+
 ### v0.9.7.2 - 29/06/2020
 
 - UI
