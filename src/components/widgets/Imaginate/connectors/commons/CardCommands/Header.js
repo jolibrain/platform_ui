@@ -5,9 +5,6 @@ import { inject, observer } from "mobx-react";
 @observer
 export default class Header extends React.Component {
   render() {
-    const { service } = this.props.imaginateStore;
-    const input = service.selectedInput;
-
     return (
       <div className="card-header">
         {this.props.requestTime !== -1 ? (
