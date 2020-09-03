@@ -193,19 +193,6 @@ export default class MainView extends React.Component {
                 ""
               )}
               {!modelRepositoriesStore.isRefreshing &&
-              displayedArchiveRepositories.length > 1 &&
-              displayedArchiveRepositories.length <= 12 ? (
-                <Link
-                  to={`/charts/archive/${displayedArchiveRepositories
-                    .map(r => r.path.replace(/^\/+|\/+$/g, ""))
-                    .join("+")}`}
-                  className="btn btn-primary"
-                  type="button"
-                >
-                  Compare All
-                </Link>
-              ) : null}
-              {!modelRepositoriesStore.isRefreshing &&
               this.state.selectedComparePath.length > 1 ? (
                 <Link
                   to={`/charts/archive/${this.state.selectedComparePath
