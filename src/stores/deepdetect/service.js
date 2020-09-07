@@ -158,9 +158,8 @@ export default class deepdetectService {
 
   @computed
   get type() {
-    if (this.respInfo && this.respInfo.body) {
-      return this.respInfo.body.type;
-    }
+    return this.respInfo && this.respInfo.body ?
+      this.respInfo.body.type : null
   }
 
   @computed
@@ -229,9 +228,6 @@ export default class deepdetectService {
     const serverPath = this.serverSettings.path;
     return `${serverPath}/train?service=${this.name}&job=${this.trainJob}&parameters.output.measure_hist=true&parameters.output.max_hist_points=1000`;
   }
-
-  @computed
-  get descriptionDisplayFormat() {}
 
   @computed
   get gpuid() {

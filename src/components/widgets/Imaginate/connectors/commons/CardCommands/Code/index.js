@@ -189,7 +189,7 @@ dd.set_return_format(dd.RETURN_PYTHON)\n\n`;
               : "{}"
           }\n`;
 
-          if (call_index == 0) {
+          if (call_index === 0) {
             pythonCode += `data = ${JSON.stringify(content ? content : "")}\n`;
             pythonCode += `${call_id} = dd.make_call(\n  "${call.service}",\n  data,\n  parameters_input,\n  parameters_mllib,\n  parameters_output\n)\n\n`;
           } else {
