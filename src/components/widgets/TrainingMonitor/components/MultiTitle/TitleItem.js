@@ -93,6 +93,7 @@ class TitleItem extends React.Component {
             href={`${service.path}config.json`}
             className="badge badge-dark"
             target="_blank"
+            rel="noopener noreferrer"
           >
             config
           </a>
@@ -101,6 +102,7 @@ class TitleItem extends React.Component {
             href={`${service.path}metrics.json`}
             className="badge badge-dark"
             target="_blank"
+            rel="noopener noreferrer"
           >
             metrics
           </a>

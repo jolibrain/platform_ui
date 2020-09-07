@@ -28,7 +28,7 @@ class GpuStatServer extends React.Component {
     if (server.externalLink) {
       externalLink = (
         <span className="externalLink">
-          <a href={server.externalLink} target="_blank" rel="noopener">
+          <a href={server.externalLink} target="_blank" rel="noopener noreferrer">
             <i className="fas fa-external-link-alt" />
           </a>
         </span>
@@ -40,7 +40,7 @@ class GpuStatServer extends React.Component {
       server.externalLinks.forEach((link, index) => {
         externalLinks.push(
           <span key={index} className="externalLink">
-            <a href={link.href} target="_blank" rel="noopener">
+            <a href={link.href} target="_blank" rel="noopener noreferrer">
               <i className={link.iconClass} />
             </a>
           </span>

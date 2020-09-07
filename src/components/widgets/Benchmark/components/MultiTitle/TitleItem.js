@@ -28,7 +28,12 @@ class TitleItem extends React.Component {
           )}
         </td>
         <td>
-          <a className="badge badge-dark" href={benchmark.href} target="_blank">
+          <a
+            className="badge badge-dark"
+            href={benchmark.href}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {benchmark.href}
           </a>
         </td>
