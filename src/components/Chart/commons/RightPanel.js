@@ -9,7 +9,7 @@ import PlaceHolder from "../../widgets/PlaceHolder";
 @inject("configStore")
 @withRouter
 @observer
-export default class RightPanel extends React.Component {
+class RightPanel extends React.Component {
   render() {
     const { configStore } = this.props;
 
@@ -34,3 +34,4 @@ export default class RightPanel extends React.Component {
 RightPanel.propTypes = {
   configStore: PropTypes.object
 };
+export default RightPanel;

@@ -6,7 +6,7 @@ import { toJS } from "mobx";
 import { Chart, Line } from "react-chartjs-2";
 
 @observer
-export default class MeasureChart extends React.Component {
+class MeasureChart extends React.Component {
   chartReference = {};
 
   constructor(props) {
@@ -509,3 +509,4 @@ MeasureChart.propTypes = {
   steppedLine: PropTypes.bool,
   services: PropTypes.array.isRequired
 };
+export default MeasureChart;

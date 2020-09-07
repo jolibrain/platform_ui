@@ -20,7 +20,7 @@ import ToggleControl from "../commons/ToggleControl";
 @inject("imaginateStore")
 @withRouter
 @observer
-export default class ImagePathConnector extends React.Component {
+class ImagePathConnector extends React.Component {
   constructor(props) {
     super(props);
 
@@ -396,3 +396,4 @@ export default class ImagePathConnector extends React.Component {
     );
   }
 }
+export default ImagePathConnector;

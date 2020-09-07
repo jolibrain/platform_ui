@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 
 @observer
-export default class List extends React.Component {
+class List extends React.Component {
   constructor(props) {
     super(props);
     this.categoryDisplay = this.categoryDisplay.bind(this);
@@ -66,3 +66,4 @@ List.propTypes = {
   onOver: PropTypes.func,
   onLeave: PropTypes.func
 };
+export default List;

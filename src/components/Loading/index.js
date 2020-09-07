@@ -4,7 +4,7 @@ import Header from "../Header";
 import LeftPanel from "./LeftPanel";
 import MainView from "./MainView";
 
-export default class Loading extends React.Component {
+class Loading extends React.Component {
   render() {
     return (
       <div>
@@ -17,3 +17,4 @@ export default class Loading extends React.Component {
     );
   }
 }
+export default Loading;

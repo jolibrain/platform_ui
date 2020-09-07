@@ -10,7 +10,7 @@ import DownloadModelFiles from "../../DownloadModelFiles";
 @inject("modalStore")
 @withRouter
 @observer
-export default class Card extends React.Component {
+class Card extends React.Component {
   constructor(props) {
     super(props);
 
@@ -147,3 +147,4 @@ export default class Card extends React.Component {
 Card.propTypes = {
   repository: PropTypes.object.isRequired
 };
+export default Card;

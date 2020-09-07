@@ -7,7 +7,7 @@ import { inject, observer } from "mobx-react";
 @inject("modalStore")
 @observer
 @withRouter
-export default class PredictAddServiceModal extends React.Component {
+class PredictAddServiceModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -347,3 +347,4 @@ export default class PredictAddServiceModal extends React.Component {
     );
   }
 }
+export default PredictAddServiceModal;

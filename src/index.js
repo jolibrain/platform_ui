@@ -6,7 +6,7 @@ import { configure } from "mobx";
 import { Provider } from "mobx-react";
 import { CookiesProvider } from "react-cookie";
 
-import "./styles/styles.css";
+import "./styles/styles.scss";
 
 import App from "./components/App";
 

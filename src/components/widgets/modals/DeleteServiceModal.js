@@ -6,7 +6,7 @@ import { inject, observer } from "mobx-react";
 @inject("modalStore")
 @observer
 @withRouter
-export default class DeleteServiceModal extends React.Component {
+class DeleteServiceModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -86,3 +86,4 @@ export default class DeleteServiceModal extends React.Component {
     );
   }
 }
+export default DeleteServiceModal;

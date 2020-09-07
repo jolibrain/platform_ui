@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 
 @observer
-export default class Title extends React.Component {
+class Title extends React.Component {
   constructor(props) {
     super(props);
     this.getValue = this.getValue.bind(this);
@@ -153,3 +153,4 @@ Title.propTypes = {
   serviceIndex: PropTypes.number,
   hasTitle: PropTypes.bool
 };
+export default Title;

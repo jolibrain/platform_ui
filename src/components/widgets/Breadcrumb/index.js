@@ -5,7 +5,7 @@ import { inject } from "mobx-react";
 
 @inject("modalStore")
 @inject("configStore")
-export default class Breadcrumb extends React.Component {
+class Breadcrumb extends React.Component {
   constructor(props) {
     super(props);
     this.openDeleteServiceModal = this.openDeleteServiceModal.bind(this);
@@ -109,3 +109,4 @@ Breadcrumb.propTypes = {
   service: PropTypes.object.isRequired,
   isTraining: PropTypes.bool
 };
+export default Breadcrumb;

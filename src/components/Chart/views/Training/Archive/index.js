@@ -11,7 +11,7 @@ import MeasureHistArray from "../../../../widgets/TrainingMonitor/components/Mea
 @inject("modelRepositoriesStore")
 @observer
 @withRouter
-export default class ModelCompare extends React.Component {
+class ModelCompare extends React.Component {
   constructor(props) {
     super(props);
 
@@ -119,3 +119,4 @@ export default class ModelCompare extends React.Component {
     );
   }
 }
+export default ModelCompare;

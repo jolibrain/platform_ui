@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 
 @observer
-export default class DownloadModelFiles extends React.Component {
+class DownloadModelFiles extends React.Component {
   render() {
     const { repository } = this.props;
     const files = repository.downloadableFiles;
@@ -39,3 +39,4 @@ export default class DownloadModelFiles extends React.Component {
 DownloadModelFiles.propTypes = {
   repository: PropTypes.object.isRequired
 };
+export default DownloadModelFiles;

@@ -5,7 +5,7 @@ import GpuStatsFormat from "./Item/GpuStatsFormat";
 import JtopFormat from "./Item/JtopFormat";
 
 @observer
-export default class GpuStatServer extends React.Component {
+class GpuStatServer extends React.Component {
   render() {
     const { server } = this.props;
 
@@ -59,3 +59,4 @@ export default class GpuStatServer extends React.Component {
     );
   }
 }
+export default GpuStatServer;

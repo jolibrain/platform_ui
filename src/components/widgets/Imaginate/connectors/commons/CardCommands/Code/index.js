@@ -1,14 +1,14 @@
 import React from "react";
 import { inject, observer } from "mobx-react";
 import SyntaxHighlighter from "react-syntax-highlighter";
-import { docco } from "react-syntax-highlighter/styles/hljs";
+import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import ReactTooltip from "react-tooltip";
 
 import copy from "copy-to-clipboard";
 
 @inject("imaginateStore")
 @observer
-export default class Code extends React.Component {
+class Code extends React.Component {
   constructor(props) {
     super(props);
 
@@ -313,3 +313,4 @@ dd.set_return_format(dd.RETURN_PYTHON)\n\n`;
     );
   }
 }
+export default Code;

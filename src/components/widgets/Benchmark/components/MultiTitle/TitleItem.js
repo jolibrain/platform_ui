@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 
 @observer
-export default class TitleItem extends React.Component {
+class TitleItem extends React.Component {
   render() {
     const {
       service,
@@ -50,3 +50,4 @@ TitleItem.propTypes = {
   benchmark: PropTypes.object.isRequired,
   serviceIndex: PropTypes.number.isRequired
 };
+export default TitleItem;

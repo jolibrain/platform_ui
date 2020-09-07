@@ -10,7 +10,7 @@ import BenchmarkChart from "../../../../widgets/Benchmark/components/BenchmarkCh
 @inject("modelRepositoriesStore")
 @observer
 @withRouter
-export default class ModelBenchmark extends React.Component {
+class ModelBenchmark extends React.Component {
   constructor(props) {
     super(props);
 
@@ -115,3 +115,4 @@ export default class ModelBenchmark extends React.Component {
     );
   }
 }
+export default ModelBenchmark;

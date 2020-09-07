@@ -11,7 +11,7 @@ import MainView from "./MainView";
 @inject("configStore")
 @withRouter
 @observer
-export default class PredictNew extends React.Component {
+class PredictNew extends React.Component {
   componentWillMount() {
     const { deepdetectStore, modelRepositoriesStore } = this.props;
     if (!modelRepositoriesStore.isReadyPredict) {
@@ -69,3 +69,4 @@ export default class PredictNew extends React.Component {
     }
   }
 }
+export default PredictNew;

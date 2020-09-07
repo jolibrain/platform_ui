@@ -8,7 +8,7 @@ import ToggleControl from "../ToggleControl";
 @inject("imaginateStore")
 @withRouter
 @observer
-export default class ChainControls extends React.Component {
+class ChainControls extends React.Component {
   constructor(props) {
     super(props);
 
@@ -281,3 +281,4 @@ export default class ChainControls extends React.Component {
     return <div>{uiControls}</div>;
   }
 }
+export default ChainControls;

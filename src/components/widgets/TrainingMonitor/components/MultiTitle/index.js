@@ -5,7 +5,7 @@ import { observer } from "mobx-react";
 import TitleItem from "./TitleItem";
 
 @observer
-export default class MultiTitle extends React.Component {
+class MultiTitle extends React.Component {
   render() {
     const {
       services,
@@ -49,3 +49,4 @@ MultiTitle.propTypes = {
   hiddenRepositoriesIndexes: PropTypes.array,
   handleRepositoryVisibility: PropTypes.func
 };
+export default MultiTitle;

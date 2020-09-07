@@ -6,7 +6,7 @@ import ServiceList from "../widgets/ServiceList";
 
 @withRouter
 @observer
-export default class LeftPanel extends React.Component {
+class LeftPanel extends React.Component {
   render() {
     return (
       <div className="nav-sidebar left-sidebar">
@@ -17,3 +17,4 @@ export default class LeftPanel extends React.Component {
     );
   }
 }
+export default LeftPanel;

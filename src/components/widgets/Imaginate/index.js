@@ -11,7 +11,7 @@ import VideoConnector from "./connectors/Video";
 @inject("imaginateStore")
 @inject("configStore")
 @observer
-export default class Imaginate extends React.Component {
+class Imaginate extends React.Component {
   constructor(props) {
     super(props);
 
@@ -123,3 +123,4 @@ export default class Imaginate extends React.Component {
     );
   }
 }
+export default Imaginate;

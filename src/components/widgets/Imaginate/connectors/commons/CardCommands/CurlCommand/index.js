@@ -5,9 +5,10 @@ import PredictCommand from "./predict";
 import ChainCommand from "./chain";
 
 @withRouter
-export default class CurlCommand extends React.Component {
+class CurlCommand extends React.Component {
   render() {
     const { path } = this.props.match;
     return path.startsWith("/predict/") ? <PredictCommand /> : <ChainCommand />;
   }
 }
+export default CurlCommand;

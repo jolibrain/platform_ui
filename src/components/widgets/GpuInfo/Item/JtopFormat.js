@@ -2,7 +2,7 @@ import React from "react";
 import { observer } from "mobx-react";
 
 @observer
-export default class JtopFormat extends React.Component {
+class JtopFormat extends React.Component {
   render() {
     const gpuInfo = this.props.gpuInfo;
 
@@ -45,3 +45,4 @@ export default class JtopFormat extends React.Component {
     );
   }
 }
+export default JtopFormat;

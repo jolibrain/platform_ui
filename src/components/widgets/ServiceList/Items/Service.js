@@ -4,7 +4,7 @@ import { Link, withRouter } from "react-router-dom";
 
 @withRouter
 @observer
-export default class ServiceItem extends React.Component {
+class ServiceItem extends React.Component {
   render() {
     const { service, match } = this.props;
 
@@ -37,3 +37,4 @@ export default class ServiceItem extends React.Component {
     );
   }
 }
+export default ServiceItem;

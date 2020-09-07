@@ -9,7 +9,7 @@ import Imaginate from "../../widgets/Imaginate";
 @inject("deepdetectStore")
 @withRouter
 @observer
-export default class MainView extends React.Component {
+class MainView extends React.Component {
   render() {
     const { deepdetectStore } = this.props;
     if (!deepdetectStore.isReady) return null;
@@ -70,3 +70,4 @@ export default class MainView extends React.Component {
     );
   }
 }
+export default MainView;

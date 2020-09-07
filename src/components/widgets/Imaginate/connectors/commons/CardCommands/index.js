@@ -9,7 +9,7 @@ import Code from "./Code";
 
 @inject("imaginateStore")
 @observer
-export default class CardCommands extends React.Component {
+class CardCommands extends React.Component {
   constructor(props) {
     super(props);
 
@@ -72,3 +72,4 @@ export default class CardCommands extends React.Component {
     );
   }
 }
+export default CardCommands;

@@ -2,14 +2,14 @@ import React from "react";
 import { toJS } from "mobx";
 import { inject, observer } from "mobx-react";
 import SyntaxHighlighter from "react-syntax-highlighter";
-import { docco } from "react-syntax-highlighter/styles/hljs";
+import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import ReactTooltip from "react-tooltip";
 
 import copy from "copy-to-clipboard";
 
 @inject("imaginateStore")
 @observer
-export default class JsonResponse extends React.Component {
+class JsonResponse extends React.Component {
   constructor(props) {
     super(props);
 
@@ -94,3 +94,4 @@ export default class JsonResponse extends React.Component {
     );
   }
 }
+export default JsonResponse;

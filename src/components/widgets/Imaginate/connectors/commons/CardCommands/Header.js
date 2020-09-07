@@ -3,10 +3,9 @@ import { inject, observer } from "mobx-react";
 
 @inject("imaginateStore")
 @observer
-export default class Header extends React.Component {
+class Header extends React.Component {
   render() {
     const { service } = this.props.imaginateStore;
-    const input = service.selectedInput;
 
     return (
       <div className="card-header">
@@ -69,3 +68,4 @@ export default class Header extends React.Component {
     );
   }
 }
+export default Header;

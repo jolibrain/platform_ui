@@ -5,7 +5,7 @@ import { inject, observer } from "mobx-react";
 @inject("deepdetectStore")
 @inject("configStore")
 @observer
-export default class TrainingMeasure extends React.Component {
+class TrainingMeasure extends React.Component {
   render() {
     const { service } = this.props;
 
@@ -71,3 +71,4 @@ TrainingMeasure.propTypes = {
   handleLeaveMeasure: PropTypes.func.isRequired,
   hoveredMeasure: PropTypes.number.isRequired
 };
+export default TrainingMeasure;

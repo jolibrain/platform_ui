@@ -9,7 +9,7 @@ import ChainItem from "./Items/Chain.js";
 @inject("configStore")
 @withRouter
 @observer
-export default class ServiceList extends React.Component {
+class ServiceList extends React.Component {
   render() {
     if (this.props.configStore.isComponentBlacklisted("ServiceList"))
       return null;
@@ -67,3 +67,4 @@ export default class ServiceList extends React.Component {
     );
   }
 }
+export default ServiceList;

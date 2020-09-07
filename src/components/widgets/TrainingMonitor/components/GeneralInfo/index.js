@@ -45,7 +45,7 @@ import MeasureChart from "../MeasureChart";
 //
 
 @observer
-export default class GeneralInfo extends React.Component {
+class GeneralInfo extends React.Component {
   constructor(props) {
     super(props);
 
@@ -265,3 +265,4 @@ export default class GeneralInfo extends React.Component {
 GeneralInfo.propTypes = {
   services: PropTypes.array.isRequired
 };
+export default GeneralInfo;

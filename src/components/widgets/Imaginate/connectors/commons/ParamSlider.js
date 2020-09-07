@@ -7,7 +7,7 @@ const SliderWithTooltip = createSliderWithTooltip(Slider);
 
 @inject("imaginateStore")
 @observer
-export default class ParamSlider extends React.Component {
+class ParamSlider extends React.Component {
   render() {
     if (typeof this.props.defaultValue === "undefined") return null;
 
@@ -21,3 +21,4 @@ export default class ParamSlider extends React.Component {
     );
   }
 }
+export default ParamSlider;

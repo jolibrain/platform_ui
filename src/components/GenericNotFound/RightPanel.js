@@ -2,7 +2,7 @@ import React from "react";
 
 import GpuInfo from "../widgets/GpuInfo";
 
-export default class RightPanel extends React.Component {
+class RightPanel extends React.Component {
   render() {
     return (
       <aside className="right-sidebar right-sidebar right-sidebar-expanded">
@@ -13,3 +13,4 @@ export default class RightPanel extends React.Component {
     );
   }
 }
+export default RightPanel;

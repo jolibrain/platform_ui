@@ -22,7 +22,7 @@ import ToggleControl from "../commons/ToggleControl";
 @inject("imaginateStore")
 @withRouter
 @observer
-export default class ImageConnector extends React.Component {
+class ImageConnector extends React.Component {
   constructor(props) {
     super(props);
 
@@ -395,3 +395,4 @@ export default class ImageConnector extends React.Component {
     );
   }
 }
+export default ImageConnector;

@@ -7,7 +7,7 @@ import Form from "./Form";
 
 @withRouter
 @observer
-export default class MainView extends React.Component {
+class MainView extends React.Component {
   render() {
     return (
       <div className="main-view content-wrapper">
@@ -21,3 +21,4 @@ export default class MainView extends React.Component {
     );
   }
 }
+export default MainView;

@@ -3,7 +3,7 @@ import { inject, observer } from "mobx-react";
 
 @inject("configStore")
 @observer
-export default class PlaceHolder extends React.Component {
+class PlaceHolder extends React.Component {
   render() {
     const { placeholders } = this.props.configStore;
     const config = placeholders[this.props.config];
@@ -22,3 +22,4 @@ export default class PlaceHolder extends React.Component {
     );
   }
 }
+export default PlaceHolder;

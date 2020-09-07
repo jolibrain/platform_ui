@@ -4,7 +4,7 @@ import { Link, withRouter } from "react-router-dom";
 
 @withRouter
 @observer
-export default class Chain extends React.Component {
+class Chain extends React.Component {
   render() {
     const { chain } = this.props;
 
@@ -23,3 +23,4 @@ export default class Chain extends React.Component {
     );
   }
 }
+export default Chain;

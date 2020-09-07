@@ -7,7 +7,7 @@ import RightPanel from "./RightPanel";
 @inject("configStore")
 @withRouter
 @observer
-export default class MainView extends React.Component {
+class MainView extends React.Component {
   render() {
     const { homeComponent } = this.props.configStore;
     return (
@@ -29,3 +29,4 @@ export default class MainView extends React.Component {
     );
   }
 }
+export default MainView;

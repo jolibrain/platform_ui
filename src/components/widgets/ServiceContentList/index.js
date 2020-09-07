@@ -10,7 +10,7 @@ import ModelRepositoryContent from "./Content/ModelRepository";
 @inject("configStore")
 @withRouter
 @observer
-export default class ServiceContentList extends React.Component {
+class ServiceContentList extends React.Component {
   contentArray(services) {
     const { filterServiceName } = this.props;
 
@@ -52,3 +52,4 @@ ServiceContentList.propTypes = {
   services: PropTypes.array.isRequired,
   filterServiceName: PropTypes.string
 };
+export default ServiceContentList;

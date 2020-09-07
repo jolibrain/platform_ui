@@ -4,7 +4,7 @@ import Boundingbox from "react-bounding-box";
 import seedrandom from "seedrandom";
 
 @observer
-export default class BoundingBox extends React.Component {
+class BoundingBox extends React.Component {
   constructor(props) {
     super(props);
 
@@ -287,3 +287,4 @@ export default class BoundingBox extends React.Component {
     );
   }
 }
+export default BoundingBox;

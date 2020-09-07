@@ -11,14 +11,14 @@ import "codemirror/mode/javascript/javascript";
 import { Typeahead, Menu, MenuItem } from "react-bootstrap-typeahead";
 
 import "react-bootstrap-typeahead/css/Typeahead.css";
-import "react-bootstrap-typeahead/css/Typeahead-bs4.css";
+//import "react-bootstrap-typeahead/css/Typeahead-bs4.css";
 
 @inject("imaginateStore")
 @inject("deepdetectStore")
 @inject("modelRepositoriesStore")
 @observer
 @withRouter
-export default class Form extends React.Component {
+class Form extends React.Component {
   constructor(props) {
     super(props);
 
@@ -422,3 +422,4 @@ export default class Form extends React.Component {
     );
   }
 }
+export default Form;

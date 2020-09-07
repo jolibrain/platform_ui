@@ -3,7 +3,7 @@ import { inject, observer } from "mobx-react";
 
 @inject("imaginateStore")
 @observer
-export default class Threshold extends React.Component {
+class Threshold extends React.Component {
   constructor(props) {
     super(props);
 
@@ -86,3 +86,4 @@ export default class Threshold extends React.Component {
     );
   }
 }
+export default Threshold;

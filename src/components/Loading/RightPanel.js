@@ -7,7 +7,7 @@ import GpuInfo from "../widgets/GpuInfo";
 @inject("configStore")
 @withRouter
 @observer
-export default class RightPanel extends React.Component {
+class RightPanel extends React.Component {
   render() {
     if (typeof this.props.configStore.gpuInfo === "undefined") {
       return null;
@@ -22,3 +22,4 @@ export default class RightPanel extends React.Component {
     );
   }
 }
+export default RightPanel;

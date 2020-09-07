@@ -7,7 +7,7 @@ import { Link, withRouter } from "react-router-dom";
 @inject("modalStore")
 @withRouter
 @observer
-export default class TrainingCard extends React.Component {
+class TrainingCard extends React.Component {
   constructor(props) {
     super(props);
 
@@ -338,3 +338,4 @@ export default class TrainingCard extends React.Component {
 TrainingCard.propTypes = {
   service: PropTypes.object.isRequired
 };
+export default TrainingCard;

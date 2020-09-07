@@ -6,7 +6,7 @@ import moment from "moment";
 
 @withRouter
 @observer
-export default class ModelRepositoryContent extends React.Component {
+class ModelRepositoryContent extends React.Component {
   constructor(props) {
     super(props);
 
@@ -291,3 +291,4 @@ export default class ModelRepositoryContent extends React.Component {
 ModelRepositoryContent.propTypes = {
   repository: PropTypes.object
 };
+export default ModelRepositoryContent;

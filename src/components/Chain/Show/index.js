@@ -12,7 +12,7 @@ import Modals from "./Modals";
 @inject("configStore")
 @withRouter
 @observer
-export default class ChainShow extends React.Component {
+class ChainShow extends React.Component {
   constructor(props) {
     super(props);
     this.setDeepdetectServer = this.setDeepdetectServer.bind(this);
@@ -77,3 +77,4 @@ export default class ChainShow extends React.Component {
     );
   }
 }
+export default ChainShow;

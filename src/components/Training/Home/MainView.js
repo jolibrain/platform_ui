@@ -10,7 +10,7 @@ import RightPanel from "../commons/RightPanel";
 @inject("modelRepositoriesStore")
 @withRouter
 @observer
-export default class MainView extends React.Component {
+class MainView extends React.Component {
   constructor(props) {
     super(props);
 
@@ -233,3 +233,4 @@ export default class MainView extends React.Component {
     );
   }
 }
+export default MainView;

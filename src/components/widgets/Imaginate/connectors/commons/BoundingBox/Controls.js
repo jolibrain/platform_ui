@@ -1,5 +1,5 @@
 import React from "react";
-export default class Controls extends React.Component {
+class Controls extends React.Component {
   render() {
     return (
       <form id="imaginate-image-connector-boundingbox-controls">
@@ -51,3 +51,4 @@ export default class Controls extends React.Component {
     );
   }
 }
+export default Controls;

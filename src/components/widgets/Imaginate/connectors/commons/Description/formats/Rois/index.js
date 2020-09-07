@@ -5,7 +5,7 @@ import { observer } from "mobx-react";
 import Boundingbox from "react-bounding-box";
 
 @observer
-export default class Rois extends React.Component {
+class Rois extends React.Component {
   constructor(props) {
     super(props);
 
@@ -123,3 +123,4 @@ Rois.propTypes = {
   input: PropTypes.object.isRequired,
   selectedBoxIndex: PropTypes.number
 };
+export default Rois;

@@ -14,7 +14,7 @@ import Breadcrumb from "../../widgets/Breadcrumb";
 @inject("modalStore")
 @observer
 @withRouter
-export default class MainView extends React.Component {
+class MainView extends React.Component {
   render() {
     if (!this.props.deepdetectStore.isReady) return null;
 
@@ -52,3 +52,4 @@ export default class MainView extends React.Component {
     );
   }
 }
+export default MainView;

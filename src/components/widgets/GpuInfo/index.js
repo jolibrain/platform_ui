@@ -6,7 +6,7 @@ import GpuStatServer from "./Server";
 @inject("configStore")
 @inject("gpuStore")
 @observer
-export default class GpuInfo extends React.Component {
+class GpuInfo extends React.Component {
   render() {
     if (this.props.configStore.isComponentBlacklisted("GpuInfo")) return null;
 
@@ -33,3 +33,4 @@ export default class GpuInfo extends React.Component {
     );
   }
 }
+export default GpuInfo;

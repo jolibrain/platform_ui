@@ -4,7 +4,7 @@ import { inject, observer } from "mobx-react";
 @inject("deepdetectStore")
 @inject("configStore")
 @observer
-export default class ServiceTraining extends React.Component {
+class ServiceTraining extends React.Component {
   render() {
     if (this.props.configStore.isComponentBlacklisted("ServiceTraining"))
       return null;
@@ -50,3 +50,4 @@ export default class ServiceTraining extends React.Component {
     );
   }
 }
+export default ServiceTraining;

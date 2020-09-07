@@ -6,7 +6,7 @@ import { inject, observer } from "mobx-react";
 
 @inject("imaginateStore")
 @observer
-export default class Icons extends React.Component {
+class Icons extends React.Component {
   constructor(props) {
     super(props);
     this._nodes = new Map();
@@ -134,3 +134,4 @@ Icons.propTypes = {
   onOver: PropTypes.func,
   onLeave: PropTypes.func
 };
+export default Icons;

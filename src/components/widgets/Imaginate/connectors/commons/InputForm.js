@@ -6,7 +6,7 @@ import { inject, observer } from "mobx-react";
 import { Typeahead, Menu, MenuItem } from "react-bootstrap-typeahead";
 
 import "react-bootstrap-typeahead/css/Typeahead.css";
-import "react-bootstrap-typeahead/css/Typeahead-bs4.css";
+//import "react-bootstrap-typeahead/css/Typeahead-bs4.css";
 
 @inject("imaginateStore")
 @inject("dataRepositoriesStore")

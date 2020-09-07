@@ -17,7 +17,7 @@ import ToggleControl from "../commons/ToggleControl";
 @inject("imaginateStore")
 @withRouter
 @observer
-export default class MjpegConnector extends React.Component {
+class MjpegConnector extends React.Component {
   constructor(props) {
     super(props);
 
@@ -379,3 +379,4 @@ export default class MjpegConnector extends React.Component {
     );
   }
 }
+export default MjpegConnector;

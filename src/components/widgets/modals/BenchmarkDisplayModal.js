@@ -8,7 +8,7 @@ import { Line } from "react-chartjs-2";
 @inject("modalStore")
 @observer
 @withRouter
-export default class BenchmarkDisplayModale extends React.Component {
+class BenchmarkDisplayModale extends React.Component {
   chartReference = {};
 
   constructor(props) {
@@ -161,3 +161,4 @@ export default class BenchmarkDisplayModale extends React.Component {
     );
   }
 }
+export default BenchmarkDisplayModale;

@@ -7,7 +7,7 @@ import MainView from "./MainView";
 
 @inject("deepdetectStore")
 @inject("configStore")
-export default class DatasetHome extends React.Component {
+class DatasetHome extends React.Component {
   render() {
     if (
       this.props.configStore.isComponentBlacklisted("Dataset") ||
@@ -26,3 +26,4 @@ export default class DatasetHome extends React.Component {
     );
   }
 }
+export default DatasetHome;

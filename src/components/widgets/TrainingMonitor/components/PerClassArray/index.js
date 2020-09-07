@@ -5,7 +5,7 @@ import { observer } from "mobx-react";
 import Table from "./Table";
 
 @observer
-export default class PerClassArray extends React.Component {
+class PerClassArray extends React.Component {
   render() {
     const { service } = this.props;
 
@@ -100,3 +100,4 @@ export default class PerClassArray extends React.Component {
 PerClassArray.propTypes = {
   service: PropTypes.object.isRequired
 };
+export default PerClassArray;

@@ -11,7 +11,7 @@ import Modals from "./Modals";
 @inject("configStore")
 @withRouter
 @observer
-export default class TrainingShow extends React.Component {
+class TrainingShow extends React.Component {
   componentWillMount() {
     const { deepdetectStore } = this.props;
 
@@ -46,3 +46,4 @@ export default class TrainingShow extends React.Component {
     );
   }
 }
+export default TrainingShow;

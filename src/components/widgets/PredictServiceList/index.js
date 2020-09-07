@@ -9,7 +9,7 @@ import ListItem from "./components/ListItem";
 @inject("configStore")
 @withRouter
 @observer
-export default class PredictServiceList extends React.Component {
+class PredictServiceList extends React.Component {
   renderCards() {
     const { services } = this.props;
     return (
@@ -73,3 +73,4 @@ PredictServiceList.propTypes = {
   services: PropTypes.array.isRequired,
   layout: PropTypes.string
 };
+export default PredictServiceList;

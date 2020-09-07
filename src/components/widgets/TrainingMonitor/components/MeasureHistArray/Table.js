@@ -5,7 +5,7 @@ import { observer } from "mobx-react";
 import TableItem from "./TableItem";
 
 @observer
-export default class Table extends React.Component {
+class Table extends React.Component {
   render() {
     const { measureHistKeys } = this.props;
     return (
@@ -33,3 +33,4 @@ export default class Table extends React.Component {
 Table.propTypes = {
   measureHistKeys: PropTypes.array.isRequired
 };
+export default Table;

@@ -3,7 +3,7 @@ import { inject, observer } from "mobx-react";
 
 @inject("imaginateStore")
 @observer
-export default class ImageList extends React.Component {
+class ImageList extends React.Component {
   constructor(props) {
     super(props);
 
@@ -107,3 +107,4 @@ export default class ImageList extends React.Component {
     }
   }
 }
+export default ImageList;

@@ -2,7 +2,7 @@ import React from "react";
 
 import RightPanel from "./RightPanel";
 
-export default class MainView extends React.Component {
+class MainView extends React.Component {
   render() {
     return (
       <div className="main-view content-wrapper">
@@ -16,3 +16,4 @@ export default class MainView extends React.Component {
     );
   }
 }
+export default MainView;

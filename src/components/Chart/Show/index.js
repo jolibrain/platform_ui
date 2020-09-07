@@ -10,7 +10,7 @@ import ModelBenchmark from "../views/Model/Benchmark";
 @inject("configStore")
 @inject("deepdetectStore")
 @observer
-export default class ChartShow extends React.Component {
+class ChartShow extends React.Component {
   render() {
     if (this.props.configStore.isComponentBlacklisted("Chart")) return null;
 
@@ -41,3 +41,4 @@ export default class ChartShow extends React.Component {
     );
   }
 }
+export default ChartShow;

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 
 @observer
-export default class ListUrl extends React.Component {
+class ListUrl extends React.Component {
   render() {
     const { input } = this.props;
     const { classes } = input.json.body.predictions[0];
@@ -28,3 +28,4 @@ export default class ListUrl extends React.Component {
 ListUrl.propTypes = {
   input: PropTypes.object.isRequired
 };
+export default ListUrl;

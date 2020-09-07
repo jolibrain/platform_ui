@@ -12,7 +12,7 @@ import Simple from "./formats/Simple";
 
 @inject("imaginateStore")
 @observer
-export default class Description extends React.Component {
+class Description extends React.Component {
   render() {
     const { service, serviceSettings } = this.props.imaginateStore;
 
@@ -122,3 +122,4 @@ export default class Description extends React.Component {
     return <div>{output}</div>;
   }
 }
+export default Description;

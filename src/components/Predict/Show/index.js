@@ -12,7 +12,7 @@ import Modals from "./Modals";
 @inject("configStore")
 @withRouter
 @observer
-export default class PredictShow extends React.Component {
+class PredictShow extends React.Component {
   constructor(props) {
     super(props);
 
@@ -68,3 +68,4 @@ export default class PredictShow extends React.Component {
     );
   }
 }
+export default PredictShow;

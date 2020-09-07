@@ -6,7 +6,7 @@ import { inject, observer } from "mobx-react";
 
 @inject("imaginateStore")
 @observer
-export default class Category extends React.Component {
+class Category extends React.Component {
   constructor(props) {
     super(props);
     this._nodes = new Map();
@@ -86,3 +86,4 @@ Category.propTypes = {
   onOver: PropTypes.func,
   onLeave: PropTypes.func
 };
+export default Category;

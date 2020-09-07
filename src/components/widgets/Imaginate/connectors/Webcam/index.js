@@ -15,7 +15,7 @@ import CardCommands from "../commons/CardCommands";
 
 @inject("imaginateStore")
 @observer
-export default class WebcamConnector extends React.Component {
+class WebcamConnector extends React.Component {
   constructor(props) {
     super(props);
 
@@ -151,3 +151,4 @@ export default class WebcamConnector extends React.Component {
     );
   }
 }
+export default WebcamConnector;

@@ -14,7 +14,7 @@ import CardCommands from "../commons/CardCommands";
 
 @inject("imaginateStore")
 @observer
-export default class VideoConnector extends React.Component {
+class VideoConnector extends React.Component {
   constructor(props) {
     super(props);
 
@@ -203,3 +203,4 @@ export default class VideoConnector extends React.Component {
     );
   }
 }
+export default VideoConnector;

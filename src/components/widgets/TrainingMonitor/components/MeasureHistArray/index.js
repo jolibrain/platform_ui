@@ -5,7 +5,7 @@ import { observer } from "mobx-react";
 import Table from "./Table";
 
 @observer
-export default class MeasureHistArray extends React.Component {
+class MeasureHistArray extends React.Component {
   render() {
     let { services } = this.props;
 
@@ -70,3 +70,4 @@ export default class MeasureHistArray extends React.Component {
 MeasureHistArray.propTypes = {
   services: PropTypes.array.isRequired
 };
+export default MeasureHistArray;

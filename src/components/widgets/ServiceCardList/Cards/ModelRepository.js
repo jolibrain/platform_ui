@@ -23,7 +23,7 @@ import moment from "moment";
 @inject("modelRepositoriesStore")
 @inject("modalStore")
 @observer
-export default class ModelRepositoryCard extends React.Component {
+class ModelRepositoryCard extends React.Component {
   constructor(props) {
     super(props);
 
@@ -315,3 +315,4 @@ ModelRepositoryCard.propTypes = {
   repository: PropTypes.object,
   handleCompareStateChange: PropTypes.func
 };
+export default ModelRepositoryCard;

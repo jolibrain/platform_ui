@@ -1,6 +1,6 @@
 import React from "react";
 
-export default class ParamText extends React.Component {
+class ParamText extends React.Component {
   constructor(props) {
     super(props);
 
@@ -45,3 +45,4 @@ export default class ParamText extends React.Component {
     );
   }
 }
+export default ParamText;

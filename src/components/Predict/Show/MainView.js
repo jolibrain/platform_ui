@@ -13,7 +13,7 @@ import DownloadModelFiles from "../../widgets/DownloadModelFiles";
 @inject("modalStore")
 @withRouter
 @observer
-export default class MainView extends React.Component {
+class MainView extends React.Component {
   componentWillMount() {
     const { deepdetectStore, modelRepositoriesStore } = this.props;
     if (!deepdetectStore.isReady) return null;
@@ -111,3 +111,4 @@ export default class MainView extends React.Component {
     );
   }
 }
+export default MainView;

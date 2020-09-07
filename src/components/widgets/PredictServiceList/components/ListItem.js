@@ -9,7 +9,7 @@ import DownloadModelFiles from "../../DownloadModelFiles";
 @inject("deepdetectStore")
 @withRouter
 @observer
-export default class ListItem extends React.Component {
+class ListItem extends React.Component {
   constructor(props) {
     super(props);
 
@@ -219,3 +219,4 @@ export default class ListItem extends React.Component {
 ListItem.propTypes = {
   repository: PropTypes.object.isRequired
 };
+export default ListItem;

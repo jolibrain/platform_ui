@@ -8,7 +8,7 @@ import Modals from "./Modals";
 
 @inject("deepdetectStore")
 @inject("configStore")
-export default class TrainingHome extends React.Component {
+class TrainingHome extends React.Component {
   componentWillMount() {
     const { deepdetectStore } = this.props;
     deepdetectStore.setTrainRefreshMode("services");
@@ -38,3 +38,4 @@ export default class TrainingHome extends React.Component {
     );
   }
 }
+export default TrainingHome;

@@ -6,7 +6,7 @@ import { Link, withRouter } from "react-router-dom";
 @inject("modalStore")
 @withRouter
 @observer
-export default class PredictCard extends React.Component {
+class PredictCard extends React.Component {
   constructor(props) {
     super(props);
     this.openDeleteServiceModal = this.openDeleteServiceModal.bind(this);
@@ -71,3 +71,4 @@ export default class PredictCard extends React.Component {
 PredictCard.propTypes = {
   service: PropTypes.object.isRequired
 };
+export default PredictCard;

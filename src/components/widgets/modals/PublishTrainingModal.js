@@ -7,7 +7,7 @@ import { inject, observer } from "mobx-react";
 @inject("modalStore")
 @observer
 @withRouter
-export default class PublishTrainingModal extends React.Component {
+class PublishTrainingModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -301,3 +301,4 @@ export default class PublishTrainingModal extends React.Component {
     );
   }
 }
+export default PublishTrainingModal;

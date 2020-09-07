@@ -11,7 +11,7 @@ import DatasetCard from "./Cards/Dataset";
 @inject("configStore")
 @withRouter
 @observer
-export default class ServiceCardList extends React.Component {
+class ServiceCardList extends React.Component {
   cardArray(services) {
     const { filterServiceName } = this.props;
 
@@ -60,3 +60,4 @@ ServiceCardList.propTypes = {
   filterServiceName: PropTypes.string,
   handleCompareStateChange: PropTypes.func
 };
+export default ServiceCardList;

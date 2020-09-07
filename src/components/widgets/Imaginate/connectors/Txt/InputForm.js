@@ -3,7 +3,7 @@ import { inject, observer } from "mobx-react";
 
 @inject("imaginateStore")
 @observer
-export default class InputForm extends React.Component {
+class InputForm extends React.Component {
   constructor(props) {
     super(props);
 
@@ -50,3 +50,4 @@ export default class InputForm extends React.Component {
     );
   }
 }
+export default InputForm;

@@ -10,7 +10,7 @@ import MainView from "./MainView";
 @inject("deepdetectStore")
 @inject("configStore")
 @withRouter
-export default class Home extends React.Component {
+class Home extends React.Component {
   constructor(props) {
     super(props);
 
@@ -45,3 +45,4 @@ export default class Home extends React.Component {
     );
   }
 }
+export default Home;

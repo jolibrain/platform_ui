@@ -9,7 +9,7 @@ import StopTrainingModal from "../../widgets/modals/StopTrainingModal";
 @inject("modalStore")
 @withRouter
 @observer
-export default class Modals extends React.Component {
+class Modals extends React.Component {
   constructor(props) {
     super(props);
 
@@ -51,3 +51,4 @@ export default class Modals extends React.Component {
     );
   }
 }
+export default Modals;

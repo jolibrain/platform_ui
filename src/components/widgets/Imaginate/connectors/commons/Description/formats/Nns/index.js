@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 
 @observer
-export default class Nns extends React.Component {
+class Nns extends React.Component {
   constructor(props) {
     super(props);
     this.nnsItem = this.nnsItem.bind(this);
@@ -71,3 +71,4 @@ export default class Nns extends React.Component {
 Nns.propTypes = {
   input: PropTypes.object.isRequired
 };
+export default Nns;

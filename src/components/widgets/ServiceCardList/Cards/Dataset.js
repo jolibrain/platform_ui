@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 
 @withRouter
 @observer
-export default class DatasetCard extends React.Component {
+class DatasetCard extends React.Component {
   render() {
     const dataset = this.props.dataset;
 
@@ -38,3 +38,4 @@ export default class DatasetCard extends React.Component {
 DatasetCard.propTypes = {
   repository: PropTypes.object
 };
+export default DatasetCard;

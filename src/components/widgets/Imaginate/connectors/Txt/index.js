@@ -10,7 +10,7 @@ import CardCommands from "../commons/CardCommands";
 
 @inject("imaginateStore")
 @observer
-export default class TxtConnector extends React.Component {
+class TxtConnector extends React.Component {
   constructor(props) {
     super(props);
 
@@ -94,3 +94,4 @@ export default class TxtConnector extends React.Component {
     );
   }
 }
+export default TxtConnector;

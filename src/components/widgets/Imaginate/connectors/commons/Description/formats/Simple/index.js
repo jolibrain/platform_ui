@@ -3,17 +3,20 @@ import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 
 @observer
-export default class Simple extends React.Component {
-  shouldComponentUpdate(nextProps) {
-    const { input } = nextProps;
-    return (
-      input &&
-      input.json &&
-      input.json.body &&
-      input.json.body.predictions &&
-      input.json.body.predictions[0]
-    );
-  }
+class Simple extends React.Component {
+
+// TODO check if necessary, broken after package update
+//  shouldComponentUpdate(nextProps) {
+//    const { input } = nextProps;
+//    return (
+//      input &&
+//      input.json &&
+//      input.json.body &&
+//      input.json.body.predictions &&
+//      input.json.body.predictions[0]
+//    );
+//  }
+
   render() {
     const { input } = this.props;
     let classes = null;
@@ -46,3 +49,4 @@ export default class Simple extends React.Component {
 Simple.propTypes = {
   input: PropTypes.object.isRequired
 };
+export default Simple;
