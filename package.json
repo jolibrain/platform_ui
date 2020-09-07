@@ -1,78 +1,184 @@
 {
-  "name": "core-ui",
+  "name": "platform-ui",
   "version": "0.9.7",
-  "private": true,
-  "devDependencies": {
-    "codeceptjs": "^2.3.2",
-    "eslint": "^4.19.1",
-    "eslint-config-prettier": "^2.9.0",
-    "eslint-plugin-prettier": "^2.6.0",
-    "eslint-plugin-react": "^7.8.2",
-    "faker": "^4.1.0",
-    "husky": "^0.14.3",
-    "nightmare": "^3.0.1",
-    "nightwatch": "^1.2.4",
-    "node-sass": "^4.14.1",
-    "nodemon": "^1.18.3",
-    "npm-run-all": "^4.1.3",
-    "prettier": "^1.18.2",
-    "pretty-quick": "^1.11.1",
-    "react-app-rewired": "^1.5.2",
-    "rosie": "^2.0.1",
-    "sass-loader": "^7.0.1",
-    "selenium-standalone": "^6.15.2",
-    "unirest": "^0.6.0"
-  },
   "dependencies": {
-    "bootstrap": "^4.3.1",
-    "chart.js": "^2.7.2",
-    "codemirror": "^5.38.0",
-    "copy-to-clipboard": "^3.0.8",
-    "custom-react-scripts": "^0.2.2",
-    "deepdetect-js": "^1.8.2",
-    "keycloak-js": "^4.1.0",
-    "mjpeg-decoder": "^1.0.3",
-    "mobx": "^5.9.0",
-    "mobx-react": "^5.1.2",
-    "mobx-utils": "^5.0.0",
-    "moment": "^2.22.2",
-    "node-sass-chokidar": "^1.3.5",
-    "prop-types": "^15.6.2",
-    "rc-slider": "^8.6.1",
-    "react": "^16.3.2",
-    "react-bootstrap": "^0.32.1",
-    "react-bootstrap-typeahead": "^3.1.3",
-    "react-bootstrap4-modal": "^1.3.1-pre1",
+    "@babel/core": "7.9.0",
+    "@svgr/webpack": "4.3.3",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "@typescript-eslint/eslint-plugin": "^2.10.0",
+    "@typescript-eslint/parser": "^2.10.0",
+    "babel-eslint": "10.1.0",
+    "babel-jest": "^24.9.0",
+    "babel-loader": "8.1.0",
+    "babel-plugin-named-asset-import": "^0.3.6",
+    "babel-preset-react-app": "^9.1.2",
+    "bootstrap": "^4.5.2",
+    "camelcase": "^5.3.1",
+    "case-sensitive-paths-webpack-plugin": "2.3.0",
+    "chart.js": "^2.9.3",
+    "codemirror": "^5.57.0",
+    "copy-to-clipboard": "^3.3.1",
+    "css-loader": "3.4.2",
+    "deepdetect-js": "^1.8.3",
+    "dotenv": "8.2.0",
+    "dotenv-expand": "5.1.0",
+    "eslint": "^6.6.0",
+    "eslint-config-react-app": "^5.2.1",
+    "eslint-loader": "3.0.3",
+    "eslint-plugin-flowtype": "4.6.0",
+    "eslint-plugin-import": "2.20.1",
+    "eslint-plugin-jsx-a11y": "6.2.3",
+    "eslint-plugin-react": "7.19.0",
+    "eslint-plugin-react-hooks": "^1.6.1",
+    "file-loader": "4.3.0",
+    "fs-extra": "^8.1.0",
+    "html-webpack-plugin": "4.0.0-beta.11",
+    "identity-obj-proxy": "3.0.0",
+    "jest": "24.9.0",
+    "jest-environment-jsdom-fourteen": "1.0.1",
+    "jest-resolve": "24.9.0",
+    "jest-watch-typeahead": "0.4.2",
+    "mini-css-extract-plugin": "0.9.0",
+    "mobx": "^5.15.6",
+    "mobx-react": "^6.3.0",
+    "moment": "^2.27.0",
+    "optimize-css-assets-webpack-plugin": "5.0.3",
+    "pnp-webpack-plugin": "1.6.4",
+    "postcss-flexbugs-fixes": "4.1.0",
+    "postcss-loader": "3.0.0",
+    "postcss-normalize": "8.0.1",
+    "postcss-preset-env": "6.7.0",
+    "postcss-safe-parser": "4.0.1",
+    "rc-slider": "^9.3.1",
+    "react": "^16.13.1",
+    "react-app-polyfill": "^1.0.6",
+    "react-bootstrap": "^1.3.0",
+    "react-bootstrap-typeahead": "^5.1.1",
+    "react-bootstrap4-modal": "^1.7.5",
     "react-bounding-box": "^0.5.20",
-    "react-chartjs-2": "^2.7.4",
-    "react-codemirror2": "^5.0.2",
-    "react-cookie": "^3.0.4",
-    "react-dom": "^16.3.2",
-    "react-json-table": "^0.1.1",
-    "react-router-dom": "^4.2.2",
+    "react-chartjs-2": "^2.10.0",
+    "react-codemirror2": "^7.2.1",
+    "react-cookie": "^4.0.3",
+    "react-dev-utils": "^10.2.1",
+    "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0",
     "react-sparklines": "^1.7.0",
-    "react-syntax-highlighter": "^7.0.4",
-    "react-tooltip": "^3.6.0",
-    "react-webcam": "^1.1.1",
-    "seedrandom": "^3.0.1",
+    "react-syntax-highlighter": "^13.5.3",
+    "react-tooltip": "^4.2.9",
+    "react-webcam": "^5.2.0",
+    "reactstrap": "^8.5.1",
+    "resolve": "1.15.0",
+    "resolve-url-loader": "3.1.1",
+    "sass-loader": "8.0.2",
+    "semver": "6.3.0",
     "store": "^2.0.12",
-    "superagent": "^3.8.3",
+    "style-loader": "0.23.1",
+    "superagent": "^6.1.0",
     "superagent-no-cache": "^0.1.1",
-    "superagent-promise": "^1.1.0"
+    "superagent-promise": "^1.1.0",
+    "terser-webpack-plugin": "2.3.8",
+    "ts-pnp": "1.1.6",
+    "url-loader": "2.3.0",
+    "webpack": "4.42.0",
+    "webpack-dev-server": "3.11.0",
+    "webpack-manifest-plugin": "2.2.0",
+    "workbox-webpack-plugin": "4.3.1"
   },
   "scripts": {
-    "precommit": "pretty-quick --staged",
-    "build-info-json": " jq -n --arg COMMIT_HASH `git rev-parse HEAD` --arg BRANCH `git rev-parse --abbrev-ref HEAD` --arg DATE `date +%s` '{buildCommitHash: $COMMIT_HASH, buildDate: $DATE, branch: $BRANCH}' > ./public/buildInfo.json && git add public/buildInfo.json && git commit -m 'build: update public/buildInfo.json with latest build info'",
-    "build-css": "node-sass-chokidar --include-path ./src/styles --include-path ./node_modules src/styles/ -o src/styles/",
-    "watch-css": "npm run build-css && node-sass-chokidar --include-path ./src/styles --include-path ./node_modules src/styles/ -o src/styles --watch --recursive",
-    "start-js": "react-scripts start",
-    "start": "npm-run-all -p watch-css start-js",
-    "build-js": "react-scripts build",
-    "build": "npm-run-all build-info-json build-css build-js",
-    "test": "react-scripts test --env=jsdom",
-    "test:selenium:install": "selenium-standalone install",
-    "test:selenium:start": "selenium-standalone start",
-    "test:integration": "nodemon --exec 'codeceptjs run --grep \"header\" --steps'",
-    "test:e2e": "npm-run-all -p start test:selenium:start test:integration"
+    "start": "node scripts/start.js",
+    "build": "node scripts/build.js",
+    "test": "node scripts/test.js"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/plugin-proposal-decorators": "^7.10.5",
+    "babel-plugin-transform-decorators-legacy": "^1.3.5",
+    "node-sass": "^4.14.1"
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!src/**/*.d.ts"
+    ],
+    "setupFiles": [
+      "react-app-polyfill/jsdom"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/setupTests.js"
+    ],
+    "testMatch": [
+      "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
+      "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
+    ],
+    "testEnvironment": "jest-environment-jsdom-fourteen",
+    "transform": {
+      "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
+      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
+      "^(?!.*\\.(js|jsx|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
+    },
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$",
+      "^.+\\.module\\.(css|sass|scss)$"
+    ],
+    "modulePaths": [],
+    "moduleNameMapper": {
+      "^react-native$": "react-native-web",
+      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
+    },
+    "moduleFileExtensions": [
+      "web.js",
+      "js",
+      "web.ts",
+      "ts",
+      "web.tsx",
+      "tsx",
+      "json",
+      "web.jsx",
+      "jsx",
+      "node"
+    ],
+    "watchPlugins": [
+      "jest-watch-typeahead/filename",
+      "jest-watch-typeahead/testname"
+    ]
+  },
+  "babel": {
+    "plugins": [
+      [
+        "@babel/plugin-proposal-decorators",
+        {
+          "legacy": true
+        }
+      ],
+      [
+        "@babel/plugin-proposal-class-properties",
+        {
+          "loose": true
+        }
+      ]
+    ],
+    "presets": [
+      "react-app"
+    ]
   }
 }
