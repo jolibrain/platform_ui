@@ -25,7 +25,7 @@ class Home extends React.Component {
     });
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { deepdetectStore } = this.props;
     deepdetectStore.setTrainRefreshMode(null);
     this.clearAutosaveStorage();

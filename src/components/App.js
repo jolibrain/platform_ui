@@ -46,13 +46,7 @@ class App extends React.Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    // timer has to be called in order to refresh Training Show component
-    // fix issue #157 - https://gitlab.com/jolibrain/core-ui/issues/157
-    // this.props.deepdetectStore.refreshTrainInfo();
-  }
-
-  componentWillMount() {
+  componentDidMount() {
     const {
       configStore,
       gpuStore,
