@@ -1,3 +1,4 @@
+/* eslint jsx-a11y/anchor-is-valid: "off" */
 import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";

@@ -1,3 +1,4 @@
+/* eslint jsx-a11y/anchor-is-valid: "off" */
 import React from "react";
 import { inject, observer } from "mobx-react";
 
@@ -5,8 +6,6 @@ import { inject, observer } from "mobx-react";
 @observer
 class Header extends React.Component {
   render() {
-    const { service } = this.props.imaginateStore;
-
     return (
       <div className="card-header">
         {this.props.requestTime !== -1 ? (

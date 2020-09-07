@@ -1,3 +1,4 @@
+/* eslint jsx-a11y/anchor-is-valid: "off" */
 import React from "react";
 import { toJS } from "mobx";
 import { inject, observer } from "mobx-react";
