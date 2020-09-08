@@ -94,10 +94,18 @@ class TableItem extends React.Component {
       }
     }
 
+    let bestValue = null;
+    if(measureHistKey.indexOf("eucll") !== -1) {
+      bestValue = " - min: " + Math.min(...measure_hist[measureHistKey]).toFixed(5)
+    } else {
+      bestValue = " - max: " + Math.max(...measure_hist[measureHistKey]).toFixed(5)
+    }
+
     return (
       <h4>
         <i className={`fa fa-circle chart-badge-${index}`} />
-        {value} (best: {Math.max(...measure_hist[measureHistKey]).toFixed(5)})
+        {value}
+        {bestValue ? bestValue : null}
       </h4>
     );
   }
