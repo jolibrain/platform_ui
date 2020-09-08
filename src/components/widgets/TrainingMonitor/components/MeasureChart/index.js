@@ -313,7 +313,13 @@ class MeasureChart extends React.Component {
     }
 
     // Add dummy data at the end of array to clearly see stepped line
-    if (this.props.steppedLine && chartData.datasets) {
+    if (
+      this.props.steppedLine &&
+        chartData.datasets &&
+        chartData.datasets.length > 0 &&
+        chartData.datasets[0].data
+
+    ) {
       const data = chartData.datasets[0].data;
       chartData.labels.unshift(0);
 
@@ -356,7 +362,12 @@ class MeasureChart extends React.Component {
         minValue = this.getMinValue(service, attribute);
       }
 
-      if (this.props.showBest && chartData.datasets[index].data) {
+      if (
+        this.props.showBest &&
+          chartData.datasets &&
+          chartData.datasets.length > index &&
+          chartData.datasets[index].data
+      ) {
         bestValue = this.getBestValue(service, attribute);
         bestValueIndex = chartData.datasets[index].data.indexOf(bestValue);
 
