@@ -221,6 +221,7 @@ class GeneralInfo extends React.Component {
             attribute="eucll"
             key="eucll"
             steppedLine
+            showMinValue
             layout={layout}
             {...this.props}
           />

@@ -49,6 +49,10 @@ class MeasureChart extends React.Component {
         pointBackgroundColor: "#e31a1c",
         radius: 4
       },
+      minValue: {
+        pointBackgroundColor: "#e31a1c",
+        radius: 4
+      },
       verticalLine: {
         strokeStyle: "#e31a1c"
       }
@@ -332,9 +336,10 @@ class MeasureChart extends React.Component {
 
   getServiceValue(service, index, attribute, chartData = null) {
     let displayedValue = "--",
-      minValue = null,
       bestValue = null,
-      bestValueIndex = null;
+      bestValueIndex = null,
+      minValue = null,
+      minValueIndex = null;
 
     if (service) {
       displayedValue = this.getValue(service, attribute);
@@ -360,6 +365,15 @@ class MeasureChart extends React.Component {
 
       if (this.props.showMinValue) {
         minValue = this.getMinValue(service, attribute);
+        minValueIndex = chartData.datasets[index].data.indexOf(minValue);
+
+        // Add colored circle at best value on chart
+        chartData.datasets[index]["pointBackgroundColor"][
+          minValueIndex
+        ] = this.state.minValue.pointBackgroundColor;
+        chartData.datasets[index]["radius"][
+          minValueIndex
+        ] = this.state.minValue.radius;
       }
 
       if (
@@ -384,6 +398,11 @@ class MeasureChart extends React.Component {
     if (this.props.useBestValue && bestValue) {
       displayedValue = bestValue;
       bestValue = null;
+    }
+
+    if (this.props.useMinValue && minValue) {
+      displayedValue = minValue;
+      minValue = null;
     }
 
     return (
@@ -518,6 +537,8 @@ MeasureChart.propTypes = {
   attribute: PropTypes.string.isRequired,
   layout: PropTypes.string.isRequired,
   steppedLine: PropTypes.bool,
+  showBest: PropTypes.bool,
+  showMinValue: PropTypes.bool,
   services: PropTypes.array.isRequired
 };
 export default MeasureChart;
