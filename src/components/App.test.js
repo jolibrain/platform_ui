@@ -38,6 +38,5 @@ test('renders Predict link', async () => {
           </HashRouter>
         </Provider>);
     const linkElement = await waitFor(() =>  getByText(/Predict/i));
-    screen.debug();
     expect(linkElement).toBeInTheDocument();
 });
