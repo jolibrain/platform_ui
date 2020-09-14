@@ -38,7 +38,7 @@ const Config = {
  */
 
 const BuildInfo = {
-  get: (path = "buildInfo.json") =>
+  get: (path = "/buildInfo.json") =>
     superagent
       .get(path)
       .withCredentials()
@@ -52,7 +52,7 @@ const BuildInfo = {
  */
 
 const VersionInfo = {
-  get: (path = "version.json") =>
+  get: (path = "/version.json") =>
     superagent
       .get(path)
       .withCredentials()
