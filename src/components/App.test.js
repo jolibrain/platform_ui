@@ -1,5 +1,5 @@
 import React from 'react';
-import { render , screen } from '@testing-library/react';
+import { render , screen, waitFor } from '@testing-library/react';
 
 import { Provider } from "mobx-react";
 import { HashRouter } from "react-router-dom";
@@ -37,7 +37,7 @@ test('renders Predict link', async () => {
             <App />
           </HashRouter>
         </Provider>);
+    const linkElement = await waitFor(() =>  getByText(/Predict/i));
     screen.debug();
-    const linkElement = getByText(/Predict/i);
     expect(linkElement).toBeInTheDocument();
 });
