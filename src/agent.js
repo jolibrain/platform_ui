@@ -23,13 +23,11 @@ const responseBody = res => res.body;
  */
 
 const Config = {
-  get: (path = "config.json") =>
-    superagent
-      .get(path)
-      .use(noCache)
-      .withCredentials()
-      .end(handleErrors)
-      .then(responseBody)
+  get: (path = "config.json") => {
+    return fetch(path, {cache: "no-cache"})
+      .then(response => response.json())
+      .catch(handleErrors)
+  }
 };
 
 /* ====

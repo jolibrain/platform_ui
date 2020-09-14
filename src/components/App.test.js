@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render , screen } from '@testing-library/react';
 
 import { Provider } from "mobx-react";
 import { HashRouter } from "react-router-dom";
@@ -17,9 +17,6 @@ import authTokenStore from "../stores/authTokenStore";
 
 import App from './App';
 
-import { rest } from 'msw'
-import { setupServer } from 'msw/node'
-
 const stores = {
   configStore,
   buildInfoStore,
@@ -33,23 +30,6 @@ const stores = {
   authTokenStore
 };
 
-const fs = require('fs');
-const configPath = '../../public/config.json';
-
-const server = setupServer(
-    rest.get('config.json', (req, res, ctx) => {
-        console.log(req)
-        let configFile = fs.readFileSync(configPath)
-        let configJson = JSON.parse(configFile)
-        console.log(configJson)
-        return res(ctx.json(configJson))
-    })
-)
-
-beforeAll(() => server.listen())
-afterEach(() => server.resetHandlers())
-afterAll(() => server.close())
-
 test('renders Predict link', async () => {
     const { getByText } = render(
         <Provider {...stores}>
@@ -57,6 +37,7 @@ test('renders Predict link', async () => {
             <App />
           </HashRouter>
         </Provider>);
+    screen.debug();
     const linkElement = getByText(/Predict/i);
     expect(linkElement).toBeInTheDocument();
 });
