@@ -3,20 +3,18 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom/extend-expect';
+import { config }  from './mocks/config';
 
-import { server } from './mocks/server'
+var request = require('superagent');
+var superagentMock = require('superagent-mock')(request, config);
 
 beforeAll(() => {
-  // Enable the mocking in tests.
-  server.listen()
+  superagentMock = require('superagent-mock')(request, config);
 })
 
 afterEach(() => {
-  // Reset any runtime handlers tests may use.
-  server.resetHandlers()
 })
 
 afterAll(() => {
-  // Clean up once the tests are done.
-  server.close()
+  superagentMock.unset();
 })
