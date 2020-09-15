@@ -89,13 +89,13 @@ export class configStore {
   @observable
   placeholders = {};
 
-  $reqConfig(path) {
-    return agent.Config.get();
+  $reqConfig(path = "/config.json") {
+    return agent.Config.get(path);
   }
 
   @action
-  loadConfig(callbackAfterLoad = () => {}) {
-    this.$reqConfig().then(
+  loadConfig(callbackAfterLoad = () => {}, path = "/config.json") {
+    this.$reqConfig(path).then(
       action(config => {
         if (config) {
           this.layout = config.layout ? config.layout : this.layout;

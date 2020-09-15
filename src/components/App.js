@@ -1,4 +1,5 @@
 import React from "react";
+
 import { Switch, Route, withRouter } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 
@@ -48,6 +49,7 @@ class App extends React.Component {
 
   componentDidMount() {
     const {
+      configPath,
       configStore,
       gpuStore,
       buildInfoStore,
@@ -90,7 +92,7 @@ class App extends React.Component {
 
         buildInfoStore.loadBuildInfo();
       }
-    });
+    }, configPath);
   }
 
   render() {
@@ -153,4 +155,9 @@ class App extends React.Component {
     }
   }
 }
+
+App.defaultProps = {
+  configPath: "/config.json"
+}
+
 export default App;
