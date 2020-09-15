@@ -1,26 +1,41 @@
 import { rest } from 'msw'
 
 const fs = require('fs');
-const ROOT_PATH = "./public/"
 
-const jsonContent = (jsonPath) => {
-    const fileContent = fs.readFileSync(ROOT_PATH + jsonPath)
+const PUBLIC_PATH = "./public/"
+const MOCK_PATH = "./src/mocks/json/"
+
+const jsonContent = (jsonPath, rootPath = PUBLIC_PATH, isDebug = false) => {
+    const filePath = rootPath + jsonPath;
+    const fileContent = fs.readFileSync(filePath)
     let jsonContent = {}
 
     try {
         jsonContent = JSON.parse(fileContent)
     } catch (e) {
+        if(isDebug) console.log(e);
         // error reading json
     }
+
+    if(isDebug) console.log(jsonContent)
 
     return jsonContent;
 }
 
 export const config = [
     {
-        pattern: '.*/config.json',
+        pattern: '/config.json',
         fixtures: (match, params, headers) => {
             return jsonContent("config.json")
+        },
+        get: function (match, data) {
+            return {body: data};
+        }
+    },
+    {
+        pattern: '/mocks-config.json',
+        fixtures: (match, params, headers) => {
+            return jsonContent("config.json", MOCK_PATH)
         },
         get: function (match, data) {
             return {body: data};

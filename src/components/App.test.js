@@ -40,3 +40,14 @@ test('renders Predict link', async () => {
     const linkElement = await waitFor(() =>  getByText(/Predict/i));
     expect(linkElement).toBeInTheDocument();
 });
+
+test('use custom config path', async () => {
+    const { getByText } = render(
+        <Provider {...stores}>
+          <HashRouter>
+            <App configPath="/mocks-config.json"/>
+          </HashRouter>
+        </Provider>);
+    const mockElement = await waitFor(() =>  getByText(/Mock/i));
+    expect(mockElement).toBeInTheDocument();
+});
