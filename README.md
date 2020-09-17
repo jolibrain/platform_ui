@@ -283,6 +283,13 @@ yarn test:e2e
 
 ## Changelog
 
+### v0.9.7.5 - 17/09/2020
+
+- UI
+
+  - Replace deprecated typeahead.getInstance() by React ref
+  - Catch uncaught network exception when loading dataRepositories store
+
 ### v0.9.7.4 - 17/09/2020
 
 - UI
