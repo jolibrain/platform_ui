@@ -52,7 +52,7 @@ class PredictCard extends React.Component {
             {service.serverSettings.isWritable ? (
               <a
                 onClick={this.openDeleteServiceModal}
-                className="btn btn-outline-danger mx-2"
+                className="btn btn-outline-danger mr-1"
               >
                 <i className="fas fa-trash" /> Delete
               </a>

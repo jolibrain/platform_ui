@@ -213,8 +213,8 @@ class ModelRepositoryCard extends React.Component {
         onClick={this.toggleCompareState}
         className={
           this.state.compareSelected
-            ? "btn btn-compare-selected mx-2"
-            : "btn btn-compare mx-2"
+            ? "btn btn-compare-selected mr-1"
+            : "btn btn-compare mr-1"
         }
       >
         {this.state.compareSelected ? (
@@ -232,7 +232,7 @@ class ModelRepositoryCard extends React.Component {
     let publishButton = repository.jsonConfig ? (
       <a
         onClick={this.openPublishTrainingModal}
-        className="btn btn-outline-primary mx-2"
+        className="btn btn-outline-primary mr-1"
       >
         <i className="fas fa-plus" /> Publish
       </a>
@@ -240,7 +240,7 @@ class ModelRepositoryCard extends React.Component {
 
     if (this.state.isPublishing) {
       publishButton = (
-        <a className="btn btn-outline-primary mx-2">
+        <a className="btn btn-outline-primary mr-1">
           <i className="fas fa-spinner fa-spin" /> Publishing...
         </a>
       );

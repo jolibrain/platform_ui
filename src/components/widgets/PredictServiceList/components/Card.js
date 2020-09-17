@@ -116,8 +116,8 @@ class Card extends React.Component {
                 onClick={this.toggleBenchmarkState}
                 className={
                   this.state.benchmarkSelected
-                    ? "btn btn-benchmark-selected mx-2"
-                    : "btn btn-benchmark mx-2"
+                    ? "btn btn-benchmark-selected mr-1"
+                    : "btn btn-benchmark mr-1"
                 }
               >
                 {this.state.benchmarkSelected ? (
