@@ -35,6 +35,8 @@ class Form extends React.Component {
 
     this.handleCurlChange = this.handleCurlChange.bind(this);
 
+    this.typeaheadRef = React.createRef();
+
     const ddStore = this.props.deepdetectStore;
 
     let defaultConfig = ddStore.settings.services.defaultConfig.find(config => {
@@ -105,8 +107,7 @@ class Form extends React.Component {
   }
 
   handleInputChange() {
-    const typeahead = this.typeahead.getInstance();
-    const selectedServiceName = typeahead.getInput().value;
+    const selectedServiceName = this.typeaheadRef.current.getInput().value;
 
     const repository = this.props.modelRepositoriesStore.repositories.find(
       r => r.name === selectedServiceName
@@ -118,7 +119,7 @@ class Form extends React.Component {
     let jsonConfig = JSON.parse(this.state.jsonConfig);
 
     const defaultConfig = this.state.defaultConfig;
-    const selectedConfig = typeahead.state.selected[0];
+    const selectedConfig = this.typeaheadRef.current.state.selected[0];
 
     if (
       typeof selectedConfig !== "undefined" &&
@@ -165,7 +166,7 @@ class Form extends React.Component {
       errors.push("Service name already exists");
     }
 
-    const serviceModelLocation = this.typeahead.getInstance().getInput().value;
+    const serviceModelLocation = this.typeaheadRef.current.getInput().value;
 
     if (serviceModelLocation.length === 0) {
       errors.push("Model Repository Location can't be empty");
@@ -320,7 +321,7 @@ class Form extends React.Component {
               </label>
               <Typeahead
                 id="inlineFormInputModelLocation"
-                ref={typeahead => (this.typeahead = typeahead)}
+                ref={this.typeaheadRef}
                 options={toJS(this.props.modelRepositoriesStore.repositories)}
                 placeholder="Model Repository location"
                 onChange={this.handleInputChange}
