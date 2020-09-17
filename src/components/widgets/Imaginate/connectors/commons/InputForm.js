@@ -65,6 +65,7 @@ class InputForm extends React.Component {
       ]
     };
 
+    this.typeaheadRef = React.createRef();
     this.inputRef = React.createRef();
 
     this.handleButtonClean = this.handleButtonClean.bind(this);
@@ -118,8 +119,7 @@ class InputForm extends React.Component {
     const { dataRepositoriesStore } = this.props;
     const { systemPath } = dataRepositoriesStore.settings;
 
-    const typeahead = this.typeahead.getInstance();
-    const selected = typeahead.getInput().value;
+    const selected = this.typeaheadRef.current.getInput().value;
 
     if (typeof selected !== "undefined" && selected.length > 0) {
       const folder = dataRepositoriesStore.repositories.find(
@@ -165,7 +165,7 @@ class InputForm extends React.Component {
   componentDidUpdate() {
     if (this.state.focusInput) {
       if (this.state.method.label === "Path") {
-        this.typeahead.getInstance().focus();
+        this.typeaheadRef.current.focus();
       } else {
         const input = this.inputRef.current;
         input.focus();
@@ -177,7 +177,7 @@ class InputForm extends React.Component {
     const input = this.inputRef.current;
     input.value = "";
     input.focus();
-    this.typeahead.getInstance().clear();
+    this.typeaheadRef.current.clear();
   }
 
   handleKeyPress(event) {
@@ -274,7 +274,7 @@ class InputForm extends React.Component {
                 ["imagePath"].includes(this.state.method.id) ? "" : "hidden"
               }
               id="inlineFormInputPlatformDataLocation"
-              ref={typeahead => (this.typeahead = typeahead)}
+              ref={this.typeaheadRef}
               placeholder={
                 dataRepositoriesStore.isLoading
                   ? "Fetching data repositories..."
