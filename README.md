@@ -283,6 +283,26 @@ yarn test:e2e
 
 ## Changelog
 
+### v0.9.7.4 - 17/09/2020
+
+- UI
+
+  - Training Home: reduce padding to fit buttons in card-footer
+  - App component: add `configPath` props to configure `config.json` path
+  - Show min value for eucll regression chart
+  - Show min value on eucll keys #399
+  - Remove "Compare All" button on TrainingHome
+
+- Test
+
+  - Add msw, superagent-mock library
+  - configPath props on App component
+  - Renders Predict link
+  
+- Chore
+
+  - add missing serverWorker.js
+
 ### v0.9.7.3 - 01/09/2020
 
 - UI
