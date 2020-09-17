@@ -96,6 +96,9 @@ export class dataRepositoriesStore {
             }
           }
         })
+        .catch(e => {
+          //console.log(e);
+        })
         .finally(() => {
           resolve(repositories);
         });
