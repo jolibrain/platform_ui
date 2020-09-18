@@ -72,11 +72,11 @@ class ModelBenchmark extends React.Component {
   }
 
   render() {
-    const { repositories, hiddenRepositoriesIndexes, error } = this.state;
-
-    const visibleRepositories = repositories.map((repository, index) => {
-      return hiddenRepositoriesIndexes.includes(index) ? null : repository;
-    });
+    const {
+      repositories,
+      hiddenRepositoriesIndexes,
+      error
+    } = this.state;
 
     return (
       <div className="main-view content-wrapper">
@@ -88,7 +88,10 @@ class ModelBenchmark extends React.Component {
               handleRepositoryVisibility={this.handleRepositoryVisibility}
             />
             <div className="content p-4">
-              <BenchmarkChart services={visibleRepositories} />
+              <BenchmarkChart
+                services={repositories}
+                hiddenRepositoriesIndexes={hiddenRepositoriesIndexes}
+              />
             </div>
             <RightPanel />
           </div>

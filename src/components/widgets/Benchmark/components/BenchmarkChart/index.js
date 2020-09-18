@@ -1,21 +1,14 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
-import { inject, observer } from "mobx-react";
-
+import PropTypes from "prop-types";
+import { observer } from "mobx-react";
 import { Line } from "react-chartjs-2";
 
-@inject("deepdetectStore")
-@inject("modalStore")
 @observer
-@withRouter
 class BenchmarkChart extends React.Component {
-  chartReference = {};
-
   constructor(props) {
     super(props);
     this.state = {
       spinner: false,
-      benchmarks: [],
       colors: {
         light: [
           "rgba(166,206,227,0.2)",
@@ -47,37 +40,51 @@ class BenchmarkChart extends React.Component {
         ]
       }
     };
+
+    this.buildDataset = this.buildDataset.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { services } = nextProps;
-
-    if (!services) return null;
-
-    this.setState({
-      benchmarks: services.map(s => s.benchmarks).flat()
+  buildDataset(benchmark, index) {
+    const data = benchmark.benchmark.map(d => {
+        return {
+          x: d.batch_size,
+          y: d.mean_processing_time / d.batch_size,
+        }
     });
-  }
 
-  getChartData(benchmarks) {}
+    return {
+      label: benchmark.name,
+      data: data,
+      fill: false,
+      lineTension: 0,
+      spanGaps: true,
+      backgroundColor: this.state.colors.dark[index],
+      borderColor: this.state.colors.dark[index],
+      order: index
+    };
+  }
 
   render() {
-    const { benchmarks } = this.state;
+    const {
+      services,
+      hiddenRepositoriesIndexes
+    } = this.props;
+
+    if (!services || services.length === 0) return null;
+
+    const visibleBenchmarks = services.filter((s, index) => {
+      return s && !hiddenRepositoriesIndexes.includes(index)
+    })
+    .map(s => s.benchmarks)
+    .flat();
+
+    const labels = visibleBenchmarks.map(b => b.name);
+    const datasets = visibleBenchmarks.map(this.buildDataset);
+
 
     const chartData = {
-      labels: benchmarks.map(b => b.name),
-      datasets: benchmarks.map((b, index) => {
-        return {
-          label: b.name,
-          data: b.benchmark.map(d => d.mean_processing_time / d.batch_size),
-          fill: false,
-          lineTension: 0,
-          spanGaps: true,
-          backgroundColor: this.state.colors.dark[index],
-          borderColor: this.state.colors.dark[index],
-          order: index
-        };
-      })
+      labels: labels,
+      datasets: datasets
     };
 
     let chartOptions = {
@@ -98,28 +105,21 @@ class BenchmarkChart extends React.Component {
       scales: {
         xAxes: [
           {
+            type: 'linear',
+            display: true,
             scaleLabel: {
               display: true,
               labelString: "batch size"
-            },
-            ticks: {
-              callback: function(value, index, values) {
-                return Math.pow(2, index);
-              }
             }
           }
         ],
         yAxes: [
           {
-            type: "logarithmic",
+            type: 'logarithmic',
+            display: true,
             scaleLabel: {
               display: true,
               labelString: "log of time per image (ms)"
-            },
-            ticks: {
-              callback: function(value, index, values) {
-                return parseInt(value, 10);
-              }
             }
           }
         ]
@@ -131,10 +131,14 @@ class BenchmarkChart extends React.Component {
         <Line
           data={chartData}
           options={chartOptions}
-          ref={reference => (this.chartReference = reference)}
         />
       </div>
     );
   }
 }
+
+BenchmarkChart.propTypes = {
+  services: PropTypes.array.isRequired,
+  hiddenRepositoriesIndexes: PropTypes.array
+};
 export default BenchmarkChart;
