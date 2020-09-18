@@ -28,6 +28,11 @@ export default class Repository {
   }
 
   @computed
+  get benchmarksPath() {
+    return this.path + '/benchmarks';
+  }
+
+  @computed
   get tags() {
     return this.path.split("/").filter(p => p.length > 0);
   }
