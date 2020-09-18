@@ -283,6 +283,12 @@ yarn test:e2e
 
 ## Changelog
 
+### v0.9.7.6 - 18/09/2020
+
+- UI
+
+  - Review Benchmark line chart display
+
 ### v0.9.7.5 - 17/09/2020
 
 - UI
