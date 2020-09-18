@@ -26,13 +26,13 @@ class ModelBenchmark extends React.Component {
   }
 
   handleRepositoryVisibility(index) {
-    let indexes = [...this.state.hiddenRepositoryIndexes];
+    let indexes = [...this.state.hiddenRepositoriesIndexes];
 
     if (indexes.includes(index)) {
       indexes.splice(indexes.indexOf(index), 1);
-      this.setState({ hiddenRepositoryIndexes: indexes });
+      this.setState({ hiddenRepositoriesIndexes: indexes });
     } else {
-      this.setState({ hiddenRepositoryIndexes: [...indexes, index] });
+      this.setState({ hiddenRepositoriesIndexes: [...indexes, index] });
     }
   }
 
