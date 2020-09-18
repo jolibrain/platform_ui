@@ -25,10 +25,12 @@ class BenchmarkChart extends React.Component {
     const { layout } = this.state;
 
     benchmarkCharts.push(<BatchSizeChart
+                           key="batchSizeChart"
                            layout={layout}
                            {...this.props} />);
 
     benchmarkCharts.push(<FpsChart
+                           key="fpsChart"
                            layout={layout}
                            {...this.props} />);
 

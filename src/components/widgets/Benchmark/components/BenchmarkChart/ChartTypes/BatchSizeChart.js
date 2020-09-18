@@ -118,7 +118,10 @@ class BatchSizeChart extends React.Component {
     };
 
     return (
-      <div className={`benchmarkchart-batchsize ${this.props.layout}`}>
+      <div
+        id="benchmarkchart-batchsize"
+        className={this.props.layout}
+      >
         <Line
           data={chartData}
           options={chartOptions}

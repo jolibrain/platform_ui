@@ -73,10 +73,17 @@ class FpsChart extends React.Component {
     if (!services || services.length === 0) return null;
 
     const visibleBenchmarks = services.filter((s, index) => {
-      return s && !hiddenRepositoriesIndexes.includes(index)
+      return s &&
+        s.jsonConfig &&
+        s.jsonConfig.parameters &&
+        s.jsonConfig.parameters.input.connector === 'image' &&
+        !hiddenRepositoriesIndexes.includes(index)
     })
     .map(s => s.benchmarks)
     .flat();
+
+    if(visibleBenchmarks.length === 0)
+      return null;
 
     const labels = visibleBenchmarks.map(b => b.name);
     const datasets = visibleBenchmarks.map(this.buildDataset);
@@ -118,7 +125,10 @@ class FpsChart extends React.Component {
     };
 
     return (
-      <div className={`benchmarkchart-fps ${this.props.layout}`}>
+      <div
+        id="benchmarkchart-fps"
+        className={this.props.layout}
+      >
         <Line
           data={chartData}
           options={chartOptions}
