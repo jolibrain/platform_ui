@@ -1,0 +1,16 @@
+@import "../palettes/palette-1.scss";
+
+.benchmarkchart-layout {
+  width: 100%;
+  margin: 0 0 10px 5px;
+
+  i {
+    cursor: pointer;
+    margin: 3px;
+    color: $neutral_blue_8;
+  }
+
+  i.selected-layout {
+    color: $neutral_blue_2;
+  }
+}
