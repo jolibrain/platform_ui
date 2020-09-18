@@ -17,8 +17,6 @@ class ChartShow extends React.Component {
     let mainView = null;
     const { chartType } = this.props.match.params;
 
-    console.log(chartType);
-
     switch (chartType) {
       case "benchmark":
         mainView = <ModelBenchmark {...this.props} />;
