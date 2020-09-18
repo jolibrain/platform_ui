@@ -13,6 +13,8 @@ class TitleItem extends React.Component {
       handleRepositoryVisibility
     } = this.props;
 
+    const benchmarkHref = service.benchmarksPath + benchmark.href;
+
     return (
       <tr>
         <td>{service.name}</td>
@@ -30,11 +32,20 @@ class TitleItem extends React.Component {
         <td>
           <a
             className="badge badge-dark"
-            href={benchmark.href}
+            href={benchmarkHref}
             target="_blank"
             rel="noopener noreferrer"
           >
             {benchmark.href}
+          </a>
+          <br/>
+          <a
+            className="badge badge-dark"
+            href={service.path + "config.json"}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            config.json
           </a>
         </td>
         <td>
