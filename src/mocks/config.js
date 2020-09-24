@@ -6,8 +6,10 @@ const PUBLIC_PATH = "./public/"
 const MOCK_PATH = "./src/mocks/json/"
 
 const jsonContent = (jsonPath, rootPath = PUBLIC_PATH, isDebug = false) => {
+
     const filePath = rootPath + jsonPath;
     const fileContent = fs.readFileSync(filePath)
+
     let jsonContent = {}
 
     try {
@@ -58,5 +60,23 @@ export const config = [
         get: function (match, data) {
             return {body: data};
         }
-    }
+    },
+    {
+        pattern: '/mocks-dd-results-regression.json',
+        fixtures: (match, params, headers) => {
+            return jsonContent("dd-results/regression.json", MOCK_PATH)
+        },
+        get: function (match, data) {
+            return {body: data};
+        }
+    },
+    {
+        pattern: '/mocks-dd-results-imageserv.json',
+        fixtures: (match, params, headers) => {
+            return jsonContent("dd-results/imageserv.json", MOCK_PATH)
+        },
+        get: function (match, data) {
+            return {body: data};
+        }
+    },
 ]

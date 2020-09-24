@@ -1,0 +1,22 @@
+{
+  "status":{
+    "code":200,
+    "msg":"OK"
+  },
+  "head":{
+    "method":"/predict",
+    "time":1398.0,
+    "service":"imageserv"
+  },
+  "body":{
+    "predictions":[{
+      "uri":"../../main/ambulance.jpg",
+      "loss":0.0,
+      "classes":[
+        {"prob":0.992520809173584,"cat":"n02701002 ambulance"},
+        {"prob":0.007297487463802099,"cat":"n03977966 police van, police wagon, paddy wagon, patrol wagon, wagon, black Maria"},
+        {"prob":0.00014072071644477546,"cat":"n04336792 stretcher"}
+      ]
+    }]
+  }
+}

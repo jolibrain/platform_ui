@@ -13,17 +13,23 @@ class Category extends React.Component {
     this.categoryDisplay = this.categoryDisplay.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.selectedBoxIndex === -1) {
+  componentDidUpdate() {
+    if (this.props.selectedBoxIndex === -1) {
       this._nodes.forEach(n => ReactTooltip.hide(findDOMNode(n)));
     } else {
-      const node = findDOMNode(this._nodes.get(nextProps.selectedBoxIndex));
+      const node = findDOMNode(this._nodes.get(this.props.selectedBoxIndex));
       ReactTooltip.show(node);
     }
   }
 
-  categoryDisplay(category, index) {
-    const { serviceSettings } = this.props.imaginateStore;
+  categoryDisplay(isRegression, category, index) {
+
+    let serviceSettings = null;
+    if(this.props.imaginateStore &&
+       this.props.imaginateStore.serviceSettings) {
+      serviceSettings = this.props.imaginateStore.serviceSettings
+    }
+
     const { onOver, onLeave } = this.props;
     let styles = {
       color: ""
@@ -31,30 +37,45 @@ class Category extends React.Component {
 
     // okClass settings
     if (
-      serviceSettings.display.okClass &&
-      serviceSettings.display.okClass.length > 0
+      serviceSettings &&
+        serviceSettings.display &&
+        serviceSettings.display.okClass &&
+        serviceSettings.display.okClass.length > 0
     ) {
       styles.color =
         serviceSettings.display.okClass === category.cat ? "#0C0" : "#C00";
     }
 
-    const value = category.prob
-      ? category.prob
-      : category.val
-      ? category.val
-      : 0;
+    let tooltipValue = 0;
+    let displayValue = 0;
+
+    if(isRegression) {
+
+      displayValue = category.val.toFixed(2);
+      tooltipValue = category.cat;
+
+    } else {
+
+      displayValue = category.cat;
+
+      if(category.val) {
+        tooltipValue = category.val.toFixed(2)
+      } else if(category.prob) {
+        tooltipValue = category.prob.toFixed(2)
+      }
+    }
 
     return (
       <div key={index}>
         <span
           style={styles}
           className="badge badge-success"
-          onMouseOver={onOver.bind(this, index)}
-          onMouseLeave={onLeave}
-          data-tip={`${value.toFixed(2)}`}
+          onMouseOver={onOver ? onOver.bind(this, index) : () => {}}
+          onMouseLeave={onLeave ? onLeave.bind(this, index) : () => {}}
+          data-tip={tooltipValue}
           ref={c => this._nodes.set(index, c)}
         >
-          {category.cat}
+          {displayValue}
         </span>
         &nbsp;
       </div>
@@ -64,17 +85,25 @@ class Category extends React.Component {
   render() {
     const { input } = this.props;
 
-    if (!input.json || !input.json.body) return null;
+    if (
+      !input.json ||
+        !input.json.body ||
+        !input.json.body.predictions ||
+        !input.json.body.predictions[0]
+    ) return null;
 
-    const content = input.json.body.predictions[0].vector
-      ? input.json.body.predictions[0].vector
-      : input.json.body.predictions[0].classes;
+    const isRegression = input.json.body.predictions[0].hasOwnProperty('vector')
+
+    const content = isRegression ?
+          input.json.body.predictions[0].vector
+          :
+          input.json.body.predictions[0].classes;
 
     if (!content) return null;
 
     return (
       <div className="description-category">
-        {content.map(this.categoryDisplay)}
+        {content.map(this.categoryDisplay.bind(this, isRegression))}
         <ReactTooltip effect="solid" />
       </div>
     );

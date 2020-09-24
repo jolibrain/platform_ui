@@ -1,0 +1,25 @@
+{
+    "body": {
+        "predictions": [
+            {
+                "uri": "/opt/platform/data/image.png",
+                "vector": [
+                    {
+                        "val": 36.126976013183594,
+                        "cat": "0",
+                        "last": true
+                    }
+                ]
+            }
+        ]
+    },
+    "head": {
+        "time": 32,
+        "service": "regression",
+        "method": "/predict"
+    },
+    "status": {
+        "msg": "OK",
+        "code": 200
+    }
+}
