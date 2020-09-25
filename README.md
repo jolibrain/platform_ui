@@ -238,24 +238,10 @@ To load this layout, you can use the example in `public/config_minimal.json` to 
 
 ## Docker
 
-Il est possible (et conseillé) de déléguer l’ensemble des tâches de build à un conteneur.
+Docker containers can be built using `docker-build.sh` script, using the following options:
 
-Le Dockerfile de ce conteneur se trouve dans docker-build/Dockerfile. Il installe l’ensemble des dépendances.
-
-Il est le garant des bonnes versions des dépendances et permet de faire le build sur une machine vierge.
-
-```
-docker build -t eris:7750/dev/core-ui-build .
-docker push eris:7750/dev/core-ui-build
-```
-
-Puis (on oubliera pas de lier le répertoire local au volume) :
-
-```
-docker run -v .:/opt/code eris:7750/dev/core-ui-build
-```
-
-Les fichiers résultants du build seront dans ./build
+* `docker-build.sh --dev`: build and push a dev image container to docker hub
+* `docker-build.sh --tag`: build and push an image container to docker hub, tag with latest git tag
 
 ### Deploy on server
 
@@ -316,7 +302,7 @@ yarn test:e2e
   - Add msw, superagent-mock library
   - configPath props on App component
   - Renders Predict link
-  
+
 - Chore
 
   - add missing serverWorker.js
