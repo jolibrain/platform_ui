@@ -1,6 +1,11 @@
-# Core-UI
+# DeepDetect - Plaform UI
 
-Web interface to control DeepDetect processus.
+Web interface to control DeepDetect process.
+
+![platform_ui screenshot](https://www.deepdetect.com/img/platform/predict_image.png)
+
+- [Quickstart](https://www.deepdetect.com/quickstart-platform/?os=ubuntu&source=docker&compute=gpu&gpu=gtx&backend=caffe%2Ctsne%2Cxgboost&deepdetect=platform)
+- [Documentation](https://www.deepdetect.com/platform/docs/introduction/)
 
 ## Requirements
 
