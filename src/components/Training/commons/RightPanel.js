@@ -11,19 +11,19 @@ import PlaceHolder from "../../widgets/PlaceHolder";
 @observer
 class RightPanel extends React.Component {
   render() {
-    const { configStore } = this.props;
 
-    if (typeof configStore.gpuInfo === "undefined") return null;
-
-    let widgets = [];
-
-    widgets.push(<GpuInfo key="GpuInfo" />);
+    if (
+      typeof this.props.configStore.gpuInfo === "undefined" ||
+        this.props.gpuStore.servers.length === 0
+    ) {
+      return null;
+    }
 
     return (
       <aside className="right-sidebar right-sidebar right-sidebar-expanded">
         <div className="issuable-sidebar">
           <PlaceHolder config="sidebar_right_top" />
-          {widgets}
+          <GpuInfo />
           <PlaceHolder config="sidebar_right_bottom" />
         </div>
       </aside>

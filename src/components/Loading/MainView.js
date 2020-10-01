@@ -5,13 +5,23 @@ import { withRouter } from "react-router-dom";
 import RightPanel from "./RightPanel";
 
 @inject("configStore")
+@inject("gpuStore")
 @withRouter
 @observer
 class MainView extends React.Component {
   render() {
     const { homeComponent } = this.props.configStore;
+
+    let mainClassnames = "main-view content-wrapper"
+    if (
+      typeof this.props.configStore.gpuInfo !== "undefined" ||
+        this.props.gpuStore.servers.length > 0
+    ) {
+      mainClassnames = "main-view content-wrapper with-right-sidebar"
+    }
+
     return (
-      <div className="main-view content-wrapper">
+      <div className={mainClassnames}>
         <div className="container-fluid">
           <div className="content">
             <h2>{homeComponent ? homeComponent.title : ""}</h2>

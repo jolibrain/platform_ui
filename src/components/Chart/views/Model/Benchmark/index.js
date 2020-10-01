@@ -8,6 +8,8 @@ import MultiTitle from "../../../../widgets/Benchmark/components/MultiTitle";
 import BenchmarkChart from "../../../../widgets/Benchmark/components/BenchmarkChart";
 
 @inject("modelRepositoriesStore")
+@inject("configStore")
+@inject("gpuStore")
 @observer
 @withRouter
 class ModelBenchmark extends React.Component {
@@ -78,8 +80,16 @@ class ModelBenchmark extends React.Component {
       error
     } = this.state;
 
+    let mainClassnames = "main-view content-wrapper"
+    if (
+      typeof this.props.configStore.gpuInfo !== "undefined" &&
+        this.props.gpuStore.servers.length > 0
+    ) {
+      mainClassnames = "main-view content-wrapper with-right-sidebar"
+    }
+
     return (
-      <div className="main-view content-wrapper">
+      <div className={mainClassnames}>
         {repositories.length > 0 ? (
           <div className="fluid-container">
             <MultiTitle

@@ -6,13 +6,18 @@ import GpuInfo from "../../widgets/GpuInfo";
 import PlaceHolder from "../../widgets/PlaceHolder";
 
 @inject("configStore")
+@inject("gpuStore")
 @withRouter
 @observer
 class RightPanel extends React.Component {
   render() {
-    const { configStore } = this.props;
 
-    if (typeof configStore.gpuInfo === "undefined") return null;
+    if (
+      typeof this.props.configStore.gpuInfo === "undefined" ||
+        this.props.gpuStore.servers.length === 0
+    ) {
+      return null;
+    }
 
     return (
       <aside className="right-sidebar right-sidebar right-sidebar-expanded">

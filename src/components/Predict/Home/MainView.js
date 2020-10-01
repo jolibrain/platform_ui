@@ -10,6 +10,8 @@ import PredictServiceList from "../../widgets/PredictServiceList";
 
 @inject("modelRepositoriesStore")
 @inject("deepdetectStore")
+@inject("configstore")
+@inject("gpustore")
 @withRouter
 @observer
 class MainView extends React.Component {
@@ -121,8 +123,16 @@ class MainView extends React.Component {
     const availableServicesLength =
       publicRepositories.length + privateRepositories.length;
 
+    let mainClassnames = "main-view content-wrapper"
+    if (
+      typeof this.props.configStore.gpuInfo !== "undefined" &&
+        this.props.gpuStore.servers.length > 0
+    ) {
+      mainClassnames = "main-view content-wrapper with-right-sidebar"
+    }
+
     return (
-      <div className="main-view content-wrapper">
+      <div className={mainClassnames}>
         <div className="container-fluid">
           <div className="page-title p-4 row">
             <div className="col-lg-3 col-md-6">

@@ -12,6 +12,8 @@ import Breadcrumb from "../../widgets/Breadcrumb";
 
 @inject("deepdetectStore")
 @inject("modalStore")
+@inject("configstore")
+@inject("gpustore")
 @observer
 @withRouter
 class MainView extends React.Component {
@@ -35,8 +37,16 @@ class MainView extends React.Component {
 
     if (!service.respTraining) return null;
 
+    let mainClassnames = "main-view content-wrapper"
+    if (
+      typeof this.props.configStore.gpuInfo !== "undefined" &&
+        this.props.gpuStore.servers.length > 0
+    ) {
+      mainClassnames = "main-view content-wrapper with-right-sidebar"
+    }
+
     return (
-      <div className="main-view content-wrapper">
+      <div className={mainClassnames}>
         <div className="fluid-container">
           <Title service={service} />
           <div className="training-breadcrumb px-4 py-2">

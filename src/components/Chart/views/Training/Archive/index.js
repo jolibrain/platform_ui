@@ -9,6 +9,8 @@ import GeneralInfo from "../../../../widgets/TrainingMonitor/components/GeneralI
 import MeasureHistArray from "../../../../widgets/TrainingMonitor/components/MeasureHistArray";
 
 @inject("modelRepositoriesStore")
+@inject("configStore")
+@inject("gpuStore")
 @observer
 @withRouter
 class ModelCompare extends React.Component {
@@ -81,8 +83,16 @@ class ModelCompare extends React.Component {
       return hiddenRepositoriesIndexes.includes(index) ? null : repository;
     });
 
+    let mainClassnames = "main-view content-wrapper"
+    if (
+      typeof this.props.configStore.gpuInfo !== "undefined" &&
+        this.props.gpuStore.servers.length > 0
+    ) {
+      mainClassnames = "main-view content-wrapper with-right-sidebar"
+    }
+
     return (
-      <div className="main-view content-wrapper">
+      <div className={mainClassnames}>
         {repositories.length > 0 ? (
           <div className="fluid-container">
             <MultiTitle

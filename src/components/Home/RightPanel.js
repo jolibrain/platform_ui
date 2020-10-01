@@ -6,11 +6,16 @@ import GpuInfo from "../widgets/GpuInfo";
 import PlaceHolder from "../widgets/PlaceHolder";
 
 @inject("configStore")
+@inject("gpuStore")
 @withRouter
 @observer
 class RightPanel extends React.Component {
   render() {
-    if (typeof this.props.configStore.gpuInfo === "undefined") {
+
+    if (
+      typeof this.props.configStore.gpuInfo === "undefined" ||
+        this.props.gpuStore.servers.length === 0
+    ) {
       return null;
     }
 

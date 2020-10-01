@@ -109,11 +109,14 @@
 .main-view.content-wrapper {
   margin-top: 40px;
   padding-bottom: 100px;
-  padding-right: 290px;
 }
 .main-view.content-wrapper .container-fluid {
   padding: 0 16px;
 }
+.main-view.content-wrapper.with-right-sidebar {
+  padding-right: 290px;
+}
+
 .right-sidebar.right-sidebar-expanded {
   width: 290px;
 }
