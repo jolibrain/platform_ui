@@ -7,8 +7,8 @@ import Imaginate from "../../widgets/Imaginate";
 
 @inject("imaginateStore")
 @inject("deepdetectStore")
-@inject("configstore")
-@inject("gpustore")
+@inject("configStore")
+@inject("gpuStore")
 @withRouter
 @observer
 class MainView extends React.Component {

@@ -5,8 +5,8 @@ import { withRouter } from "react-router-dom";
 import RightPanel from "../commons/RightPanel";
 import Form from "./Form";
 
-@inject("configstore")
-@inject("gpustore")
+@inject("configStore")
+@inject("gpuStore")
 @withRouter
 @observer
 class MainView extends React.Component {

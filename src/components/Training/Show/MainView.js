@@ -12,8 +12,8 @@ import Breadcrumb from "../../widgets/Breadcrumb";
 
 @inject("deepdetectStore")
 @inject("modalStore")
-@inject("configstore")
-@inject("gpustore")
+@inject("configStore")
+@inject("gpuStore")
 @observer
 @withRouter
 class MainView extends React.Component {

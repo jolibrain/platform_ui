@@ -7,8 +7,8 @@ import ServiceCardList from "../../widgets/ServiceCardList";
 
 @inject("datasetStore")
 @inject("deepdetectStore")
-@inject("configstore")
-@inject("gpustore")
+@inject("configStore")
+@inject("gpuStore")
 @withRouter
 @observer
 class MainView extends React.Component {

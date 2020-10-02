@@ -3,8 +3,8 @@ import { inject, observer } from "mobx-react";
 
 import RightPanel from "./RightPanel";
 
-@inject("configstore")
-@inject("gpustore")
+@inject("configStore")
+@inject("gpuStore")
 @observer
 class MainView extends React.Component {
   render() {

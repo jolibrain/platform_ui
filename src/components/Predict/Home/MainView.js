@@ -10,8 +10,8 @@ import PredictServiceList from "../../widgets/PredictServiceList";
 
 @inject("modelRepositoriesStore")
 @inject("deepdetectStore")
-@inject("configstore")
-@inject("gpustore")
+@inject("configStore")
+@inject("gpuStore")
 @withRouter
 @observer
 class MainView extends React.Component {
