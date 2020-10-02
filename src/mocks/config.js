@@ -44,6 +44,24 @@ export const config = [
         }
     },
     {
+        pattern: '/mocks-config-gpuInfo-servers.json',
+        fixtures: (match, params, headers) => {
+            return jsonContent("config-gpuInfo-servers.json", MOCK_PATH)
+        },
+        get: function (match, data) {
+            return {body: data};
+        }
+    },
+    {
+        pattern: '/mocks-config-gpuInfo-no-servers.json',
+        fixtures: (match, params, headers) => {
+            return jsonContent("config-gpuInfo-no-servers.json", MOCK_PATH)
+        },
+        get: function (match, data) {
+            return {body: data};
+        }
+    },
+    {
         pattern: '.*/buildInfo.json',
         fixtures: (match, params, headers) => {
             return jsonContent("buildInfo.json")

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render , screen, waitFor } from '@testing-library/react';
+import { render , screen, waitFor, prettyDOM } from '@testing-library/react';
 
 import { Provider } from "mobx-react";
 import { HashRouter } from "react-router-dom";
@@ -50,4 +50,44 @@ test('use custom config path', async () => {
         </Provider>);
     const mockElement = await waitFor(() =>  getByText(/Mock/i));
     expect(mockElement).toBeInTheDocument();
+});
+
+test('Shows right sidebar when servers in gpuInfo config.json', async () => {
+
+  const { container, getByText } = render(
+    <Provider {...stores}>
+      <HashRouter>
+        <App configPath="/mocks-config-gpuInfo-servers.json"/>
+      </HashRouter>
+    </Provider>);
+
+  const rightSidebarElement = container.getElementsByClassName('right-sidebar')[0];
+  console.log(prettyDOM(rightSidebarElement))
+
+  const gpuElement = await waitFor(() =>  getByText(/Mock GPU Stats/i));
+  expect(gpuElement).toBeInTheDocument();
+
+  const mainViewElement = container.getElementsByClassName('main-view')[0];
+  expect(mainViewElement.className.split(" ").indexOf('with-right-sidebar')).not.toBe(-1);
+
+});
+
+test('Hides right sidebar when no servers in gpuInfo config.json', async () => {
+
+  const { container, getByText } = render(
+    <Provider {...stores}>
+      <HashRouter>
+        <App configPath="/mocks-config-gpuInfo-no-servers.json"/>
+      </HashRouter>
+    </Provider>);
+
+  const rightSidebarElement = container.getElementsByClassName('right-sidebar')[0];
+  console.log(prettyDOM(rightSidebarElement))
+
+  const gpuElement = await waitFor(() =>  getByText(/GPU Stats/i));
+  expect(gpuElement).not.toBeInTheDocument();
+
+  const mainViewElement = container.getElementsByClassName('main-view')[0];
+  expect(mainViewElement.className.split(" ").indexOf('with-right-sidebar')).toBe(-1);
+
 });

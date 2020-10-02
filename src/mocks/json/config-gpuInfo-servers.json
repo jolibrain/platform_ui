@@ -1,0 +1,135 @@
+{
+  "common": {
+    "name": "DeepDetect"
+  },
+  "homeComponent": {
+    "contentType": "json",
+    "title": "Mock",
+    "description": [
+    ],
+    "headerLinks": {
+      "linkJupyter": "",
+      "linkMenus": [
+      ]
+    }
+  },
+  "deepdetect": {
+    "refreshRate": {
+      "info": 10000,
+      "training": 10000
+    },
+    "servers": [
+    ],
+    "services": {
+      "defaultConfig": [
+        {
+          "modelName": "default",
+          "modelConfig": {
+            "description": "",
+            "model": {
+              "repository": ""
+            },
+            "mllib": "caffe",
+            "type": "supervised",
+            "parameters": {
+              "input": {
+                "connector": "image",
+                "height": 300,
+                "width": 300
+              },
+              "mllib": {
+                "nclasses": 2,
+                "gpu": true,
+                "gpuid": 0
+              }
+            }
+          }
+        }
+      ]
+    },
+    "chains": {
+      "path": "/chains/"
+    }
+  },
+  "imaginate": {
+    "default": {
+      "display": {
+        "initImages": {},
+        "mode": "description",
+        "okClass": "",
+        "boundingBox": true,
+        "segmentation": false,
+        "separateSegmentation": false,
+        "segmentationColors": ["#1b9e77", "#d95f02"],
+        "chain": {
+          "multicrop": false,
+          "search_nn": 10,
+          "random_crops": 10,
+          "min_size_ratio": 0.5
+        }
+      },
+      "threshold": {
+        "confidence": 0.5,
+        "controls": true,
+        "controlSteps": [0.8, 0.41, 0.1]
+      },
+      "request": {
+        "objSearch": false,
+        "imgSearch": false,
+        "best": false,
+        "ctc": false,
+        "blank_label": false
+      },
+      "code": {
+        "display": {
+          "importLib": true,
+          "ddConfig": true,
+          "postPredict": true,
+          "hostname": null,
+          "port": null
+        }
+      }
+    },
+    "services": [
+    ]
+  },
+  "gpuInfo": {
+    "servers": [
+      {
+        "name": "Mock GPU Stats",
+        "url": "/gpu/stats"
+      }
+    ],
+    "refreshRate": 5000
+  },
+  "modelRepositories": [
+    {
+      "name": "public",
+      "nginxPath": "/models/public/",
+      "jsonPath": "/json/models/public/",
+      "systemPath": "/opt/platform"
+    },
+    {
+      "name": "private",
+      "nginxPath": "/models/private/",
+      "jsonPath": "/json/models/private/",
+      "systemPath": "/opt/platform",
+      "hasFiles": true
+    },
+    {
+      "name": "training",
+      "nginxPath": "/models/training/",
+      "jsonPath": "/json/models/training/",
+      "systemPath": "/opt/platform",
+      "isTraining": true
+    }
+  ],
+  "dataRepositories": {
+    "nginxPath": "/data/",
+    "jsonPath": "/json/data/",
+    "systemPath": "/opt/platform",
+    "maxDepth": 2
+  },
+  "componentBlacklist": ["LinkChat"],
+  "placeholders": {}
+}
