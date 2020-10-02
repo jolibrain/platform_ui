@@ -36,12 +36,21 @@ class MainView extends React.Component {
         <div className="container-fluid">
           <div className="page-title p-4 row">
             <div className="col-lg-8 col-md-12">
+
               <h3>
                 <i className="fas fa-link" /> {chain.name}
               </h3>
-              <h4>{chain.description}</h4>
 
-              {chain.calls.map((call, index) => {
+              <a
+                href={`/json/${chain.path}`}
+                className="badge badge-secondary"
+                target="_blank"
+                rel="noopener noreferrer"
+              >json</a>
+
+              <h4>{chain.content.description}</h4>
+
+              {chain.content.calls.map((call, index) => {
                 let badge = null;
 
                 if (call.service) {

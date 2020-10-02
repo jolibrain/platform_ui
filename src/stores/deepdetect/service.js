@@ -618,18 +618,18 @@ export default class deepdetectService {
     input.postData = null;
     input.json = null;
 
-    chain.calls[0].data = [input.content];
+    chain.content.calls[0].data = [input.content];
 
     if (input.path) {
-      chain.calls[0].data = [input.path];
+      chain.content.calls[0].data = [input.path];
     }
 
-    chain.calls[0].parameters.output.confidence_threshold =
+    chain.content.calls[0].parameters.output.confidence_threshold =
       settings.threshold.confidence;
 
     input.putData = {
       chain: {
-        calls: chain.calls
+        calls: chain.content.calls
       }
     };
 

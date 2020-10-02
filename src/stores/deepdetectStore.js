@@ -98,8 +98,13 @@ export class deepdetectStore {
       chainFiles
         .filter(chainName => /~$/.test(chainName) === false)
         .forEach(async (chainFile, index) => {
-          const chainContent = await agent.Webserver.getFile(path + chainFile);
-          this.chains.push(chainContent);
+          const chainPath = path + chainFile;
+          const chainContent = await agent.Webserver.getFile(chainPath);
+          this.chains.push({
+            name: chainContent.name,
+            content: chainContent,
+            path: chainPath
+          });
         });
     }
   }

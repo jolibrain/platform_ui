@@ -80,9 +80,12 @@ class Code extends React.Component {
 })\n\n`;
     }
 
-    if (chain && chain.calls && chain.calls.length > 0) {
+    if (chain &&
+        chain.content &&
+        chain.content.calls &&
+        chain.content.calls.length > 0) {
       javascriptCode += `const putData = ${JSON.stringify(
-        chain.calls,
+        chain.content.calls,
         null,
         2
       )}\n\n`;
@@ -147,9 +150,12 @@ dd = DD(host, port, ${window.protocol === "https" ? 1 : 0}, path=path)
 dd.set_return_format(dd.RETURN_PYTHON)\n\n`;
     }
 
-    if (chain && chain.calls && chain.calls.length > 0) {
+    if (chain &&
+        chain.content &&
+        chain.content.calls &&
+        chain.content.calls.length > 0) {
       let chain_calls = [];
-      chain.calls.forEach((call, call_index) => {
+      chain.content.calls.forEach((call, call_index) => {
         let call_id = "";
 
         if (call.action) {

@@ -89,7 +89,10 @@ export class imaginateStore {
 
   @computed
   get isChain() {
-    return this.chain && this.chain.calls && this.chain.calls.length > 0;
+    return this.chain &&
+      this.chain.content &&
+      this.chain.content.calls &&
+      this.chain.content.calls.length > 0;
   }
 
   @computed

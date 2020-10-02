@@ -27,9 +27,11 @@ class ChainShow extends React.Component {
       const chainName = params.chainName;
       const chain = deepdetectStore.chains.find(c => c.name === chainName);
 
-      if (!chain || !chain.calls) return null;
+      if (!chain ||
+          !chain.content ||
+          !chain.content.calls) return null;
 
-      const rootService = chain.calls[0].service;
+      const rootService = chain.content.calls[0].service;
 
       if (chain.serverPath) {
         deepdetectStore.setServerPath(chain.serverPath);
