@@ -7,6 +7,7 @@ import GpuInfo from "../../widgets/GpuInfo";
 import PlaceHolder from "../../widgets/PlaceHolder";
 
 @inject("configStore")
+@inject("gpuStore")
 @withRouter
 @observer
 class RightPanel extends React.Component {
