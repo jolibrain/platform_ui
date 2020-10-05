@@ -72,7 +72,20 @@ class MeasureChart extends React.Component {
     this.setState({ logScale: isLogScale });
 
     const { chartInstance } = this.chartReference;
-    const yAxe = chartInstance.options.scales.yAxes[0];
+    let yAxe
+
+    if(
+      chartInstance &&
+        chartInstance.options &&
+        chartInstance.options.scales &&
+        chartInstance.options.scales.yAxes &&
+        chartInstance.options.scales.yAxes.length > 0
+    ) {
+        yAxe = chartInstance.options.scales.yAxes[0];
+    }
+
+    // Missing yAxe, do not toggle
+    if(!yAxe) return null;
 
     if (isLogScale) {
       // Add a userCallback function on logarithmic y axe
@@ -247,13 +260,18 @@ class MeasureChart extends React.Component {
     const { services } = this.props;
 
     // get first not null service
-    const service = services.filter(s => s)[0];
+    const notNullServices = services.filter(s => s)
+    let service = null;
+
+    if(notNullServices.length > 0) {
+      service = services.filter(s => s)[0];
+    }
 
     let measure_hist, measure;
     if (service.jsonMetrics) {
       measure_hist = service.jsonMetrics.body.measure_hist;
       measure = service.jsonMetrics.body.measure;
-    } else {
+    } else if (service.measure_hist && service.measure){
       measure_hist = service.measure_hist;
       measure = service.measure;
     }
@@ -321,14 +339,14 @@ class MeasureChart extends React.Component {
       this.props.steppedLine &&
         chartData.datasets &&
         chartData.datasets.length > 0 &&
-        chartData.datasets[0].data
-
+        chartData.datasets[0].data &&
+        chartData.datasets[0].data.length > 0
     ) {
+
       const data = chartData.datasets[0].data;
       chartData.labels.unshift(0);
+      chartData.datasets[0].data.push(data[data.length - 1]);
 
-      if (chartData.datasets[0].data)
-        chartData.datasets[0].data.push(data[data.length - 1]);
     }
 
     return chartData;
@@ -427,7 +445,12 @@ class MeasureChart extends React.Component {
     // Add vertical line drawing when moving cursor around the chart
     Chart.pluginService.register({
       afterDraw: (chart, easing) => {
-        if (chart.tooltip._active && chart.tooltip._active.length) {
+        if (
+          chart &&
+          chart.tooltip &&
+          chart.tooltip._active &&
+          chart.tooltip._active.length > 0
+        ) {
           const activePoint = chart.controller.tooltip._active[0];
           const ctx = chart.ctx;
           const x = activePoint.tooltipPosition().x;
