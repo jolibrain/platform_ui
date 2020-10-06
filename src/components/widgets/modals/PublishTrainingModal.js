@@ -153,7 +153,7 @@ class PublishTrainingModal extends React.Component {
           if (this.state.deleteAfterPublish) {
             // TODO add serviceName in ddServer.deleteService method
             // to avoid using private request method
-            await ddServer.$reqDeleteService(service.name);
+            await ddServer.$reqDeleteService(serviceName);
 
             this.setState({
               spinner: false,
