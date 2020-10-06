@@ -216,6 +216,7 @@ class PublishTrainingModal extends React.Component {
   }
 
   render() {
+    const { publishMessage } = this.state;
     return (
       <div id="modal-publishTraining">
         <div className="modal-header">
@@ -275,27 +276,44 @@ class PublishTrainingModal extends React.Component {
         </div>
 
         <div className="modal-footer">
-          <button
-            className="btn btn-outline-primary mb-2"
-            onClick={this.handleCancel}
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            className="btn btn-primary mb-2"
-            onClick={this.handlePublishTraining}
-          >
-            {this.state.spinner ? (
-              <span>
-                <i className="fas fa-spinner fa-spin" /> Publishing...
-              </span>
-            ) : (
-              <span>
-                <i className="fas fa-plus" /> Publish
-              </span>
-            )}
-          </button>
+
+          { publishMessage && !publishMessage.isError ?
+
+            <button
+              className="btn btn-primary mb-2"
+              onClick={this.handleCancel}
+              key="closeFooterButton"
+            >
+              Close
+            </button>
+
+            :
+
+            <span key="publishFooter">
+              <button
+                className="btn btn-outline-primary mb-2"
+                onClick={this.handleCancel}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="btn btn-primary mb-2"
+                onClick={this.handlePublishTraining}
+              >
+                {this.state.spinner ? (
+                  <span>
+                    <i className="fas fa-spinner fa-spin" /> Publishing...
+                  </span>
+                ) : (
+                  <span>
+                    <i className="fas fa-plus" /> Publish
+                  </span>
+                )}
+              </button>
+            </span>
+
+          }
         </div>
       </div>
     );
