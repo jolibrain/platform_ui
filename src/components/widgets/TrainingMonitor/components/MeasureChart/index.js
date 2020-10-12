@@ -385,16 +385,17 @@ class MeasureChart extends React.Component {
 
         const selectedDataset = chartData.datasets[index];
 
-        if(selectedDataset) {
+        if (selectedDataset &&
+            selectedDataset.data &&
+            selectedDataset.data.length > 0
+           ) {
 
-          const selectedData = selectedDataset.data;
+          if (this.props.showMinValue) {
 
-          if (selectedData) {
+            minValue = this.getMinValue(service, attribute);
+            minValueIndex = selectedDataset.data.indexOf(minValue);
 
-            if (this.props.showMinValue && selectedData) {
-
-              minValue = this.getMinValue(service, attribute);
-              minValueIndex = selectedData.indexOf(minValue);
+            if (minValueIndex !== -1) {
 
               // Add colored circle at best value on chart
               selectedDataset["pointBackgroundColor"][minValueIndex] = this.state.minValue.pointBackgroundColor;
@@ -402,15 +403,19 @@ class MeasureChart extends React.Component {
 
             }
 
-            if (this.props.showBest && selectedData) {
-              bestValue = this.getBestValue(service, attribute);
-              bestValueIndex = selectedData.indexOf(bestValue);
+          }
+
+          if (this.props.showBest) {
+            bestValue = this.getBestValue(service, attribute);
+            bestValueIndex = selectedDataset.data.indexOf(bestValue);
+
+            if (bestValueIndex !== -1) {
 
               // Add colored circle at best value on chart
               selectedDataset["pointBackgroundColor"][bestValueIndex] = this.state.bestValue.pointBackgroundColor;
               selectedDataset["radius"][bestValueIndex] = this.state.bestValue.radius;
-            }
 
+            }
           }
 
         }
@@ -504,14 +509,12 @@ class MeasureChart extends React.Component {
 
               const selectedDataset = data.datasets[tooltipItem.datasetIndex];
 
-              if(selectedDataset) {
-
-                const selectedData = selectedDataset.data;
-
-                if(selectedData) {
-                  label = selectedData[tooltipItem.index];
-                }
-
+              if (
+                selectedDataset &&
+                  selectedDataset.data &&
+                  selectedDataset.data.length > 0
+              ) {
+                label = selectedDataset.data[tooltipItem.index];
               }
 
             }
