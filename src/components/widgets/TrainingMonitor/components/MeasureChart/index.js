@@ -381,36 +381,42 @@ class MeasureChart extends React.Component {
         }
       }
 
-      if (this.props.showMinValue) {
-        minValue = this.getMinValue(service, attribute);
-        minValueIndex = chartData.datasets[index].data.indexOf(minValue);
+      if (chartData.datasets && chartData.datasets.length > 0) {
 
-        // Add colored circle at best value on chart
-        chartData.datasets[index]["pointBackgroundColor"][
-          minValueIndex
-        ] = this.state.minValue.pointBackgroundColor;
-        chartData.datasets[index]["radius"][
-          minValueIndex
-        ] = this.state.minValue.radius;
+        const selectedDataset = chartData.datasets[index];
+
+        if(selectedDataset) {
+
+          const selectedData = selectedDataset.data;
+
+          if (selectedData) {
+
+            if (this.props.showMinValue && selectedData) {
+
+              minValue = this.getMinValue(service, attribute);
+              minValueIndex = selectedData.indexOf(minValue);
+
+              // Add colored circle at best value on chart
+              selectedDataset["pointBackgroundColor"][minValueIndex] = this.state.minValue.pointBackgroundColor;
+              selectedDataset["radius"][minValueIndex] = this.state.minValue.radius;
+
+            }
+
+            if (this.props.showBest && selectedData) {
+              bestValue = this.getBestValue(service, attribute);
+              bestValueIndex = selectedData.indexOf(bestValue);
+
+              // Add colored circle at best value on chart
+              selectedDataset["pointBackgroundColor"][bestValueIndex] = this.state.bestValue.pointBackgroundColor;
+              selectedDataset["radius"][bestValueIndex] = this.state.bestValue.radius;
+            }
+
+          }
+
+        }
+
       }
 
-      if (
-        this.props.showBest &&
-          chartData.datasets &&
-          chartData.datasets.length > index &&
-          chartData.datasets[index].data
-      ) {
-        bestValue = this.getBestValue(service, attribute);
-        bestValueIndex = chartData.datasets[index].data.indexOf(bestValue);
-
-        // Add colored circle at best value on chart
-        chartData.datasets[index]["pointBackgroundColor"][
-          bestValueIndex
-        ] = this.state.bestValue.pointBackgroundColor;
-        chartData.datasets[index]["radius"][
-          bestValueIndex
-        ] = this.state.bestValue.radius;
-      }
     }
 
     if (this.props.useBestValue && bestValue) {
@@ -491,9 +497,26 @@ class MeasureChart extends React.Component {
           title: (tooltipItem, data) => {},
           beforeLabel: (tooltipItem, data) => {},
           label: (tooltipItem, data) => {
-            return data.datasets[tooltipItem.datasetIndex].data[
-              tooltipItem.index
-            ];
+
+            let label = null;
+
+            if (data.datasets && data.datasets.length > 0) {
+
+              const selectedDataset = data.datasets[tooltipItem.datasetIndex];
+
+              if(selectedDataset) {
+
+                const selectedData = selectedDataset.data;
+
+                if(selectedData) {
+                  label = selectedData[tooltipItem.index];
+                }
+
+              }
+
+            }
+
+            return label;
           }
         }
       },
