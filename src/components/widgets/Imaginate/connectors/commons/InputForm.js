@@ -56,6 +56,13 @@ class InputForm extends React.Component {
         //   mediaType: "mjpeg"
         // },
         {
+          id: "folderPath",
+          label: "Folder Path",
+          iconClassName: "fas fa-folder",
+          mediaType: "folders",
+          isAvailable: props.isFolderSelectable
+        },
+        {
           id: "webcam",
           label: "Webcam",
           iconClassName: "fas fa-camera",
@@ -91,6 +98,10 @@ class InputForm extends React.Component {
           m => m.id === this.props.methodId
         )
       });
+
+      if(this.props.uniqueMethod) {
+        this.setState({availableMethods: []})
+      }
     }
   }
 
@@ -131,7 +142,6 @@ class InputForm extends React.Component {
         store.service.addInputFromPath(folder, systemPath, inputs => {
           // Launch predict request only if folder contains files
           // This avoid recursive folder request on DD server
-          // bugfix #353
           if (inputs.length > 0) store.predict();
         });
       }
@@ -271,7 +281,7 @@ class InputForm extends React.Component {
             />
             <Typeahead
               className={
-                ["imagePath"].includes(this.state.method.id) ? "" : "hidden"
+                ["imagePath", "folderPath"].includes(this.state.method.id) ? "" : "hidden"
               }
               id="inlineFormInputPlatformDataLocation"
               ref={this.typeaheadRef}

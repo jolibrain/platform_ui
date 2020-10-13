@@ -6,6 +6,7 @@ import ImagePathConnector from "./connectors/ImagePath";
 import TxtConnector from "./connectors/Txt";
 import WebcamConnector from "./connectors/Webcam";
 import VideoConnector from "./connectors/Video";
+import CsvConnector from "./connectors/Csv";
 // import MjpegConnector from "./connectors/Mjpeg";
 
 @inject("imaginateStore")
@@ -14,6 +15,7 @@ import VideoConnector from "./connectors/Video";
 class Imaginate extends React.Component {
   constructor(props) {
     super(props);
+    console.log("Imaginate")
 
     this.getServiceConnector = this.getServiceConnector.bind(this);
   }
@@ -28,6 +30,7 @@ class Imaginate extends React.Component {
 
     if (service) {
       const serviceInfo = service.respInfo;
+
       if (
         serviceInfo &&
         serviceInfo.body &&
@@ -39,7 +42,28 @@ class Imaginate extends React.Component {
         connector = serviceInfo.body.parameters.input[0].connector;
       }
 
-      switch (service.uiParams.mediaType) {
+      let mediaType = null;
+
+      // Check config.json for specific uiParams settings
+      // for current service in imaginate.services config values
+      if(
+        imaginateStore.settings &&
+          imaginateStore.settings.services &&
+          imaginateStore.settings.services.length > 0
+      ) {
+        const serviceSettings = imaginateStore.settings.services.find(s => {
+          return s.name === service.name
+        })
+        mediaType = serviceSettings.uiParams.mediaType;
+      }
+
+      // No settings has been configured for this service in config.json
+      // Use mediaType defined in deepdetectStore.service
+      if(!mediaType) {
+        mediaType = service.uiParams.mediaType;
+      }
+
+      switch (mediaType) {
         case "image":
           connector = "image";
           break;
@@ -48,6 +72,9 @@ class Imaginate extends React.Component {
           break;
         case "webcam":
           connector = "webcam";
+          break;
+        case "csv":
+          connector = "csv";
           break;
         //        case "mjpeg":
         //          connector = "mjpeg";
@@ -96,12 +123,7 @@ class Imaginate extends React.Component {
       //        connectorComponent = <MjpegConnector />;
       //        break;
       case "csv":
-        connectorComponent = (
-          <div className="alert alert-warning" role="alert">
-            <i className="fas fa-exclamation-circle" /> CSV connector interface
-            not available.
-          </div>
-        );
+        connectorComponent = <CsvConnector />;
         break;
       default:
         connectorComponent = (
