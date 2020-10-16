@@ -241,6 +241,8 @@ const Webserver = {
   getFileMeta: path =>
     superagent
       .get(URL_JSON_PREFIX + path)
+      .buffer(true)
+      .parse(({ text }) => JSON.parse(text.replace("NaN", "0")))
       .use(noCache)
       .withCredentials()
       .end(handleErrors)
