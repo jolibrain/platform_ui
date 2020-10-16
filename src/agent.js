@@ -226,7 +226,12 @@ const Webserver = {
           try {
             result = JSON.parse(res.text);
           } catch (e) {
-            result = res.text;
+            try {
+              // Fix: try to replace NaN in json
+              result = JSON.parse(res.text.replace("NaN", "0"));
+            } catch (e) {
+              result = res.text;
+            }
           }
         }
         return result;
@@ -243,7 +248,12 @@ const Webserver = {
           try {
             content = JSON.parse(res.text);
           } catch (e) {
-            content = res.text;
+            try {
+              // Fix: try to replace NaN in json
+              content = JSON.parse(res.text.replace("NaN", "0"));
+            } catch (e) {
+              content = res.text;
+            }
           }
         }
         return {
