@@ -218,7 +218,7 @@ const Webserver = {
     superagent
       .get(URL_JSON_PREFIX + path)
       .buffer(true)
-      .parse(({ text }) => JSON.parse(text.replace("NaN", "0")))
+      .parse(({ text }) => JSON.parse(text.replace(/NaN/g, "0")))
       .use(noCache)
       .withCredentials()
       .end(handleErrors)
@@ -230,7 +230,7 @@ const Webserver = {
           } catch (e) {
             try {
               // Fix: try to replace NaN in json
-              result = JSON.parse(res.text.replace("NaN", "0"));
+              result = JSON.parse(res.text.replace(/NaN/g, "0"));
             } catch (e) {
               result = res.text;
             }
@@ -242,7 +242,7 @@ const Webserver = {
     superagent
       .get(URL_JSON_PREFIX + path)
       .buffer(true)
-      .parse(({ text }) => JSON.parse(text.replace("NaN", "0")))
+      .parse(({ text }) => JSON.parse(text.replace(/NaN/g, "0")))
       .use(noCache)
       .withCredentials()
       .end(handleErrors)
@@ -254,7 +254,7 @@ const Webserver = {
           } catch (e) {
             try {
               // Fix: try to replace NaN in json
-              content = JSON.parse(res.text.replace("NaN", "0"));
+              content = JSON.parse(res.text.replace(/NaN/g, "0"));
             } catch (e) {
               content = res.text;
             }
