@@ -741,7 +741,9 @@ export default class deepdetectService {
   }
 
   $reqBestModel() {
-    const path = this.respInfo.body.repository.replace("/opt/platform", "");
+    const path = this.respInfo.body.repository
+                     .replace("/opt/platform", "")
+                     .replace(/\/$|$/, '/'); // Append trailing slash
     return agent.Webserver.getFileMeta(`${path}best_model.txt`);
   }
 }
