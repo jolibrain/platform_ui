@@ -40,10 +40,19 @@ class MainView extends React.Component {
 
     const { settings } = service;
 
-    // Do not display name, description and boolean values
+    // filter out name, description, stats from displayed info
+    const filteredOutInfo = [
+      "name",
+      "description",
+      "stats",
+      "model_stats",
+      "service_stats"
+    ]
+
+    // Do not display filtered-out fields and boolean values
     const settingInfoKeys = Object.keys(settings).filter(key => {
       return (
-        !["name", "description"].includes(key) &&
+        !filteredOutInfo.includes(key) &&
         typeof settings[key] !== "boolean"
       );
     });

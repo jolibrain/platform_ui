@@ -217,6 +217,8 @@ const Webserver = {
   getFile: path =>
     superagent
       .get(URL_JSON_PREFIX + path)
+      .buffer(true)
+      .parse(({ text }) => JSON.parse(text.replace(/NaN/g, "0")))
       .use(noCache)
       .withCredentials()
       .end(handleErrors)
@@ -226,7 +228,12 @@ const Webserver = {
           try {
             result = JSON.parse(res.text);
           } catch (e) {
-            result = res.text;
+            try {
+              // Fix: try to replace NaN in json
+              result = JSON.parse(res.text.replace(/NaN/g, "0"));
+            } catch (e) {
+              result = res.text;
+            }
           }
         }
         return result;
@@ -234,6 +241,8 @@ const Webserver = {
   getFileMeta: path =>
     superagent
       .get(URL_JSON_PREFIX + path)
+      .buffer(true)
+      .parse(({ text }) => JSON.parse(text.replace(/NaN/g, "0")))
       .use(noCache)
       .withCredentials()
       .end(handleErrors)
@@ -243,7 +252,12 @@ const Webserver = {
           try {
             content = JSON.parse(res.text);
           } catch (e) {
-            content = res.text;
+            try {
+              // Fix: try to replace NaN in json
+              content = JSON.parse(res.text.replace(/NaN/g, "0"));
+            } catch (e) {
+              content = res.text;
+            }
           }
         }
         return {
