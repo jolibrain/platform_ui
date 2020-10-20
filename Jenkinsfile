@@ -12,19 +12,14 @@ pipeline {
         sh 'printenv | sort'
       }
     }
-    stage('Installating dependencies') {
+    stage('Test and build') {
       steps {
-        sh 'yarn'
-      }
-    }
-    stage('Testing') {
-      steps {
-        sh 'yarn test'
-      }
-    }
-    stage('Building') {
-      steps {
-        sh 'yarn build'
+        docker.image('maven:3.3.3-jdk-8').inside
+          sh 'node --version'
+          sh 'yarn --version'
+          sh 'yarn'
+          sh 'yarn test'
+          sh 'yarn build'
       }
     }
   }
