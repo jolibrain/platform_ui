@@ -21,7 +21,7 @@ pipeline {
             sh 'node --version'
             sh 'yarn --version'
             sh 'yarn'
-            sh 'yarn test'
+            sh 'CI=True yarn test'
             sh 'yarn build'
           }
         }
