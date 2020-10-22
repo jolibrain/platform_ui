@@ -20,6 +20,7 @@ pipeline {
           sh 'yarn'
           sh 'yarn test'
           sh 'yarn build'
+        }
       }
     }
   }
