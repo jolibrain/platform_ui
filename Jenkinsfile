@@ -14,7 +14,7 @@ pipeline {
     }
     stage('Test and build') {
       steps {
-        docker.image('node:10').inside {
+        docker.image('node:10').inside() {
           sh 'node --version'
           sh 'yarn --version'
           sh 'yarn'
