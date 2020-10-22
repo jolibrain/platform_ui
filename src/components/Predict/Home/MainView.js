@@ -267,7 +267,7 @@ class MainView extends React.Component {
               ) : (
                 <div>
                   <PredictServiceList
-                    services={publicRepositories}
+                    services={privateRepositories}
                     layout={this.state.predictLayout}
                     handleBenchmarkStateChange={this.handleBenchmarkStateChange}
                   />
@@ -275,7 +275,7 @@ class MainView extends React.Component {
                   <hr />
 
                   <PredictServiceList
-                    services={privateRepositories}
+                    services={publicRepositories}
                     layout={this.state.predictLayout}
                     handleBenchmarkStateChange={this.handleBenchmarkStateChange}
                   />
