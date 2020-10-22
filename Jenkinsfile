@@ -15,7 +15,7 @@ pipeline {
     stage('Test and build') {
       steps {
         script {
-          def img = docker.image('node:8')
+          def img = docker.image('node:12.18.3')
           img.pull()
           img.inside() {
             sh 'node --version'
