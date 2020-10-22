@@ -13,14 +13,12 @@ pipeline {
       }
     }
     stage('Test and build') {
-      steps {
-        docker.image('node:10').inside {
-          sh 'node --version'
-          sh 'yarn --version'
-          sh 'yarn'
-          sh 'yarn test'
-          sh 'yarn build'
-        }
+      docker.image('node:10').inside() {
+        sh 'node --version'
+        sh 'yarn --version'
+        sh 'yarn'
+        sh 'yarn test'
+        sh 'yarn build'
       }
     }
   }
