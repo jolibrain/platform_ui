@@ -64,12 +64,10 @@ while [ "$1" != "" ];
 do
     case $1 in
         --dev )             shift
-                            npm run build
                             docker build -t ${IMAGE_NAME}:dev --no-cache .
                             docker push ${IMAGE_NAME}:dev
                             ;;
         --tag )             shift
-                            npm run build
                             TAG=$(git tag --sort=committerdate | tail -1)
                             docker build -t ${IMAGE_NAME}:latest -t ${IMAGE_NAME}:${TAG} --no-cache .
                             docker push ${IMAGE_NAME}:latest
