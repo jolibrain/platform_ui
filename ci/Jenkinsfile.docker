@@ -17,7 +17,7 @@ pipeline {
       }
     }
     stage('Building docker images') {
-        steps { sh 'ci/build-docker-images.sh' } }
+        steps { sh 'ci/build-docker-images.sh' }
     }
   }
   post {
