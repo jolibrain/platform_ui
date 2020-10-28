@@ -14,7 +14,7 @@ sed -ne "/^## $tag/,/^##.*202/p" CHANGELOG.md | sed -e '$d' -e '1d' > note.md
 cat >> note.md <<EOF
 ### Docker images:
 
-* Platform UI: `docker pull jolibrain/deepdetect_ui:$tag`
+* Platform UI: \`docker pull jolibrain/deepdetect_ui:$tag\`
 * All images available on https://hub.docker.com/u/jolibrain
 EOF
 
