@@ -350,9 +350,11 @@ export default class deepdetectService {
 
   async $reqImgFromPath(path) {
     this.status.client = ServiceConstants.CLIENT_STATUS.REQUESTING_FILES;
-    const info = await agent.Webserver.listFiles(path);
+    const files = await agent.Webserver.listFiles(path);
     this.status.client = ServiceConstants.CLIENT_STATUS.NONE;
-    return info;
+
+    const IMAGE_PATTERN = /\.(gif|jpe?g|tiff?|png|webp|bmp)$/i;
+    return files.filter(f => f.match(IMAGE_PATTERN));
   }
 
   async $reqPostPredict() {
