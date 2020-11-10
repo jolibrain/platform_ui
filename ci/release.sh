@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 here=$(readlink -f $(dirname $0))
 kind=${1:-minor}
 
