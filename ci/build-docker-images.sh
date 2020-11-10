@@ -13,7 +13,7 @@ if [ "$TAG_NAME" ]; then
 
     TMP_TAG="ci-$TAG_NAME"
     DOCKER_CLI_EXPERIMENTAL=enabled docker manifest inspect ${image_url}:$TAG_NAME >/dev/null 2>&1
-    [ $? -ne 0 ] && echo "${image_url}:$TAG_NAME already built skipping" && exit 0
+    [ $? -eq 0 ] && echo "${image_url}:$TAG_NAME already built skipping" && exit 0
 
 elif [ "$GIT_BRANCH" == "master" ]; then
     TMP_TAG="ci-$GIT_BRANCH"
