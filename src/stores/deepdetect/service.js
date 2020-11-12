@@ -248,6 +248,16 @@ export default class deepdetectService {
   }
 
   @action
+  shuffleInputs() {
+    let shuffledInputs = [...this.inputs];
+    for (let i = shuffledInputs.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledInputs[i], shuffledInputs[j]] = [shuffledInputs[j], shuffledInputs[i]];
+    }
+    this.inputs = shuffledInputs;
+  }
+
+  @action
   selectInput(index) {
     let input = this.inputs.find(i => i.isActive);
 

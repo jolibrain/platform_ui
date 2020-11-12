@@ -45,12 +45,9 @@ class ImageList extends React.Component {
   }
 
   handleClickRandomize() {
-    let inputs = this.state.inputs;
-    for (let i = inputs.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [inputs[i], inputs[j]] = [inputs[j], inputs[i]];
-    }
-    this.setState({ inputs: inputs });
+    const { service } = this.props.imaginateStore;
+    service.shuffleInputs();
+    this.setState({ inputs: service.inputs });
   }
 
   render() {
