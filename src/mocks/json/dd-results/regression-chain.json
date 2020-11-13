@@ -1,0 +1,39 @@
+{
+  "status": {
+    "code": 200,
+    "msg": "OK"
+  },
+  "head": {
+    "method": "/chain",
+    "time": 70
+  },
+  "body": {
+    "predictions": [
+      {
+        "uri": "/opt/platform/data/example.png",
+        "classes": [
+          {
+            "last": true,
+            "bbox": {
+              "ymax": 115.96049499511719,
+              "xmax": 132,
+              "xmin": 0,
+              "ymin": 8.770768165588379
+            },
+            "cat": "1",
+            "regression_service": {
+              "vector": [
+                {
+                  "last": true,
+                  "cat": "0",
+                  "val": 110.43998718261719
+                }
+              ]
+            },
+            "prob": 0.9999934434890747
+          }
+        ]
+      }
+    ]
+  }
+}

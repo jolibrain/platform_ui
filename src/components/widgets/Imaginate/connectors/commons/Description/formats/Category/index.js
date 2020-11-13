@@ -11,6 +11,7 @@ class Category extends React.Component {
     super(props);
     this._nodes = new Map();
     this.categoryDisplay = this.categoryDisplay.bind(this);
+    this.findChainVector = this.findChainVector.bind(this);
   }
 
   componentDidUpdate() {
@@ -21,6 +22,29 @@ class Category extends React.Component {
       ReactTooltip.show(node);
     }
   }
+
+  //
+  // Find chain services in current category
+  //
+  // A chain service is a object is current json object
+  // that contains a classes or a vector array
+  //
+  findChainVector(category) {
+    let i,
+      chainVector = null;
+
+    for (i = 0; i < Object.keys(category).length; i += 1) {
+      const key = Object.keys(category)[i];
+      const child = category[key];
+
+      if (typeof child.vector !== "undefined") {
+        chainVector = child.vector[0];
+      }
+    }
+
+    return chainVector;
+  }
+
 
   categoryDisplay(isRegression, category, index) {
 
@@ -49,20 +73,31 @@ class Category extends React.Component {
     let tooltipValue = 0;
     let displayValue = 0;
 
-    if(isRegression) {
+    // Find children chain service vector descriptions
+    const chainVector = this.findChainVector(category);
+    if (chainVector) {
 
-      displayValue = category.val.toFixed(2);
-      tooltipValue = category.cat;
+      displayValue = chainVector.val.toFixed(2);
+      tooltipValue = chainVector.cat;
 
     } else {
 
-      displayValue = category.cat;
+      if(isRegression) {
 
-      if(category.val) {
-        tooltipValue = category.val.toFixed(2)
-      } else if(category.prob) {
-        tooltipValue = category.prob.toFixed(2)
+        displayValue = category.val.toFixed(2);
+        tooltipValue = category.cat;
+
+      } else {
+
+        displayValue = category.cat;
+
+        if(category.val) {
+          tooltipValue = category.val.toFixed(2)
+        } else if(category.prob) {
+          tooltipValue = category.prob.toFixed(2)
+        }
       }
+
     }
 
     return (
