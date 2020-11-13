@@ -71,6 +71,15 @@ export const config = [
         }
     },
     {
+        pattern: '/mocks-dd-results-regression-chain.json',
+        fixtures: (match, params, headers) => {
+            return jsonContent("dd-results/regression-chain.json", MOCK_PATH)
+        },
+        get: function (match, data) {
+            return {body: data};
+        }
+    },
+    {
         pattern: '/mocks-dd-results-imageserv.json',
         fixtures: (match, params, headers) => {
             return jsonContent("dd-results/imageserv.json", MOCK_PATH)
