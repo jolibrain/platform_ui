@@ -36,14 +36,6 @@ class Description extends React.Component {
     }
 
     if (
-      !displayFormat &&
-      this.props.displayFormat
-    ) {
-      displayFormat = this.props.displayFormat;
-    }
-
-    if (
-      !displayFormat &&
       serviceSettings &&
       serviceSettings.display &&
       serviceSettings.display.boundingBox
@@ -52,7 +44,6 @@ class Description extends React.Component {
     }
 
     if (
-      !displayFormat &&
       service &&
       service.settings &&
       service.settings.mltype &&
@@ -62,7 +53,6 @@ class Description extends React.Component {
     }
 
     if (
-      !displayFormat &&
       input.json &&
       input.json.body &&
       input.json.body.predictions &&
@@ -116,18 +106,14 @@ class Description extends React.Component {
           service.respInfo.body.mltype === "classification"
 
     if (
-      !displayFormat &&
-      (
-        isCtcService ||
-        isClassificationResult ||
-        isRegression
-      )
+      isCtcService ||
+      isClassificationResult ||
+      isRegression
     ) {
       displayFormat = "category";
     }
 
     if (
-      !displayFormat &&
       service &&
       service.type &&
       service.type === "unsupervised" &&
@@ -137,6 +123,12 @@ class Description extends React.Component {
       service.respInfo.body.mltype === "classification"
     ) {
       displayFormat = "nns";
+    }
+
+    if (
+      this.props.displayFormat
+    ) {
+      displayFormat = this.props.displayFormat;
     }
 
     return displayFormat;

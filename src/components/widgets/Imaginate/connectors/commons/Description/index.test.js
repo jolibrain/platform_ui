@@ -42,6 +42,47 @@ test('render category description from regression result', async () => {
         .toBe(regression_service.vector[0].val.toFixed(2))
 })
 
+test('render category description from regression result with service settings boundingBox display', async () => {
+
+    const superagent = superagentPromise(_superagent, global.Promise);
+    const jsonUrl = '/mocks-dd-results-regression.json';
+    const json = await superagent
+      .get(jsonUrl)
+      .then(res => res.body)
+
+    const { container } = render(
+        <Description
+          imaginateStore={{
+             service: {
+                 selectedInput: {
+                     json: json
+                 }
+             },
+             serviceSettings: {
+                 display: {
+                     boundingBox: true
+                 }
+             }
+          }}
+        />
+    )
+
+    const descriptionElement = container.getElementsByClassName('description-category')[0];
+    expect(descriptionElement).toBeInTheDocument();
+
+    const badgeElement = descriptionElement.getElementsByClassName('badge')[0];
+    expect(badgeElement).toBeInTheDocument();
+
+    const regression_service = json.body.predictions[0];
+
+    // For regression services, containing vector array in prediction results,
+    // displayed value should be prediction val with category as tooltip
+    expect(badgeElement.dataset.tip)
+        .toBe(regression_service.vector[0].cat)
+    expect(badgeElement.textContent)
+        .toBe(regression_service.vector[0].val.toFixed(2))
+})
+
 test('render category description from regression chain result', async () => {
 
     const superagent = superagentPromise(_superagent, global.Promise);
