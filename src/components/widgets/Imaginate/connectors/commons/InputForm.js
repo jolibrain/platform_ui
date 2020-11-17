@@ -127,7 +127,7 @@ class InputForm extends React.Component {
   }
 
   handleInputChange() {
-    const { dataRepositoriesStore } = this.props;
+    const { dataRepositoriesStore, fileExtensionFilter } = this.props;
     const { systemPath } = dataRepositoriesStore.settings;
 
     const selected = this.typeaheadRef.current.getInput().value;
@@ -139,7 +139,11 @@ class InputForm extends React.Component {
 
       if (folder) {
         const store = this.props.imaginateStore;
-        store.service.addInputFromPath(folder, systemPath, inputs => {
+        store.service.addInputFromPath(
+          folder,
+          systemPath,
+          fileExtensionFilter,
+          inputs => {
           // Launch predict request only if folder contains files
           // This avoid recursive folder request on DD server
           if (inputs.length > 0) store.predict();
