@@ -226,7 +226,21 @@ export class deepdetectStore {
 
         async.series(seriesArray, (errorSeries, results) => {
           this.refresh = Math.random();
-          setTimeout(() => next(), 500);
+
+          // Set training info refresh rate using value available
+          // in config.json at `deepdetect.refreshRate.training`
+          let refreshRate = 500;
+
+          if (
+            this &&
+              this.settings &&
+              this.settings.refreshRate &&
+              this.settings.refreshRate.info &&
+              parseInt(this.settings.refreshRate.training, 10) > 0
+          )
+            refreshRate = this.settings.refreshRate.training;
+
+          setTimeout(() => next(), refreshRate);
         });
       },
       errorForever => {}

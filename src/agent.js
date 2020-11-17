@@ -242,7 +242,23 @@ const Webserver = {
     superagent
       .get(URL_JSON_PREFIX + path)
       .buffer(true)
-      .parse(({ text }) => JSON.parse(text.replace(/NaN/g, "0")))
+      .parse(({ text }) => {
+
+        // JSON might be malformed and might contain NaN values
+        // in measure_hist result arrays.
+        //
+        // This method overrides superagent json parser to avoid
+        // critical parsing error.
+
+        if(
+          new RegExp(".*json$", "gi").test(path)
+        ) {
+          return JSON.parse(text.replace(/NaN/g, "0"))
+        } else {
+          return text;
+        }
+
+      })
       .use(noCache)
       .withCredentials()
       .end(handleErrors)

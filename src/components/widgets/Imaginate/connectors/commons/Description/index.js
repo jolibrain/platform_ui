@@ -13,57 +13,138 @@ import Simple from "./formats/Simple";
 @inject("imaginateStore")
 @observer
 class Description extends React.Component {
-  render() {
+
+  constructor(props) {
+    super(props);
+    this._nodes = new Map();
+    this.selectDisplayFormat = this.selectDisplayFormat.bind(this);
+  }
+
+  selectDisplayFormat() {
+
     const { service, serviceSettings } = this.props.imaginateStore;
+    const input = service.selectedInput;
+
+    let displayFormat = null;
+
+    if(
+      serviceSettings &&
+      serviceSettings.display &&
+      serviceSettings.display.format
+    ) {
+      displayFormat = serviceSettings.display.format;
+    }
+
+    if (
+      serviceSettings &&
+      serviceSettings.display &&
+      serviceSettings.display.boundingBox
+    ) {
+      displayFormat = "icons";
+    }
+
+    if (
+      service &&
+      service.settings &&
+      service.settings.mltype &&
+      service.settings.mltype === "rois"
+    ) {
+      displayFormat = "nns";
+    }
+
+    if (
+      input.json &&
+      input.json.body &&
+      input.json.body.predictions &&
+      input.json.body.predictions[0] &&
+      input.json.body.predictions[0].rois
+    ) {
+      displayFormat = "rois";
+    }
+
+    const chainVectorResult =
+      input &&
+      input.json &&
+      input.json.body &&
+      input.json.body.predictions &&
+      input.json.body.predictions[0] &&
+      input.json.body.predictions[0].classes &&
+      input.json.body.predictions[0].classes[0] &&
+      Object.keys(input.json.body.predictions[0].classes[0])
+            .some(key => {
+              return typeof input.json.body.predictions[0].classes[0][key].vector !== "undefined"
+            })
+
+    const isRegressionService =
+          service &&
+          service.respInfo &&
+          service.respInfo.body &&
+          service.respInfo.body.mltype === "regression";
+
+    const isRegressionResult =
+          input &&
+          input.json &&
+          input.json.body &&
+          input.json.body.predictions[0] &&
+          input.json.body.predictions[0].hasOwnProperty('vector');
+
+    const isRegression =
+          isRegressionService ||
+          isRegressionResult ||
+          chainVectorResult;
+
+    const isCtcService =
+          service &&
+          service.settings &&
+          service.settings.mltype &&
+          service.settings.mltype === "ctc"
+
+    const isClassificationResult =
+          service &&
+          service.respInfo &&
+          service.respInfo.body &&
+          service.respInfo.body.mltype === "classification"
+
+    if (
+      isCtcService ||
+      isClassificationResult ||
+      isRegression
+    ) {
+      displayFormat = "category";
+    }
+
+    if (
+      service &&
+      service.type &&
+      service.type === "unsupervised" &&
+      service.respInfo &&
+      service.respInfo.body &&
+      service.respInfo.body.mltype &&
+      service.respInfo.body.mltype === "classification"
+    ) {
+      displayFormat = "nns";
+    }
+
+    if (
+      this.props.displayFormat
+    ) {
+      displayFormat = this.props.displayFormat;
+    }
+
+    return displayFormat;
+
+  }
+
+  render() {
+    const { service } = this.props.imaginateStore;
 
     if (!service || !service.selectedInput) return null;
 
     const input = service.selectedInput;
-
-    let displayFormat = serviceSettings.display.format;
-
-    if (this.props.displayFormat) {
-      displayFormat = this.props.displayFormat;
-    } else {
-      if (serviceSettings.display.boundingBox) {
-        displayFormat = "icons";
-      }
-
-      if (service.settings.mltype === "rois") {
-        displayFormat = "nns";
-      }
-
-      if (
-        input.json &&
-        input.json.body &&
-        input.json.body.predictions &&
-        input.json.body.predictions[0] &&
-        input.json.body.predictions[0].rois
-      ) {
-        displayFormat = "rois";
-      }
-
-      if (
-        service.settings.mltype === "ctc" ||
-        (service.respInfo &&
-          service.respInfo.body &&
-          service.respInfo.body.mltype === "classification") ||
-        (service.respInfo &&
-          service.respInfo.body &&
-          service.respInfo.body.mltype === "regression")
-      ) {
-        displayFormat = "category";
-      }
-
-      if (
-        service.respInfo.body.mltype === "classification" &&
-        service.type === "unsupervised"
-      ) {
-        displayFormat = "nns";
-      }
-    }
-
     let output = [];
+
+    const displayFormat = this.selectDisplayFormat();
+
     switch (displayFormat) {
       default:
       case "simple":
@@ -122,4 +203,5 @@ class Description extends React.Component {
     return <div>{output}</div>;
   }
 }
+
 export default Description;

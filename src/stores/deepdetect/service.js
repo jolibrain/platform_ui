@@ -248,6 +248,16 @@ export default class deepdetectService {
   }
 
   @action
+  shuffleInputs() {
+    let shuffledInputs = [...this.inputs];
+    for (let i = shuffledInputs.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledInputs[i], shuffledInputs[j]] = [shuffledInputs[j], shuffledInputs[i]];
+    }
+    this.inputs = shuffledInputs;
+  }
+
+  @action
   selectInput(index) {
     let input = this.inputs.find(i => i.isActive);
 
@@ -350,9 +360,11 @@ export default class deepdetectService {
 
   async $reqImgFromPath(path) {
     this.status.client = ServiceConstants.CLIENT_STATUS.REQUESTING_FILES;
-    const info = await agent.Webserver.listFiles(path);
+    const files = await agent.Webserver.listFiles(path);
     this.status.client = ServiceConstants.CLIENT_STATUS.NONE;
-    return info;
+
+    const IMAGE_PATTERN = /\.(gif|jpe?g|tiff?|png|webp|bmp)$/i;
+    return files.filter(f => f.match(IMAGE_PATTERN));
   }
 
   async $reqPostPredict() {
@@ -555,8 +567,13 @@ export default class deepdetectService {
         break;
 
       case "regression":
+
         delete input.postData.parameters.output.bbox;
-        input.postData.parameters.mllib.regression = true;
+        delete input.postData.parameters.output.confidence_threshold;
+        delete input.postData.parameters.mllib.regression;
+
+        input.postData.parameters.output.regression = true;
+
         break;
 
       default:
