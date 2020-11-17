@@ -68,7 +68,7 @@ export class dataRepositoriesStore {
 
           for (const folder of filteredFolders) {
             const fPath = path.join(rootPath, folder.href, "/");
-            const fLabel = fPath.replace(/^\/data\//gm, "");
+            const fLabel = fPath.replace(new RegExp(this.settings.nginxPath, "gm"), "");
             let containsSubRepositories = false;
 
             // Only allow `this.settings.maxDepth` level of recursion
