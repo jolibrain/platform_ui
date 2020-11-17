@@ -13,9 +13,20 @@ pipeline {
         sh 'printenv | sort'
       }
     }
-    stage('Building docker images') {
+    stage('Build docker images') {
         steps { sh 'ci/build-docker-images.sh' }
     }
+    stage('Update dockerhub readme') {
+      when {
+       expression { BRANCH_NAME == "master" }
+      }
+      steps {
+        sh '''
+wget https://github.com/christian-korneck/docker-pushrm/releases/download/v1.6.0/docker-pushrm_linux_amd64
+chmod +x docker-pushrm_linux_amd64
+./docker-pushrm_linux_amd64 jolibrain/platform_ui
+'''
+      }
   }
   post {
     always {
