@@ -298,15 +298,23 @@ export default class deepdetectService {
   }
 
   @action
-  async addInputFromPath(folder, systemPath, callback) {
-    const serverInputs = await this.$reqImgFromPath(folder.path);
+  async addInputFromPath(
+    folder,
+    systemPath,
+    fileExtensionFilter = /\.(gif|jpe?g|tiff?|png|webp|bmp)$/i,
+    callback = () => {}
+  ) {
 
     this.inputs = [];
 
+    let serverInputs = await this.$reqFileFromPath(folder.path);
+
+    serverInputs = serverInputs.filter(f => f.match(fileExtensionFilter));
+
     this.inputs = serverInputs.map(i => {
       let input = new Input();
-      input.content = folder.path + i;
-      input.path = systemPath + folder.path + i;
+      input.content = folder.label + i;
+      input.path = systemPath + folder.label + i;
       return input;
     });
 
@@ -358,13 +366,12 @@ export default class deepdetectService {
     }
   }
 
-  async $reqImgFromPath(path) {
+  async $reqFileFromPath(path) {
     this.status.client = ServiceConstants.CLIENT_STATUS.REQUESTING_FILES;
     const files = await agent.Webserver.listFiles(path);
     this.status.client = ServiceConstants.CLIENT_STATUS.NONE;
 
-    const IMAGE_PATTERN = /\.(gif|jpe?g|tiff?|png|webp|bmp)$/i;
-    return files.filter(f => f.match(IMAGE_PATTERN));
+    return files;
   }
 
   async $reqPostPredict() {
