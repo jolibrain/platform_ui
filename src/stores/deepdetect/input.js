@@ -2,12 +2,23 @@ import { observable, computed } from "mobx";
 
 export default class Input {
   @observable isActive = false;
+
   @observable content = {};
+
   @observable postData = {};
   @observable putData = {};
+
   @observable path = null;
   @observable json = null;
+
   @observable boxes = [];
+
+  @observable csv = {
+    isReady: false,
+    isFetching: false,
+    columns: [],
+    data: []
+  };
 
   @computed
   get prediction() {
