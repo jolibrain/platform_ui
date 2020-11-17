@@ -129,7 +129,7 @@ class Imaginate extends React.Component {
       //      case "mjpeg":
       //        connectorComponent = <MjpegConnector />;
       //        break;
-      case "csv":
+      case "csvts":
         connectorComponent = <CsvConnector />;
         break;
       default:
