@@ -34,10 +34,7 @@ class FileListSelector extends React.Component {
 
     if (!service) return null;
 
-    let inputs = service.inputs.filter(i => {
-      const regex = RegExp(this.props.fileFilter, 'ig')
-      return regex.test(i.content.toLowerCase());
-    });
+    let inputs = service.inputs;
 
     if (inputs.length === 0) {
       return (
@@ -56,6 +53,7 @@ class FileListSelector extends React.Component {
                   className={inputClassname}
                   onClick={this.selectInput.bind(this, index)}
                 >
+                  {input.path} -
                   {input.path.split(/[\\/]/).pop()}
                   <i
                     onClick={this.handleClearInput.bind(this, index)}
