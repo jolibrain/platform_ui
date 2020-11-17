@@ -54,7 +54,14 @@ class Imaginate extends React.Component {
         const serviceSettings = imaginateStore.settings.services.find(s => {
           return s.name === service.name
         })
-        mediaType = serviceSettings.uiParams.mediaType;
+
+        if(
+          serviceSettings &&
+          serviceSettings.uiParams &&
+           serviceSettings.uiParams.mediaType
+          ) {
+          mediaType = serviceSettings.uiParams.mediaType;
+        }
       }
 
       // No settings has been configured for this service in config.json
