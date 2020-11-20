@@ -232,7 +232,7 @@
   "dataRepositories": {
     "nginxPath": "/data/",
     "jsonPath": "/json/data/",
-    "systemPath": "/opt/platform",
+    "systemPath": "/opt/platform/",
     "maxDepth": 2
   },
   "componentBlacklist": ["LinkChat"],
