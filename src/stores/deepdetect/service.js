@@ -2,6 +2,7 @@ import { action, observable, computed, toJS, runInAction } from "mobx";
 import store from "store";
 
 import moment from "moment";
+import path from 'path'
 
 import Input from "./input";
 
@@ -313,8 +314,8 @@ export default class deepdetectService {
 
     this.inputs = serverInputs.map(i => {
       let input = new Input();
-      input.content = folder.label + i;
-      input.path = systemPath + folder.label + i;
+      input.content = path.join(folder.path, i);
+      input.path = path.join(systemPath, input.content);
       return input;
     });
 
