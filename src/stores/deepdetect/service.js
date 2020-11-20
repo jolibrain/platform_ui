@@ -597,6 +597,41 @@ export default class deepdetectService {
       input.postData.parameters.output.rois = "rois";
       delete input.postData.parameters.output.bbox;
     }
+
+    if (
+      this.respInfo &&
+      this.respInfo.body &&
+      this.respInfo.body.parameters &&
+      this.respInfo.body.parameters.input &&
+      this.respInfo.body.parameters.input[0] &&
+      this.respInfo.body.parameters.input[0].connector &&
+      this.respInfo.body.parameters.input[0].connector === "csvts" &&
+        input.csv &&
+        input.csv.meta &&
+        input.csv.meta.fields
+       ) {
+
+      input.postData.parameters.input = {
+        connector: "csvts",
+        db: false,
+        timesteps: 10,
+        separator: ",",
+        scale: false,
+        continuation: false,
+        label: input.csv.meta.fields.filter(f => f !== "timestamp"),
+        ignore: ["timestamp"]
+      }
+
+      input.postData.parameters.mllib = {
+        net: {
+          test_batch_size: 1
+        }
+      }
+
+      delete input.postData.parameters.output.confidence_threshold;
+      delete input.postData.parameters.output.bbox;
+
+    }
   }
 
   @action
@@ -606,6 +641,9 @@ export default class deepdetectService {
     if (!input) return null;
 
     input.json = await this.$reqPostPredict(input.postData);
+
+    // Refresh store after results available
+    this.refresh = Math.random();
 
     // Remove existing boxes from input
     // Avoid keeping boxes from latest predict request
@@ -709,6 +747,10 @@ export default class deepdetectService {
     }
 
     input.json = await this.$reqPutChain(chain.serverPath);
+
+    // refresh store after results available
+    this.refresh = Math.random();
+
     input.boxes = [];
 
     if (
