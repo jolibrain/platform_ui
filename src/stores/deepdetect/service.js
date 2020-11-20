@@ -486,7 +486,7 @@ export default class deepdetectService {
     };
 
     if (input.path) {
-      input.postData.data = [input.path];
+      input.postData.data = [ input.path ];
     }
 
     if (this.name !== "text") {
