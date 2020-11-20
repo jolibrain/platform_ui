@@ -1,4 +1,5 @@
 import { observable, computed } from "mobx";
+import agent from "../../agent";
 
 export default class Input {
   @observable isActive = false;
@@ -13,12 +14,7 @@ export default class Input {
 
   @observable boxes = [];
 
-  @observable csv = {
-    isReady: false,
-    isFetching: false,
-    columns: [],
-    data: []
-  };
+  @observable csv = null;
 
   @computed
   get prediction() {
@@ -75,5 +71,17 @@ export default class Input {
       this.json.head.method &&
       this.json.head.method === "/chain"
     );
+  }
+
+  async loadContent() {
+    let content = null;
+
+    try {
+      content = await agent.Webserver.getFile(this.content);
+    } catch (e) {
+      console.log(e)
+    }
+
+    return content;
   }
 }
