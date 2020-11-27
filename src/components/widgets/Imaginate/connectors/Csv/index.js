@@ -9,6 +9,8 @@ import FileListSelector from "../commons/FileListSelector";
 import InputForm from "../commons/InputForm";
 import CardCommands from "../commons/CardCommands";
 
+import ChartColumn from "./ChartColumn";
+
 @inject("imaginateStore")
 @inject("dataRepositoriesStore")
 @withRouter
@@ -17,7 +19,6 @@ class CsvConnector extends React.Component {
 
   constructor(props) {
     super(props);
-
     this.loadCsvInputs = this.loadCsvInputs.bind(this);
   }
 
@@ -39,103 +40,110 @@ class CsvConnector extends React.Component {
   }
 
   render() {
-    const { service } = this.props.imaginateStore;
 
+    const { service } = this.props.imaginateStore;
     if (!service) return null;
 
     const input = service.selectedInput;
 
-    const ResultCell = ({row, column, rowIndex, colIndex}) => {
+    let tableColumns = [],
+        tableData = [];
 
-      let resultBadge = null;
+    if (input && input.csv) {
 
-      if (
-        input &&
-          input.json &&
-          input.json.body &&
-          input.json.body.predictions &&
-          input.json.body.predictions[0] &&
-          input.json.body.predictions[0].series &&
-          input.json.body.predictions[0].series[rowIndex] &&
-          input.json.body.predictions[0].series[rowIndex].out &&
-          input.json.body.predictions[0].series[rowIndex].out[colIndex]
-      ) {
-        const badgeValue = input.json.body.predictions[0].series[rowIndex].out[colIndex];
-        resultBadge = (
-          <span className="badge badge-primary">
-            {parseFloat(badgeValue).toFixed(2)}
-          </span>
-        );
+      // Build table data based on input csv data
+      if( input.csv.data ) {
+        tableData = input.csv.data;
       }
 
-      const value = parseFloat(row[column.selector]).toFixed(5);
+      // Build table columns based on input csv meta fields
+      if( input.csv.meta && input.csv.meta.fields) {
 
-      if ( value.toString() === "NaN" ) {
-        return null;
+        // Include timestamp column if present in csv meta fields
+        if ( input.csv.meta.fields.includes("timestamp") ) {
+          tableColumns.push({
+            name: "Timestamp",
+            selector: "timestamp"
+          })
+        }
+
+        // Decorate non-timestamp columns
+        // ResultCell allows display of predict result for each cell
+        // as a badge-displayed value
+        tableColumns = tableColumns.concat(input.csv.meta.fields
+          .filter(f => f !== "timestamp")
+          .map((f, colIndex) => {
+            return {
+              name: f && f[0].toUpperCase() + f.slice(1),
+              selector: f,
+              cell: (row, rowIndex, column) => {
+                const value = parseFloat(row[column.selector]).toFixed(5);
+
+                if ( value.toString() === "NaN" ) {
+                  return null;
+                }
+
+                let resultBadge = null;
+
+                if (
+                  input &&
+                    input.json &&
+                    input.json.body &&
+                    input.json.body.predictions &&
+                    input.json.body.predictions[0] &&
+                    input.json.body.predictions[0].series &&
+                    input.json.body.predictions[0].series[rowIndex] &&
+                    input.json.body.predictions[0].series[rowIndex].out &&
+                    input.json.body.predictions[0].series[rowIndex].out[colIndex]
+                ) {
+                  const badgeValue = input.json.body.predictions[0].series[rowIndex].out[colIndex];
+                  resultBadge = (
+                    <span className="badge badge-primary">
+                      {parseFloat(badgeValue).toFixed(2)}
+                    </span>
+                  );
+                }
+
+                return (
+                  <div className="resultCell">
+                    <div>{value}</div>
+                    <div>
+                      {resultBadge}
+                    </div>
+                  </div>
+                );
+              }
+            }
+          })
+        )
+
       }
+    }
 
-      return (
-        <div style={{
-          "white-space": "nowrap",
-          "overflow": "hidden",
-          "text-overflow": "ellipsis",
-        }}>
-          {}
-          <div>{value}</div>
-          <div>
-            {}
-            {resultBadge}
-          </div>
-        </div>
-      );
-
-    };
-
-    // Build table columns based on input csv meta fields
-    let tableColumns = [];
+    // Display each csv column as a line chart
+    let chartRows = [];
     if (
       input &&
         input.csv &&
         input.csv.meta &&
-        input.csv.meta.fields
+        input.csv.meta.fields &&
+        input.csv.meta.fields.length > 0
     ) {
-
-      if ( input.csv.meta.fields.includes("timestamp") ) {
-        tableColumns.push({
-          name: "Timestamp",
-          selector: "timestamp"
-        })
-      }
-
-      tableColumns = tableColumns.concat(input.csv.meta.fields
-        .filter(f => f !== "timestamp")
-        .map((f, colIndex) => {
-          return {
-            name: f && f[0].toUpperCase() + f.slice(1),
-            selector: f,
-            cell: (row, index, column, id) => <ResultCell
-                           row={row}
-                           column={column}
-                           rowIndex={index}
-                           colIndex={colIndex}
-                         />
-          }
-        })
-      )
+      chartRows = input.csv.meta.fields
+                       .filter(f => f !== "timestamp")
+                       .map((f, index) => {
+                         return <ChartColumn
+                                  key={`chartRow-${index}`}
+                                  input={input}
+                                  colIndex={index}
+                                  colKey={f}
+                      />
+                       })
     }
 
-    // Build table data based on input csv data
-    let tableData = [];
-    if (
-      input &&
-        input.csv &&
-        input.csv.data
-    ) {
-      tableData = input.csv.data;
-    }
 
     return (
-      <div className="imaginate" data-refresh={service.refresh}>
+      <div className="imaginate csvConnector" data-refresh={service.refresh}>
         <div className="row">
           <div className="col-md-7">
             <div className="row">
@@ -152,6 +160,7 @@ class CsvConnector extends React.Component {
               />
             </div>
 
+            { chartRows }
 
             <div className="row">
               <DataTable
