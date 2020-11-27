@@ -19,6 +19,20 @@
   }
 }
 
+.imaginate.csvConnector {
+  .chartcolumn {
+    margin: 40px 0;
+  }
+  .resultCell {
+    white-space: "nowrap";
+    overflow: "hidden";
+    text-overflow: "ellipsis";
+  }
+  svg{
+    width: 100%;
+  }
+}
+
 .imaginate {
   .threshold.card,
   .slider.card,
