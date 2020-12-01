@@ -186,7 +186,7 @@ class TrainingCard extends React.Component {
           info.push({
             text: "mcll",
             val: mcll,
-            showMax: this.getMaxValue("mcll")
+            showMin: this.getMinValue("mcll")
           });
         break;
       case "regression":
@@ -265,8 +265,8 @@ class TrainingCard extends React.Component {
                 <div key={index} className="col-6">
                   <h3>
                     {i.val}
-                    { i.showMin ? <span>- min: {i.showMin}</span> : null }
-                    { i.showMax ? <span>- max: {i.showMax}</span> : null }
+                    { i.showMin ? <span> - min: {i.showMin}</span> : null }
+                    { i.showMax ? <span> - max: {i.showMax}</span> : null }
                   </h3>
                   <h4>{i.text}</h4>
                 </div>
