@@ -145,7 +145,7 @@ class TrainingCard extends React.Component {
           info.push({
             text: "Mean IOU",
             val: meaniou,
-            showMin: this.getMaxValue("meaniou")
+            showMax: this.getMaxValue("meaniou")
           });
         break;
       case "detection":
@@ -154,7 +154,7 @@ class TrainingCard extends React.Component {
           info.push({
             text: "MAP",
             val: map,
-            showMin: this.getMaxValue("map")
+            showMax: this.getMaxValue("map")
           });
         break;
       case "ctc":
@@ -163,7 +163,7 @@ class TrainingCard extends React.Component {
           info.push({
             text: "Accuracy",
             val: ctc_acc,
-            showMin: this.getMaxValue("acc")
+            showMax: this.getMaxValue("acc")
           });
         break;
       case "classification":
@@ -172,14 +172,14 @@ class TrainingCard extends React.Component {
           info.push({
             text: "Accuracy",
             val: classif_acc,
-            showMin: this.getMaxValue("acc")
+            showMax: this.getMaxValue("acc")
           });
         const f1 = this.getValue("f1");
         if (f1)
           info.push({
             text: "F1",
             val: f1,
-            showMin: this.getMaxValue("f1")
+            showMax: this.getMaxValue("f1")
           });
         const mcll = this.getValue("mcll");
         if (mcll)
@@ -195,7 +195,7 @@ class TrainingCard extends React.Component {
           info.push({
             text: "Eucll",
             val: eucll_reg,
-            showMax: this.getMaxValue("eucll")
+            showMin: this.getMinValue("eucll")
           });
         break;
       case "autoencoder":
@@ -204,7 +204,7 @@ class TrainingCard extends React.Component {
           info.push({
             text: "Eucll",
             val: eucll_autoenc,
-            showMax: this.getMaxValue("eucll")
+            showMin: this.getMinValue("eucll")
           });
         break;
       default:
