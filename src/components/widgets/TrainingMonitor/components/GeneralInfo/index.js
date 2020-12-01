@@ -143,19 +143,50 @@ class GeneralInfo extends React.Component {
       }
     }
 
+    //
+    // Some segmentation services doesn't declare themselves with
+    // body.mltype: segmentation
+    //
+    // Fix this issue by finding if service best model file includes
+    // meaniou key
+    //
+    let meanIouIncluded = false;
+    if (
+      mltype !== "segmentation" &&
+        service.bestModel &&
+        service.bestModel.meaniou
+    ) {
+      meanIouIncluded = true;
+      infoCharts.push(
+        <MeasureChart
+          title="Mean IOU"
+          attribute="meaniou"
+          key="meaniou"
+          steppedLine
+          showBest
+          layout={layout}
+          {...this.props}
+        />
+      );
+    }
+
     switch (mltype) {
       case "segmentation":
-        infoCharts.push(
-          <MeasureChart
-            title="Mean IOU"
-            attribute="meaniou"
-            key="meaniou"
-            steppedLine
-            showBest
-            layout={layout}
-            {...this.props}
-          />
-        );
+
+        if(!meanIouIncluded) {
+          infoCharts.push(
+            <MeasureChart
+              title="Mean IOU"
+              attribute="meaniou"
+              key="meaniou"
+              steppedLine
+              showBest
+              layout={layout}
+              {...this.props}
+            />
+          );
+        }
+
         infoCharts.push(
           <MeasureChart
             title="Mean Accuracy"
