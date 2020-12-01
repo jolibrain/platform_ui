@@ -14,6 +14,8 @@ class TrainingCard extends React.Component {
 
     this.openDeleteServiceModal = this.openDeleteServiceModal.bind(this);
     this.getValue = this.getValue.bind(this);
+    this.getMinValue = this.getMinValue.bind(this);
+    this.getMaxValue = this.getMaxValue.bind(this);
   }
 
   openDeleteServiceModal() {
@@ -23,11 +25,51 @@ class TrainingCard extends React.Component {
     });
   }
 
+  getMinValue(attr) {
+    const { service } = this.props;
+    const { measure_hist } = service;
+
+    let value = null;
+
+    if (
+      measure_hist &&
+      measure_hist[`${attr}_hist`] &&
+      measure_hist[`${attr}_hist`].length > 0
+    ) {
+      value = Math.min.apply(
+        null,
+        measure_hist[`${attr}_hist`]
+      );
+    }
+
+    return parseFloat(value).toFixed(3)
+  }
+
+  getMaxValue(attr) {
+    const { service } = this.props;
+    const { measure_hist } = service;
+
+    let value = null;
+
+    if (
+      measure_hist &&
+      measure_hist[`${attr}_hist`] &&
+      measure_hist[`${attr}_hist`].length > 0
+    ) {
+      value = Math.max.apply(
+        null,
+        measure_hist[`${attr}_hist`]
+      );
+    }
+
+    return parseFloat(value).toFixed(3)
+  }
+
   getValue(attr) {
     const { service } = this.props;
     const { measure, measure_hist } = service;
 
-    let value = null;
+    let value = null
 
     if (measure) {
       value = measure[attr];
@@ -76,7 +118,8 @@ class TrainingCard extends React.Component {
     if (train_loss)
       info.push({
         text: "Train Loss",
-        val: train_loss
+        val: train_loss,
+        showMin: this.getMinValue("train_loss")
       });
 
     if (!service.trainJob) {
@@ -101,7 +144,8 @@ class TrainingCard extends React.Component {
         if (meaniou)
           info.push({
             text: "Mean IOU",
-            val: meaniou
+            val: meaniou,
+            showMin: this.getMaxValue("meaniou")
           });
         break;
       case "detection":
@@ -109,7 +153,8 @@ class TrainingCard extends React.Component {
         if (map)
           info.push({
             text: "MAP",
-            val: map
+            val: map,
+            showMin: this.getMaxValue("map")
           });
         break;
       case "ctc":
@@ -117,7 +162,8 @@ class TrainingCard extends React.Component {
         if (typeof ctc_acc !== "undefined")
           info.push({
             text: "Accuracy",
-            val: ctc_acc
+            val: ctc_acc,
+            showMin: this.getMaxValue("acc")
           });
         break;
       case "classification":
@@ -125,19 +171,22 @@ class TrainingCard extends React.Component {
         if (typeof classif_acc !== "undefined")
           info.push({
             text: "Accuracy",
-            val: classif_acc
+            val: classif_acc,
+            showMin: this.getMaxValue("acc")
           });
         const f1 = this.getValue("f1");
         if (f1)
           info.push({
             text: "F1",
-            val: f1
+            val: f1,
+            showMin: this.getMaxValue("f1")
           });
         const mcll = this.getValue("mcll");
         if (mcll)
           info.push({
             text: "mcll",
-            val: mcll
+            val: mcll,
+            showMax: this.getMaxValue("mcll")
           });
         break;
       case "regression":
@@ -145,7 +194,8 @@ class TrainingCard extends React.Component {
         if (eucll_reg)
           info.push({
             text: "Eucll",
-            val: eucll_reg
+            val: eucll_reg,
+            showMax: this.getMaxValue("eucll")
           });
         break;
       case "autoencoder":
@@ -153,7 +203,8 @@ class TrainingCard extends React.Component {
         if (eucll_autoenc)
           info.push({
             text: "Eucll",
-            val: eucll_autoenc
+            val: eucll_autoenc,
+            showMax: this.getMaxValue("eucll")
           });
         break;
       default:
@@ -212,7 +263,11 @@ class TrainingCard extends React.Component {
             {info.map((i, index) => {
               return (
                 <div key={index} className="col-6">
-                  <h3>{i.val}</h3>
+                  <h3>
+                    {i.val}
+                    { i.showMin ? <span>- min: {i.showMin}</span> : null }
+                    { i.showMax ? <span>- max: {i.showMax}</span> : null }
+                  </h3>
                   <h4>{i.text}</h4>
                 </div>
               );
