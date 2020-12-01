@@ -15,9 +15,11 @@ class MeasureHistArray extends React.Component {
     if (!service || (!service.jsonMetrics && !service.respTrainMetrics))
       return null;
 
-    let measureHistKeys = Object.keys(service.measure_hist)
-      .sort()
-      .filter(k => k !== "iteration_hist" && k !== "train_loss_hist");
+    let measureHistKeys = service.measure_hist ?
+        Object.keys(service.measure_hist)
+              .sort()
+              .filter(k => k !== "iteration_hist" && k !== "train_loss_hist")
+        : []; // check on service.measure_hist, empty array if undefined
 
     if (measureHistKeys.length === 0) return null;
 
