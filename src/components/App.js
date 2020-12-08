@@ -25,7 +25,6 @@ import Imaginate from "./widgets/Imaginate";
 import deepdetectService from "../stores/deepdetect/service";
 
 @inject("configStore")
-@inject("buildInfoStore")
 @inject("gpuStore")
 @inject("deepdetectStore")
 @inject("imaginateStore")
@@ -34,6 +33,7 @@ import deepdetectService from "../stores/deepdetect/service";
 @inject("datasetStore")
 @inject("modalStore")
 @inject("authTokenStore")
+// @inject("buildInfoStore")
 @withRouter
 @observer
 class App extends React.Component {
@@ -52,12 +52,12 @@ class App extends React.Component {
       configPath,
       configStore,
       gpuStore,
-      buildInfoStore,
       deepdetectStore,
       imaginateStore,
       authTokenStore,
       modelRepositoriesStore,
-      dataRepositoriesStore
+      dataRepositoriesStore,
+      // buildInfoStore,
     } = this.props;
 
     configStore.loadConfig(config => {
@@ -90,7 +90,7 @@ class App extends React.Component {
           dataRepositoriesStore.setup(config);
         }
 
-        buildInfoStore.loadBuildInfo();
+        // buildInfoStore.loadBuildInfo();
       }
     }, configPath);
   }

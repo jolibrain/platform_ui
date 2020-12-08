@@ -1,7 +1,6 @@
 /* eslint jsx-a11y/anchor-is-valid: "off" */
 import React from "react";
 import { inject, observer } from "mobx-react";
-import moment from "moment";
 
 @inject("buildInfoStore")
 @observer
@@ -51,52 +50,52 @@ class AboutDropdown extends React.Component {
   render() {
     const { buildInfoStore } = this.props;
 
-    if (!buildInfoStore.isReady || !buildInfoStore.buildCommitHash) return null;
+    // if (!buildInfoStore.isReady || !buildInfoStore.buildCommitHash) return null;
 
     let buildInfo = null;
     let updateInfo = null;
 
-    if (buildInfoStore.isReady) {
-      const { buildCommitHash, buildDate, branch } = buildInfoStore;
+    // if (buildInfoStore.isReady) {
+    //   const { buildCommitHash, buildDate, branch } = buildInfoStore;
 
-      buildInfo = (
-        <div>
-          <div className="dropdown-divider" />
-          <a
-            className="dropdown-item"
-            href={`https://gitlab.com/jolibrain/core-ui/commits/${branch}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Build {buildCommitHash.slice(0, 6)}
-            <br />
-            {branch !== "master" ? (
-              <span>
-                Branch <i>{branch}</i>
-                <br />
-              </span>
-            ) : (
-              ""
-            )}
-            updated {moment.unix(buildDate).fromNow()}
-          </a>
-        </div>
-      );
-    }
+    //   buildInfo = (
+    //     <div>
+    //       <div className="dropdown-divider" />
+    //       <a
+    //         className="dropdown-item"
+    //         href={`https://gitlab.com/jolibrain/core-ui/commits/${branch}`}
+    //         target="_blank"
+    //         rel="noopener noreferrer"
+    //       >
+    //         Build {buildCommitHash.slice(0, 6)}
+    //         <br />
+    //         {branch !== "master" ? (
+    //           <span>
+    //             Branch <i>{branch}</i>
+    //             <br />
+    //           </span>
+    //         ) : (
+    //           ""
+    //         )}
+    //         updated {moment.unix(buildDate).fromNow()}
+    //       </a>
+    //     </div>
+    //   );
+    // }
 
-    if (buildInfoStore.isUpdatable) {
-      updateInfo = (
-        <a
-          className="dropdown-item update-link"
-          href="https://deepdetect.com/quickstart-platform/#update"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <i className="fas fa-chevron-right" />
-          &nbsp; An update is available for your Platform
-        </a>
-      );
-    }
+    // if (buildInfoStore.isUpdatable) {
+    //   updateInfo = (
+    //     <a
+    //       className="dropdown-item update-link"
+    //       href="https://deepdetect.com/quickstart-platform/#update"
+    //       target="_blank"
+    //       rel="noopener noreferrer"
+    //     >
+    //       <i className="fas fa-chevron-right" />
+    //       &nbsp; An update is available for your Platform
+    //     </a>
+    //   );
+    // }
 
     return (
       <li
@@ -127,7 +126,7 @@ class AboutDropdown extends React.Component {
         >
           <a
             className="dropdown-item"
-            href="https://github.com/jolibrain"
+            href="https://github.com/jolibrain/platform_ui"
             target="_blank"
             rel="noopener noreferrer"
           >
