@@ -42,7 +42,10 @@ if [ "$TMP_TAG" != "dev" ]; then
         docker tag $image_url:$TMP_TAG $image_url:latest
         docker push $image_url:${TAG_NAME}
         docker push $image_url:latest
+        docker image rm $image_url:${TAG_NAME}
+        docker image rm $image_url:latest
     elif [ "$GIT_BRANCH" == "master" ]; then
         docker push $image_url:$TMP_TAG
     fi
+    docker image rm $image_url:$TMP_TAG
 fi
