@@ -27,6 +27,7 @@ chmod +x docker-pushrm_linux_amd64
 ./docker-pushrm_linux_amd64 jolibrain/platform_ui
 '''
       }
+    }
   }
   post {
     always {
