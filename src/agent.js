@@ -33,26 +33,18 @@ const Config = {
 };
 
 /* ====
- * json build info
+ * build info
  * ====
  */
 
 const BuildInfo = {
-  get: (path = "/buildInfo.json") =>
+  getVersion: (path = "/version") =>
     superagent
       .get(path)
       .withCredentials()
       .end(handleErrors)
-      .then(responseBody)
-};
-
-/* ====
- * json version info
- * ====
- */
-
-const VersionInfo = {
-  get: (path = "/version.json") =>
+      .then(responseBody),
+  getDockerTags: (path = "/docker-tags") =>
     superagent
       .get(path)
       .withCredentials()
@@ -302,7 +294,6 @@ const Webserver = {
 export default {
   Config,
   BuildInfo,
-  VersionInfo,
   GpuInfo,
   Deepdetect,
   Webserver
