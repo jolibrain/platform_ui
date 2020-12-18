@@ -33,7 +33,7 @@ import deepdetectService from "../stores/deepdetect/service";
 @inject("datasetStore")
 @inject("modalStore")
 @inject("authTokenStore")
-// @inject("buildInfoStore")
+@inject("buildInfoStore")
 @withRouter
 @observer
 class App extends React.Component {
@@ -57,7 +57,7 @@ class App extends React.Component {
       authTokenStore,
       modelRepositoriesStore,
       dataRepositoriesStore,
-      // buildInfoStore,
+      buildInfoStore,
     } = this.props;
 
     configStore.loadConfig(config => {
@@ -90,7 +90,7 @@ class App extends React.Component {
           dataRepositoriesStore.setup(config);
         }
 
-        // buildInfoStore.loadBuildInfo();
+        buildInfoStore.loadBuildInfo();
       }
     }, configPath);
   }
