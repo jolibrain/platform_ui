@@ -1,59 +1,90 @@
 import { observable, action, computed } from "mobx";
 import agent from "../agent";
+import moment from "moment";
 
 export class buildInfoStore {
   @observable isReady = false;
 
-  @observable buildCommitHash = null;
-  @observable buildDate = null;
-  @observable branch = null;
+  @observable version = null;
+  @observable latestDockerTag = null;
 
-  @observable dockerVersions = {};
-
-  $reqBuild() {
-    return agent.BuildInfo.get();
+  $reqDockerTags() {
+    return agent.BuildInfo.getDockerTags();
   }
 
   $reqVersion() {
-    return agent.VersionInfo.get();
+    return agent.BuildInfo.getVersion();
   }
 
   @computed
   get isUpdatable() {
-    return (
-      this.dockerVersions &&
-      this.dockerVersions.local &&
-      this.dockerVersions.remote &&
-      this.dockerVersions.local.length > 0 &&
-      this.dockerVersions.remote.length > 0 &&
-      this.dockerVersions.local.some(v => {
-        const remote = this.dockerVersions.remote.find(r => r.name === v.name);
-        return !remote || remote.version !== v.version;
-      })
-    );
+
+    // By default, platform_ui is not updatable
+    let updatable = true;
+
+    if (
+      this.version &&
+        this.latestDockerTag
+    ) {
+
+      // if information is available
+      // updatable flag is set to true
+      // if latestDockerTag array contains a new non-ci minor version
+      //
+      // version: v0.10.0
+      // latestDockerTag: v0.10.1
+      // updatable: true
+      //
+      // version: v0.10.0
+      // latestDockerTag: v0.10.1-ci-commit_hash
+      // updatable: false
+      //
+      // version: v0.10.0
+      // latestDockerTag: v0.10.0
+      // updatable: false
+
+      const versionRegex = /v(\d+)\.(\d+)\.(\d+).*/gm;
+
+      const localMatch = versionRegex.exec(this.version);
+      const localMajor = parseInt(localMatch[1]),
+            localMinor = parseInt(localMatch[2]),
+            localPatch = parseInt(localMatch[3]);
+
+      const dockerMatch = versionRegex.exec(this.latestDockerTag);
+      const dockerMajor = parseInt(dockerMatch[1]),
+            dockerMinor = parseInt(dockerMatch[2]),
+            dockerPatch = parseInt(dockerMatch[3]);
+
+      updatable = dockerMajor > localMajor ||
+        (dockerMajor === localMajor && dockerMinor > localMinor) ||
+        (dockerMinor === localMinor && dockerPatch > localPatch);
+    }
+
+    return updatable;
   }
 
   @action
   loadBuildInfo(callback = () => {}) {
-    this.$reqBuild().then(
-      action(buildInfo => {
-        if (buildInfo) {
-          this.buildCommitHash = buildInfo.buildCommitHash;
-          this.buildDate = buildInfo.buildDate;
-          this.branch = buildInfo.branch;
-          this.isReady = true;
-        }
-        this.checkVersion();
+    this.$reqVersion().then(
+      action(version => {
+        this.version = version;
+        this.loadLatestDockerTag();
         callback(this);
       })
     );
   }
 
   @action
-  checkVersion() {
-    this.$reqVersion().then(
-      action(info => {
-        this.dockerVersions = info;
+  loadLatestDockerTag() {
+    this.$reqDockerTags().then(
+      action(dockerTags => {
+        this.latestDockerTag = dockerTags && dockerTags
+          .sort((a, b) => {
+            return moment(a.last_updated)
+              .diff(b.last_updated)
+          }).find(tag => {
+            return tag.name.match(/v\d+\.\d+\.\d+$/g)
+          })
       })
     );
   }
