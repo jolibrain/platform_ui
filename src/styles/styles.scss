@@ -1,3 +1,8 @@
+// Palette
+@import "./palettes/palette-light.scss";
+// @import "./palettes/palette-dark.scss";
+@import "./palettes/chart-badges.scss";
+
 // My Bootstrap configuration
 @import "./_custom_bootstrap";
 
@@ -8,13 +13,12 @@
 // Bootstrap library
 @import "bootstrap/scss/bootstrap";
 
-// Palette
-@import "./palettes/palette-1.scss";
-@import "./palettes/chart-badges.scss";
+@import "./commons/Header.scss";
+@import "./commons/Home.scss";
+@import "./commons/Service.scss";
+@import "./commons/CurlCommand.scss";
+@import "./commons/JsonResponse.scss";
 
-@import "./Header.scss";
-@import "./Home.scss";
-@import "./Service.scss";
 
 @import "./Predict/Home.scss";
 @import "./Predict/New.scss";
@@ -47,6 +51,7 @@
 body {
   margin: 0;
   padding: 0;
+  background-color: $body_color;
 }
 
 .btn:focus {

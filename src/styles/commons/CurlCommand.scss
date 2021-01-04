@@ -1,0 +1,85 @@
+.curl-command {
+  position: relative;
+  background-color: #fff;
+  white-space: normal;
+  .code-wrap {
+    overflow-x: auto;
+    overflow-scrolling: touch;
+  }
+  code {
+    cursor: text;
+    color: #333;
+    background-color: #fff;
+    text-indent: 0;
+    tab-size: 4;
+    // for source code reading,
+    // `antialiased` smoothing (our default) does not looks good (too thin)
+    -webkit-font-smoothing: auto;
+    hyphens: none;
+    font-size: 14px;
+    line-height: 23px;
+    text-size-adjust: 100%;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    padding: 0;
+    font-family: "Operator Mono", "Fira Code", "Ubuntu Mono", "Droid Sans Mono",
+      "Liberation Mono", "Source Code Pro", Menlo, Consolas, Courier, monospace;
+    span {
+      -webkit-font-smoothing: auto;
+    }
+    .cm-keyword {
+      color: #a71d5d;
+    }
+    .cm-comment {
+      color: #969896;
+    }
+    .cm-string {
+      color: #183691;
+    }
+    .cm-property {
+      color: #795da3;
+    }
+    .cm-number {
+      color: #0086b3;
+    }
+    .cm-tag.cm-bracket {
+      color: #a71d5d;
+    }
+    .cm-variable {
+      color: #795da3;
+    }
+  }
+  .clipboard {
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    line-height: 22px;
+    text-align: center;
+    padding: 0 1em;
+    width: 13em;
+    background-color: rgb(235, 235, 235);
+    z-index: 20;
+    color: #999;
+    img {
+      max-width: none !important;
+      vertical-align: middle;
+      margin: 0 auto !important;
+    }
+    &.clipboard-done {
+      color: #555;
+    }
+  }
+  .heading {
+    position: relative;
+    padding: 3px 7px;
+    color: #999;
+    background-color: rgba(240, 240, 240, 0.8);
+    z-index: 10;
+    font-family: monospace, monospace;
+    font-size: 1em;
+  }
+}
