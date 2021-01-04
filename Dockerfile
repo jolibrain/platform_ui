@@ -3,7 +3,8 @@ ADD . /app
 WORKDIR /app
 RUN yarn install
 RUN yarn build
+RUN git describe --tags --dirty > /version
 
 FROM nginx:alpine
-RUN git describe --tags --dirty --broken > /version
+COPY --from=builder /version /version
 COPY --from=builder /app/build /usr/share/nginx/html
