@@ -70,7 +70,7 @@
     "react-sparklines": "^1.7.0",
     "react-syntax-highlighter": "^13.5.3",
     "react-tooltip": "^4.2.9",
-    "react-webcam": "^5.2.0",
+    "react-webcam": "^5.2.2",
     "reactstrap": "^8.5.1",
     "resolve": "1.15.0",
     "resolve-url-loader": "3.1.1",

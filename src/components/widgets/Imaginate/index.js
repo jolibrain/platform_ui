@@ -4,7 +4,7 @@ import { inject, observer } from "mobx-react";
 import ImageConnector from "./connectors/Image";
 import ImagePathConnector from "./connectors/ImagePath";
 import TxtConnector from "./connectors/Txt";
-import WebcamConnector from "./connectors/Webcam";
+// import WebcamConnector from "./connectors/Webcam";
 import VideoConnector from "./connectors/Video";
 import CsvConnector from "./connectors/Csv";
 // import MjpegConnector from "./connectors/Mjpeg";
@@ -121,7 +121,7 @@ class Imaginate extends React.Component {
         connectorComponent = <ImagePathConnector />;
         break;
       case "webcam":
-        connectorComponent = <WebcamConnector />;
+        // connectorComponent = <WebcamConnector />;
         break;
       case "stream":
         connectorComponent = <VideoConnector />;
