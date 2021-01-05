@@ -99,7 +99,8 @@ class GeneralInfo extends React.Component {
       />
     );
 
-    let hasMap = false;
+    let hasMap = false,
+        hasEucll = false;
 
     if (typeof measure !== "undefined" && measure !== null) {
       if (typeof measure.accp !== "undefined") {
@@ -136,6 +137,19 @@ class GeneralInfo extends React.Component {
             steppedLine
             showBest
             useBestValue
+            layout={layout}
+            {...this.props}
+          />
+        );
+      } else if (typeof measure.eucll !== "undefined") {
+        hasEucll = true;
+        infoCharts.push(
+          <MeasureChart
+            title="Eucll"
+            attribute="eucll"
+            key="eucll"
+            steppedLine
+            showMinValue
             layout={layout}
             {...this.props}
           />
@@ -246,17 +260,18 @@ class GeneralInfo extends React.Component {
         );
         break;
       case "regression":
-        infoCharts.push(
-          <MeasureChart
-            title="Eucll"
-            attribute="eucll"
-            key="eucll"
-            steppedLine
-            showMinValue
-            layout={layout}
-            {...this.props}
-          />
-        );
+        if (!hasEucll)
+          infoCharts.push(
+            <MeasureChart
+              title="Eucll"
+              attribute="eucll"
+              key="eucll"
+              steppedLine
+              showMinValue
+              layout={layout}
+              {...this.props}
+            />
+          );
         break;
       case "ctc":
         break;
