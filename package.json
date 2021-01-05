@@ -22,7 +22,7 @@
     "codemirror": "^5.57.0",
     "copy-to-clipboard": "^3.3.1",
     "css-loader": "3.4.2",
-    "deepdetect-js": "^1.8.3",
+    "deepdetect-js": "^1.8.5",
     "dotenv": "8.2.0",
     "dotenv-expand": "5.1.0",
     "eslint": "^6.6.0",
