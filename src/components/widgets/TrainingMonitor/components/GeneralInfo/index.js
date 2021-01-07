@@ -100,7 +100,8 @@ class GeneralInfo extends React.Component {
     );
 
     let hasMap = false,
-        hasEucll = false;
+        hasEucll = false,
+        hasMeanIou = false;
 
     if (typeof measure !== "undefined" && measure !== null) {
       if (typeof measure.accp !== "undefined") {
@@ -159,6 +160,21 @@ class GeneralInfo extends React.Component {
           />
         );
       }
+
+      if (typeof measure.eucll !== "undefined") {
+        hasMeanIou = true;
+        infoCharts.push(
+          <MeasureChart
+            title="Mean IOU"
+            attribute="meaniou"
+            key="meaniou"
+            steppedLine
+            showBest
+            layout={layout}
+            {...this.props}
+          />
+        );
+      }
     }
 
     //
@@ -168,13 +184,13 @@ class GeneralInfo extends React.Component {
     // Fix this issue by finding if service best model file includes
     // meaniou key
     //
-    let meanIouIncluded = false;
     if (
-      mltype !== "segmentation" &&
+      !hasMeanIou &&
+        mltype !== "segmentation" &&
         service.bestModel &&
         service.bestModel.meaniou
     ) {
-      meanIouIncluded = true;
+      hasMeanIou = true;
       infoCharts.push(
         <MeasureChart
           title="Mean IOU"
@@ -191,7 +207,7 @@ class GeneralInfo extends React.Component {
     switch (mltype) {
       case "segmentation":
 
-        if(!meanIouIncluded) {
+        if(!hasMeanIou) {
           infoCharts.push(
             <MeasureChart
               title="Mean IOU"
