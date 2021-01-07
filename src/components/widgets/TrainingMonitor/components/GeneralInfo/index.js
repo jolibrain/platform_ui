@@ -127,7 +127,9 @@ class GeneralInfo extends React.Component {
             {...this.props}
           />
         );
-      } else if (typeof measure.map !== "undefined") {
+      }
+
+      if (typeof measure.map !== "undefined") {
         hasMap = true;
         infoCharts.push(
           <MeasureChart
@@ -141,7 +143,9 @@ class GeneralInfo extends React.Component {
             {...this.props}
           />
         );
-      } else if (typeof measure.eucll !== "undefined") {
+      }
+
+      if (typeof measure.eucll !== "undefined") {
         hasEucll = true;
         infoCharts.push(
           <MeasureChart
