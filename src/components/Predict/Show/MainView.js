@@ -80,16 +80,23 @@ class MainView extends React.Component {
               <h4>{settings.description}</h4>
 
               {settingInfoKeys.map((key, index) => {
-                let value = settings[key];
+
+                let value = settings[key],
+                    output = "";
+
                 if (typeof settings[key] === "object")
                   value = JSON.stringify(value);
 
-                return (
-                  <div key={index} className="row serviceInfo">
-                    <h4>{value}</h4>
-                    <h5>{key}</h5>
-                  </div>
-                );
+                if(value.length > 0) {
+                  output = (
+                    <div key={index} className="row serviceInfo">
+                      <h4>{value}</h4>
+                      <h5>{key}</h5>
+                    </div>
+                  );
+                }
+
+                return output;
               })}
 
               {repository &&
