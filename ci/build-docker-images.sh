@@ -2,8 +2,6 @@
 
 export DOCKER_BUILDKIT=1
 
-set -e
-
 [ "${JENKINS_URL}" ] && set -x
 
 image_url="jolibrain/platform_ui"
@@ -24,7 +22,7 @@ else
     TMP_TAG="dev"
 fi
 
-
+set -e
 
 docker build \
     -t $image_url:$TMP_TAG \
