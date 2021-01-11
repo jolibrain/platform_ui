@@ -93,7 +93,18 @@ export default class deepdetectService {
   }
 
   async trainInfo() {
+
+    //
+    // Try to fetch training information
+    //
+    // Set training process to false to update TrainingHome
+    // UI when training job is terminated
+    //
     this.respTraining = await this.$reqTrainInfo();
+    if (this.respTraining instanceof Error) {
+      this.settings.training = false;
+    }
+
     this.respTrainMetrics = await this.$reqTrainMetrics();
 
     this._loadBestModel();
