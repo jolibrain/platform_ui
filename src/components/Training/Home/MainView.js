@@ -3,7 +3,7 @@ import { inject, observer } from "mobx-react";
 import { Link, withRouter } from "react-router-dom";
 import moment from "moment";
 
-import ServiceCardList from "../../widgets/ServiceCardList";
+import MainViewServiceList from "../../widgets/MainViewServiceList";
 import RightPanel from "../commons/RightPanel";
 
 @inject("deepdetectStore")
@@ -18,7 +18,8 @@ class MainView extends React.Component {
 
     this.state = {
       filterServiceName: "",
-      selectedComparePath: []
+      selectedComparePath: [],
+      archiveLayout: "card"
     };
 
     this.handleServiceFilter = this.handleServiceFilter.bind(this);
@@ -27,6 +28,9 @@ class MainView extends React.Component {
     this.handleClickRefreshArchive = this.handleClickRefreshArchive.bind(this);
 
     this.handleCompareStateChange = this.handleCompareStateChange.bind(this);
+
+    this.handleClickArchiveLayoutCard = this.handleClickArchiveLayoutCard.bind(this);
+    this.handleClickArchiveLayoutList = this.handleClickArchiveLayoutList.bind(this);
   }
 
   componentWillMount() {
@@ -60,6 +64,14 @@ class MainView extends React.Component {
 
   cleanServiceFilter(event) {
     this.setState({ filterServiceName: "" });
+  }
+
+  handleClickArchiveLayoutCard() {
+    this.setState({ archiveLayout: "card" });
+  }
+
+  handleClickArchiveLayoutList() {
+    this.setState({ archiveLayout: "list" });
   }
 
   render() {
@@ -191,33 +203,59 @@ class MainView extends React.Component {
 
           <div className="content">
             <div className="serviceList current">
-              <ServiceCardList services={displayedTrainingServices} />
+              <MainViewServiceList
+                services={displayedTrainingServices}
+              />
             </div>
 
             <hr />
-            <h3>
-              <i className="fas fa-archive" /> Archived Jobs&nbsp;
-              {modelRepositoriesStore.isRefreshing ? (
-                <i className="fas fa-spinner fa-spin" />
-              ) : (
-                ""
-              )}
-              {!modelRepositoriesStore.isRefreshing &&
-              this.state.selectedComparePath.length > 1 ? (
-                <Link
-                  to={`/charts/archive/${this.state.selectedComparePath
-                    .map(path => path.replace(/^\/+|\/+$/g, ""))
-                    .join("+")}`}
-                  className="btn btn-primary"
-                  type="button"
-                >
-                  Compare Selected
-                </Link>
-              ) : null}
-            </h3>
+
+            <div className="row">
+              <div className="col-10">
+                <h3>
+                  <i className="fas fa-archive" /> Archived Jobs&nbsp;
+                  {modelRepositoriesStore.isRefreshing ? (
+                    <i className="fas fa-spinner fa-spin" />
+                  ) : (
+                    ""
+                  )}
+                  {!modelRepositoriesStore.isRefreshing &&
+                  this.state.selectedComparePath.length > 1 ? (
+                    <Link
+                      to={`/charts/archive/${this.state.selectedComparePath
+                        .map(path => path.replace(/^\/+|\/+$/g, ""))
+                        .join("+")}`}
+                      className="btn btn-primary"
+                      type="button"
+                    >
+                      Compare Selected
+                    </Link>
+                  ) : null}
+                </h3>
+              </div>
+              <div className="col-2 layout-select">
+                <i
+                  className={ this.state.archiveLayout === "card" ?
+                              "fas fa-th-large active"
+                              :
+                              "fas fa-th-large"
+                            }
+                  onClick={this.handleClickArchiveLayoutCard}
+                />
+                <i
+                  className={ this.state.archiveLayout === "list" ?
+                              "fas fa-th-list active"
+                              :
+                              "fas fa-th-list"
+                            }
+                  onClick={this.handleClickArchiveLayoutList}
+                />
+              </div>
+            </div>
 
             <div className="archiveTrainingList archive">
-              <ServiceCardList
+              <MainViewServiceList
+                layout={this.state.archiveLayout}
                 services={displayedArchiveRepositories}
                 handleCompareStateChange={this.handleCompareStateChange}
               />

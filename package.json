@@ -62,7 +62,7 @@
     "react-chartjs-2": "^2.10.0",
     "react-codemirror2": "^7.2.1",
     "react-cookie": "^4.0.3",
-    "react-data-table-component": "^6.11.5",
+    "react-data-table-component": "^7.0.0-alpha-4",
     "react-dev-utils": "^10.2.1",
     "react-dom": "^16.13.1",
     "react-papaparse": "^3.11.0",

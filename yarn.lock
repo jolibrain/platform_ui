@@ -8153,11 +8153,6 @@ nan@^2.12.1, nan@^2.13.2:
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.1.tgz#d7be34dfa3105b91494c3147089315eff8874b01"
   integrity sha512-isWHgVjnFjh2x2yuJ/tj3JbwoHu3UC2dX5G/88Cm24yB6YopVgxvBObDY7n5xW6ExmFhJpSEQqFPvq9zaXc8Jw==
 
-nanoid@^2.1.0:
-  version "2.1.11"
-  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-2.1.11.tgz#ec24b8a758d591561531b4176a01e3ab4f0f0280"
-  integrity sha512-s/snB+WGm6uwi0WjsZdaVcuf3KJXlfGl2LcxgwkEwJF0D/BWzVWAZW/XY4bFaiR7s0Jk3FPvlnepg1H1b1UwlA==
-
 nanomatch@^1.2.9:
   version "1.2.13"
   resolved "https://registry.yarnpkg.com/nanomatch/-/nanomatch-1.2.13.tgz#b87a8aa4fc0de8fe6be88895b38983ff265bd119"
@@ -10128,14 +10123,13 @@ react-cookie@^4.0.3:
     hoist-non-react-statics "^3.0.0"
     universal-cookie "^4.0.0"
 
-react-data-table-component@^6.11.5:
-  version "6.11.5"
-  resolved "https://registry.yarnpkg.com/react-data-table-component/-/react-data-table-component-6.11.5.tgz#e6f40d5380cf1c59eb260bb3851186db71c95e1a"
-  integrity sha512-MuYgyDyJQs6lpsMxk5AJigEUve2onTbPN6AC4xGgNhsEIrvyiMdwq2TwE77TDixdOttP+PmsLPZ9D+WkAogU3g==
+react-data-table-component@^7.0.0-alpha-4:
+  version "7.0.0-alpha-4"
+  resolved "https://registry.yarnpkg.com/react-data-table-component/-/react-data-table-component-7.0.0-alpha-4.tgz#8afd0a840c2e66da94879d00e0b1ce99d4e60aa8"
+  integrity sha512-qYD86smz/IJueMR5GPnC1Lz4mFzsaKhKtzAGM2p7lvADFwTLzuCmXTr3fmpDApZjBkHLVXw63r29Uib9XCM6sw==
   dependencies:
     deepmerge "^4.2.2"
     lodash.orderby "^4.6.0"
-    shortid "^2.2.15"
 
 react-dev-utils@^10.2.1:
   version "10.2.1"
@@ -11165,13 +11159,6 @@ shellwords@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/shellwords/-/shellwords-0.1.1.tgz#d6b9181c1a48d397324c84871efbcfc73fc0654b"
   integrity sha512-vFwSUfQvqybiICwZY5+DAWIPLKsWO31Q91JSKl3UYv+K5c2QRPzn0qzec6QPu1Qc9eHYItiP3NdJqNVqetYAww==
-
-shortid@^2.2.15:
-  version "2.2.15"
-  resolved "https://registry.yarnpkg.com/shortid/-/shortid-2.2.15.tgz#2b902eaa93a69b11120373cd42a1f1fe4437c122"
-  integrity sha512-5EaCy2mx2Jgc/Fdn9uuDuNIIfWBpzY4XIlhoqtXF6qsf+/+SGZ+FxDdX/ZsMZiWupIWNqAEmiNY4RC+LSmCeOw==
-  dependencies:
-    nanoid "^2.1.0"
 
 side-channel@^1.0.2:
   version "1.0.3"

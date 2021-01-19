@@ -1,0 +1,215 @@
+.mainViewServiceList {
+  margin-top: 20px;
+  .badge {
+    margin-right: 3px;
+  }
+
+  .subheader span {
+    color: #000;
+    margin-left: 15px;
+  }
+
+  .list-group-item:first-child {
+    border-top: 0;
+  }
+
+  .list-group-item:last-child {
+    border-bottom: 0;
+  }
+
+  .bestModelInfo {
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid #ccc;
+
+    h6 {
+      font-weight: 700;
+    }
+  }
+
+  .card {
+    box-shadow: 0 2px 6px 0 hsla(0, 0%, 0%, 0.6);
+    border: 0;
+    height: 420px;
+
+    .list-group-item {
+      border: 0;
+      padding: 2px 10px;
+    }
+
+    .card-body {
+      padding: 15px;
+    }
+
+    .card-title {
+      color: $neutral_blue_1;
+      font-weight: 700;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+
+      i {
+        color: $neutral_blue_4;
+        margin-right: 5px;
+      }
+    }
+
+    .card-subtitle {
+      color: $neutral_blue_8;
+    }
+
+    .process-icons {
+      background-color: $neutral_blue_10;
+      color: $neutral_blue_1;
+      padding: 10px;
+
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+
+      i {
+        color: $neutral_blue_3;
+      }
+
+      i.fa-server {
+        margin-right: 3px;
+      }
+
+      i.fa-circle.training,
+      i.fa-circle.running,
+      i.fa-spinner {
+        color: $primary_cyan_5;
+      }
+
+      i.fa-circle.error {
+        color: $support_red_5;
+      }
+
+      i.fa-circle.not-running,
+      i.fa-circle.waiting {
+        color: $support_yellow_5;
+      }
+
+      .fetchError {
+        color: $support_red_5;
+      }
+
+      a {
+        text-decoration: none;
+        color: $neutral_blue_3;
+        font-weight: 600;
+      }
+    }
+
+    .content {
+      h3 {
+        color: $neutral_blue_1;
+        font-size: 14px;
+        font-weight: 700;
+        margin: 0;
+      }
+
+      h4 {
+        color: $neutral_blue_3;
+        font-size: 14px;
+        margin-left: 10px;
+      }
+    }
+
+    .card-footer {
+      color: $neutral_blue_3;
+      background-color: hsl(210, 9%, 96%);
+      border-top: 0;
+      text-decoration: none;
+
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+
+      padding: .75rem .1rem;
+
+      a {
+        text-decoration: none;
+      }
+
+      a.btn-primary {
+        color: #fff !important;
+      }
+
+      a.btn-outline-danger {
+        display: none;
+        color: $support_red_5;
+      }
+
+      a.btn-outline-primary {
+        color: $neutral_blue_1;
+        border-color: $neutral_blue_3;
+
+        &:hover {
+          color: $neutral_blue_10;
+          background-color: $neutral_blue_3;
+        }
+      }
+
+      a.btn-compare {
+        color: $neutral_blue_1;
+        border-color: $neutral_blue_3;
+
+        &:hover {
+          color: $neutral_blue_10;
+          background-color: $neutral_blue_3;
+        }
+      }
+
+      a.btn-compare-selected {
+        color: $neutral_blue_10;
+        background-color: $neutral_blue_3;
+
+        &:hover {
+          color: $neutral_blue_9;
+          background-color: $neutral_blue_4;
+        }
+      }
+
+      &:hover {
+        a.btn-outline-danger {
+          display: inline;
+
+          &:hover {
+            color: $neutral_blue_10;
+          }
+        }
+      }
+    }
+  }
+}
+
+.predict-home-component,
+.dataset-home-component {
+  .serviceCardList .card {
+    height: 180px;
+
+    .card-title:hover {
+      white-space: normal;
+      word-break: break-all;
+    }
+  }
+}
+
+.archiveTrainingList {
+  .card {
+    height: 300px;
+  }
+
+  .card-title:hover {
+    white-space: normal;
+    word-break: break-all;
+  }
+
+  .card-footer:hover {
+  }
+
+  .card-footer.col-6:hover {
+    background-color: $neutral_blue_7;
+  }
+}
