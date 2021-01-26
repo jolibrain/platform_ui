@@ -105,17 +105,17 @@ class MainView extends React.Component {
       });
 
     // List of path to filter them out from displayed archive jobs
-    const displayedTrainingServicesPath = displayedTrainingServices.map(
-      service => {
-        return service.respInfo &&
-          service.respInfo.body &&
-          service.respInfo.body.repository
-          ? service.respInfo.body.repository
-              .replace("/opt/platform/models/training/", "")
-              .replace(/\/$/g, "")
-          : "";
-      }
-    );
+//    const displayedTrainingServicesPath = displayedTrainingServices.map(
+//      service => {
+//        return service.respInfo &&
+//          service.respInfo.body &&
+//          service.respInfo.body.repository
+//          ? service.respInfo.body.repository
+//              .replace("/opt/platform/models/training/", "")
+//              .replace(/\/$/g, "")
+//          : "";
+//      }
+//    );
 
     const { archivedTrainingRepositories } = modelRepositoriesStore;
 
