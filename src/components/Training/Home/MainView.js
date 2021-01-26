@@ -58,7 +58,12 @@ class MainView extends React.Component {
   }
 
   handlePathFilter(filter) {
-    this.setState({filteredPath: [...this.state.filteredPath, filter]})
+
+    if(!this.state.filteredPath.includes(filter))
+      this.setState({
+        filteredPath: [...this.state.filteredPath, filter]
+      })
+
   }
 
   removeFilteredPath(filter) {
