@@ -2,10 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
+import moment from "moment"
 
-import DataTable from 'react-data-table-component';
-import moment from 'moment';
-
+import PredictItem from "./Predict";
+import TrainingItem from "./Training";
+import ModelRepositoryItem from "./ModelRepository";
+import DatasetItem from "./Dataset";
 
 @withRouter
 @observer
@@ -15,65 +17,189 @@ class Table extends React.Component {
         super(props);
 
         this.state = {
-            hideMlType: false,
-            hideIterations: false,
-            hideTrainLoss: false,
-            hideMeanIou: false,
-            hideMap: false,
-            hideAccuracy: false,
-            hideF1: false,
-            hideMcll: false,
-            hideEucll: false,
+            columns: [
+                {
+                    text: "",
+                    type: "selector",
+                    hide: false,
+                    toggable: false
+                },
+                {
+                    text: "",
+                    selector: "name",
+                    hide: false,
+                    toggable: false,
+                    formatter: (value, service) => {
+                        return (
+                            <>
+                            {value}
+                              <br/>
+                            <a
+                                href={`${service.path}config.json`}
+                                className="badge badge-dark"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                config
+                            </a>
+                            <a
+                                href={`${service.path}metrics.json`}
+                                className="badge badge-dark"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                metrics
+                            </a>
+                            </>
+                        )
+                    }
+                },
+                {
+                    text: "Date",
+                    selector: "metricsDate",
+                    hide: true,
+                    toggable: true,
+                    formatter: (value, service) => {
+                        return moment(value).format("L LT");
+                    }
+                },
+                {
+                    text: "Tags",
+                    selector: "path",
+                    hide: false,
+                    toggable: false,
+                    formatter: (value) => {
+                        const tags = value
+                              .split("/")
+                              .slice(0, -2)
+                              .filter(item => {
+                                  return item.length > 0 &&
+                                      !["models", "training"].includes(item)
+                              })
+
+                        return (
+                            <div>
+                              {
+                                  tags.map(
+                                      (tag, i) =>
+                                          <span
+                                            key={i}
+                                            className="badge badge-filter"
+                                            onClick={this.handleFilterClick}
+                                          >
+                                            {tag}
+                                          </span>
+                                  )
+                              }
+                            </div>
+                        )
+                    }
+                },
+                {
+                    text: "Type",
+                    selector: "mltype",
+                    hide: true,
+                    toggable: true
+                },
+                {
+                    text: "Iterations",
+                    selector: "iterations",
+                    isValue: true,
+                    hide: true,
+                    toggable: true
+                },
+                {
+                    text: "Train Loss",
+                    selector: "train_loss",
+                    isValue: true,
+                    hide: false,
+                    toggable: true
+                },
+                {
+                    text: "Mean IOU",
+                    selector: "meaniou",
+                    isValue: true,
+                    hide: true,
+                    toggable: true
+                },
+                {
+                    text: "MAP",
+                    selector: "map",
+                    isValue: true,
+                    hide: false,
+                    toggable: true
+                },
+                {
+                    text: "Accuracy",
+                    selector: "accuracy",
+                    isValue: true,
+                    hide: true,
+                    toggable: true
+                },
+                {
+                    text: "F1",
+                    selector: "f1",
+                    isValue: true,
+                    hide: true,
+                    toggable: true
+                },
+                {
+                    text: "Mcll",
+                    selector: "mcll",
+                    isValue: true,
+                    hide: true,
+                    toggable: true
+                },
+                {
+                    text: "Eucll",
+                    selector: "eucll",
+                    isValue: true,
+                    hide: true,
+                    toggable: true
+                },
+                {
+                    text: "",
+                    selector: "",
+                    hide: false,
+                    toggable: false,
+                    isAction: true
+                }
+            ]
         }
 
         this.toggleColumn = this.toggleColumn.bind(this);
-        this.getValue = this.getValue.bind(this);
+        this.handleFilterClick = this.handleFilterClick.bind(this)
     }
 
-    toggleColumn(columnKey) {
-        this.setState({ [columnKey]: !this.state[columnKey] })
+    handleFilterClick(event){
+        const { handlePathFilter } = this.props;
+
+        if(!handlePathFilter)
+            return null;
+
+        const filter = event.target.innerHTML;
+        console.log(filter);
+       
+        handlePathFilter(filter);
     }
 
-    getValue(service, attr) {
-        const { measure, measure_hist } = service;
+    toggleColumn(columnText) {
 
-        let value = null
-
-        if (measure) {
-        value = measure[attr];
-        } else if (
-        measure_hist &&
-        measure_hist[`${attr}_hist`] &&
-        measure_hist[`${attr}_hist`].length > 0
-        ) {
-        value =
-            measure_hist[`${attr}_hist`][measure_hist[`${attr}_hist`].length - 1];
-        }
-
-        if (value && !["remain_time_str", "iteration"].includes(attr)) {
-        if (attr === "train_loss") {
-            value = parseFloat(value);
-
-            if (typeof value.toFixed === "function") {
-            if (value > 1) {
-                value = value.toFixed(3);
-            } else {
-                // Find position of first number after the comma
-                const zeroPosition = value
-                .toString()
-                .split("0")
-                .slice(2)
-                .findIndex(elem => elem.length > 0);
-
-                value = value.toFixed(zeroPosition + 4);
+        const newColumns = this.state.columns.map((column, index) => {
+            if(column.text === columnText) {
+                const newColumn = {...column}
+                newColumn.hide = !newColumn.hide
+                return newColumn;
             }
-            }
-        } else {
-            value = value.toFixed(5);
-        }
-        }
 
-        return value;
+            return column;
+        })
+
+        this.setState({
+            ...this.state,
+            columns: newColumns
+        })
+
     }
 
     render() {
@@ -82,199 +208,108 @@ class Table extends React.Component {
             services
         } = this.props;
 
-        const {
-            hideMlType,
-            hideIterations,
-            hideTrainLoss,
-            hideMeanIou,
-            hideMap,
-            hideAccuracy,
-            hideF1,
-            hideMcll,
-            hideEucll,
-        } = this.state;
-
-        const dataTableColumns = [
-            {
-                name: 'Name',
-                selector: 'name',
-                sortable: true,
-            },
-            {
-                name: 'Date',
-                selector: 'date',
-                sortable: true,
-                sortFunction: (a, b) => {
-                    return moment(a.date).diff(b.date);
-                },
-                format: (row, index) => {
-                    return moment(row.date).format("L")
-                }
-            },
-            {
-                name: 'Type',
-                selector: 'mltype',
-                sortable: true,
-                omit: hideMlType,
-            },
-            {
-                name: 'Iterations',
-                selector: 'iterations',
-                sortable: true,
-                omit: hideIterations,
-            },
-            {
-                name: 'Train Loss',
-                selector: 'train_loss',
-                sortable: true,
-                omit: hideTrainLoss,
-            },
-            {
-                name: 'Mean IOU',
-                selector: 'meaniou',
-                sortable: true,
-                omit: hideMeanIou,
-            },
-            {
-                name: 'MAP',
-                selector: 'map',
-                sortable: true,
-                omit: hideMap,
-            },
-            {
-                name: 'Accuracy',
-                selector: 'accuracy',
-                sortable: true,
-                omit: hideAccuracy,
-            },
-            {
-                name: 'F1',
-                selector: 'f1',
-                sortable: true,
-                omit: hideF1,
-            },
-            {
-                name: 'mcll',
-                selector: 'mcll',
-                sortable: true,
-                omit: hideMcll,
-            },
-            {
-                name: 'eucll',
-                selector: 'eucll',
-                sortable: true,
-                omit: hideEucll,
-            },
-        ];
-
-        const serviceData = services.map(service => {
-
-            const mltype = service.jsonMetrics
-            ? service.jsonMetrics.body.mltype
-            : null;
-
-            return {
-                name: service.name,
-                date: service.metricsDate,
-                mltype: mltype,
-                train_loss: this.getValue(service, "train_loss"),
-                meaniou: this.getValue(service, "meaniou"),
-                map: this.getValue(service, "map"),
-                accuracy: this.getValue(service, "acc"),
-                f1: this.getValue(service, "f1"),
-                mcll: this.getValue(service, "mcll"),
-                eucll: this.getValue(service, "eucll"),
-            }
-        })
-
-        return (
-            <>
-              <DataTable
-                columns={dataTableColumns}
-                data={serviceData}
-                selectableRows
-                subHeader
-                subHeaderComponent={
-                    (
-                  <div className="subheader">
-                    <span>
-                      <input
-                        type="checkbox"
-                        checked={!hideMlType}
-                        onChange={
-                            this.toggleColumn.bind(this, "hideMlType")
-                        } /> ML Type
-                    </span>
-                    <span>
-                      <input
-                        type="checkbox"
-                        checked={!hideIterations}
-                        onChange={
-                            this.toggleColumn.bind(this, "hideIterations")
-                        } /> Iterations
-                    </span>
-                    <span>
-                      <input
-                        type="checkbox"
-                        checked={!hideTrainLoss}
-                        onChange={
-                            this.toggleColumn.bind(this, "hideTrainLoss")
-                        } /> Train Loss
-                    </span>
-                    <span>
-                      <input
-                        type="checkbox"
-                        checked={!hideMeanIou}
-                        onChange={
-                            this.toggleColumn.bind(this, "hideMeanIou")
-                        } /> Mean IOU
-                    </span>
-                    <span>
-                      <input
-                        type="checkbox"
-                        checked={!hideMap}
-                        onChange={
-                            this.toggleColumn.bind(this, "hideMap")
-                        } /> MAP
-                    </span>
-                    <span>
-                      <input
-                        type="checkbox"
-                        checked={!hideAccuracy}
-                        onChange={
-                            this.toggleColumn.bind(this, "hideAccuracy")
-                        } /> Accuracy
-                    </span>
-                    <span>
-                      <input
-                        type="checkbox"
-                        checked={!hideF1}
-                        onChange={
-                            this.toggleColumn.bind(this, "hideF1")
-                        } /> F1
-                    </span>
-                    <span>
-                      <input
-                        type="checkbox"
-                        checked={!hideMcll}
-                        onChange={
-                            this.toggleColumn.bind(this, "hideMcll")
-                        } /> Mcll
-                    </span>
-                    <span>
-                      <input
-                        type="checkbox"
-                        checked={!hideEucll}
-                        onChange={
-                            this.toggleColumn.bind(this, "hideEucll")
-                        } /> Eucll
-                    </span>
-                  </div>
-                    )
-                }
-              />
-            </>
+        const tableHeadContent = (
+            <tr>
+              {
+                  this.state.columns
+                      .filter(column => !column.hide)
+                      .map((column, index) =>
+                              <th key={index} scope="col">{column.text}</th>
+                      )
+              }
+            </tr>
         );
+
+        const tableBodyContent = services.map((service, index) => {
+
+            let item = null;
+
+            if (service.isRepository) {
+
+                item = (
+                    <ModelRepositoryItem
+                      key={index}
+                      service={service}
+                      columns={this.state.columns}
+                      {...this.props}
+                    />
+                );
+
+            } else if (service.isDataset) {
+
+                item = (
+                    <DatasetItem
+                      key={index}
+                      dataset={service}
+                      columns={this.state.columns}
+                      {...this.props}
+                    />
+                );
+
+            } else if (
+                service.settings &&
+                    service.settings.training
+            ) {
+
+                item = (
+                    <TrainingItem
+                      key={index}
+                      service={service}
+                      columns={this.state.columns}
+                      {...this.props}
+                    />
+                );
+
+            } else {
+
+                item = (
+                    <PredictItem
+                      key={index}
+                      service={service}
+                      columns={this.state.columns}
+                      {...this.props}
+                    />
+                );
+
+            }
+
+            return item;
+
+        });
+
+        const columnsFilter = (
+            <div className="col column-filters text-right">
+            {
+                this.state.columns
+                    .filter(column => column.toggable)
+                    .map((column, index) => {
+                    return (<span key={index}>
+                          <input
+                            type="checkbox"
+                            checked={!column.hide}
+                            onChange={
+                                this.toggleColumn.bind(this, column.text)
+                            } /> {column.text}
+                            </span>);
+
+                })
+            }
+            </div>
+        );
+
+                return (
+                    <>
+                      {columnsFilter}
+                    <table className="table">
+                    <thead>
+                      { tableHeadContent }
+                    </thead>
+                    <tbody>
+                      { tableBodyContent }
+                    </tbody>
+                    </table>
+                    </>
+                );
 
     }
 
@@ -283,5 +318,6 @@ class Table extends React.Component {
 Table.propTypes = {
     services: PropTypes.array.isRequired,
     handleCompareStateChange: PropTypes.func,
+    handlePathFilter: PropTypes.func,
 };
 export default Table;

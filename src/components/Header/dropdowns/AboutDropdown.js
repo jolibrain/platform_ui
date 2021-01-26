@@ -62,7 +62,7 @@ class AboutDropdown extends React.Component {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <span class="badge badge-secondary">{buildInfoStore.latestDockerTag}</span>
+            <span className="badge badge-secondary">{buildInfoStore.latestDockerTag}</span>
             &nbsp; Update Available
           </a>
         </div>

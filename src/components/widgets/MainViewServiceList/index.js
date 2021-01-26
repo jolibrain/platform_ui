@@ -38,12 +38,12 @@ class MainViewServiceList extends React.Component {
     switch(layout) {
 
         case "list":
-        content = <Table services={filteredServices}/>
+        content = <Table services={filteredServices} {...this.props}/>
         break;
 
         case "card":
         default:
-        content = <Cards services={filteredServices}/>
+        content = <Cards services={filteredServices} {...this.props}/>
         break;
 
     }
