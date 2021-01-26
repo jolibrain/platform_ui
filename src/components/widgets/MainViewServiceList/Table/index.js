@@ -30,10 +30,8 @@ class Table extends React.Component {
                     hide: false,
                     toggable: false,
                     formatter: (value, service) => {
-                        return (
-                            <>
-                            {value}
-                              <br/>
+
+                        const configBadge = service.jsonConfig ? (
                             <a
                                 href={`${service.path}config.json`}
                                 className="badge badge-dark"
@@ -42,6 +40,9 @@ class Table extends React.Component {
                             >
                                 config
                             </a>
+                        ) : null;
+
+                        const metricsBadge = service.jsonMetrics ? (
                             <a
                                 href={`${service.path}metrics.json`}
                                 className="badge badge-dark"
@@ -50,6 +51,14 @@ class Table extends React.Component {
                             >
                                 metrics
                             </a>
+                        ) : null;
+
+                        return (
+                            <>
+                              {value}
+                              <br/>
+                              {configBadge}
+                              {metricsBadge}
                             </>
                         )
                     }
@@ -174,13 +183,11 @@ class Table extends React.Component {
     handleFilterClick(event){
         const { handlePathFilter } = this.props;
 
+        // missing prop
         if(!handlePathFilter)
             return null;
 
-        const filter = event.target.innerHTML;
-        console.log(filter);
-       
-        handlePathFilter(filter);
+        handlePathFilter(event.target.innerHTML);
     }
 
     toggleColumn(columnText) {
