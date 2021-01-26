@@ -3,7 +3,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { inject, observer } from "mobx-react";
 import { Link, withRouter } from "react-router-dom";
-import moment from "moment";
 
 /*
  * # Workflow: publishing after training"
@@ -86,32 +85,7 @@ class ModelRepositoryItem extends React.Component {
 
     if (!service) return null;
 
-    const mltype = service.jsonMetrics
-      ? service.jsonMetrics.body.mltype
-      : null;
-
     const archiveUrl = `/charts/archive${service.path}`;
-
-    let compareButton = (
-      <a
-        onClick={this.toggleCompareState}
-        className={
-          this.state.compareSelected
-            ? "btn btn-compare-selected mr-1"
-            : "btn btn-compare mr-1"
-        }
-      >
-        {this.state.compareSelected ? (
-          <span>
-            <i className="far fa-check-square" /> Selected
-          </span>
-        ) : (
-          <span>
-            <i className="far fa-square" /> Compare
-          </span>
-        )}
-      </a>
-    );
 
     let serviceData = [...this.props.columns]
 
@@ -122,7 +96,10 @@ class ModelRepositoryItem extends React.Component {
 
           if(data.type && data.type === "selector") {
             content = (
-              <input type="checkbox"/>
+              <input
+                type="checkbox"
+                onClick={this.toggleCompareState}
+              />
             )
           } else if (data.isAction) {
 
