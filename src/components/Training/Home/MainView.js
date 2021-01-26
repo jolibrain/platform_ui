@@ -127,8 +127,9 @@ class MainView extends React.Component {
 
         const filteredByServiceNameInput = filterServiceName.length === 0 ||
               r.name.includes(filterServiceName);
+
         const filteredByPathTag = filteredPath.length === 0 ||
-              filteredPath.some(item => {
+              filteredPath.every(item => {
                 return r.path.split("/").includes(item);
               });
 
