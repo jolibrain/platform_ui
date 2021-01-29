@@ -95,7 +95,11 @@ class TableItem extends React.Component {
     }
 
     let bestValue = null;
-    if(measureHistKey.indexOf("eucll") !== -1) {
+    if(
+      measureHistKey.indexOf("eucll") !== -1 ||
+        measureHistKey.indexOf("L1_mean_error") !== -1 ||
+        measureHistKey.indexOf("L1_max_error")  !== -1
+    ) {
       bestValue = " - min: " + Math.min(...measure_hist[measureHistKey]).toFixed(5)
     } else {
       bestValue = " - max: " + Math.max(...measure_hist[measureHistKey]).toFixed(5)
