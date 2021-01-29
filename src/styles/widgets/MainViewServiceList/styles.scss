@@ -24,6 +24,13 @@
       word-wrap: break-word;
       max-width: 350px;
     }
+
+    td {
+      .btn {
+        width: 102px;
+        text-align: center;
+      }
+    }
   }
 
   .badge {
