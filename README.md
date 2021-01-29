@@ -272,6 +272,20 @@ Then you can run the integration testing cases:
 yarn test:e2e
 ```
 
+## Release
+
+Use the following command in order to release the latest tagged version of
+`platform_ui` on  https://github.com/jolibrain/platform_ui/releases/ :
+
+```
+ci/release.sh
+```
+
+`gh` command is required:  https://github.com/cli/cli/releases/
+
+Then, the new release will be available as a *Draft* on github release page,
+this *Draft* flag can be removed by editing the release information.
+
 ## Changelog
 
 ### v0.9.7.6 - 18/09/2020
