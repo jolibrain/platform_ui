@@ -34,8 +34,10 @@ class ModelRepositoryItem extends React.Component {
     };
 
     this.getValue = this.getValue.bind(this);
-    this.openPublishTrainingModal = this.openPublishTrainingModal.bind(this);
     this.toggleCompareState = this.toggleCompareState.bind(this);
+
+    this.openPublishTrainingModal = this.openPublishTrainingModal.bind(this);
+    this.deleteRepositoryModal = this.deleteRepositoryModal.bind(this);
   }
 
   toggleCompareState() {
@@ -47,6 +49,13 @@ class ModelRepositoryItem extends React.Component {
   openPublishTrainingModal() {
     const { modalStore } = this.props;
     modalStore.setVisible("publishTraining", true, {
+      service: this.props.service
+    });
+  }
+
+  deleteRepositoryModal() {
+    const { modalStore } = this.props;
+    modalStore.setVisible("deleteRepository", true, {
       service: this.props.service
     });
   }
@@ -104,29 +113,49 @@ class ModelRepositoryItem extends React.Component {
           } else if (data.isAction) {
 
             let publishButton = service.jsonConfig ? (
-              <a
-                onClick={this.openPublishTrainingModal}
-                className="btn btn-outline-primary mr-1"
-              >
-                <i className="fas fa-plus" /> Publish
-              </a>
+              <>
+                <br/>
+                <a
+                  onClick={this.openPublishTrainingModal}
+                  className="btn btn-outline-primary"
+                >
+                  <i className="fas fa-plus" /> Publish
+                </a>
+              </>
             ) : null;
 
             if (this.state.isPublishing) {
               publishButton = (
-                <a className="btn btn-outline-primary mr-1">
-                  <i className="fas fa-spinner fa-spin" /> Publishing...
-                </a>
+                <>
+                  <br/>
+                  <a className="btn btn-outline-primary">
+                    <i className="fas fa-spinner fa-spin" /> Publishing...
+                  </a>
+                </>
               );
             }
+
+            let deleteButton = (
+              <>
+                <br/>
+                <a
+                  onClick={this.deleteRepositoryModal}
+                  className="btn btn-outline-danger"
+                >
+                  <i className="fas fa-trash" /> Delete
+                </a>
+              </>
+            )
+            // TODO: finish agent.js
+            deleteButton = null;
 
             content = (
               <>
               <Link to={archiveUrl} className="btn btn-primary">
                 View <i className="fas fa-chevron-right" />
               </Link>
-                <br/>
               {publishButton}
+              {deleteButton}
               </>
             )
 
