@@ -30,6 +30,13 @@ export default class RepositoryStore {
     return this.repositories.some(r => r.path === path);
   }
 
+  removeRepository(path) {
+    const repositoryIndex = this.repositories.findIndex(r => r.path === path)
+
+    if(repositoryIndex !== -1)
+      this.repositories.splice(repositoryIndex, 1)
+  }
+
   _isRepository(fileList) {
     return (
       fileList.includes("model.json") ||
