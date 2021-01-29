@@ -161,8 +161,9 @@ export class deepdetectStore {
     async.forever(
       next => {
         const seriesArray = this.servers.map(s => {
-          return (callback) => {
-            s.loadServices(status).then(callback(null))
+          return async (callback) => {
+            await s.loadServices(status)
+            callback(null)
           };
         });
 
