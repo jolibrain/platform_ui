@@ -206,6 +206,41 @@ const Webserver = {
           .filter(f => f.type === "file")
           .map(f => decodeURIComponent(f.name));
       }),
+  deletePath: async (path, loginAccess = {
+    url: "/filebrowser/api/login",
+    username: "",
+    password: ""
+  }) => {
+
+    let token = null;
+
+    if (
+      loginAccess &&
+        loginAccess.url &&
+        loginAccess.username &&
+        loginAccess.password
+    )  {
+
+      const res = await superagent
+            .post(loginAccess.url)
+            .send({username: loginAccess.username})
+            .send({password: loginAccess.password})
+
+      if (res.status === 200) {
+        token = res.text;
+      }
+
+    }
+
+    superagent
+      .del(path)
+      .set('X-Auth', token)
+      .withCredentials()
+      .end(handleErrors)
+      .then(res => {
+        console.log(res);
+      })
+  },
   getFile: path =>
     superagent
       .get(URL_JSON_PREFIX + path)
