@@ -50,11 +50,28 @@ class AboutDropdown extends React.Component {
   render() {
     const { buildInfoStore } = this.props;
 
+    let versionInfo = null;
     let updateInfo = null;
+
+    if (buildInfoStore.version) {
+      versionInfo = (
+        <>
+          <div className="dropdown-divider" />
+          <a
+            className="dropdown-item version-link"
+            href="https://hub.docker.com/r/jolibrain/platform_ui/tags"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Current version: ${buildInfoStore.version}
+          </a>
+        </>
+      );
+    }
 
     if (buildInfoStore.isUpdatable) {
       updateInfo = (
-        <div>
+        <>
           <div className="dropdown-divider" />
           <a
             className="dropdown-item update-link"
@@ -65,7 +82,7 @@ class AboutDropdown extends React.Component {
             <span className="badge badge-secondary">{buildInfoStore.latestDockerTag}</span>
             &nbsp; Update Available
           </a>
-        </div>
+        </>
       );
     }
 
@@ -121,6 +138,7 @@ class AboutDropdown extends React.Component {
           >
             Jolibrain
           </a>
+          {versionInfo}
           {updateInfo}
         </div>
       </li>
