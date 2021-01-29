@@ -5,6 +5,7 @@ import Modal from "react-bootstrap4-modal";
 
 import PublishTrainingModal from "../../widgets/modals/PublishTrainingModal";
 import DeleteServiceModal from "../../widgets/modals/DeleteServiceModal";
+import DeleteRepositoryModal from "../../widgets/modals/DeleteRepositoryModal";
 
 @inject("modalStore")
 @withRouter
@@ -23,15 +24,22 @@ class Modals extends React.Component {
   render() {
     const modalStore = this.props.modalStore;
 
-    const deleteServiceModal = modalStore.getModal("deleteService");
     const publishTrainingModal = modalStore.getModal("publishTraining");
+    const deleteServiceModal = modalStore.getModal("deleteService");
+    const deleteRepositoryModal = modalStore.getModal("deleteRepository");
 
     let service = null;
+
     if (publishTrainingModal.params && publishTrainingModal.params.service) {
       service = publishTrainingModal.params.service;
     }
+
     if (deleteServiceModal.params && deleteServiceModal.params.service) {
       service = deleteServiceModal.params.service;
+    }
+
+    if (deleteRepositoryModal.params && deleteRepositoryModal.params.service) {
+      service = deleteRepositoryModal.params.service;
     }
 
     return (
@@ -53,6 +61,15 @@ class Modals extends React.Component {
           )}
         >
           <DeleteServiceModal service={service} redirect="/training" />
+        </Modal>
+        <Modal
+          visible={deleteRepositoryModal.visible}
+          onClickBackdrop={this.modalBackdropClicked.bind(
+            this,
+            "deleteRepository"
+          )}
+        >
+          <DeleteRepositoryModal service={service} redirect="/training" />
         </Modal>
       </div>
     );

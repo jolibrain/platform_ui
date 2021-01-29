@@ -20,6 +20,10 @@ export class modalStore {
       visible: false
     },
     {
+      name: "deleteRepository",
+      visible: false
+    },
+    {
       name: "benchmarkDisplay",
       visible: false
     }
