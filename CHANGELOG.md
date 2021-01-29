@@ -1,6 +1,6 @@
 # DeepDetect Platform UI (Changelog)
 
-## [0.12.0](https://github.com/jolibrain/platform_ui/compare/v0.10.0...v0.12.0) (2021-01-29)
+## [0.13.0](https://github.com/jolibrain/platform_ui/compare/v0.10.0...v0.13.0) (2021-01-29)
 
 
 ### Features
@@ -65,6 +65,7 @@
 * remove regression:true from mllib ([5efefab](https://github.com/jolibrain/platform_ui/commit/5efefabe3f99f7635d28c0f1f1ca73a3f778f543))
 * remove repository from repositoryStore ([1203e13](https://github.com/jolibrain/platform_ui/commit/1203e1392fa8aab893b2114fb4d2c45f452c7ba6))
 * remove training status when info not found ([4e06c73](https://github.com/jolibrain/platform_ui/commit/4e06c73d6d7e9accda76f0ca83f386bc3746d52f))
+* remove UnhandledPromiseRejectionWarning exception ([f0cdda1](https://github.com/jolibrain/platform_ui/commit/f0cdda141971cc57fe26e300d71813d4bd5c22ba))
 * remove unused code ([45d23af](https://github.com/jolibrain/platform_ui/commit/45d23af012039696fad705d9481adcc93fb85b51))
 * replace connector csv by csvts ([54d16e1](https://github.com/jolibrain/platform_ui/commit/54d16e188552b444b97d7b5c7f9fa9b25d14c0aa))
 * replace git version fetch by docker version ([e5cb3fa](https://github.com/jolibrain/platform_ui/commit/e5cb3fae4fef73889e0561dbfaabd514cd45c741))
