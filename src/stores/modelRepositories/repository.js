@@ -109,6 +109,13 @@ export default class Repository {
   }
 
   @action.bound
+  async deleteArchivedJob() {
+    const isDeleted = await this.$reqDeleteArchivedJob();
+    this.store.removeRepository(this.path);
+    return isDeleted;
+  }
+
+  @action.bound
   async _setMetricsDate() {
     // Do not try to fetch large files
     const filenames = this.files.filter(f => {
@@ -243,5 +250,9 @@ export default class Repository {
   $reqJsonConfig() {
     if (!this.files.includes("config.json")) return null;
     return agent.Webserver.getFileMeta(`${this.path}config.json`);
+  }
+
+  $reqDeleteArchivedJob() {
+    return agent.Webserver.deletePath(this.path)
   }
 }
