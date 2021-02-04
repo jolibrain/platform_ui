@@ -236,7 +236,7 @@ const Webserver = {
       .del(path)
       .set('X-Auth', token)
       .withCredentials()
-      .end(handleErrors)
+      .catch(handleErrors)
       .then(res => {
         console.log(res);
       })
