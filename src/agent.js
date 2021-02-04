@@ -216,9 +216,9 @@ const Webserver = {
 
     if (
       loginAccess &&
-        loginAccess.url &&
-        loginAccess.username &&
-        loginAccess.password
+        typeof loginAccess.url      !== "undefined" &&
+        typeof loginAccess.username !== "undefined" &&
+        typeof loginAccess.password !== "undefined"
     )  {
 
       const res = await superagent
