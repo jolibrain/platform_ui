@@ -11,7 +11,8 @@ class DeleteRepositoryModal extends React.Component {
     super(props);
     this.state = {
       spinner: false,
-      service: null
+      service: null,
+      deleteError: null
     };
     this.handleDeleteRepository = this.handleDeleteRepository.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
@@ -22,23 +23,29 @@ class DeleteRepositoryModal extends React.Component {
   }
 
   handleCancel() {
+    this.setState({ deleteError: null });
     this.props.modalStore.setVisible("deleteRepository", false);
   }
 
-  handleDeleteRepository() {
-    const { deepdetectStore, modalStore, history, redirect } = this.props;
+  async handleDeleteRepository() {
 
-    const server = deepdetectStore.servers.find(
-      s => s.name === this.state.service.serverName
-    );
+    const { modalStore, history, redirect } = this.props;
+    const { service } = this.state;
 
-    if (server) {
+    if (service) {
       this.setState({ spinner: true });
-      server.deleteService(this.state.service.name, () => {
+      const isDeleted = await service.deleteArchivedJob();
+
+      if(isDeleted) {
         this.setState({ spinner: false });
         modalStore.setVisible("deleteRepository", false);
         history.push(redirect || "/");
-      });
+      } else {
+        this.setState({
+          deleteError: "Error deleting archived job, please check writing permissions on filesystem.",
+          spinner: false
+        });
+      }
     }
   }
 
@@ -54,6 +61,15 @@ class DeleteRepositoryModal extends React.Component {
         <div className="modal-body">
           Do you really want to delete archive training job{" "}
           <pre>{this.state.service.name}</pre> ?
+
+          {this.state.deleteError ? (
+            <div className="alert alert-danger" role="alert">
+              {this.state.deleteError}
+            </div>
+          ) : (
+            ""
+          )}
+
         </div>
 
         <div className="modal-footer">
