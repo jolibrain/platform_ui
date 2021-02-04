@@ -253,6 +253,10 @@ export default class Repository {
   }
 
   $reqDeleteArchivedJob() {
-    return agent.Webserver.deletePath(this.path)
+    const fileserverPath = this.path.replace(
+      /^\/models\/training\//i,
+      '/filebrowser/api/resources/training_jobs/'
+    )
+    return agent.Webserver.deletePath(fileserverPath)
   }
 }
