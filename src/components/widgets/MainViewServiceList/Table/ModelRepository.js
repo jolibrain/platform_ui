@@ -146,8 +146,6 @@ class ModelRepositoryItem extends React.Component {
                 </a>
               </>
             )
-            // TODO: finish agent.js
-            deleteButton = null;
 
             content = (
               <>
