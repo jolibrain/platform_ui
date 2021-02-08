@@ -122,49 +122,56 @@ class Table extends React.Component {
                     selector: "train_loss",
                     isValue: true,
                     hide: false,
-                    toggable: true
+                    toggable: true,
+                  formatter: this.formatFloatValue
                 },
                 {
                     text: "Mean IOU",
                     selector: "meaniou",
                     isValue: true,
                     hide: true,
-                    toggable: true
+                    toggable: true,
+                  formatter: this.formatFloatValue
                 },
                 {
                     text: "MAP",
                     selector: "map",
                     isValue: true,
                     hide: false,
-                    toggable: true
+                    toggable: true,
+                  formatter: this.formatFloatValue
                 },
                 {
                     text: "Accuracy",
                     selector: "accuracy",
                     isValue: true,
                     hide: true,
-                    toggable: true
+                    toggable: true,
+                  formatter: this.formatFloatValue
                 },
                 {
                     text: "F1",
                     selector: "f1",
                     isValue: true,
                     hide: true,
-                    toggable: true
+                    toggable: true,
+                  formatter: this.formatFloatValue
                 },
                 {
                     text: "Mcll",
                     selector: "mcll",
                     isValue: true,
                     hide: true,
-                    toggable: true
+                    toggable: true,
+                  formatter: this.formatFloatValue
                 },
                 {
                     text: "Eucll",
                     selector: "eucll",
                     isValue: true,
                     hide: true,
-                    toggable: true
+                    toggable: true,
+                  formatter: this.formatFloatValue
                 },
                 {
                     text: "",
@@ -178,7 +185,17 @@ class Table extends React.Component {
 
         this.toggleColumn = this.toggleColumn.bind(this);
         this.handleFilterClick = this.handleFilterClick.bind(this)
+      this.formatFloatValue = this.formatFloatValue.bind(this);
     }
+
+  formatFloatValue(value) {
+    let content = '--';
+
+    if(!isNaN(value))
+      content = parseFloat(value).toFixed(5);
+
+    return content;
+  }
 
     handleFilterClick(event){
         const { handlePathFilter } = this.props;
