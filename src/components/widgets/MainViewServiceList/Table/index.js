@@ -13,180 +13,180 @@ import DatasetItem from "./Dataset";
 @observer
 class Table extends React.Component {
 
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.state = {
-            columns: [
-                {
-                    text: "",
-                    type: "selector",
-                    hide: false,
-                    toggable: false
-                },
-                {
-                    text: "",
-                    selector: "name",
-                    hide: false,
-                    toggable: false,
-                    formatter: (value, service) => {
+    this.state = {
+      columns: [
+        {
+          text: "",
+          type: "selector",
+          hide: false,
+          toggable: false
+        },
+        {
+          text: "",
+          selector: "name",
+          hide: false,
+          toggable: false,
+          formatter: (value, service) => {
 
-                        const configBadge = service.jsonConfig ? (
-                            <a
-                                href={`${service.path}config.json`}
-                                className="badge badge-dark"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                config
-                            </a>
-                        ) : null;
+            const configBadge = service.jsonConfig ? (
+              <a
+                href={`${service.path}config.json`}
+                className="badge badge-dark"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                config
+              </a>
+            ) : null;
 
-                        const metricsBadge = service.jsonMetrics ? (
-                            <a
-                                href={`${service.path}metrics.json`}
-                                className="badge badge-dark"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                metrics
-                            </a>
-                        ) : null;
+            const metricsBadge = service.jsonMetrics ? (
+              <a
+                href={`${service.path}metrics.json`}
+                className="badge badge-dark"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                metrics
+              </a>
+            ) : null;
 
-                        return (
-                            <>
-                              {value}
-                              <br/>
-                              {configBadge}
-                              {metricsBadge}
-                            </>
-                        )
-                    }
-                },
-                {
-                    text: "Date",
-                    selector: "metricsDate",
-                    hide: true,
-                    toggable: true,
-                    formatter: (value, service) => {
-                        return moment(value).format("L LT");
-                    }
-                },
-                {
-                    text: "Tags",
-                    selector: "path",
-                    hide: false,
-                    toggable: false,
-                    formatter: (value) => {
-                        const tags = value
-                              .split("/")
-                              .slice(0, -2)
-                              .filter(item => {
-                                  return item.length > 0 &&
-                                      !["models", "training"].includes(item)
-                              })
+            return (
+              <>
+                {value}
+                <br/>
+                {configBadge}
+                {metricsBadge}
+              </>
+            )
+          }
+        },
+        {
+          text: "Date",
+          selector: "metricsDate",
+          hide: true,
+          toggable: true,
+          formatter: (value, service) => {
+            return moment(value).format("L LT");
+          }
+        },
+        {
+          text: "Tags",
+          selector: "path",
+          hide: false,
+          toggable: false,
+          formatter: (value) => {
+            const tags = value
+                  .split("/")
+                  .slice(0, -2)
+                  .filter(item => {
+                    return item.length > 0 &&
+                      !["models", "training"].includes(item)
+                  })
 
-                        return (
-                            <div>
-                              {
-                                  tags.map(
-                                      (tag, i) =>
-                                          <span
-                                            key={i}
-                                            className="badge badge-filter"
-                                            onClick={this.handleFilterClick}
-                                          >
-                                            {tag}
-                                          </span>
-                                  )
-                              }
-                            </div>
-                        )
-                    }
-                },
+            return (
+              <div>
                 {
-                    text: "Type",
-                    selector: "mltype",
-                    hide: true,
-                    toggable: true
-                },
-                {
-                    text: "Iterations",
-                    selector: "iterations",
-                    isValue: true,
-                    hide: true,
-                    toggable: true
-                },
-                {
-                    text: "Train Loss",
-                    selector: "train_loss",
-                    isValue: true,
-                    hide: false,
-                    toggable: true,
-                  formatter: this.formatFloatValue
-                },
-                {
-                    text: "Mean IOU",
-                    selector: "meaniou",
-                    isValue: true,
-                    hide: true,
-                    toggable: true,
-                  formatter: this.formatFloatValue
-                },
-                {
-                    text: "MAP",
-                    selector: "map",
-                    isValue: true,
-                    hide: false,
-                    toggable: true,
-                  formatter: this.formatFloatValue
-                },
-                {
-                    text: "Accuracy",
-                    selector: "accuracy",
-                    isValue: true,
-                    hide: true,
-                    toggable: true,
-                  formatter: this.formatFloatValue
-                },
-                {
-                    text: "F1",
-                    selector: "f1",
-                    isValue: true,
-                    hide: true,
-                    toggable: true,
-                  formatter: this.formatFloatValue
-                },
-                {
-                    text: "Mcll",
-                    selector: "mcll",
-                    isValue: true,
-                    hide: true,
-                    toggable: true,
-                  formatter: this.formatFloatValue
-                },
-                {
-                    text: "Eucll",
-                    selector: "eucll",
-                    isValue: true,
-                    hide: true,
-                    toggable: true,
-                  formatter: this.formatFloatValue
-                },
-                {
-                    text: "",
-                    selector: "",
-                    hide: false,
-                    toggable: false,
-                    isAction: true
+                  tags.map(
+                    (tag, i) =>
+                      <span
+                        key={i}
+                        className="badge badge-filter"
+                        onClick={this.handleFilterClick}
+                      >
+                        {tag}
+                      </span>
+                  )
                 }
-            ]
+              </div>
+            )
+          }
+        },
+        {
+          text: "Type",
+          selector: "mltype",
+          hide: true,
+          toggable: true
+        },
+        {
+          text: "Iterations",
+          selector: "iterations",
+          isValue: true,
+          hide: true,
+          toggable: true
+        },
+        {
+          text: "Train Loss",
+          selector: "train_loss",
+          isValue: true,
+          hide: false,
+          toggable: true,
+          formatter: this.formatFloatValue
+        },
+        {
+          text: "Mean IOU",
+          selector: "meaniou",
+          isValue: true,
+          hide: true,
+          toggable: true,
+          formatter: this.formatFloatValue
+        },
+        {
+          text: "MAP",
+          selector: "map",
+          isValue: true,
+          hide: false,
+          toggable: true,
+          formatter: this.formatFloatValue
+        },
+        {
+          text: "Accuracy",
+          selector: "accuracy",
+          isValue: true,
+          hide: true,
+          toggable: true,
+          formatter: this.formatFloatValue
+        },
+        {
+          text: "F1",
+          selector: "f1",
+          isValue: true,
+          hide: true,
+          toggable: true,
+          formatter: this.formatFloatValue
+        },
+        {
+          text: "Mcll",
+          selector: "mcll",
+          isValue: true,
+          hide: true,
+          toggable: true,
+          formatter: this.formatFloatValue
+        },
+        {
+          text: "Eucll",
+          selector: "eucll",
+          isValue: true,
+          hide: true,
+          toggable: true,
+          formatter: this.formatFloatValue
+        },
+        {
+          text: "",
+          selector: "",
+          hide: false,
+          toggable: false,
+          isAction: true
         }
-
-        this.toggleColumn = this.toggleColumn.bind(this);
-        this.handleFilterClick = this.handleFilterClick.bind(this)
-      this.formatFloatValue = this.formatFloatValue.bind(this);
+      ]
     }
+
+    this.toggleColumn = this.toggleColumn.bind(this);
+    this.handleFilterClick = this.handleFilterClick.bind(this)
+    this.formatFloatValue = this.formatFloatValue.bind(this);
+  }
 
   formatFloatValue(value) {
     let content = '--';
