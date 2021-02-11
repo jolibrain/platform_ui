@@ -92,6 +92,15 @@ export default class Repository {
     return this.jsonMetrics.body.measure_hist;
   }
 
+  @computed
+  get isTimeseries() {
+      return this.jsonConfig &&
+        this.jsonConfig.parameters &&
+        this.jsonConfig.parameters.input &&
+        this.jsonConfig.parameters.input.connector &&
+        this.jsonConfig.parameters.input.connector === "csvts"
+  }
+
   _load() {
     this._loadJsonConfig();
     this._loadJsonMetrics();
