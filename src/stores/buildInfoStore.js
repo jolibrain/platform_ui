@@ -20,7 +20,7 @@ export class buildInfoStore {
   get isUpdatable() {
 
     // By default, platform_ui is not updatable
-    let updatable = true;
+    let updatable = false;
 
     if (
       this.version &&
