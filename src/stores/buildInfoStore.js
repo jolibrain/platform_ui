@@ -57,7 +57,7 @@ export class buildInfoStore {
 
       updatable = dockerMajor > localMajor ||
         (dockerMajor === localMajor && dockerMinor > localMinor) ||
-        (dockerMinor === localMinor && dockerPatch > localPatch);
+        (dockerMajor === localMajor && dockerMinor === localMinor && dockerPatch > localPatch);
     }
 
     return updatable;
