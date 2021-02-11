@@ -50,37 +50,32 @@ class AboutDropdown extends React.Component {
   render() {
     const { buildInfoStore } = this.props;
 
-    let versionInfo = null;
     let updateInfo = null;
 
-    if (buildInfoStore.version) {
-      versionInfo = (
-        <>
-          <div className="dropdown-divider" />
-          <a
-            className="dropdown-item version-link"
-            href="https://hub.docker.com/r/jolibrain/platform_ui/tags"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Current version: ${buildInfoStore.version}
-          </a>
-        </>
-      );
-    }
+    const versionInfo = (
+      <>
+        <div className="dropdown-divider" />
+        <a
+          className="dropdown-item version-link"
+          href="https://hub.docker.com/r/jolibrain/platform_ui/tags"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {buildInfoStore.version}
+        </a>
+      </>
+    );
 
     if (buildInfoStore.isUpdatable) {
       updateInfo = (
         <>
-          <div className="dropdown-divider" />
           <a
             className="dropdown-item update-link"
             href="https://deepdetect.com/quickstart-platform/#update"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <span className="badge badge-secondary">{buildInfoStore.latestDockerTag}</span>
-            &nbsp; Update Available
+            <i className="fas fa-arrow-circle-right"></i> Update
           </a>
         </>
       );
