@@ -43,7 +43,24 @@ const BuildInfo = {
       .get(path)
       .withCredentials()
       .end(handleErrors)
-      .then(responseBody),
+      .then(res => {
+        let version = null;
+        const versionRegex = /^DD_PLATFORM_UI_TAG=(.*)$/m;
+        if (
+          res &&
+            res.text &&
+            versionRegex.test(res.text)
+        ) {
+          const regResult = versionRegex.exec(res.text);
+          if(
+            regResult.index > 0 &&
+              regResult[1].length > 0
+          ) {
+            version = regResult[1]
+          }
+        }
+        return version;
+      }),
   getDockerTags: (path = "/docker-tags") =>
     superagent
       .get(path)
