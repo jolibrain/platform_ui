@@ -161,7 +161,10 @@ class GeneralInfo extends React.Component {
         );
       }
 
-      if (typeof measure.eucll !== "undefined") {
+      if (
+        typeof measure.eucll !== "undefined" &&
+          !service.isTimeseries
+      ) {
         hasMeanIou = true;
         infoCharts.push(
           <MeasureChart
