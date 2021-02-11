@@ -7,6 +7,8 @@ class TitleItem extends React.Component {
   constructor(props) {
     super(props);
     this.getValue = this.getValue.bind(this);
+    this.getBestValue = this.getBestValue.bind(this);
+    this.getMeasureValue = this.getMeasureValue.bind(this);
   }
 
   getValue(attr) {
@@ -37,14 +39,11 @@ class TitleItem extends React.Component {
     return value ? parseFloat(value) : "--";
   }
 
-  render() {
-    const {
-      service,
-      serviceIndex,
-      isVisible,
-      handleRepositoryVisibility
-    } = this.props;
+  getBestValue(selector) {
 
+    const { service } = this.props;
+
+    let value = '--';
     let measure = null;
 
     if (service.jsonMetrics) {
@@ -53,68 +52,61 @@ class TitleItem extends React.Component {
       measure = service.measure;
     }
 
-    let trainLossValue = this.getValue("train_loss");
+    if (measure && measure[selector])
+      value = measure[selector];
 
-    if (typeof trainLossValue.toFixed === "function") {
-      if (trainLossValue > 1) {
-        trainLossValue = trainLossValue.toFixed(3);
-      } else {
-        // Find position of first number after the comma
-        const zeroPosition = trainLossValue
-          .toString()
-          .split("0")
-          .slice(2)
-          .findIndex(elem => elem.length > 0);
+    return value;
 
-        trainLossValue = trainLossValue.toFixed(zeroPosition + 4);
-      }
-    }
+  }
 
-    const iterationsValue =
-      measure && measure.iteration ? measure.iteration : "--";
+  getMeasureValue(selector) {
 
-    const iterationBestValue =
-      service.bestModel && service.bestModel.iteration
-        ? service.bestModel.iteration
-        : "--";
+    const { service } = this.props;
+    let value = '--';
 
-    const mapBestValue =
-      service.bestModel && service.bestModel.map ? service.bestModel.map : "--";
+    if(service.bestModel && service.bestModel[selector])
+        value = service.bestModel[selector]
+
+    return value;
+  }
+
+  render() {
+    const {
+      service,
+      tableColumns
+    } = this.props;
 
     return (
       <tr>
-        <td className={`chart-cell-${serviceIndex}`}>{service.name}</td>
-        <td>{trainLossValue}</td>
-        <td>{iterationsValue}</td>
-        <td>{iterationBestValue}</td>
-        <td>{mapBestValue}</td>
-        <td>
-          <a
-            href={`${service.path}config.json`}
-            className="badge badge-dark"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            config
-          </a>
-          <br />
-          <a
-            href={`${service.path}metrics.json`}
-            className="badge badge-dark"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            metrics
-          </a>
-        </td>
-        <td>
-          <i
-            className={`chart-badge-${serviceIndex} fa fa-2x fa-toggle-${
-              isVisible ? "off" : "on"
-            }`}
-            onClick={handleRepositoryVisibility.bind(this, serviceIndex)}
-          />
-        </td>
+        {
+          tableColumns.map( (column, index) => {
+
+            const className = column.classNameFormatter ?
+              column.classNameFormatter(this.props) : null
+
+            let value = null;
+
+            if (column.isBest) {
+              value = this.getBestValue(column.selector);
+            } else if (column.isMeasure) {
+              value = this.getMeasureValue(column.selector);
+            } else if (column.isValue) {
+              value = this.getValue(column.selector);
+            } else {
+              value = service[column.selector]
+            }
+
+            return <td
+                     key={`column-${index}`}
+                     className={className}
+                   >
+                     {
+                       column.formatter ?
+                         column.formatter(value, this.props) : value
+                     }
+                   </td>;
+          })
+        }
       </tr>
     );
   }
