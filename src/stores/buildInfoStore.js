@@ -67,8 +67,15 @@ export class buildInfoStore {
   loadBuildInfo(callback = () => {}) {
     this.$reqVersion().then(
       action(version => {
-        this.version = version;
-        this.loadLatestDockerTag();
+
+        if(
+          typeof version !== 'undefined' &&
+            version
+        ) {
+          this.version = version;
+          this.loadLatestDockerTag();
+        }
+
         callback(this);
       })
     );
