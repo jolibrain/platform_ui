@@ -5,7 +5,7 @@ import moment from "moment";
 export class buildInfoStore {
   @observable isReady = false;
 
-  @observable version = null;
+  @observable version = "dev";
   @observable latestDockerTag = null;
 
   $reqDockerTags() {
