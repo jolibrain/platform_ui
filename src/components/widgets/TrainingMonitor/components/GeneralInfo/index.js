@@ -191,7 +191,8 @@ class GeneralInfo extends React.Component {
       !hasMeanIou &&
         mltype !== "segmentation" &&
         service.bestModel &&
-        service.bestModel.meaniou
+        service.bestModel.meaniou &&
+        !service.isTimeseries
     ) {
       hasMeanIou = true;
       infoCharts.push(
@@ -300,6 +301,31 @@ class GeneralInfo extends React.Component {
         break;
       default:
         break;
+    }
+
+    if ( service.isTimeseries ) {
+      infoCharts.push(
+        <MeasureChart
+          title="L1 Mean Error"
+          attribute="L1_mean_error"
+          key="L1_mean_error"
+          steppedLine
+          showMinValue
+          layout={layout}
+          {...this.props}
+        />
+      );
+      infoCharts.push(
+        <MeasureChart
+          title="L2 Mean Error"
+          attribute="L2_mean_error"
+          key="L2_mean_error"
+          steppedLine
+          showMinValue
+          layout={layout}
+          {...this.props}
+        />
+      );
     }
 
     return (
