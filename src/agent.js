@@ -45,7 +45,7 @@ const BuildInfo = {
       .end(handleErrors)
       .then(res => {
         let version = null;
-        const versionRegex = /^DD_PLATFORM_UI_TAG=(.*)$/m;
+        const versionRegex = /^(v\d+\.\d+\.\d+).*$/;
         if (
           res &&
             res.text &&
