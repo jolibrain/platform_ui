@@ -259,6 +259,17 @@ export default class deepdetectService {
     return gpuid;
   }
 
+  @computed
+  get isTimeseries() {
+    return this.respInfo &&
+      this.respInfo.body &&
+      this.respInfo.body.parameters &&
+      this.respInfo.body.parameters.input &&
+      this.respInfo.body.parameters.input[0] &&
+      this.respInfo.body.parameters.input[0].connector &&
+      this.respInfo.body.parameters.input[0].connector === "csvts"
+  }
+
   @action
   shuffleInputs() {
     let shuffledInputs = [...this.inputs];
