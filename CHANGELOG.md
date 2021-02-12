@@ -1,11 +1,12 @@
 # DeepDetect Platform UI (Changelog)
 
-### [0.13.4](https://github.com/jolibrain/platform_ui/compare/v0.13.3...v0.13.4) (2021-02-12)
+### [0.13.5](https://github.com/jolibrain/platform_ui/compare/v0.13.3...v0.13.5) (2021-02-12)
 
 
 ### Features
 
 * add isTimeSeries on model repositories ([4cf290c](https://github.com/jolibrain/platform_ui/commit/4cf290c03b9e700677fd212fa2177aa1dd5c14d7))
+* add L1 and L2 mean error chart on timeseries ([fc49e30](https://github.com/jolibrain/platform_ui/commit/fc49e30fc24ce6f637246200d3651b2c9a82a855))
 * TrainingShow title is parameterized ([2adc1a4](https://github.com/jolibrain/platform_ui/commit/2adc1a40b3cd4c4cd1e3fa91aa8d96f36e69c419))
 
 
