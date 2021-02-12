@@ -1,6 +1,6 @@
 # DeepDetect Platform UI (Changelog)
 
-## [0.14.0](https://github.com/jolibrain/platform_ui/compare/v0.13.3...v0.14.0) (2021-02-12)
+### [0.14.1](https://github.com/jolibrain/platform_ui/compare/v0.13.3...v0.14.1) (2021-02-12)
 
 
 ### Features
