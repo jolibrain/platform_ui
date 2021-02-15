@@ -49,12 +49,11 @@ const BuildInfo = {
         if (
           res &&
             res.text &&
-            versionRegex.test(res.text)
+            versionRegex.test(res.text.trim())
         ) {
-          const regResult = versionRegex.exec(res.text);
+          const regResult = versionRegex.exec(res.text.trim());
           if(
-            regResult.index > 0 &&
-              regResult[1].length > 0
+            regResult.length > 0 && regResult[1]
           ) {
             version = regResult[1]
           }
