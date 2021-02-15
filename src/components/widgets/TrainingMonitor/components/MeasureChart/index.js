@@ -550,6 +550,14 @@ class MeasureChart extends React.Component {
       this.getServiceValue(service, index, attribute, chartData)
     );
 
+    // if not data available, hide chart
+    if (
+      !chartData.datasets ||
+        chartData.datasets.length === 0 ||
+        chartData.datasets.every(d => !d.data || d.data.length === 0)
+    )
+      return null;
+
     return (
       <div className={`trainingmonitor-chart ${this.props.layout}`}>
         <div className="chart container">
