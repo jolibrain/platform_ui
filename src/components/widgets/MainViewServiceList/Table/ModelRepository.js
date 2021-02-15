@@ -117,7 +117,7 @@ class ModelRepositoryItem extends React.Component {
                 <br/>
                 <a
                   onClick={this.openPublishTrainingModal}
-                  className="btn btn-outline-primary"
+                  className="btn btn-sm btn-outline-primary"
                 >
                   <i className="fas fa-plus" /> Publish
                 </a>
@@ -128,7 +128,7 @@ class ModelRepositoryItem extends React.Component {
               publishButton = (
                 <>
                   <br/>
-                  <a className="btn btn-outline-primary">
+                  <a className="btn btn-sm btn-outline-primary">
                     <i className="fas fa-spinner fa-spin" /> Publishing...
                   </a>
                 </>
@@ -140,7 +140,7 @@ class ModelRepositoryItem extends React.Component {
                 <br/>
                 <a
                   onClick={this.deleteRepositoryModal}
-                  className="btn btn-outline-danger"
+                  className="btn btn-sm btn-outline-danger"
                 >
                   <i className="fas fa-trash" /> Delete
                 </a>
@@ -149,7 +149,7 @@ class ModelRepositoryItem extends React.Component {
 
             content = (
               <>
-              <Link to={archiveUrl} className="btn btn-primary">
+              <Link to={archiveUrl} className="btn btn-sm btn-primary">
                 View <i className="fas fa-chevron-right" />
               </Link>
               {publishButton}
