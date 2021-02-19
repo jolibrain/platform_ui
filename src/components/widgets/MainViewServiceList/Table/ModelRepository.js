@@ -34,6 +34,7 @@ class ModelRepositoryItem extends React.Component {
     };
 
     this.getValue = this.getValue.bind(this);
+    this.getBestValue = this.getBestValue.bind(this);
     this.toggleCompareState = this.toggleCompareState.bind(this);
 
     this.openPublishTrainingModal = this.openPublishTrainingModal.bind(this);
@@ -61,13 +62,13 @@ class ModelRepositoryItem extends React.Component {
   }
 
   getValue(service, attr) {
-    if (!service.jsonMetrics) return null;
+    if (!service.jsonMetrics) return '--';
 
     const { measure, measure_hist } = service.jsonMetrics.body;
 
-    let value = null;
+    let value = '--';
 
-    if (measure) {
+    if (measure && measure[attr]) {
       value = measure[attr];
     } else if (
       measure_hist &&
@@ -78,16 +79,30 @@ class ModelRepositoryItem extends React.Component {
         measure_hist[`${attr}_hist`][measure_hist[`${attr}_hist`].length - 1];
     }
 
-    if (attr !== "remain_time_str" && value) {
-      if (attr === "train_loss") {
-        value = value.toFixed(10);
-      } else {
-        value = value.toFixed(5);
-      }
+    return value;
+  }
+
+  getBestValue(service, selector, bestValueCallback) {
+    if (!service) return "--";
+
+    const measure_hist = service.jsonMetrics
+      ? service.jsonMetrics.body.measure_hist
+      : service.measure_hist;
+
+    let value = '--';
+
+    if (
+      measure_hist &&
+      measure_hist[`${selector}_hist`] &&
+      measure_hist[`${selector}_hist`].length > 0
+    ) {
+      value = bestValueCallback(measure_hist[`${selector}_hist`])
     }
 
     return value;
   }
+
+
 
   render() {
     const { service } = this.props;
@@ -164,14 +179,31 @@ class ModelRepositoryItem extends React.Component {
             if (data.isValue) {
               value = this.getValue(service, data.selector);
             } else {
-              value = service[data.selector];
+              value = service[data.selector] || '--';
+            }
+
+            if( value !== '--' ) {
+              value = data.formatter ?
+                    data.formatter(value, service) : value
+            }
+
+            let bestValue = null;
+
+            if (data.bestValueCallback) {
+              bestValue = this.getBestValue(
+                service,
+                data.selector,
+                data.bestValueCallback
+              );
+              bestValue = data.formatter ?
+                    data.formatter(bestValue, service) : bestValue;
             }
 
             content = (
-              <span>{
-                data.formatter ?
-                  data.formatter(value, service) : value
-              }</span>
+              <>
+                { value }
+                { bestValue ? <><br/>Best: {bestValue}</> : null }
+              </>
             )
           }
 

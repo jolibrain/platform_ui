@@ -123,6 +123,7 @@ class Table extends React.Component {
           isValue: true,
           hide: false,
           toggable: true,
+          bestValueCallback: this.bestMinValue,
           formatter: this.formatFloatValue
         },
         {
@@ -131,6 +132,7 @@ class Table extends React.Component {
           isValue: true,
           hide: true,
           toggable: true,
+          bestValueCallback: this.bestMaxValue,
           formatter: this.formatFloatValue
         },
         {
@@ -139,14 +141,16 @@ class Table extends React.Component {
           isValue: true,
           hide: false,
           toggable: true,
+          bestValueCallback: this.bestMaxValue,
           formatter: this.formatFloatValue
         },
         {
           text: "Accuracy",
-          selector: "accuracy",
+          selector: "acc",
           isValue: true,
           hide: true,
           toggable: true,
+          bestValueCallback: this.bestMaxValue,
           formatter: this.formatFloatValue
         },
         {
@@ -155,6 +159,7 @@ class Table extends React.Component {
           isValue: true,
           hide: true,
           toggable: true,
+          bestValueCallback: this.bestMaxValue,
           formatter: this.formatFloatValue
         },
         {
@@ -163,6 +168,7 @@ class Table extends React.Component {
           isValue: true,
           hide: true,
           toggable: true,
+          bestValueCallback: this.bestMinValue,
           formatter: this.formatFloatValue
         },
         {
@@ -171,6 +177,7 @@ class Table extends React.Component {
           isValue: true,
           hide: true,
           toggable: true,
+          bestValueCallback: this.bestMinValue,
           formatter: this.formatFloatValue
         },
         {
@@ -185,16 +192,28 @@ class Table extends React.Component {
 
     this.toggleColumn = this.toggleColumn.bind(this);
     this.handleFilterClick = this.handleFilterClick.bind(this)
+
     this.formatFloatValue = this.formatFloatValue.bind(this);
+    this.bestMinValue = this.bestMinValue.bind(this);
+    this.bestMaxValue = this.bestMaxValue.bind(this);
   }
 
   formatFloatValue(value) {
-    let content = '--';
+    let content = value;
 
-    if(!isNaN(value))
+    if(!isNaN(value)) {
       content = parseFloat(value).toFixed(5);
+    }
 
     return content;
+  }
+
+  bestMinValue(histValues) {
+    return Math.min.apply(Math, histValues);
+  }
+
+  bestMaxValue(histValues) {
+    return Math.max.apply(Math, histValues);
   }
 
     handleFilterClick(event){
