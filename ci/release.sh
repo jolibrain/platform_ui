@@ -3,7 +3,7 @@
 set -e
 
 here=$(readlink -f $(dirname $0))
-kind=${1:-minor}
+kind=${1:-patch}
 
 cd $here/..
 
