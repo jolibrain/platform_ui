@@ -66,6 +66,7 @@
     "react-data-table-component": "^7.0.0-alpha-4",
     "react-dev-utils": "^10.2.1",
     "react-dom": "^16.13.1",
+    "react-paginate": "^7.1.0",
     "react-papaparse": "^3.11.0",
     "react-router-dom": "^5.2.0",
     "react-sparklines": "^1.7.0",
