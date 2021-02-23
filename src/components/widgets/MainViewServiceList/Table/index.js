@@ -22,6 +22,43 @@ class Table extends React.Component {
         offset: 0,
         perPage: 30
       },
+      presets: [
+        {
+          name: "Timeseries",
+          isActive: true,
+          selectors: [
+            "train_loss",
+            "eucll",
+            "L1_mean_error"
+          ]
+        },
+        {
+          name: "Detection",
+          isActive: false,
+          selectors: [
+            "train_loss",
+            "map"
+          ]
+        },
+        {
+          name: "Segmentation",
+          isActive: false,
+          selectors: [
+            "train_loss",
+            "meaniou",
+            "accuracy"
+          ]
+        },
+        {
+          name: "Classification",
+          isActive: false,
+          selectors: [
+            "train_loss",
+            "acc",
+            "f1"
+          ]
+        }
+      ],
       columns: [
         {
           text: "",
@@ -72,7 +109,7 @@ class Table extends React.Component {
           text: "Date",
           selector: "metricsDate",
           hide: true,
-          toggable: true,
+          toggable: false,
           formatter: (value, service) => {
             return moment(value).format("L LT");
           }
@@ -109,18 +146,18 @@ class Table extends React.Component {
             )
           }
         },
-        {
-          text: "Type",
-          selector: "mltype",
-          hide: true,
-          toggable: true
-        },
+        // {
+        //   text: "Type",
+        //   selector: "mltype",
+        //   hide: true,
+        //   toggable: false
+        // },
         {
           text: "Iterations",
-          selector: "iterations",
+          selector: "iteration",
           isValue: true,
-          hide: true,
-          toggable: true
+          hide: false,
+          //toggable: true
         },
         {
           text: "Train Loss",
@@ -144,7 +181,7 @@ class Table extends React.Component {
           text: "MAP",
           selector: "map",
           isValue: true,
-          hide: false,
+          hide: true,
           toggable: true,
           bestValueCallback: this.bestMaxValue,
           formatter: this.formatFloatValue
@@ -168,6 +205,15 @@ class Table extends React.Component {
           formatter: this.formatFloatValue
         },
         {
+          text: "L1 Mean Error",
+          selector: "L1_mean_error",
+          isValue: true,
+          hide: false,
+          toggable: true,
+          bestValueCallback: this.bestMinValue,
+          formatter: this.formatFloatValue
+        },
+        {
           text: "Mcll",
           selector: "mcll",
           isValue: true,
@@ -180,7 +226,7 @@ class Table extends React.Component {
           text: "Eucll",
           selector: "eucll",
           isValue: true,
-          hide: true,
+          hide: false,
           toggable: true,
           bestValueCallback: this.bestMinValue,
           formatter: this.formatFloatValue
@@ -197,7 +243,7 @@ class Table extends React.Component {
 
     this.toggleColumn = this.toggleColumn.bind(this);
     this.handleFilterClick = this.handleFilterClick.bind(this)
-    this.handleFilterPreset = this.handleFilterPreset.bind(this);
+    this.handlePresetClick = this.handlePresetClick.bind(this);
     this.handlePageClick = this.handlePageClick.bind(this);
 
     this.formatFloatValue = this.formatFloatValue.bind(this);
@@ -241,7 +287,39 @@ class Table extends React.Component {
     })
   }
 
-  handleFilterPreset(event) {
+  handlePresetClick(event) {
+
+    const presetName = event.target.innerHTML;
+    const { columns, presets } = this.state;
+    const selectedPreset = presets.find(p => {
+      return p.name === presetName;
+    });
+
+    const newPresets = presets.map(preset => {
+      const newPreset = {...preset}
+      newPreset.isActive = preset.name === presetName
+      return newPreset;
+    })
+
+    const newColumns = columns.map((column, index) => {
+      if(column.toggable) {
+        const newColumn = {...column}
+        console.log(selectedPreset.selectors)
+        console.log(column.selector)
+        newColumn.hide = !selectedPreset.selectors.includes(
+          column.selector
+        )
+        return newColumn;
+      }
+
+      return column;
+    })
+
+    this.setState({
+      ...this.state,
+      presets: newPresets,
+      columns: newColumns
+    })
 
   }
 
@@ -359,29 +437,28 @@ class Table extends React.Component {
 
     });
 
-    const columnsFilter = (
-      <div className="col column-filters text-right">
-        {
-          this.state.columns
-              .filter(column => column.toggable)
-              .map((column, index) => {
-                return (<span key={index}>
-                                 <input
-                                   type="checkbox"
-                                   checked={!column.hide}
-                                   onChange={
-                                     this.toggleColumn.bind(this, column.text)
-                                   } /> {column.text}
-                   </span>);
-
-              })
-        }
-      </div>
-    );
-
     return (
       <>
-        {columnsFilter}
+        <div className="col text-right">
+          <div className="btn-group btn-group-sm" role="group" aria-label="Metrics preset">
+            {
+              this.state.presets.map((p, index) => {
+                return <button
+                      key={index}
+                        type={'button'}
+                        className={
+                          p.isActive ?
+                            "btn btn-primary active" : "btn btn-primary"
+                        }
+                        onClick={this.handlePresetClick}
+                      >
+                        {p.name}
+                      </button>
+              })
+
+            }
+          </div>
+        </div>
         <table className="table">
           <thead>
             { tableHeadContent }
