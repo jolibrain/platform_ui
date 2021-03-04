@@ -321,8 +321,6 @@ class Table extends React.Component {
       columns: newColumns
     })
 
-  }
-
   handlePageClick(data) {
     const { pagination } = this.state;
     let selected = data.selected;
