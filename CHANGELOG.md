@@ -1,8 +1,9 @@
 # DeepDetect Platform UI (Changelog)
 
-### [0.13.9](https://github.com/jolibrain/platform_ui/compare/v0.13.8...v0.13.9) (2021-02-19)
+### [0.13.10](https://github.com/jolibrain/platform_ui/compare/v0.13.9...v0.13.10) (2021-03-04)
 
 
-### Bug Fixes
+### Features
 
-* display best values in TrainingHome table ([f3b6656](https://github.com/jolibrain/platform_ui/commit/f3b6656696ed1db9e3ed3dbc2e0ac935c6e8b174))
+* add pagination on TrainingHome table ([b7cbba2](https://github.com/jolibrain/platform_ui/commit/b7cbba294eb51fc98a608b092ce08c69d1e309e1))
+* add preset column display on TrainingHome ([3e0da2d](https://github.com/jolibrain/platform_ui/commit/3e0da2dbffca68a868e1f7659704fe28c947e9fc))
