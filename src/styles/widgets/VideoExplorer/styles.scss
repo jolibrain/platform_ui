@@ -1,0 +1,53 @@
+.source-folder-selector {
+  margin: 50px auto 10px auto;
+}
+
+.video-main-display {
+
+  position: relative;
+  padding-top: 56.25%; // Player ratio: 100 / (1280 / 720)
+  margin-bottom: 20px;
+
+  .react-player {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+}
+
+.video-chrono {
+  height: 90vh;
+
+  .timeline-main-wrapper {
+    padding: 0 !important;
+  }
+
+  [data-testid="tree-leaf"] {
+    margin: 0 20px !important;
+  }
+
+  .timeline-card-content {
+    min-height: 177px !important;
+  }
+
+  .card-media-wrapper {
+    min-height: 112px !important;
+  }
+
+  .card-description {
+  }
+}
+
+.frame-selector {
+
+  .pagination {
+    margin: 10px auto;
+  }
+
+  img {
+    cursor: pointer;
+  }
+
+}
+

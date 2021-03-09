@@ -45,6 +45,9 @@ export class configStore {
   };
 
   @observable
+  videoExplorer = null;
+
+  @observable
   modelRepositories = [
     {
       name: "public",
@@ -109,6 +112,8 @@ export class configStore {
             : this.deepdetect;
 
           this.imaginate = config.imaginate ? config.imaginate : this.imaginate;
+
+          this.videoExplorer = config.videoExplorer ? config.videoExplorer : this.videoExplorer;
 
           this.modelRepositories = config.modelRepositories
             ? config.modelRepositories

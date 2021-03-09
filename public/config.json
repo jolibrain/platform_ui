@@ -115,6 +115,15 @@
       "path": "/chains/"
     }
   },
+  "videoExplorer": {
+    "icon": "fa-photo-video",
+    "title": "Video Explorer",
+    "rootPath": "/data/alx/code/video_detect",
+    "folders": {
+      "output": "output/",
+      "processed": "processed/"
+    }
+  },
   "imaginate": {
     "default": {
       "display": {
