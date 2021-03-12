@@ -5,6 +5,8 @@ import { observer } from "mobx-react";
 import { toJS } from "mobx";
 import { Chart, Line } from "react-chartjs-2";
 
+import 'chartjs-plugin-zoom';
+
 @observer
 class MeasureChart extends React.Component {
   chartReference = {};
@@ -494,6 +496,17 @@ class MeasureChart extends React.Component {
       },
       animation: {
         duration: 0
+      },
+      zoom: {
+        enabled: true,
+        mode: 'x',
+        zoom: {
+          speed: 5
+        }
+      },
+      pan: {
+        enabled: true,
+        mode: 'x',
       },
       tooltips: {
         mode: "index",
