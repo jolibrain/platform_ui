@@ -11,7 +11,7 @@ class Frame extends React.Component {
               onClick={onFrameClick.bind(this, frame.id)}
             >
               <img
-                src={frame.imageSrc}
+                src={frame.imageSrc.thumb}
                 alt={frame.imageAlt}
                 className="img-fluid"
                 loading="lazy"

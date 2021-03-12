@@ -121,7 +121,13 @@
     "rootPath": "/data/alx/code/video_detect",
     "folders": {
       "output": "output/",
-      "processed": "processed/"
+      "processed": "processed/",
+      "thumbs": "thumbs/"
+    },
+    "chronoItemSelectors": {
+      "showLabel": true,
+      "cardTitle": "PK",
+      "cardSubtitle": "vitesse"
     }
   },
   "imaginate": {

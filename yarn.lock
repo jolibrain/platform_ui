@@ -10277,10 +10277,10 @@ react-chartjs-2@^2.10.0:
     lodash "^4.17.19"
     prop-types "^15.7.2"
 
-react-chrono-lazy-loading@^1.9.2:
+react-chrono@^1.9.2:
   version "1.9.2"
-  resolved "https://registry.yarnpkg.com/react-chrono-lazy-loading/-/react-chrono-lazy-loading-1.9.2.tgz#dfbe5fea1fc820ada48fcb9640eccb814d300fa7"
-  integrity sha512-CbtYVke904H1xjHt7FIt1g/8RYQtlj5TXWGKiDzINgnGi6VIFnCOLAK/0wmcstlzrRpGWW/UlodNkRez4E6VQg==
+  resolved "https://registry.yarnpkg.com/react-chrono/-/react-chrono-1.9.2.tgz#02742f2c428ba72bf51e53acd8fa38ddb3a74d83"
+  integrity sha512-SiOfsD+IQUrX64JI9X7Li8sY4uTbzGwDb0Q/9MWLEjOd2hvTyDy2TwtACjZ245CVgA5TCo3LqPGSCBEyVviWeg==
   dependencies:
     "@emotion/core" "^11.0.0-next.10"
     "@emotion/react" "^11.1.5"

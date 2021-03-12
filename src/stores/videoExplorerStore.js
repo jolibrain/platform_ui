@@ -15,6 +15,11 @@ export class videoExplorerStore {
         this.settings = configStore.videoExplorer;
     }
 
+    @action
+    toggleBoundingBoxes() {
+        this.settings.boundingBoxes = !this.settings.boundingBoxes;
+    }
+
     async refresh() {
 
         if(
@@ -53,7 +58,7 @@ export class videoExplorerStore {
     @computed
     get videoType() {
         return this.settings && this.settings.boundingBoxes ?
-            "output_bbox.mp4" : "output_web.mp4"
+            "output_bbox.mp4" : "output.mp4"
     }
 
     @computed
@@ -64,10 +69,10 @@ export class videoExplorerStore {
     @computed
     get selectedFrame() {
 
-        if(this.frames.length === 0)
+        if(!this.frames || this.frames.length === 0)
             return null;
                
-        return this.frames.find(f => f.isSelected)
+        return this.frames.find(f => f && f.isSelected)
     }
 
     @action
@@ -87,6 +92,8 @@ export class videoExplorerStore {
     @action
     async loadSelectedFrames() {
 
+        const thumbFolder = this.settings.folders.thumbs;
+
         const videoPath = this.selectedVideo.path;
         const videoFiles = await agent.Webserver.listFiles(videoPath);
 
@@ -99,13 +106,12 @@ export class videoExplorerStore {
 
                 let frame = null;
 
-                const regexpFrame = /frame(\d+)_(.*)\.json/;
+                const regexpFrame = /frame(\d+)\.json/;
                 const match = jsonFile.match(regexpFrame);
 
                 if(match) {
 
                     const frameIndex = match[1]
-                    const frameModel = match[2]
 
                     const frameStat = stats.find(s => {
                         const regexpStatFname = new RegExp(`.*/frame${frameIndex}.png$`)
@@ -116,15 +122,22 @@ export class videoExplorerStore {
                         id: nanoid(),
                         isSelected: false,
                         index: parseInt(frameIndex),
-                        model: frameModel,
-                        imageSrc: `${videoPath}frame${frameIndex}.png`,
-                        imageAlt: `Image ${parseInt(frameIndex)} - Model ${frameModel}`,
+                        jsonFile: jsonFile,
+                        imageSrc: {
+                            'original': `${videoPath}frame${frameIndex}.png`,
+                            'thumb': `${videoPath}${thumbFolder}frame${frameIndex}.png`,
+                        },
+                        imageAlt: `Image ${parseInt(frameIndex)}`,
                         stats: frameStat
                     }
                 }
 
                 return frame;
             });
+
+        if(this.frames.length > 0) {
+            this.frames[0].isSelected = true;
+        }
     }
 
     @action
