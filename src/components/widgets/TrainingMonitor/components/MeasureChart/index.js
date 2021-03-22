@@ -497,16 +497,16 @@ class MeasureChart extends React.Component {
       animation: {
         duration: 0
       },
-      zoom: {
-        enabled: true,
-        mode: 'x',
+      plugins: {
         zoom: {
-          speed: 5
+          zoom: {
+            enabled: true,
+            mode: 'x',
+            speed: 5000,
+            threshold: 2000,
+            sensitivity: 0.0001,
+          }
         }
-      },
-      pan: {
-        enabled: true,
-        mode: 'x',
       },
       tooltips: {
         mode: "index",
