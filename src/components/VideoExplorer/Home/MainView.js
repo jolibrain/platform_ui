@@ -10,7 +10,7 @@ import { docco } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 import RightPanel from "../commons/RightPanel";
 
 import SourceFolderSelector from "../../widgets/VideoExplorer/SourceFolderSelector"
-import VideoChrono from "../../widgets/VideoExplorer/VideoChrono"
+import Frame from "../../widgets/VideoExplorer/VideoChrono/Frame"
 
 @inject("videoExplorerStore")
 @inject("configStore")
@@ -29,6 +29,8 @@ class MainView extends React.Component {
     this.state = {
       currentTime: null
     };
+
+    this.frameRef = React.createRef();
 
     this.onPlayerReady = this.onPlayerReady.bind(this);
     this.onPlayerProgress = this.onPlayerProgress.bind(this);
@@ -75,6 +77,26 @@ class MainView extends React.Component {
   onPlayerProgress(progress) {
   }
 
+  onPlayerPause() {
+    const { videoExplorerStore } = this.props;
+
+    const currentTime = this.player.getCurrentTime();
+    const duration = this.player.getDuration();
+
+    const frameIndex = parseInt(
+      currentTime * videoExplorerStore.frames.length / duration
+    );
+    videoExplorerStore.setFrameIndex(frameIndex)
+
+    this.frameRef.current.scrollIntoView({
+      behavior: 'instant',
+      inline: 'start',
+      block: 'center'
+    });
+
+    this.setState({currentTime: currentTime});
+  }
+
   render() {
     const { configStore, gpuStore, videoExplorerStore } = this.props;
 
@@ -86,7 +108,8 @@ class MainView extends React.Component {
       mainClassnames = "main-view content-wrapper with-right-sidebar"
     }
 
-    const { selectedVideo, selectedFrame } = videoExplorerStore;
+    const { selectedVideo, selectedFrame, frames, settings } = videoExplorerStore;
+    const { chronoItemSelectors } = settings;
 
     if(selectedVideo) {
 
@@ -145,7 +168,7 @@ class MainView extends React.Component {
 
                   {
                     selectedFrame ?
-                    <div className="col-md-6">
+                    <div className="col-md-6" key={selectedFrame.id}>
                       <h4>
                         <i className="far fa-image"></i> Frame {selectedFrame.index}
                       </h4>
@@ -179,10 +202,26 @@ class MainView extends React.Component {
 
                 <div className="col-3">
 
-                  <VideoChrono
-                    onFrameClick={this.handleFrameClick}
-                  />
+                  <div className='video-chrono'>
+                    {
+                        frames
+                            .filter(f => f)
+                            .map(f =>
+                                 <div
+                                   key={f.id}
+                                   className="scrollFrame"
+                                   ref={f.isSelected ? this.frameRef : null}
+                                 >
+                                   <Frame
+                                     frame={f}
+                                     selectors={chronoItemSelectors}
+                                     onFrameClick={this.handleFrameClick}
+                                   />
+                                 </div>
+                                )
 
+                    }
+                  </div>
                 </div>
 
               </div>

@@ -21,10 +21,14 @@ class SourceFolderSelector extends React.Component {
     handleInputChange() {
 
         const { videoExplorerStore } = this.props;
-        const selectedVideoPathInput = this.typeaheadRef.current.getInput();
+        const inputRef = this.typeaheadRef.current;
+
+        const selectedVideoPathInput = inputRef.getInput();
 
         videoExplorerStore.setVideoPath(selectedVideoPathInput.value);
-        this.typeaheadRef.current.clear();
+
+        inputRef.clear();
+        inputRef.hideMenu();
     }
 
     render() {

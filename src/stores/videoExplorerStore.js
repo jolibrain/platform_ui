@@ -77,6 +77,7 @@ export class videoExplorerStore {
 
     @action
     setVideoPath(videoName) {
+        this.frames = []
         this.videoPaths.forEach(v => v.isSelected = false)
         this.videoPaths.find(v => v.name === videoName).isSelected = true
 
@@ -90,8 +91,13 @@ export class videoExplorerStore {
     }
 
     @action
-    async loadSelectedFrames() {
+    setFrameIndex(frameIndex) {
+        this.frames.forEach(f => f.isSelected = false)
+        this.frames[frameIndex].isSelected = true
+    }
 
+    @action
+    async loadSelectedFrames() {
         const thumbFolder = this.settings.folders.thumbs;
 
         const videoPath = this.selectedVideo.path;
@@ -114,8 +120,7 @@ export class videoExplorerStore {
                     const frameIndex = match[1]
 
                     const frameStat = stats.find(s => {
-                        const regexpStatFname = new RegExp(`.*/frame${frameIndex}.png$`)
-                        return s.fname.match(regexpStatFname)
+                        return s.fname.split('/').pop() === `frame${frameIndex}.png`
                     })
 
                     frame = {

@@ -16,26 +16,127 @@
 
 }
 
+
 .video-chrono {
   height: 90vh;
+  position: relative;
 
-  .timeline-main-wrapper {
-    padding: 0 !important;
+  padding-left: 10px;
+
+  height: 90vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+
+  .scrollFrame {
+    scroll-snap-align: start;
   }
 
-  [data-testid="tree-leaf"] {
-    margin: 0 20px !important;
+  .timeline-block {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: flex;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -moz-box-pack: justify;
+    justify-content: space-between;
+    clear: both;
+    cursor: pointer;
+    border-left: 2px solid #ccc;
+    padding: 5px 0;
+
+    .timeline-content {
+      margin: 5px;
+      padding: 5px;
+      border: 1px solid #eee;
+
+      h1 {
+        color: $neutral_blue_1;
+        font-size: 16px;
+      }
+
+      h2 {
+        color: $neutral_blue_2;
+        font-size: 12px;
+      }
+
+      img {
+        margin: 0 auto;
+      }
+
+    }
+
+    .marker {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid #F5F7FA;
+      background: $neutral_blue_8;
+      margin-top: 10px;
+      z-index: 9999;
+      position: relative;
+      top: 20px;
+      left: -9px;
+    }
+
+    &.active {
+      .marker {
+        background: $primary_cyan_2;
+      }
+
+      .timeline-content {
+        background-color: $neutral_blue_10;
+      }
+
+    }
+
   }
 
-  .timeline-card-content {
-    min-height: 177px !important;
+
+
+  .timeline-content {
+    width: 95%;
+    padding: 0 15px;
+    color: #666
   }
 
-  .card-media-wrapper {
-    min-height: 112px !important;
+  .timeline-content h3 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 25px;
+    font-weight: 500
   }
 
-  .card-description {
+  .timeline-content span {
+    font-size: 15px;
+    color: #a4a4a4;
+  }
+
+  .timeline-content p {
+    font-size: 14px;
+    line-height: 1.5em;
+    word-spacing: 1px;
+    color: #888;
+  }
+
+}
+
+@media screen and (max-width: 768px) {
+  .video-chrono:before {
+      left: 8px;
+      width: 2px;
+  }
+  .timeline-block {
+      width: 100%;
+      margin-bottom: 30px;
+  }
+  .timeline-block-right {
+      float: none;
+  }
+
+  .timeline-block-left {
+      float: none;
+      direction: ltr;
   }
 }
 
@@ -48,6 +149,7 @@
   img {
     cursor: pointer;
   }
+
 
 }
 
