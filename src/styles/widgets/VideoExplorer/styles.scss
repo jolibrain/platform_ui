@@ -27,10 +27,6 @@
   overflow-y: scroll;
   scroll-snap-type: y mandatory;
 
-  .scrollFrame {
-    scroll-snap-align: start;
-  }
-
   .timeline-block {
     display: -webkit-box;
     display: -webkit-flex;
@@ -87,7 +83,7 @@
       .timeline-content {
         background-color: $neutral_blue_10;
       }
-
+     
     }
 
   }

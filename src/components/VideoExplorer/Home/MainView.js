@@ -27,7 +27,8 @@ class MainView extends React.Component {
     super(props);
 
     this.state = {
-      currentTime: null
+      currentTime: null,
+      autoScroll: false
     };
 
     this.frameRef = React.createRef();
@@ -38,6 +39,7 @@ class MainView extends React.Component {
 
     this.handleFrameClick = this.handleFrameClick.bind(this);
     this.toggleBoundingBoxes = this.toggleBoundingBoxes.bind(this);
+    this.toggleAutoScroll = this.toggleAutoScroll.bind(this);
 
   }
 
@@ -67,6 +69,10 @@ class MainView extends React.Component {
     videoExplorerStore.toggleBoundingBoxes();
   }
 
+  toggleAutoScroll() {
+    this.setState({autoScroll: !this.state.autoScroll});
+  }
+
   onPlayerReady() {
     if(this.state.currentTime) {
       this.player.seekTo(this.state.currentTime, 'seconds');
@@ -76,6 +82,22 @@ class MainView extends React.Component {
   }
 
   onPlayerProgress(progress) {
+    if(this.state.autoScroll) {
+      const { videoExplorerStore } = this.props;
+
+      const currentTime = this.player.getCurrentTime();
+      const duration = this.player.getDuration();
+
+      const frameIndex = parseInt(
+        currentTime * videoExplorerStore.frames.length / duration
+      );
+      videoExplorerStore.setFrameIndex(frameIndex + 1)
+
+      this.frameRef.current.parentNode.scrollTop =
+        this.frameRef.current.offsetTop;
+
+      this.setState({currentTime: currentTime});
+    }
   }
 
   onPlayerPause() {
@@ -87,7 +109,7 @@ class MainView extends React.Component {
     const frameIndex = parseInt(
       currentTime * videoExplorerStore.frames.length / duration
     );
-    videoExplorerStore.setFrameIndex(frameIndex)
+    videoExplorerStore.setFrameIndex(frameIndex + 1)
 
     this.frameRef.current.parentNode.scrollTop =
       this.frameRef.current.offsetTop;
@@ -137,13 +159,13 @@ class MainView extends React.Component {
                   </div>
 
                   <div className="row d-flex justify-content-end">
-                    <span className="toggleBoundingBoxes">
+                    <div className="toggleBoundingBoxes">
                       <input
                         type="checkbox"
                         onChange={this.toggleBoundingBoxes}
                         checked={videoExplorerStore.settings.boundingBoxes}/>
                       &nbsp; Bounding Boxes
-                    </span>
+                    </div>
                   </div>
 
                   <div className="row">
@@ -200,6 +222,14 @@ class MainView extends React.Component {
                 </div>
 
                 <div className="col-3">
+
+                  <div className="toggleAutoScroll d-flex justify-content-end">
+                    Auto-scroll frames &nbsp;
+                    <input
+                      type="checkbox"
+                      onChange={this.toggleAutoScroll}
+                      checked={this.state.autoScroll}/>
+                  </div>
 
                   <div className='video-chrono'>
                     {
