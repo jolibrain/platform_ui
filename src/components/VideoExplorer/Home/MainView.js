@@ -10,7 +10,7 @@ import { docco } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 import RightPanel from "../commons/RightPanel";
 
 import SourceFolderSelector from "../../widgets/VideoExplorer/SourceFolderSelector"
-import Frame from "../../widgets/VideoExplorer/VideoChrono/Frame"
+import Frame from "../../widgets/VideoExplorer/Frame"
 
 @inject("videoExplorerStore")
 @inject("configStore")
@@ -34,6 +34,7 @@ class MainView extends React.Component {
 
     this.onPlayerReady = this.onPlayerReady.bind(this);
     this.onPlayerProgress = this.onPlayerProgress.bind(this);
+    this.onPlayerPause = this.onPlayerPause.bind(this);
 
     this.handleFrameClick = this.handleFrameClick.bind(this);
     this.toggleBoundingBoxes = this.toggleBoundingBoxes.bind(this);
@@ -88,11 +89,8 @@ class MainView extends React.Component {
     );
     videoExplorerStore.setFrameIndex(frameIndex)
 
-    this.frameRef.current.scrollIntoView({
-      behavior: 'instant',
-      inline: 'start',
-      block: 'center'
-    });
+    this.frameRef.current.parentNode.scrollTop =
+      this.frameRef.current.offsetTop;
 
     this.setState({currentTime: currentTime});
   }
@@ -134,6 +132,7 @@ class MainView extends React.Component {
                       controls={true}
                       onReady={this.onPlayerReady}
                       onProgress={this.onPlayerProgress}
+                      onPause={this.onPlayerPause}
                     />
                   </div>
 
