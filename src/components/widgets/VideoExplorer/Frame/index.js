@@ -79,7 +79,7 @@ class Frame extends React.Component {
           <div className="text-center">
             <img
               src={frame.imageSrc.thumb}
-              alt={frame.imageAlt}
+              alt={frame.index}
               loading="lazy"
               style={{width: '200px'}}
             />

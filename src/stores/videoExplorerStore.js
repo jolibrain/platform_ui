@@ -105,44 +105,43 @@ export class videoExplorerStore {
 
         const statsPath = path.join(videoPath, "stats.json");
         const stats = await agent.Webserver.getFile(statsPath);
+        const indexedStats = stats.reduce(function(map, obj) {
+            map[obj.fname.split('/').pop()] = obj;
+            return map;
+        }, {});
 
-        this.frames = videoFiles
-            .filter(jsonFile => /^frame.*\.json$/.test(jsonFile))
-            .map(jsonFile => {
+        const jsonFiles = videoFiles
+              .filter(jsonFile => /^frame.*\.json$/.test(jsonFile))
 
-                let frame = null;
+        const buildFrame = (jsonFile) => {
+            const regexpFrame = /(\d+)\.json$/;
+            const match = jsonFile.match(regexpFrame);
 
-                const regexpFrame = /frame(\d+)\.json/;
-                const match = jsonFile.match(regexpFrame);
-
-                if(match) {
-
-                    const frameIndex = match[1]
-
-                    const frameStat = stats.find(s => {
-                        return s.fname.split('/').pop() === `frame${frameIndex}.png`
-                    })
-
-                    frame = {
-                        id: nanoid(),
-                        isSelected: false,
-                        index: parseInt(frameIndex),
-                        jsonFile: jsonFile,
-                        imageSrc: {
-                            'original': `${videoPath}frame${frameIndex}.png`,
-                            'thumb': `${videoPath}${thumbFolder}frame${frameIndex}.png`,
-                        },
-                        imageAlt: `Image ${parseInt(frameIndex)}`,
-                        stats: frameStat
-                    }
+            if(match) {
+                const frameIndex = match[1]
+                return {
+                    id: nanoid(),
+                    isSelected: false,
+                    index: parseInt(frameIndex),
+                    jsonFile: jsonFile,
+                    imageSrc: {
+                        'original': `${videoPath}frame${frameIndex}.png`,
+                        'thumb': `${videoPath}${thumbFolder}frame${frameIndex}.png`,
+                    },
+                    stats: indexedStats[`frame${frameIndex}.png`]
                 }
+            } else {
+                return null;
+            }
+        }
 
-                return frame;
-            });
+        this.frames = jsonFiles
+            .map(buildFrame)
 
         if(this.frames.length > 0) {
             this.frames[0].isSelected = true;
         }
+
     }
 
     @action
