@@ -55,8 +55,12 @@ class MainView extends React.Component {
     const { videoExplorerStore } = this.props;
     videoExplorerStore.setFrame(frameId)
 
-    const frameFraction = videoExplorerStore.selectedFrame.index
-          / videoExplorerStore.frames.length;
+    const frameIndex = videoExplorerStore.selectedFrame.index > 0 ?
+          videoExplorerStore.selectedFrame.index - 1
+          :
+          videoExplorerStore.selectedFrame.index
+
+    const frameFraction = frameIndex / videoExplorerStore.frames.length;
 
     this.player.seekTo(frameFraction, 'fraction')
   }
@@ -130,6 +134,8 @@ class MainView extends React.Component {
 
     const { selectedVideo, selectedFrame, frames, settings } = videoExplorerStore;
     const { chronoItemSelectors } = settings;
+
+    const isLoadingFrames = selectedVideo && frames.length === 0;
 
     if(selectedVideo) {
 
@@ -233,22 +239,29 @@ class MainView extends React.Component {
 
                   <div className='video-chrono'>
                     {
-                        frames
-                            .filter(f => f)
-                            .map(f =>
-                                 <div
-                                   key={f.id}
-                                   className="scrollFrame"
-                                   ref={f.isSelected ? this.frameRef : null}
-                                 >
-                                   <Frame
-                                     frame={f}
-                                     selectors={chronoItemSelectors}
-                                     onFrameClick={this.handleFrameClick}
-                                   />
-                                 </div>
-                                )
-
+                      isLoadingFrames ?
+                        <span>
+                          <i className="fas fa-spinner fa-spin" />
+                          &nbsp; loading frames...
+                        </span>
+                        : null
+                    }
+                    {
+                      frames
+                        .filter(f => f)
+                        .map(f =>
+                              <div
+                                key={f.id}
+                                className="scrollFrame"
+                                ref={f.isSelected ? this.frameRef : null}
+                              >
+                                <Frame
+                                  frame={f}
+                                  selectors={chronoItemSelectors}
+                                  onFrameClick={this.handleFrameClick}
+                                />
+                              </div>
+                            )
                     }
                   </div>
                 </div>

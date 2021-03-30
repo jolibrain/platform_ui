@@ -127,7 +127,18 @@
     "chronoItemSelectors": {
       "showLabel": true,
       "cardTitle": "PK",
-      "cardSubtitle": "vitesse"
+      "cardSubtitle": [
+        {
+          "label": "vitesse: ",
+          "statsKey": "vitesse"
+        },
+        {
+          "label": "cables: ",
+          "statsKey": "cables",
+          "format": "percentArray",
+          "separator": " | "
+        }
+      ]
     }
   },
   "imaginate": {
