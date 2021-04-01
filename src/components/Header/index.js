@@ -7,6 +7,9 @@ import AboutDropdown from "./dropdowns/AboutDropdown";
 
 import PredictLink from "./links/Predict";
 import TrainingLink from "./links/Training";
+
+import VideoExplorerLink from "./links/VideoExplorer";
+
 import JupyterLink from "./links/Jupyter";
 import DataLink from "./links/Data";
 import DocumentationLink from "./links/Documentation";
@@ -29,6 +32,7 @@ class Header extends React.Component {
               <ul className="list-unstyled navbar-sub-nav">
                 <PredictLink />
                 <TrainingLink />
+                <VideoExplorerLink />
                 <li>
                   <span className="separator">|</span>
                 </li>

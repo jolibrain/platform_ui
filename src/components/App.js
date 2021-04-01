@@ -19,9 +19,12 @@ import ChainShow from "./Chain/Show";
 
 import DatasetHome from "./Dataset/Home";
 
+import VideoExplorerHome from "./VideoExplorer/Home";
+
 import GenericNotFound from "./GenericNotFound";
 
 import Imaginate from "./widgets/Imaginate";
+
 import deepdetectService from "../stores/deepdetect/service";
 
 @inject("configStore")
@@ -31,6 +34,7 @@ import deepdetectService from "../stores/deepdetect/service";
 @inject("modelRepositoriesStore")
 @inject("dataRepositoriesStore")
 @inject("datasetStore")
+@inject("videoExplorerStore")
 @inject("modalStore")
 @inject("authTokenStore")
 @inject("buildInfoStore")
@@ -57,6 +61,7 @@ class App extends React.Component {
       authTokenStore,
       modelRepositoriesStore,
       dataRepositoriesStore,
+      videoExplorerStore,
       buildInfoStore,
     } = this.props;
 
@@ -88,6 +93,10 @@ class App extends React.Component {
 
         if (config.dataRepositories) {
           dataRepositoriesStore.setup(config);
+        }
+
+        if (config.videoExplorer) {
+          videoExplorerStore.setup(config);
         }
 
         buildInfoStore.loadBuildInfo();
@@ -147,6 +156,9 @@ class App extends React.Component {
 
           {/* Dataset */}
           <Route exact path="/datasets/" component={DatasetHome} />
+
+          {/* VideoExplorer */}
+          <Route exact path="/video-explorer/" component={VideoExplorerHome} />
 
           {/* 404 */}
           <Route exact path="/404" component={GenericNotFound} />

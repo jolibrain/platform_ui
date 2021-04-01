@@ -115,6 +115,32 @@
       "path": "/chains/"
     }
   },
+  "videoExplorer": {
+    "icon": "fa-photo-video",
+    "title": "Video Explorer",
+    "rootPath": "/data/alx/code/video_detect",
+    "folders": {
+      "output": "output/",
+      "processed": "processed/",
+      "thumbs": "thumbs/"
+    },
+    "chronoItemSelectors": {
+      "showLabel": true,
+      "cardTitle": "PK",
+      "cardSubtitle": [
+        {
+          "label": "vitesse: ",
+          "statsKey": "vitesse"
+        },
+        {
+          "label": "cables: ",
+          "statsKey": "cables",
+          "format": "percentArray",
+          "separator": " | "
+        }
+      ]
+    }
+  },
   "imaginate": {
     "default": {
       "display": {

@@ -20,6 +20,7 @@ import imaginateStore from "./stores/imaginateStore";
 import modelRepositoriesStore from "./stores/modelRepositoriesStore";
 import dataRepositoriesStore from "./stores/dataRepositoriesStore";
 import datasetStore from "./stores/datasetStore";
+import videoExplorerStore from "./stores/videoExplorerStore";
 import modalStore from "./stores/modalStore";
 import authTokenStore from "./stores/authTokenStore";
 
@@ -32,6 +33,7 @@ const stores = {
   modelRepositoriesStore,
   dataRepositoriesStore,
   datasetStore,
+  videoExplorerStore,
   modalStore,
   authTokenStore
 };
