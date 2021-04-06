@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { inject, observer } from "mobx-react";
 
 import ServerDropdown from "./dropdowns/ServerDropdown";
 import UserDropdown from "./dropdowns/UserDropdown";
@@ -16,8 +17,16 @@ import DocumentationLink from "./links/Documentation";
 import ChatLink from "./links/Chat";
 import MenusLink from "./links/Menus";
 
+@inject("configStore")
+@observer
 class Header extends React.Component {
   render() {
+
+    if (
+      this.props.configStore.isComponentBlacklisted("Header")
+    )
+      return null;
+
     return (
       <header className="header navbar navbar-dark bg-dark" id="header">
         <div className="container-fluid">
