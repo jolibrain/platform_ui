@@ -109,19 +109,41 @@ class App extends React.Component {
 
     if (!configStore.isReady) return null;
 
-    if (configStore.layout === "minimal") {
-      // Minimal Layout
-      return (
-        <div>
-          <Route exact path="/" component={Imaginate} />
-        </div>
-      );
+    let appComponent = null;
+
+    if (configStore.layout) {
+
+      switch(configStore.layout) {
+          case 'minimal':
+            // Minimal Layout
+            appComponent = (
+              <div>
+                <Route exact path="/" component={Imaginate} />
+              </div>
+            );
+            break;
+          case 'video-explorer':
+            // video-explorer single component Layout
+            appComponent = (
+              <div>
+                <Route exact path="/" component={VideoExplorerHome} />
+              </div>
+            );
+            break;
+          default:
+            // non-existing layout
+            break;
+      }
+
     } else if (!deepdetectStore.isReady) {
+
       // Loading screen
-      return <Loading />;
+      appComponent = <Loading />;
+
     } else {
+
       // Full Layout
-      return (
+      appComponent = (
         <Switch>
           {/* Home */}
           <Route exact path="/" component={Home} />
@@ -165,6 +187,8 @@ class App extends React.Component {
         </Switch>
       );
     }
+
+    return appComponent;
   }
 }
 
