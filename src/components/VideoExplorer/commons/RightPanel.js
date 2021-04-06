@@ -13,6 +13,11 @@ class RightPanel extends React.Component {
   render() {
 
     if (
+      this.props.configStore.isComponentBlacklisted("RightPanel")
+    )
+      return null;
+
+    if (
       typeof this.props.configStore.gpuInfo === "undefined" ||
         this.props.gpuStore.servers.length === 0
     ) {
