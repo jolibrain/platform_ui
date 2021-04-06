@@ -16,10 +16,23 @@ class VideoExplorerHome extends React.Component {
     )
       return null;
 
+    let mainClassNames = [
+      "layout-page",
+      "page-gutter",
+      "right-sidebar-collapsed",
+      "page-with-icon-sidebar",
+      "video-explorer-home-component"
+    ]
+
+    if (
+      !this.props.configStore.isComponentBlacklisted("RightPanel")
+    )
+      mainClassNames.push("page-with-contextual-sidebar")
+
     return (
       <div>
         <Header />
-        <div className="layout-page page-gutter page-with-contextual-sidebar right-sidebar-collapsed page-with-icon-sidebar video-explorer-home-component">
+        <div className={mainClassNames.join(" ")}>
           <LeftPanel />
           <MainView />
         </div>

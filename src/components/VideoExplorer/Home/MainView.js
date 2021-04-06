@@ -124,12 +124,20 @@ class MainView extends React.Component {
   render() {
     const { configStore, gpuStore, videoExplorerStore } = this.props;
 
-    let mainClassnames = "main-view content-wrapper"
+    let mainClassNames = [
+      "main-view",
+      "content-wrapper"
+    ];
+
+    if (configStore.isComponentBlacklisted("Header")) {
+      mainClassNames.push("header-blacklisted")
+    }
+
     if (
       typeof configStore.gpuInfo !== "undefined" &&
         gpuStore.servers.length > 0
     ) {
-      mainClassnames = "main-view content-wrapper with-right-sidebar"
+      mainClassNames.push("with-right-sidebar");
     }
 
     const { selectedVideo, selectedFrame, frames, settings } = videoExplorerStore;
@@ -140,7 +148,7 @@ class MainView extends React.Component {
     if(selectedVideo) {
 
       return (
-        <div className={mainClassnames}>
+        <div className={mainClassNames.join(" ")}>
           <div className="container-fluid">
             <div className="content">
 
@@ -277,7 +285,7 @@ class MainView extends React.Component {
     } else {
 
       return (
-        <div className={mainClassnames}>
+        <div className={mainClassNames.join(" ")}>
           <div className="container-fluid">
             <div className="content">
 
