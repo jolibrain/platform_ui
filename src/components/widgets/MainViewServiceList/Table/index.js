@@ -57,6 +57,15 @@ class Table extends React.Component {
             "acc",
             "f1"
           ]
+        },
+        {
+          name: "Regression",
+          isActive: false,
+          selectors: [
+            "train_loss",
+            "eucll",
+            "L1_mean_error"
+          ]
         }
       ],
       columns: [
