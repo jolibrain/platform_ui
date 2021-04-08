@@ -22,10 +22,80 @@ import MenusLink from "./links/Menus";
 class Header extends React.Component {
   render() {
 
-    if (
-      this.props.configStore.isComponentBlacklisted("Header")
-    )
+    const { configStore } = this.props;
+
+    if (configStore.isComponentBlacklisted("Header"))
       return null;
+
+    let leftLinks = [],
+        rightLinks = [],
+        titleContent = null;
+
+    if (!configStore.isComponentBlacklisted("HeaderTitle")) {
+      titleContent = (
+        <Link to="/">
+          <img src="/logo.svg" alt="DeepDetect" />
+        </Link>
+      )
+    }
+
+    if (!configStore.isComponentBlacklisted("HeaderLeftLinks")) {
+
+      if (!configStore.isComponentBlacklisted("LinkPredict"))
+        leftLinks.push(<PredictLink key='predictLink' />);
+
+      if (!configStore.isComponentBlacklisted("LinkTraining"))
+        leftLinks.push(<TrainingLink key='trainingLink' />);
+
+      if(
+        configStore.videoExplorer &&
+          !configStore.isComponentBlacklisted("LinkVideoExplorer")
+      )
+        leftLinks.push(<VideoExplorerLink key='videoExplorerLink' />)
+
+      if (leftLinks.length > 0) {
+        leftLinks.push(
+          <li key='separator'>
+            <span className="separator">|</span>
+          </li>
+        );
+      }
+
+      if (!configStore.isComponentBlacklisted("LinkJupyter"))
+        leftLinks.push(<JupyterLink key='jupyterLink' />);
+
+      if (!configStore.isComponentBlacklisted("LinkData"))
+        leftLinks.push(<DataLink key='dataLink' />);
+
+      if (!configStore.isComponentBlacklisted("LinkChat"))
+        leftLinks.push(<ChatLink key='chatLink' />);
+
+      if (
+        !configStore.isComponentBlacklisted("MenusLink") &&
+          configStore.homeComponent &&
+          configStore.homeComponent.headerLinks &&
+          configStore.homeComponent.headerLinks.linkMenus &&
+          typeof configStore.homeComponent.headerLinks.linkMenus !== "undefined" &&
+          configStore.homeComponent.headerLinks.linkMenus.length !== 0
+      )
+        leftLinks.push(<MenusLink key='menuLink' />);
+    }
+
+    if (
+      !this.props.configStore.isComponentBlacklisted("HeaderRightLinks")
+    ) {
+      if (!configStore.isComponentBlacklisted("ServerDropdown"))
+        rightLinks.push(<ServerDropdown key='serverDropdown' />);
+
+      if (!configStore.isComponentBlacklisted("LinkDocumentation"))
+        rightLinks.push(<DocumentationLink key='documentationLink' />);
+
+      if (!configStore.isComponentBlacklisted("AboutDropdown"))
+        rightLinks.push(<AboutDropdown key='aboutDropdown' />);
+
+      if (!configStore.isComponentBlacklisted("UserDropdown"))
+        rightLinks.push(<UserDropdown key='userDropdowwn' />);
+    }
 
     return (
       <header className="header navbar navbar-dark bg-dark" id="header">
@@ -33,31 +103,17 @@ class Header extends React.Component {
           <div className="header-content">
             <div className="title-container">
               <h1 className="title">
-                <Link to="/">
-                  <img src="/logo.svg" alt="DeepDetect" />
-                </Link>
+                { titleContent }
               </h1>
 
               <ul className="list-unstyled navbar-sub-nav">
-                <PredictLink />
-                <TrainingLink />
-                <VideoExplorerLink />
-                <li>
-                  <span className="separator">|</span>
-                </li>
-                <JupyterLink />
-                <DataLink />
-                <ChatLink />
-                <MenusLink />
+                { leftLinks }
               </ul>
             </div>
 
             <div className="navbar-collapse d-flex justify-content-end">
               <ul className="nav nabar-nav">
-                <ServerDropdown />
-                <DocumentationLink />
-                <AboutDropdown />
-                <UserDropdown />
+                { rightLinks }
               </ul>
             </div>
           </div>

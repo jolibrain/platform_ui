@@ -7,12 +7,6 @@ class VideoExplorer extends React.Component {
     render() {
         const { configStore } = this.props;
 
-        if(
-            !configStore.videoExplorer ||
-                configStore.isComponentBlacklisted("VideoExplorer")
-        )
-            return null;
-
         const videoExplorerPatt = /^#\/video-explorer/g;
         const selectedItem = videoExplorerPatt.test(window.location.hash);
 

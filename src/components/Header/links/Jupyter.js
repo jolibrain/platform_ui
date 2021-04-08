@@ -6,8 +6,6 @@ class Jupyter extends React.Component {
   render() {
     const { configStore } = this.props;
 
-    if (configStore.isComponentBlacklisted("LinkJupyter")) return null;
-
     let href = "/code/lab";
 
     if (

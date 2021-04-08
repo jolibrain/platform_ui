@@ -1,13 +1,7 @@
 import React from "react";
-import { inject } from "mobx-react";
 
-@inject("configStore")
 class Documentation extends React.Component {
   render() {
-    const { configStore } = this.props;
-
-    if (configStore.isComponentBlacklisted("LinkDocumentation")) return null;
-
     return (
       <li id="documentation-link" className="nav-item">
         <a

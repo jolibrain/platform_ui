@@ -6,8 +6,6 @@ class Data extends React.Component {
   render() {
     const { configStore } = this.props;
 
-    if (configStore.isComponentBlacklisted("LinkData")) return null;
-
     let href = "/filebrowser";
 
     if (

@@ -1,12 +1,7 @@
 import React from "react";
-import { inject } from "mobx-react";
 
-@inject("configStore")
 class Chat extends React.Component {
   render() {
-    const { configStore } = this.props;
-
-    if (configStore.isComponentBlacklisted("LinkChat")) return null;
 
     return (
       <li id="chat-link">
