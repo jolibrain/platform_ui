@@ -109,9 +109,9 @@ class App extends React.Component {
 
     if (!configStore.isReady) return null;
 
-    let appComponent = null;
+    let appComponent = <Loading />;
 
-    if (configStore.layout) {
+    if (deepdetectStore.isReady) {
 
       switch(configStore.layout) {
           case 'minimal':
@@ -130,62 +130,53 @@ class App extends React.Component {
               </div>
             );
             break;
+          case 'full':
           default:
-            // non-existing layout
+            appComponent = (
+              <Switch>
+                {/* Home */}
+                <Route exact path="/" component={Home} />
+
+                {/* Predict */}
+                <Route exact path="/predict" component={PredictHome} />
+                <Route exact path="/predict/new" component={PredictNew} />
+                <Route
+                  exact
+                  path="/predict/:serverName/:serviceName*"
+                  component={PredictShow}
+                />
+
+                {/* Training */}
+                <Route exact path="/training" component={TrainingHome} />
+                <Route exact path="/trainingArchive" component={TrainingHome} />
+                <Route
+                  exact
+                  path="/training/:serverName/:serviceName*"
+                  component={TrainingShow}
+                />
+
+                {/* Chart */}
+                <Route
+                  exact
+                  path="/charts/:chartType/:chartParams*"
+                  component={ChartShow}
+                />
+
+                {/* Chain */}
+                <Route exact path="/chains/:chainName" component={ChainShow} />
+
+                {/* Dataset */}
+                <Route exact path="/datasets/" component={DatasetHome} />
+
+                {/* VideoExplorer */}
+                <Route exact path="/video-explorer/" component={VideoExplorerHome} />
+
+                {/* 404 */}
+                <Route exact path="/404" component={GenericNotFound} />
+              </Switch>
+            );
             break;
       }
-
-    } else if (!deepdetectStore.isReady) {
-
-      // Loading screen
-      appComponent = <Loading />;
-
-    } else {
-
-      // Full Layout
-      appComponent = (
-        <Switch>
-          {/* Home */}
-          <Route exact path="/" component={Home} />
-
-          {/* Predict */}
-          <Route exact path="/predict" component={PredictHome} />
-          <Route exact path="/predict/new" component={PredictNew} />
-          <Route
-            exact
-            path="/predict/:serverName/:serviceName*"
-            component={PredictShow}
-          />
-
-          {/* Training */}
-          <Route exact path="/training" component={TrainingHome} />
-          <Route exact path="/trainingArchive" component={TrainingHome} />
-          <Route
-            exact
-            path="/training/:serverName/:serviceName*"
-            component={TrainingShow}
-          />
-
-          {/* Chart */}
-          <Route
-            exact
-            path="/charts/:chartType/:chartParams*"
-            component={ChartShow}
-          />
-
-          {/* Chain */}
-          <Route exact path="/chains/:chainName" component={ChainShow} />
-
-          {/* Dataset */}
-          <Route exact path="/datasets/" component={DatasetHome} />
-
-          {/* VideoExplorer */}
-          <Route exact path="/video-explorer/" component={VideoExplorerHome} />
-
-          {/* 404 */}
-          <Route exact path="/404" component={GenericNotFound} />
-        </Switch>
-      );
     }
 
     return appComponent;
