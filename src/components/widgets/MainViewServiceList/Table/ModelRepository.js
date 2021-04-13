@@ -29,8 +29,7 @@ class ModelRepositoryItem extends React.Component {
 
     this.state = {
       isPublishing: false,
-      publishError: null,
-      compareSelected: false
+      publishError: null
     };
 
     this.getValue = this.getValue.bind(this);
@@ -42,9 +41,8 @@ class ModelRepositoryItem extends React.Component {
   }
 
   toggleCompareState() {
-    const { service } = this.props;
-    this.setState({ compareSelected: !this.state.compareSelected });
-    this.props.handleCompareStateChange(service.path);
+    const { service, handleCompareStateChange } = this.props;
+    handleCompareStateChange(service.path);
   }
 
   openPublishTrainingModal() {
