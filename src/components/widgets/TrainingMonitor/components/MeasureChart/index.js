@@ -157,7 +157,19 @@ class MeasureChart extends React.Component {
       value = Math.min.apply(Math, measure_hist[`${attr}_hist`]);
     }
 
-    return value ? value.toFixed(5) : "--";
+    if(value) {
+
+      let formattedValue = value.toFixed(5);
+
+      if(formattedValue > 1)
+        formattedValue = value.toFixed(3);
+
+      return formattedValue;
+
+    } else {
+      return '--';
+    }
+
   }
 
   getBestValue(service, attr) {
@@ -177,7 +189,18 @@ class MeasureChart extends React.Component {
       value = Math.max.apply(Math, measure_hist[`${attr}_hist`]);
     }
 
-    return value ? value.toFixed(5) : "--";
+    if(value) {
+
+      let formattedValue = parseFloat(value).toFixed(5);
+
+      if(formattedValue > 1)
+        formattedValue = parseFloat(value).toFixed(3);
+
+      return formattedValue;
+
+    } else {
+      return '--';
+    }
   }
 
   getValue(service, attr) {
@@ -208,6 +231,9 @@ class MeasureChart extends React.Component {
 
     if (value && !["remain_time_str", "iteration"].includes(attr)) {
       value = value.toFixed(5);
+
+      if(value > 1)
+        value = parseFloat(value).toFixed(3);
     }
 
     return value !== null ? value : "--";
