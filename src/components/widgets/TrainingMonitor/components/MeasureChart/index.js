@@ -19,32 +19,24 @@ class MeasureChart extends React.Component {
       logScale: false,
       colors: {
         light: [
-          "rgba(166,206,227,0.2)",
-          "rgba(178,223,138,0.2)",
-          "rgba(251,154,153,0.2)",
-          "rgba(253,191,111,0.2)",
-          "rgba(202,178,214,0.2)",
-          "rgba(255,255,153,0.2)",
-          "rgba(31,120,180,0.2)",
-          "rgba(51,160,44,0.2)",
-          "rgba(227,26,28,0.2)",
+          "rgba(55,126,184,0.2)",
+          "rgba(77,175,74,0.2)",
+          "rgba(152,78,163,0.2)",
           "rgba(255,127,0,0.2)",
-          "rgba(106,61,154,0.2)",
-          "rgba(177,89,40,0.2)"
+          "rgba(255,255,51,0.2)",
+          "rgba(166,86,40,0.2)",
+          "rgba(247,129,191,0.2)",
+          "rgba(153,153,153,0.2)"
         ],
         dark: [
-          "hsl(210, 22%, 49%)",
-          "rgb(178,223,138)",
-          "rgb(251,154,153)",
-          "rgb(253,191,111)",
-          "rgb(202,178,214)",
-          "rgb(255,255,153)",
-          "rgb(31,120,180)",
-          "rgb(51,160,44)",
-          "rgb(227,26,28)",
+          "rgb(55,126,184)",
+          "rgb(77,175,74)",
+          "rgb(152,78,163)",
           "rgb(255,127,0)",
-          "rgb(106,61,154)",
-          "rgb(177,89,40)"
+          "rgb(255,255,51)",
+          "rgb(166,86,40)",
+          "rgb(247,129,191)",
+          "rgb(153,153,153)"
         ]
       },
       bestValue: {
@@ -158,14 +150,7 @@ class MeasureChart extends React.Component {
     }
 
     if(value) {
-
-      let formattedValue = value.toFixed(5);
-
-      if(formattedValue > 1)
-        formattedValue = value.toFixed(3);
-
-      return formattedValue;
-
+      return value;
     } else {
       return '--';
     }
@@ -190,14 +175,7 @@ class MeasureChart extends React.Component {
     }
 
     if(value) {
-
-      let formattedValue = parseFloat(value).toFixed(5);
-
-      if(formattedValue > 1)
-        formattedValue = parseFloat(value).toFixed(3);
-
-      return formattedValue;
-
+      return value;
     } else {
       return '--';
     }
@@ -267,18 +245,18 @@ class MeasureChart extends React.Component {
 
     return {
       label: service.name,
-      data: measures ? measures.map(x => (x ? x.toFixed(5) : null)) : [],
+      data: measures ? measures : [],
       fill: false,
       lineTension: 0,
       steppedLine: this.props.steppedLine,
-      backgroundColor: this.state.colors.dark[index],
-      borderColor: this.state.colors.dark[index],
+      backgroundColor: this.state.colors.dark[index % 8],
+      borderColor: this.state.colors.dark[index % 8],
       showLine: this.state.showLine || this.props.steppedLine ? true : false,
       radius: measures
         ? measures.map(x => (this.props.steppedLine ? 0 : 2))
         : [],
       pointBackgroundColor: measures
-        ? measures.map(x => this.state.colors.light[index])
+        ? measures.map(x => this.state.colors.light[index % 8])
         : [],
       order: index
     };
@@ -462,20 +440,23 @@ class MeasureChart extends React.Component {
       minValue = null;
     }
 
+    const badgeIndex = index % 8;
+
     return (
       <h3>
-        <i className={`fa fa-circle chart-badge-${index}`} />
+        <i className={`fa fa-circle chart-badge-${badgeIndex}`} />
         {displayedValue}{" "}
-        {this.props.showMinValue && minValue ? (
-          <span className="minValue">(min: {minValue})</span>
+        {this.props.showMinValue && minValue && minValue !== '--' ? (
+          <span className="minValue">(min: {parseFloat(minValue).toFixed(minValue > 1 ? 3 : 5)})</span>
         ) : (
           ""
         )}
-        {this.props.showBest && bestValue ? (
-          <span className="bestValue">(best: {bestValue})</span>
+        {this.props.showBest && bestValue && bestValue !== '--' ? (
+          <span className="bestValue">(best: {parseFloat(bestValue).toFixed(bestValue > 1 ? 3 : 5)})</span>
         ) : (
           ""
         )}
+        <span className="serviceName"> - {service.name}</span>
       </h3>
     );
   }
@@ -540,6 +521,11 @@ class MeasureChart extends React.Component {
         callbacks: {
           title: (tooltipItem, data) => {},
           beforeLabel: (tooltipItem, data) => {},
+          labelColor: (tooltipItem) => {
+            return {
+              backgroundColor: this.state.colors.dark[tooltipItem.datasetIndex]
+            }
+          },
           label: (tooltipItem, data) => {
 
             let label = null;
@@ -553,7 +539,12 @@ class MeasureChart extends React.Component {
                   selectedDataset.data &&
                   selectedDataset.data.length > 0
               ) {
-                label = selectedDataset.data[tooltipItem.index];
+                let datasetValue = parseFloat(selectedDataset.data[tooltipItem.index]).toFixed(5);
+                if(datasetValue > 1) {
+                  datasetValue = parseFloat(datasetValue).toFixed(3);
+                }
+
+                label = selectedDataset.label + ": " + datasetValue;
               }
 
             }
