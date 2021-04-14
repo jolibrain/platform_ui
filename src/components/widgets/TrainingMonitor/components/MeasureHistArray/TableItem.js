@@ -65,6 +65,9 @@ class TableItem extends React.Component {
     } else {
       try {
         value = measure[measureKey].toFixed(5);
+        if(value > 1) {
+          value = parseFloat(value).toFixed(3)
+        }
       } catch (e) {
         // measure[measureKey].toFixed is not a function
       }
@@ -81,7 +84,7 @@ class TableItem extends React.Component {
 
     if (typeof value !== "undefined" && typeof value.toFixed === "function") {
       if (value > 1) {
-        value = value.toFixed(5);
+        value = value.toFixed(3);
       } else {
         // Find position of first number after the comma
         const zeroPosition = value
@@ -100,14 +103,24 @@ class TableItem extends React.Component {
         measureHistKey.indexOf("L1_mean_error") !== -1 ||
         measureHistKey.indexOf("L1_max_error")  !== -1
     ) {
-      bestValue = " - min: " + Math.min(...measure_hist[measureHistKey]).toFixed(5)
+      bestValue = Math.min(...measure_hist[measureHistKey]).toFixed(5)
+      if(bestValue > 1) {
+        bestValue = parseFloat(bestValue).toFixed(3);
+      }
+      bestValue = " - min: " + bestValue;
     } else {
-      bestValue = " - max: " + Math.max(...measure_hist[measureHistKey]).toFixed(5)
+      bestValue = Math.max(...measure_hist[measureHistKey]).toFixed(5)
+      if(bestValue > 1) {
+        bestValue = parseFloat(bestValue).toFixed(3);
+      }
+      bestValue = " - max: " + bestValue;
     }
+
+    const badgeIndex = index % 8;
 
     return (
       <h4>
-        <i className={`fa fa-circle chart-badge-${index}`} />
+        <i className={`fa fa-circle chart-badge-${badgeIndex}`} />
         {value}
         {bestValue ? bestValue : null}
       </h4>
