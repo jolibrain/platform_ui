@@ -18,7 +18,7 @@ class MultiTitle extends React.Component {
         text: "Name",
         selector: "name",
         classNameFormatter: (props) => {
-          return `chart-cell-${props.serviceIndex}`
+          return `chart-cell-${props.serviceIndex % 8}`
         }
       },
       {
@@ -108,7 +108,7 @@ class MultiTitle extends React.Component {
         text: "",
         formatter: (value, props) => {
           return <i
-            className={`chart-badge-${props.serviceIndex} fa fa-2x fa-toggle-${
+            className={`chart-badge-${parseInt(props.serviceIndex) % 8} fa fa-2x fa-toggle-${
               props.isVisible ? "off" : "on"
             }`}
             onClick={props.handleRepositoryVisibility.bind(this, props.serviceIndex)}
