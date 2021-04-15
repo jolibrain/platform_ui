@@ -14,6 +14,7 @@ class TitleItem extends React.Component {
     } = this.props;
 
     const benchmarkHref = service.benchmarksPath + benchmark.href;
+    const badgeIndex = serviceIndex % 8;
 
     return (
       <tr>
@@ -50,7 +51,7 @@ class TitleItem extends React.Component {
         </td>
         <td>
           <i
-            className={`chart-badge-${serviceIndex} fa fa-2x fa-toggle-${
+            className={`chart-badge-${badgeIndex} fa fa-2x fa-toggle-${
               isVisible ? "off" : "on"
             }`}
             onClick={handleRepositoryVisibility.bind(this, serviceIndex)}
