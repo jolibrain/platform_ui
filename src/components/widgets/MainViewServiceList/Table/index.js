@@ -255,6 +255,8 @@ class Table extends React.Component {
     this.handlePresetClick = this.handlePresetClick.bind(this);
     this.handlePageClick = this.handlePageClick.bind(this);
 
+    this.toggleAllItems = this.toggleAllItems.bind(this);
+
     this.formatFloatValue = this.formatFloatValue.bind(this);
     this.bestMinValue = this.bestMinValue.bind(this);
     this.bestMaxValue = this.bestMaxValue.bind(this);
@@ -265,6 +267,9 @@ class Table extends React.Component {
 
     if(!isNaN(value)) {
       content = parseFloat(value).toFixed(5);
+
+      if(content > 1)
+        content = parseFloat(value).toFixed(3);
     }
 
     return content;
@@ -313,8 +318,6 @@ class Table extends React.Component {
     const newColumns = columns.map((column, index) => {
       if(column.toggable) {
         const newColumn = {...column}
-        console.log(selectedPreset.selectors)
-        console.log(column.selector)
         newColumn.hide = !selectedPreset.selectors.includes(
           column.selector
         )
@@ -364,6 +367,22 @@ class Table extends React.Component {
 
   }
 
+  toggleAllItems() {
+
+    const {
+      services,
+      handleCompareStateChange
+    } = this.props;
+
+    const { pagination } = this.state;
+    const displayedServicePaths = services.slice(
+      pagination.offset,
+      pagination.offset + pagination.perPage
+    ).map(service => service.path)
+
+    handleCompareStateChange(displayedServicePaths);
+  }
+
   render() {
 
     const {
@@ -382,9 +401,34 @@ class Table extends React.Component {
         {
           this.state.columns
               .filter(column => !column.hide)
-              .map((column, index) =>
-                   <th key={index} scope="col">{column.text}</th>
-                  )
+              .map((column, index) => {
+
+                let header = null;
+
+                if(column.type && column.type === "selector") {
+
+                   header = (
+                     <th key={index} scope="col">
+                       <input
+                         type="checkbox"
+                         onClick={this.toggleAllItems}
+                       />
+                     </th>
+                   );
+
+                } else {
+
+                   header = (
+                     <th key={index} scope="col">
+                       {column.text}
+                     </th>
+                   );
+
+                }
+
+                return header;
+
+              })
         }
       </tr>
     );

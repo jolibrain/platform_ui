@@ -42,7 +42,7 @@ class ModelRepositoryItem extends React.Component {
 
   toggleCompareState() {
     const { service, handleCompareStateChange } = this.props;
-    handleCompareStateChange(service.path);
+    handleCompareStateChange([service.path]);
   }
 
   openPublishTrainingModal() {
@@ -103,7 +103,11 @@ class ModelRepositoryItem extends React.Component {
 
 
   render() {
-    const { service } = this.props;
+
+    const {
+      service,
+      selectedComparePath
+    } = this.props;
 
     if (!service) return null;
 
@@ -120,54 +124,55 @@ class ModelRepositoryItem extends React.Component {
             content = (
               <input
                 type="checkbox"
-                onClick={this.toggleCompareState}
+                onChange={this.toggleCompareState}
+                checked={selectedComparePath.includes(service.path)}
               />
             )
           } else if (data.isAction) {
 
             let publishButton = service.jsonConfig ? (
-              <>
-                <br/>
-                <a
-                  onClick={this.openPublishTrainingModal}
-                  className="btn btn-sm btn-outline-primary"
-                >
-                  <i className="fas fa-plus" /> Publish
-                </a>
-              </>
+              <a
+                onClick={this.openPublishTrainingModal}
+                className="btn btn-outline-secondary"
+                href="#"
+                title="Publish"
+              >
+                <i className="fas fa-plus" />
+              </a>
             ) : null;
 
             if (this.state.isPublishing) {
               publishButton = (
-                <>
-                  <br/>
-                  <a className="btn btn-sm btn-outline-primary">
-                    <i className="fas fa-spinner fa-spin" /> Publishing...
-                  </a>
-                </>
+                <a className="btn btn-outline-secondary">
+                  <i className="fas fa-spinner fa-spin" />
+                </a>
               );
             }
 
             let deleteButton = (
-              <>
-                <br/>
-                <a
-                  onClick={this.deleteRepositoryModal}
-                  className="btn btn-sm btn-outline-danger"
-                >
-                  <i className="fas fa-trash" /> Delete
-                </a>
-              </>
+              <a
+                onClick={this.deleteRepositoryModal}
+                className="btn btn-outline-danger"
+                href="#"
+                title="Delete"
+              >
+                <i className="fas fa-trash" />
+              </a>
             )
 
             content = (
-              <>
-              <Link to={archiveUrl} className="btn btn-sm btn-primary">
-                View <i className="fas fa-chevron-right" />
-              </Link>
-              {publishButton}
-              {deleteButton}
-              </>
+              <div>
+                <Link
+                  to={archiveUrl}
+                  type="button"
+                  className="btn btn-primary"
+                  title="Results"
+                >
+                  <i className="fas fa-chart-area" />
+                </Link>
+                {deleteButton}
+                {publishButton}
+              </div>
             )
 
           } else if (data.selector) {
@@ -199,8 +204,7 @@ class ModelRepositoryItem extends React.Component {
 
             content = (
               <>
-                { value }
-                { bestValue ? <><br/>Best: {bestValue}</> : null }
+                { bestValue ? bestValue : value }
               </>
             )
           }

@@ -40,9 +40,13 @@ class ModelRepositoryCard extends React.Component {
   }
 
   toggleCompareState() {
-    const repository = this.props.service;
+    const {
+      service,
+      handleCompareStateChange
+    } = this.props;
+
     this.setState({ compareSelected: !this.state.compareSelected });
-    this.props.handleCompareStateChange(repository.path);
+    handleCompareStateChange([service.path]);
   }
 
   openPublishTrainingModal() {

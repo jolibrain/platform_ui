@@ -43,18 +43,21 @@ class MainView extends React.Component {
     }
   }
 
-  handleCompareStateChange(path) {
+  handleCompareStateChange(paths = []) {
     // Copy array of selectedComparePath
     let selectedComparePath = [...this.state.selectedComparePath];
 
-    if (this.state.selectedComparePath.includes(path)) {
-      // delete existing path
-      selectedComparePath.splice(selectedComparePath.indexOf(path), 1);
-      this.setState({ selectedComparePath: selectedComparePath });
-    } else {
-      // append new path
-      this.setState({ selectedComparePath: [...selectedComparePath, path] });
-    }
+    paths.forEach(path => {
+      if (selectedComparePath.includes(path)) {
+        // delete existing path
+        selectedComparePath.splice(selectedComparePath.indexOf(path), 1);
+      } else {
+        // append new path
+        selectedComparePath.push(path)
+      }
+    })
+
+    this.setState({ selectedComparePath: selectedComparePath });
   }
 
   handlePathFilter(filter) {
@@ -297,6 +300,7 @@ class MainView extends React.Component {
                 services={displayedArchiveRepositories}
                 handleCompareStateChange={this.handleCompareStateChange}
                 handlePathFilter={this.handlePathFilter}
+                selectedComparePath={this.state.selectedComparePath}
               />
             </div>
 
