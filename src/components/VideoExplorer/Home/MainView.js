@@ -188,12 +188,14 @@ class MainView extends React.Component {
                       <p>
                         <a
                           href={`${selectedVideo.path}output.mp4`}
+                          download={`${selectedVideo.name}.mp4`}
                           className="badge badge-secondary"
                         >
                           <i className="fas fa-download" /> Original video
                         </a> &nbsp;
                         <a
                           href={`${selectedVideo.path}output_bbox.mp4`}
+                          download={`${selectedVideo.name}_bbox.mp4`}
                           className="badge badge-secondary"
                         >
                           <i className="fas fa-download" /> Video with bounding boxes
