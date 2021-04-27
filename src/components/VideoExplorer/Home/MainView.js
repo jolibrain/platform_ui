@@ -212,16 +212,18 @@ class MainView extends React.Component {
                       <p>
                         <a
                           href={`${selectedVideo.path}${selectedFrame.jsonFile}`}
+                          download={`${selectedVideo.name}_{selectedFrame.jsonFile}`}
                           className="badge badge-secondary"
                         >
-                          <i className="fas fa-download" /> {selectedFrame.jsonFile}
+                          <i className="fas fa-download" /> JSON
                         </a>
                         &nbsp;
                         <a
                           href={`${selectedVideo.path}${selectedFrame.jsonFile.replace('.json', '.png')}`}
+                          download={`${selectedVideo.name}_{selectedFrame.jsonFile.replace('.json', '.png')}`}
                           className="badge badge-secondary"
                         >
-                          <i className="fas fa-download" /> frame{String(selectedFrame.index).padStart(8, '0')}.png
+                          <i className="fas fa-download" /> Image
                         </a>
                       </p>
                       <SyntaxHighlighter
