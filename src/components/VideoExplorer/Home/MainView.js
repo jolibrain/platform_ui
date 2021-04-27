@@ -190,13 +190,13 @@ class MainView extends React.Component {
                           href={`${selectedVideo.path}output.mp4`}
                           className="badge badge-secondary"
                         >
-                          <i className="fas fa-download" /> output.mp4
+                          <i className="fas fa-download" /> Original video
                         </a> &nbsp;
                         <a
                           href={`${selectedVideo.path}output_bbox.mp4`}
                           className="badge badge-secondary"
                         >
-                          <i className="fas fa-download" /> output_bbox.mp4
+                          <i className="fas fa-download" /> Video with bounding boxes
                         </a>
                       </p>
                     </div>
@@ -288,9 +288,7 @@ class MainView extends React.Component {
         <div className={mainClassNames.join(" ")}>
           <div className="container-fluid">
             <div className="content">
-
               <SourceFolderSelector/>
-
               <RightPanel />
             </div>
           </div>
