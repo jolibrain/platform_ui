@@ -19,6 +19,7 @@ test/codecept/output/
 
 public/auth.json
 public/version
+public/config.json.backup*
 
 npm-debug.log*
 yarn-debug.log*
