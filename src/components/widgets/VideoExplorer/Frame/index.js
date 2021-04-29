@@ -30,6 +30,7 @@ class Frame extends React.Component {
         switch(subtitle.format){
             case 'leftRightPercentArray':
               value = value
+                .sort((a, b) => a - b)
                 .map(v => {
                   return `${v > 0 ? 'right' : 'left'}: ${Math.abs(parseInt(v * 100))}/100`;
                 })
