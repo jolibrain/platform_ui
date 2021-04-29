@@ -46,16 +46,16 @@ class ModelRepositoryItem extends React.Component {
   }
 
   openPublishTrainingModal() {
-    const { modalStore } = this.props;
+    const { modalStore, service } = this.props;
     modalStore.setVisible("publishTraining", true, {
-      service: this.props.service
+      service: service
     });
   }
 
   deleteRepositoryModal() {
-    const { modalStore } = this.props;
+    const { modalStore, service } = this.props;
     modalStore.setVisible("deleteRepository", true, {
-      service: this.props.service
+      service: service
     });
   }
 
