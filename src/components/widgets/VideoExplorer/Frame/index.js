@@ -28,9 +28,11 @@ class Frame extends React.Component {
         const separator = subtitle.separator || " - ";
 
         switch(subtitle.format){
-            case 'percentArray':
+            case 'leftRightPercentArray':
               value = value
-                .map(v => `${Math.abs(parseInt(v * 100))}%`)
+                .map(v => {
+                  return `${v > 0 ? 'right' : 'left'}: ${Math.abs(parseInt(v * 100))}/100`;
+                })
                 .join(separator)
               break;
             default:
