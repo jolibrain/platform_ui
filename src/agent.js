@@ -254,7 +254,7 @@ const Webserver = {
       .withCredentials()
       .catch(handleErrors)
       .then(res => {
-        console.log(res);
+        // console.log(res);
       })
   },
   writePathContent: async (path, content, loginAccess = {
@@ -290,7 +290,7 @@ const Webserver = {
       .withCredentials()
       .catch(handleErrors)
       .then(res => {
-        console.log(res);
+        // console.log(res);
       })
   },
   getFile: path =>

@@ -228,8 +228,6 @@ export class videoExplorerStore {
             feedbackFilename
         );
 
-        console.log(feedbackPath)
-
         return agent.Webserver.writePathContent(
             feedbackPath,
             `{"content": "${feedbackContent}", "timestamp": ${timestamp}}`
