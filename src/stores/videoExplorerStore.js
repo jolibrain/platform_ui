@@ -2,6 +2,7 @@ import { observable, action, computed } from "mobx";
 import agent from "../agent";
 import path from "path";
 import { nanoid } from 'nanoid';
+import moment from 'moment';
 
 export class videoExplorerStore {
     @observable loaded = false;
@@ -42,6 +43,11 @@ export class videoExplorerStore {
     @computed
     get outputFolderPath() {
         return path.join(this.settings.rootPath, this.settings.folders.output)
+    }
+
+    @computed
+    get feedbacksFolderPath() {
+        return path.join(this.settings.rootPath, this.settings.folders.feedbacks)
     }
 
     @computed
@@ -194,6 +200,40 @@ export class videoExplorerStore {
                     //console.log(e);
                 });
         });
+    }
+
+    @action
+    writeFeedback(feedbackContent) {
+
+        // Check if feedbackPath is set
+        if(
+            !this.settings &&
+                !this.settings.feedbackPath
+        )
+            return false;
+
+        const timestamp = moment().unix();
+
+        let feedbackFilename =
+            `${this.selectedVideo.name.replace(/\s+/gi, '_')}_`;
+
+        feedbackFilename += this.selectedFrame ?
+            `frame${this.selectedFrame.index}_` : ''
+
+        feedbackFilename += `${timestamp}.json`
+
+        const feedbackPath = path.join(
+            '/filebrowser/api/resources',
+            this.settings.feedbackPath,
+            feedbackFilename
+        );
+
+        console.log(feedbackPath)
+
+        return agent.Webserver.writePathContent(
+            feedbackPath,
+            `{"content": "${feedbackContent}", "timestamp": ${timestamp}}`
+        )
     }
 }
 

@@ -257,6 +257,42 @@ const Webserver = {
         console.log(res);
       })
   },
+  writePathContent: async (path, content, loginAccess = {
+    url: "/filebrowser/api/login",
+    username: "",
+    password: ""
+  }) => {
+
+    let token = null;
+
+    if (
+      loginAccess &&
+        typeof loginAccess.url      !== "undefined" &&
+        typeof loginAccess.username !== "undefined" &&
+        typeof loginAccess.password !== "undefined"
+    )  {
+
+      const res = await superagent
+            .post(loginAccess.url)
+            .send({username: loginAccess.username})
+            .send({password: loginAccess.password})
+
+      if (res.status === 200) {
+        token = res.text;
+      }
+
+    }
+
+    superagent
+      .post(`${path}?override=false`)
+      .send(content)
+      .set('X-Auth', token)
+      .withCredentials()
+      .catch(handleErrors)
+      .then(res => {
+        console.log(res);
+      })
+  },
   getFile: path =>
     superagent
       .get(URL_JSON_PREFIX + path)
