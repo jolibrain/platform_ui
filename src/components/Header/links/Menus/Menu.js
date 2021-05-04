@@ -1,6 +1,8 @@
 /* eslint jsx-a11y/anchor-is-valid: "off" */
 import React from "react";
+
 import MenuItem from "./MenuItem";
+import MenuDropdown from "./MenuDropdown";
 
 class Menu extends React.Component {
   constructor(props) {
@@ -61,6 +63,9 @@ class Menu extends React.Component {
           </a>
           <div className={`dropdown-menu ${this.state.menuDown ? "show" : ""}`}>
             {items.map((item, index) => (
+              typeof item.urls !== 'undefined' && item.urls.length > 0 ?
+              <MenuDropdown key={index} isDropdownItem={true} {...item} />
+                :
               <MenuItem key={index} isDropdownItem={true} {...item} />
             ))}
           </div>
