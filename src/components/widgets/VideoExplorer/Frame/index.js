@@ -25,6 +25,16 @@ class Frame extends React.Component {
       subtitles = cardSubtitle.map(subtitle => {
         let value = frame.stats[subtitle.statsKey];
 
+        let label = '';
+
+        if(showLabel) {
+          label = subtitle.label
+
+          if(Array.isArray(frame.stats[subtitle.statsKey])) {
+            label += ` (${frame.stats[subtitle.statsKey].length})`
+          }
+        }
+
         const separator = subtitle.separator || " - ";
 
         switch(subtitle.format){
@@ -40,7 +50,7 @@ class Frame extends React.Component {
               break;
         }
 
-        return value ? `${showLabel ? subtitle.label : ''} ${value}` : ''
+        return value ? `${label}: ${value}` : ''
       })
 
     } else {
