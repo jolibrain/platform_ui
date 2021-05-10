@@ -85,7 +85,7 @@ class Frame extends React.Component {
       >
         <div className="marker"/>
         <div className="timeline-content">
-          <h1>{title}</h1>
+          <h1>{title} - Frame {frame.index}</h1>
           {
             subtitle.map((v, index) => <h2 key={index}>{v}</h2>)
           }
