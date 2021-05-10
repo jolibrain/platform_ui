@@ -99,7 +99,12 @@ export class videoExplorerStore {
     @action
     setFrameIndex(frameIndex) {
         this.frames.forEach(f => f.isSelected = false)
-        this.frames[frameIndex].isSelected = true
+
+        if(frameIndex >= this.frames.length)
+            frameIndex = this.frames.length - 1;
+
+        if(this.frames[frameIndex])
+            this.frames[frameIndex].isSelected = true
     }
 
     @action
