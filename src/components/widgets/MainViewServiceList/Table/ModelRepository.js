@@ -134,7 +134,6 @@ class ModelRepositoryItem extends React.Component {
               <a
                 onClick={this.openPublishTrainingModal}
                 className="btn btn-outline-secondary"
-                href="#"
                 title="Publish"
               >
                 <i className="fas fa-plus" />
@@ -153,7 +152,6 @@ class ModelRepositoryItem extends React.Component {
               <a
                 onClick={this.deleteRepositoryModal}
                 className="btn btn-outline-danger"
-                href="#"
                 title="Delete"
               >
                 <i className="fas fa-trash" />
