@@ -34,7 +34,7 @@ class Header extends React.Component {
     if (!configStore.isComponentBlacklisted("HeaderTitle")) {
       titleContent = (
         <Link to="/">
-          <img src="/logo.svg" alt="DeepDetect" />
+          <img src="/logo.svg" alt="DeepDetect" style={{height: 26}}/>
         </Link>
       )
     }
