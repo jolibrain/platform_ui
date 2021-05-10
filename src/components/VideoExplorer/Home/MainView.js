@@ -12,6 +12,42 @@ import RightPanel from "../commons/RightPanel";
 import SourceFolderSelector from "../../widgets/VideoExplorer/SourceFolderSelector"
 import Frame from "../../widgets/VideoExplorer/Frame"
 
+import Slider, { SliderTooltip } from 'rc-slider';
+
+const createSliderWithTooltip = Slider.createSliderWithTooltip;
+const Range = createSliderWithTooltip(Slider.Range);
+const { Handle } = Slider;
+
+const intHandle = props => {
+  const { value, dragging, index, ...restProps } = props;
+  return (
+    <SliderTooltip
+      prefixCls="rc-slider-tooltip"
+      overlay={value}
+      visible={dragging}
+      placement="top"
+      key={index}
+    >
+      <Handle value={value} {...restProps} />
+    </SliderTooltip>
+  );
+};
+
+const percentHandle = props => {
+  const { value, dragging, index, ...restProps } = props;
+  return (
+    <SliderTooltip
+      prefixCls="rc-slider-tooltip"
+      overlay={`${value} %`}
+      visible={dragging}
+      placement="top"
+      key={index}
+    >
+      <Handle value={value} {...restProps} />
+    </SliderTooltip>
+  );
+};
+
 @inject("videoExplorerStore")
 @inject("configStore")
 @inject("gpuStore")
@@ -32,10 +68,13 @@ class MainView extends React.Component {
       cableDistanceFilter: 0,
       cableMinNumberFilter: 0,
       cableMaxNumberFilter: 4,
+      isFeedbackSubmitted: false,
     };
 
     this.frameRef = React.createRef();
     this.feedbackRef = React.createRef();
+
+    this.handleVideoSelection = this.handleVideoSelection.bind(this)
 
     this.onPlayerReady = this.onPlayerReady.bind(this);
     this.onPlayerProgress = this.onPlayerProgress.bind(this);
@@ -46,8 +85,7 @@ class MainView extends React.Component {
     this.toggleAutoScroll = this.toggleAutoScroll.bind(this);
 
     this.handleCableDistanceChange = this.handleCableDistanceChange.bind(this);
-    this.handleCableMinNumberChange = this.handleCableMinNumberChange.bind(this);
-    this.handleCableMaxNumberChange = this.handleCableMaxNumberChange.bind(this);
+    this.handleCableNumberChange = this.handleCableNumberChange.bind(this);
 
     this.handleFeedbackSubmit = this.handleFeedbackSubmit.bind(this)
 
@@ -85,6 +123,19 @@ class MainView extends React.Component {
 
   toggleAutoScroll() {
     this.setState({autoScroll: !this.state.autoScroll});
+  }
+
+  handleVideoSelection(value) {
+    const { videoExplorerStore } = this.props;
+    videoExplorerStore.setVideoPath(value);
+
+    // reset state when a video is selected
+    this.setState({
+      currentTime: null,
+      cableDistanceFilter: 0,
+      cableMinNumberFilter: 0,
+      cableMaxNumberFilter: 4,
+    });
   }
 
   onPlayerReady() {
@@ -142,16 +193,18 @@ class MainView extends React.Component {
     this.setState({currentTime: currentTime});
   }
 
-  handleCableDistanceChange(event) {
-    this.setState({cableDistanceFilter: event.target.value})
+  handleCableDistanceChange(value) {
+    this.setState({cableDistanceFilter: value})
+
+    if(value > 0)
+      this.setState({cableMinNumberFilter: 1})
   }
 
-  handleCableMinNumberChange(event) {
-    this.setState({cableMinNumberFilter: event.target.value})
-  }
-
-  handleCableMaxNumberChange(event) {
-    this.setState({cableMaxNumberFilter: event.target.value})
+  handleCableNumberChange(values) {
+    this.setState({
+      cableMinNumberFilter: values[0],
+      cableMaxNumberFilter: values[1]
+    })
   }
 
   handleFeedbackSubmit(event) {
@@ -161,6 +214,11 @@ class MainView extends React.Component {
 
     videoExplorerStore.writeFeedback(this.feedbackRef.current.value)
     this.feedbackRef.current.value = "";
+
+    this.setState({ isFeedbackSubmitted: true });
+    setTimeout(() => {
+      this.setState({ isFeedbackSubmitted: false });
+    }, 2000);
   }
 
   render() {
@@ -217,6 +275,46 @@ class MainView extends React.Component {
     const feedbackAvailable =
           typeof settings.feedbackPath !== 'undefined' &&
           settings.feedbackPath.length > 0;
+
+    const visibleFrames = frames
+          .filter(f => {
+
+            let visible = typeof f !== undefined;
+
+            visible = visible &&
+              f.stats &&
+              f.stats['cables'] &&
+              f.stats['cables'].length >= cableMinNumberFilter &&
+              f.stats['cables'].length <= cableMaxNumberFilter
+
+            if(
+              cableDistanceFilter > 0 &&
+                f.stats &&
+                f.stats['cables'] &&
+                f.stats['cables'].length > 0
+            ) {
+              visible = visible &&
+                f.stats['cables'].some(c => {
+
+                  // If cable value is inferior to 0
+                  //    - cable on the left position from center
+                  //    - value is visible if inferior to negative cableDistanceFilter
+
+                  // If cable value is superior to 0
+                  //    - cable on the right position from center
+                  //    - value is visible if superior to cableDistanceFilter
+
+                  const value = parseInt(c * 100);
+
+                  return value < 0 ?
+                    value <= 0 - cableDistanceFilter
+                    :
+                    value >= cableDistanceFilter
+                })
+            }
+
+            return visible;
+          })
 
     if(selectedVideo) {
 
@@ -285,7 +383,7 @@ class MainView extends React.Component {
                       <p>
                         <a
                           href={`${selectedVideo.path}${selectedFrame.jsonFile}`}
-                          download={`${selectedVideo.name}_{selectedFrame.jsonFile}`}
+                          download={`${selectedVideo.name}_${selectedFrame.jsonFile}`}
                           className="badge badge-secondary"
                         >
                           <i className="fas fa-download" /> JSON
@@ -293,10 +391,18 @@ class MainView extends React.Component {
                         &nbsp;
                         <a
                           href={`${selectedVideo.path}${selectedFrame.jsonFile.replace('.json', '.png')}`}
-                          download={`${selectedVideo.name}_{selectedFrame.jsonFile.replace('.json', '.png')}`}
+                          download={`${selectedVideo.name}_${selectedFrame.jsonFile.replace('.json', '.png')}`}
                           className="badge badge-secondary"
                         >
                           <i className="fas fa-download" /> Image
+                        </a>
+                        &nbsp;
+                        <a
+                          href={`${selectedVideo.path}${settings.folders.bbox_images}${selectedFrame.jsonFile.replace('.json', '.png')}`}
+                          download={`${selectedVideo.name}_${selectedFrame.jsonFile.replace('.json', '_bbox.png')}`}
+                          className="badge badge-secondary"
+                        >
+                          <i className="fas fa-download" /> Image with bounding-boxes
                         </a>
                       </p>
                       <SyntaxHighlighter
@@ -318,9 +424,9 @@ class MainView extends React.Component {
                             >
                               <div className="form-group">
                                 <label
-                                  for="feedbackTextArea"
+                                  htmlFor="feedbackTextArea"
                                 >
-                                  Leave a feedback about this frame:
+                                  Leave a feedback on frame {selectedFrame.index}:
                                 </label>
                                 <textarea
                                   className="form-control"
@@ -334,6 +440,11 @@ class MainView extends React.Component {
                                 >
                                   Send feedback
                                 </button>
+                                { this.state.isFeedbackSubmitted ?
+                                  <span>&nbsp;Feedback has been submitted</span>
+                                  :
+                                  null
+                                }
                               </div>
                             </form>
                           </div>
@@ -352,59 +463,58 @@ class MainView extends React.Component {
                   <div className="d-flex">
                     <form>
                       <div className="form-group row">
-                        <legend className="col-form-label col-4">Number of Cables</legend>
-                        <div className="col-4">
-                          <input
-                            id="cableMinNumberFilter"
-                            type="number"
-                            className="form-control"
-                            onChange={this.handleCableMinNumberChange}
-                            value={this.state.cableMinNumberFilter}
-                          />
-                          <label
-                            for="cableMinNumberFilter"
-                            className="col-form-label"
-                          >
-                            Min
-                          </label>
-                        </div>
-                        <div className="col-4">
-                          <input
-                            id="cableMaxNumberFilter"
-                            className="form-control"
-                            type="number"
-                            onChange={this.handleCableMaxNumberChange}
-                            value={this.state.cableMaxNumberFilter}
-                          />
-                          <label
-                            for="cableMaxNumberFilter"
-                            className="col-form-label"
-                          >
-                            Max
-                          </label>
-                        </div>
+                        <legend className="col-form-label">Number of Cables</legend>
+                        <br/>
+                        <Range
+                          handle={intHandle}
+                          min={0}
+                          max={4}
+                          defaultValue={[
+                            this.state.cableMinNumberFilter,
+                            this.state.cableMaxNumberFilter
+                          ]}
+                          onAfterChange={this.handleCableNumberChange}
+                        />
                       </div>
                       <div className="form-group row">
-                        <legend className="col-form-label col-4">Exclude cable distance from center</legend>
-                        <div class="col-8">
-                          <input
-                            id="cableDistanceFilter"
-                            type="number"
-                            className="form-control"
-                            onChange={this.handleCableDistanceChange}
-                            value={this.state.cableDistanceFilter}
-                          />
-                        </div>
+                        <legend className="col-form-label">Exclude cable distance from center</legend>
+                        <br/>
+                        <Slider
+                          id="cableDistanceFilter"
+                          handle={percentHandle}
+                          onAfterChange={this.handleCableDistanceChange}
+                        />
                       </div>
                     </form>
                   </div>
 
-                  <div className="toggleAutoScroll d-flex justify-content-end">
-                    Auto-scroll frames &nbsp;
-                    <input
-                      type="checkbox"
-                      onChange={this.toggleAutoScroll}
-                      checked={this.state.autoScroll}/>
+                  <div className="row">
+                    <div className="col">
+                      Frames {visibleFrames.length} / {frames.length}
+                    </div>
+                    <div
+                      id="autoScrollToggle"
+                      className="col"
+                    >
+                      <form className="form-inline">
+                        <div className="form-check">
+                          <legend
+                            className="form-check-label"
+                            htmlFor="autoScrollCheckbox"
+                            style={{"font-size": "unset"}}
+                          >
+                            Autoscroll frames &nbsp;
+                          </legend>
+                          <input
+                            id="autoScrollCheckbox"
+                            type="checkbox"
+                            className="form-check-input"
+                            onChange={this.toggleAutoScroll}
+                            checked={this.state.autoScroll}
+                          />
+                        </div>
+                      </form>
+                    </div>
                   </div>
 
                   <div className='video-chrono'>
@@ -417,46 +527,7 @@ class MainView extends React.Component {
                         : null
                     }
                     {
-                      frames
-                        .filter(f => {
-
-                          let visible = typeof f !== undefined;
-
-                          visible = visible &&
-                            f.stats &&
-                            f.stats['cables'] &&
-                            f.stats['cables'].length >= cableMinNumberFilter &&
-                            f.stats['cables'].length <= cableMaxNumberFilter
-
-                          if(
-                             cableDistanceFilter > 0 &&
-                             f.stats &&
-                             f.stats['cables'] &&
-                             f.stats['cables'].length > 0
-                            ) {
-                            visible = visible &&
-                              f.stats['cables'].some(c => {
-
-                                // If cable value is inferior to 0
-                                //    - cable on the left position from center
-                                //    - value is visible if inferior to negative cableDistanceFilter
-
-                                // If cable value is superior to 0
-                                //    - cable on the right position from center
-                                //    - value is visible if superior to cableDistanceFilter
-
-                                const value = parseInt(c * 100);
-
-                                return value < 0 ?
-                                  value <= 0 - cableDistanceFilter
-                                :
-                                  value >= cableDistanceFilter
-                              })
-                          }
-
-                          return visible;
-                        })
-                        .map(f =>
+                      visibleFrames.map(f =>
                               <div
                                 key={f.id}
                                 className="scrollFrame"
@@ -487,7 +558,9 @@ class MainView extends React.Component {
         <div className={mainClassNames.join(" ")}>
           <div className="container-fluid">
             <div className="content">
-              <SourceFolderSelector/>
+              <SourceFolderSelector
+                handleVideoSelection={this.handleVideoSelection}
+              />
               <RightPanel />
             </div>
           </div>
