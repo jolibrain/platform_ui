@@ -1,3 +1,4 @@
+/* eslint jsx-a11y/anchor-is-valid: "off" */
 import React from "react";
 import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
@@ -32,6 +33,21 @@ const intHandle = props => {
       key={index}
     >
       <Handle value={value} {...restProps} />
+    </SliderTooltip>
+  );
+};
+
+const floatHandle = props => {
+  const { value, dragging, index, ...restProps } = props;
+  return (
+    <SliderTooltip
+      prefixCls="rc-slider-tooltip"
+      overlay={value.toFixed(2)}
+      visible={dragging}
+      placement="top"
+      key={index}
+    >
+      <Handle value={value.toFixed(2)} {...restProps} />
     </SliderTooltip>
   );
 };
@@ -71,6 +87,9 @@ class MainView extends React.Component {
       cableDistanceFilter: 0,
       cableMinNumberFilter: 0,
       cableMaxNumberFilter: 4,
+      isVideoPkAvailable: false,
+      pkMinFilterLimit: 0,
+      pkMaxFilterLimit: 100,
       isFeedbackSubmitted: false,
       isGeneratingZip: false,
     };
@@ -90,6 +109,7 @@ class MainView extends React.Component {
 
     this.handleCableDistanceChange = this.handleCableDistanceChange.bind(this);
     this.handleCableNumberChange = this.handleCableNumberChange.bind(this);
+    this.handlePkFilterChange = this.handlePkFilterChange.bind(this);
 
     this.handleFeedbackSubmit = this.handleFeedbackSubmit.bind(this)
 
@@ -107,8 +127,6 @@ class MainView extends React.Component {
 
   handleFrameClick(frameId) {
     const { videoExplorerStore } = this.props;
-    console.log("===")
-    console.log("id: " + frameId)
     videoExplorerStore.setFrame(frameId)
 
     const frameIndex = videoExplorerStore.selectedFrame.index > 0 ?
@@ -116,10 +134,8 @@ class MainView extends React.Component {
           :
           videoExplorerStore.selectedFrame.index
 
-    console.log("index: " + frameIndex)
     const frameFraction = (frameIndex + 1) / videoExplorerStore.frames.length;
 
-    console.log("fraction: " + frameFraction)
     this.player.seekTo(frameFraction, 'fraction')
   }
 
@@ -139,12 +155,23 @@ class MainView extends React.Component {
     const { videoExplorerStore } = this.props;
     videoExplorerStore.setVideoPath(value);
 
+    const { selectedVideo } = videoExplorerStore;
+
+    const isVideoPkAvailable =
+          typeof selectedVideo.stats.min_PK !== "undefined" &&
+          typeof selectedVideo.stats.max_PK !== "undefined"
+
     // reset state when a video is selected
     this.setState({
       currentTime: null,
       cableDistanceFilter: 0,
       cableMinNumberFilter: 0,
       cableMaxNumberFilter: 4,
+      isVideoPkAvailable: isVideoPkAvailable,
+      pkMinFilter: selectedVideo.stats.min_PK,
+      pkMaxFilter: selectedVideo.stats.max_PK,
+      pkMinFilterLimit: selectedVideo.stats.min_PK,
+      pkMaxFilterLimit: selectedVideo.stats.max_PK,
       autoScroll: false,
     });
   }
@@ -222,6 +249,14 @@ class MainView extends React.Component {
     })
   }
 
+  handlePkFilterChange(values) {
+    this.setState({
+      pkMinFilter: values[0],
+      pkMaxFilter: values[1],
+      autoScroll: false,
+    })
+  }
+
   handleFeedbackSubmit(event) {
     const { videoExplorerStore } = this.props;
 
@@ -240,12 +275,22 @@ class MainView extends React.Component {
     this.setState({isGeneratingZip: true})
     var zip = new JSZip();
     const {
+      isVideoPkAvailable,
+      pkMinFilter,
+      pkMaxFilter,
+      pkMinFilterLimit,
+      pkMaxFilterLimit,
       cableMinNumberFilter,
       cableMaxNumberFilter,
       cableDistanceFilter
     } = this.state;
 
     const { selectedVideo, frames } = this.props.videoExplorerStore;
+
+    const isPkFilterActive =
+          isVideoPkAvailable &&
+          (pkMinFilter !== pkMinFilterLimit ||
+           pkMaxFilter !== pkMaxFilterLimit)
 
     const visibleFrames = frames
       .filter(f => {
@@ -257,6 +302,13 @@ class MainView extends React.Component {
           f.stats['cables'] &&
           f.stats['cables'].length >= cableMinNumberFilter &&
           f.stats['cables'].length <= cableMaxNumberFilter
+
+        if(isPkFilterActive) {
+          visible = visible &&
+            f.stats['PK'] &&
+            parseFloat(f.stats['PK']) >= pkMinFilter &&
+            parseFloat(f.stats['PK']) <= pkMaxFilter;
+        }
 
         if(
           cableDistanceFilter > 0 &&
@@ -312,6 +364,11 @@ class MainView extends React.Component {
     const {
       cableMinNumberFilter,
       cableMaxNumberFilter,
+      isVideoPkAvailable,
+      pkMinFilterLimit,
+      pkMaxFilterLimit,
+      pkMinFilter,
+      pkMaxFilter,
       cableDistanceFilter
     } = this.state;
 
@@ -364,6 +421,11 @@ class MainView extends React.Component {
       }
     }
 
+    const isPkFilterActive =
+          isVideoPkAvailable &&
+          (pkMinFilter !== pkMinFilterLimit ||
+           pkMaxFilter !== pkMaxFilterLimit)
+
     const visibleFrames = frames
           .filter(f => {
 
@@ -374,6 +436,13 @@ class MainView extends React.Component {
               f.stats['cables'] &&
               f.stats['cables'].length >= cableMinNumberFilter &&
               f.stats['cables'].length <= cableMaxNumberFilter
+
+            if (isPkFilterActive) {
+              visible = visible &&
+                f.stats['PK'] &&
+                parseFloat(f.stats['PK']) >= pkMinFilter &&
+                parseFloat(f.stats['PK']) <= pkMaxFilter
+            }
 
             if(
               cableDistanceFilter > 0 &&
@@ -415,7 +484,9 @@ class MainView extends React.Component {
           <div className="container-fluid">
             <div className="content">
 
-              <SourceFolderSelector/>
+              <SourceFolderSelector
+                handleVideoSelection={this.handleVideoSelection}
+              />
 
               <div className="row">
 
@@ -464,6 +535,12 @@ class MainView extends React.Component {
                           <i className="fas fa-download" /> Video with bounding boxes
                         </a>
                       </p>
+                      <SyntaxHighlighter
+                        language={"json"}
+                        style={docco}
+                      >
+                        {JSON.stringify(selectedVideo.stats, null, 2)}
+                      </SyntaxHighlighter>
                     </div>
 
                   {
@@ -554,6 +631,23 @@ class MainView extends React.Component {
                 <div className="col-3">
                   <div className="d-flex">
                     <form>
+                      { isVideoPkAvailable ?
+                      <div className="form-group row">
+                        <legend className="col-form-label">PK</legend>
+                        <br/>
+                        <Range
+                          handle={floatHandle}
+                          min={this.state.pkMinFilterLimit}
+                          max={this.state.pkMaxFilterLimit}
+                          step={0.01}
+                          defaultValue={[
+                            pkMinFilter,
+                            pkMaxFilter
+                          ]}
+                          onAfterChange={this.handlePkFilterChange}
+                        />
+                      </div>
+                        : null }
                       <div className="form-group row">
                         <legend className="col-form-label">Number of Cables</legend>
                         <br/>
