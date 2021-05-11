@@ -4,6 +4,9 @@ import { withRouter } from "react-router-dom";
 
 import ReactPlayer from 'react-player'
 
+import JSZip from 'jszip'
+import saveAs from 'save-as'
+
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 
@@ -69,6 +72,7 @@ class MainView extends React.Component {
       cableMinNumberFilter: 0,
       cableMaxNumberFilter: 4,
       isFeedbackSubmitted: false,
+      isGeneratingZip: false,
     };
 
     this.frameRef = React.createRef();
@@ -89,6 +93,8 @@ class MainView extends React.Component {
 
     this.handleFeedbackSubmit = this.handleFeedbackSubmit.bind(this)
 
+    this.handleDownloadZipFrames = this.handleDownloadZipFrames.bind(this)
+
   }
 
   componentDidMount() {
@@ -101,6 +107,8 @@ class MainView extends React.Component {
 
   handleFrameClick(frameId) {
     const { videoExplorerStore } = this.props;
+    console.log("===")
+    console.log("id: " + frameId)
     videoExplorerStore.setFrame(frameId)
 
     const frameIndex = videoExplorerStore.selectedFrame.index > 0 ?
@@ -108,8 +116,10 @@ class MainView extends React.Component {
           :
           videoExplorerStore.selectedFrame.index
 
-    const frameFraction = frameIndex / videoExplorerStore.frames.length;
+    console.log("index: " + frameIndex)
+    const frameFraction = (frameIndex + 1) / videoExplorerStore.frames.length;
 
+    console.log("fraction: " + frameFraction)
     this.player.seekTo(frameFraction, 'fraction')
   }
 
@@ -135,6 +145,7 @@ class MainView extends React.Component {
       cableDistanceFilter: 0,
       cableMinNumberFilter: 0,
       cableMaxNumberFilter: 4,
+      autoScroll: false,
     });
   }
 
@@ -194,7 +205,10 @@ class MainView extends React.Component {
   }
 
   handleCableDistanceChange(value) {
-    this.setState({cableDistanceFilter: value})
+    this.setState({
+      cableDistanceFilter: value,
+      autoScroll: false,
+    })
 
     if(value > 0)
       this.setState({cableMinNumberFilter: 1})
@@ -203,7 +217,8 @@ class MainView extends React.Component {
   handleCableNumberChange(values) {
     this.setState({
       cableMinNumberFilter: values[0],
-      cableMaxNumberFilter: values[1]
+      cableMaxNumberFilter: values[1],
+      autoScroll: false,
     })
   }
 
@@ -219,6 +234,77 @@ class MainView extends React.Component {
     setTimeout(() => {
       this.setState({ isFeedbackSubmitted: false });
     }, 2000);
+  }
+
+  async handleDownloadZipFrames() {
+    this.setState({isGeneratingZip: true})
+    var zip = new JSZip();
+    const {
+      cableMinNumberFilter,
+      cableMaxNumberFilter,
+      cableDistanceFilter
+    } = this.state;
+
+    const { selectedVideo, frames } = this.props.videoExplorerStore;
+
+    const visibleFrames = frames
+      .filter(f => {
+
+        let visible = typeof f !== undefined;
+
+        visible = visible &&
+          f.stats &&
+          f.stats['cables'] &&
+          f.stats['cables'].length >= cableMinNumberFilter &&
+          f.stats['cables'].length <= cableMaxNumberFilter
+
+        if(
+          cableDistanceFilter > 0 &&
+            f.stats &&
+            f.stats['cables'] &&
+            f.stats['cables'].length > 0
+        ) {
+          visible = visible &&
+            f.stats['cables'].some(c => {
+
+              // If cable value is inferior to 0
+              //    - cable on the left position from center
+              //    - value is visible if inferior to negative cableDistanceFilter
+
+              // If cable value is superior to 0
+              //    - cable on the right position from center
+              //    - value is visible if superior to cableDistanceFilter
+
+              const value = parseInt(c * 100);
+
+              return value < 0 ?
+                value <= 0 - cableDistanceFilter
+                :
+                value >= cableDistanceFilter
+            })
+        }
+
+        return visible;
+      })
+
+    for (let index = 0; index < visibleFrames.length; index++) {
+      const frame = visibleFrames[index]
+
+      const imageFile = await fetch(frame.imageSrc.original);
+      const imageBlob = await imageFile.blob();
+      zip.file(`frame_${frame.index}.png`, imageBlob, {binary: true})
+
+      const jsonFile = await fetch(frame.jsonFile);
+      const jsonBlob = await jsonFile.blob();
+      zip.file(`frame_${frame.index}.json`, jsonBlob, {binary: true})
+
+    }
+
+    const zipFilename = `${selectedVideo.name}-${visibleFrames.length}-${frames.length}.zip`
+    zip.generateAsync({type: "blob"}).then(content => {
+      saveAs(content, zipFilename);
+    });
+    this.setState({isGeneratingZip: false})
   }
 
   render() {
@@ -245,7 +331,13 @@ class MainView extends React.Component {
       mainClassNames.push("with-right-sidebar");
     }
 
-    const { selectedVideo, selectedFrame, frames, settings } = videoExplorerStore;
+    const {
+      selectedVideo,
+      selectedFrame,
+      frames,
+      settings
+    } = videoExplorerStore;
+
     const { chronoItemSelectors } = settings;
 
     const isLoadingFrames = selectedVideo && frames.length === 0;
@@ -271,10 +363,6 @@ class MainView extends React.Component {
 
       }
     }
-
-    const feedbackAvailable =
-          typeof settings.feedbackPath !== 'undefined' &&
-          settings.feedbackPath.length > 0;
 
     const visibleFrames = frames
           .filter(f => {
@@ -315,6 +403,10 @@ class MainView extends React.Component {
 
             return visible;
           })
+
+    const feedbackAvailable =
+          typeof settings.feedbackPath !== 'undefined' &&
+          settings.feedbackPath.length > 0;
 
     if(selectedVideo) {
 
@@ -491,6 +583,17 @@ class MainView extends React.Component {
                   <div className="row">
                     <div className="col">
                       Frames {visibleFrames.length} / {frames.length}
+                      <br/>
+                      <a
+                        onClick={this.handleDownloadZipFrames}
+                        className="badge badge-secondary"
+                      >
+                        <i className={this.state.isGeneratingZip ?
+                                     "fas fa-spinner fa-spin"
+                                      :
+                                     "fas fa-download"
+                                     }/> Download zip file
+                      </a> &nbsp;
                     </div>
                     <div
                       id="autoScrollToggle"
@@ -501,7 +604,7 @@ class MainView extends React.Component {
                           <legend
                             className="form-check-label"
                             htmlFor="autoScrollCheckbox"
-                            style={{"font-size": "unset"}}
+                            style={{fontSize: "unset"}}
                           >
                             Autoscroll frames &nbsp;
                           </legend>
