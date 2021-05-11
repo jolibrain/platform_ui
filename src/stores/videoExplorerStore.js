@@ -188,16 +188,21 @@ export class videoExplorerStore {
                         return keepFolder;
                     });
 
-                    for (const folder of filteredFolders) {
+                    for (let index = 0; index < filteredFolders.length; index++) {
+                        const folder = filteredFolders[index];
                         const fPath = path.join(rootPath, folder.href, "/");
                         const fLabel = fPath.replace(new RegExp(this.settings.nginxPath, "gm"), "");
+
+                        const infoFile = await fetch(path.join(fPath, "info.json"));
+                        const infoJson = await infoFile.json();
 
                         this.videoPaths.push({
                             id: nanoid(),
                             name: folder.name,
                             path: fPath,
                             label: fLabel,
-                            frames: []
+                            frames: [],
+                            stats: infoJson
                         });
                     }
                 })
