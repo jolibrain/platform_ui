@@ -15,6 +15,7 @@ import RightPanel from "../commons/RightPanel";
 
 import SourceFolderSelector from "../../widgets/VideoExplorer/SourceFolderSelector"
 import Frame from "../../widgets/VideoExplorer/Frame"
+import StatsKeyChart from "../../widgets/VideoExplorer/StatsKeyChart"
 
 import Slider, { SliderTooltip } from 'rc-slider';
 
@@ -535,12 +536,27 @@ class MainView extends React.Component {
                           <i className="fas fa-download" /> Video with bounding boxes
                         </a>
                       </p>
-                      <SyntaxHighlighter
-                        language={"json"}
-                        style={docco}
-                      >
-                        {JSON.stringify(selectedVideo.stats, null, 2)}
-                      </SyntaxHighlighter>
+
+                      {
+                        selectedVideo.stats &&
+                          settings.statsChart &&
+                          settings.statsChart.length > 0
+                          ?
+                          <div>
+                          {
+                            settings.statsChart
+                                    .map((chartSettings, k) => {
+                                      console.log(chartSettings)
+                              return (<StatsKeyChart
+                                key={k}
+                                stats={selectedVideo.stats}
+                                options={chartSettings}
+                                      />)
+                            })
+                          }
+                          </div>
+                        : null
+                      }
                     </div>
 
                   {
