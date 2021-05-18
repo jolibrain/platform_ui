@@ -1,3 +1,28 @@
+#widget-processingStatus {
+
+  padding:10px;
+  border-bottom: 1px solid #999;
+
+  h5 {
+    font-size: 18px;
+  }
+
+  ul {
+    margin: 0;
+    padding: 5px;
+
+    li {
+      padding: 5px 0;
+      margin: 0;
+      list-style:none;
+
+      i {
+        padding-right: 5px;
+      }
+    }
+  }
+}
+
 #autoScrollToggle > legend {
   font-size: unset;
 }
