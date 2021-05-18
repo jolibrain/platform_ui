@@ -11,14 +11,29 @@ export class videoExplorerStore {
     @observable videoPaths = [];
     @observable frames = [];
 
+    @observable processingVideos = [];
+
     @action
     setup(configStore) {
         this.settings = configStore.videoExplorer;
+        this.updateProcessingVideos();
+        setInterval(this.updateProcessingVideos.bind(this), 10000)
     }
 
     @action
     toggleBoundingBoxes() {
         this.settings.boundingBoxes = !this.settings.boundingBoxes;
+    }
+
+    async updateProcessingVideos() {
+        if(
+            !this.settings ||
+                !this.settings.rootPath ||
+                !this.settings.videoProcessingJson
+          )
+            return null;
+
+        await this.loadProcessingVideos(this.settings.videoProcessingJson)
     }
 
     async refresh() {
@@ -33,11 +48,51 @@ export class videoExplorerStore {
         this.loaded = true;
     }
 
+    @action
+    async loadProcessingVideos(jsonPath) {
+        new Promise(resolve => {
+
+            this.$reqFile(jsonPath)
+                .then(async jsonContent => {
+
+                    const videoTitles = Object.keys(jsonContent.videos)
+
+                    for (let index = 0; index < videoTitles.length; index++) {
+
+                        const videoTitle = videoTitles[index];
+
+                        if(!this.processingVideos.map(v => v.title).includes(videoTitle)) {
+
+                            this.processingVideos.push({
+                                id: nanoid(),
+                                title: videoTitle,
+                                status: jsonContent.videos[videoTitle].status,
+                                message: jsonContent.videos[videoTitle].message
+                            });
+
+                        } else {
+
+                            const video = this.processingVideos
+                                              .find(v => v.title === videoTitle);
+
+                            video.status = jsonContent.videos[videoTitle].status;
+                            video.message = jsonContent.videos[videoTitle].message;
+
+                        }
+                    }
+                })
+                .catch(e => {
+                    //console.log(e);
+                });
+        });
+    }
+
     $reqFolder(rootPath) {
         return agent.Webserver.listFolders(rootPath);
     }
 
-    $reqFiles(videoPath) {
+    $reqFile(path) {
+        return agent.Webserver.getFile(path);
     }
 
     @computed
@@ -196,14 +251,16 @@ export class videoExplorerStore {
                         const infoFile = await fetch(path.join(fPath, "info.json"));
                         const infoJson = await infoFile.json();
 
-                        this.videoPaths.push({
-                            id: nanoid(),
-                            name: folder.name,
-                            path: fPath,
-                            label: fLabel,
-                            frames: [],
-                            stats: infoJson
-                        });
+                        if(!this.videoPaths.map(v => v.name).includes(folder.name)) {
+                            this.videoPaths.push({
+                                id: nanoid(),
+                                name: folder.name,
+                                path: fPath,
+                                label: fLabel,
+                                frames: [],
+                                stats: infoJson
+                            });
+                        }
                     }
                 })
                 .catch(e => {
