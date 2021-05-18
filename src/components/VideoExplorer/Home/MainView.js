@@ -546,7 +546,6 @@ class MainView extends React.Component {
                           {
                             settings.statsChart
                                     .map((chartSettings, k) => {
-                                      console.log(chartSettings)
                               return (<StatsKeyChart
                                 key={k}
                                 stats={selectedVideo.stats}
