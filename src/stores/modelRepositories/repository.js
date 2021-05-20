@@ -28,6 +28,18 @@ export default class Repository {
   }
 
   @computed
+  get mltype() {
+    if (
+      !this.jsonMetrics ||
+      !this.jsonMetrics.body ||
+      !this.jsonMetrics.body.mltype
+    )
+      return null;
+
+    return this.jsonMetrics.body.mltype;
+  }
+
+  @computed
   get benchmarksPath() {
     return this.path + '/benchmarks';
   }

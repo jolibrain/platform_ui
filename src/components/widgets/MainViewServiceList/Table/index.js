@@ -24,13 +24,27 @@ class Table extends React.Component {
       },
       presets: [
         {
-          name: "Timeseries",
+          name: "All",
           isActive: true,
+          selectors: [
+            "train_loss"
+          ],
+          filterService: (service) => {
+            return true;
+          }
+        },
+        {
+          name: "Timeseries",
+          isActive: false,
           selectors: [
             "train_loss",
             "eucll",
             "L1_mean_error"
-          ]
+          ],
+          filterService: (service) => {
+            return typeof service.mltype !== "undefined" &&
+              service.mltype === "timeseries";
+          }
         },
         {
           name: "Detection",
@@ -38,7 +52,11 @@ class Table extends React.Component {
           selectors: [
             "train_loss",
             "map"
-          ]
+          ],
+          filterService: (service) => {
+            return typeof service.mltype !== "undefined" &&
+              service.mltype === "detection";
+          }
         },
         {
           name: "Segmentation",
@@ -47,7 +65,11 @@ class Table extends React.Component {
             "train_loss",
             "meaniou",
             "accuracy"
-          ]
+          ],
+          filterService: (service) => {
+            return typeof service.mltype !== "undefined" &&
+              service.mltype === "segmentation";
+          }
         },
         {
           name: "Classification",
@@ -56,7 +78,11 @@ class Table extends React.Component {
             "train_loss",
             "acc",
             "f1"
-          ]
+          ],
+          filterService: (service) => {
+            return typeof service.mltype !== "undefined" &&
+              service.mltype === "classification";
+          }
         },
         {
           name: "Regression",
@@ -65,7 +91,11 @@ class Table extends React.Component {
             "train_loss",
             "eucll",
             "L1_mean_error"
-          ]
+          ],
+          filterService: (service) => {
+            return typeof service.mltype !== "undefined" &&
+              service.mltype === "regression";
+          }
         }
       ],
       columns: [
@@ -217,7 +247,7 @@ class Table extends React.Component {
           text: "L1 Mean Error",
           selector: "L1_mean_error",
           isValue: true,
-          hide: false,
+          hide: true,
           toggable: true,
           bestValueCallback: this.bestMinValue,
           formatter: this.formatFloatValue
@@ -235,7 +265,7 @@ class Table extends React.Component {
           text: "Eucll",
           selector: "eucll",
           isValue: true,
-          hide: false,
+          hide: true,
           toggable: true,
           bestValueCallback: this.bestMinValue,
           formatter: this.formatFloatValue
@@ -389,9 +419,13 @@ class Table extends React.Component {
       services
     } = this.props;
 
+    const activePreset = this.state.presets.find(p => p.isActive)
+    const presetServices = services.filter(s => activePreset.filterService(s))
+
     const { pagination } = this.state;
-    const pageCount = Math.ceil(services.length / pagination.perPage);
-    const displayedServices = services.slice(
+    const pageCount = Math.ceil(presetServices.length / pagination.perPage);
+
+    const displayedServices = presetServices.slice(
       pagination.offset,
       pagination.offset + pagination.perPage
     )
