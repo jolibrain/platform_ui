@@ -576,7 +576,7 @@ class MeasureChart extends React.Component {
       }
     };
 
-    const values = services.map((service, index) =>
+    const values = services.filter(s => s).map((service, index) =>
       this.getServiceValue(service, index, attribute, chartData)
     );
 
