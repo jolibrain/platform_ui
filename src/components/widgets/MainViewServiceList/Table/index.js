@@ -64,7 +64,7 @@ class Table extends React.Component {
           selectors: [
             "train_loss",
             "meaniou",
-            "accuracy"
+            "acc"
           ],
           filterService: (service) => {
             return typeof service.mltype !== "undefined" &&
@@ -288,8 +288,6 @@ class Table extends React.Component {
     this.toggleAllItems = this.toggleAllItems.bind(this);
 
     this.formatFloatValue = this.formatFloatValue.bind(this);
-    this.bestMinValue = this.bestMinValue.bind(this);
-    this.bestMaxValue = this.bestMaxValue.bind(this);
   }
 
   formatFloatValue(value) {
@@ -303,14 +301,6 @@ class Table extends React.Component {
     }
 
     return content;
-  }
-
-  bestMinValue(histValues) {
-    return Math.min.apply(Math, histValues);
-  }
-
-  bestMaxValue(histValues) {
-    return Math.max.apply(Math, histValues);
   }
 
   handleFilterClick(event){

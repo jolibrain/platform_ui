@@ -32,8 +32,6 @@ class ModelRepositoryItem extends React.Component {
       publishError: null
     };
 
-    this.getValue = this.getValue.bind(this);
-    this.getBestValue = this.getBestValue.bind(this);
     this.toggleCompareState = this.toggleCompareState.bind(this);
 
     this.openPublishTrainingModal = this.openPublishTrainingModal.bind(this);
@@ -58,49 +56,6 @@ class ModelRepositoryItem extends React.Component {
       service: service
     });
   }
-
-  getValue(service, attr) {
-    if (!service.jsonMetrics) return '--';
-
-    const { measure, measure_hist } = service.jsonMetrics.body;
-
-    let value = '--';
-
-    if (measure && measure[attr]) {
-      value = measure[attr];
-    } else if (
-      measure_hist &&
-      measure_hist[`${attr}_hist`] &&
-      measure_hist[`${attr}_hist`].length > 0
-    ) {
-      value =
-        measure_hist[`${attr}_hist`][measure_hist[`${attr}_hist`].length - 1];
-    }
-
-    return value;
-  }
-
-  getBestValue(service, selector, bestValueCallback) {
-    if (!service) return "--";
-
-    const measure_hist = service.jsonMetrics
-      ? service.jsonMetrics.body.measure_hist
-      : service.measure_hist;
-
-    let value = '--';
-
-    if (
-      measure_hist &&
-      measure_hist[`${selector}_hist`] &&
-      measure_hist[`${selector}_hist`].length > 0
-    ) {
-      value = bestValueCallback(measure_hist[`${selector}_hist`])
-    }
-
-    return value;
-  }
-
-
 
   render() {
 
@@ -178,7 +133,7 @@ class ModelRepositoryItem extends React.Component {
             let value = null
 
             if (data.isValue) {
-              value = this.getValue(service, data.selector);
+              value = service.metricsValue(data.selector);
             } else {
               value = service[data.selector] || '--';
             }
@@ -191,11 +146,7 @@ class ModelRepositoryItem extends React.Component {
             let bestValue = null;
 
             if (data.bestValueCallback) {
-              bestValue = this.getBestValue(
-                service,
-                data.selector,
-                data.bestValueCallback
-              );
+              bestValue = service.metricsBestValue(data.selector)
               bestValue = data.formatter ?
                     data.formatter(bestValue, service) : bestValue;
             }
