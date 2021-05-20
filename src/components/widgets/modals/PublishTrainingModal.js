@@ -149,29 +149,50 @@ class PublishTrainingModal extends React.Component {
             });
           }
         } else {
-          modelRepositoriesStore.refresh();
-          if (this.state.deleteAfterPublish) {
-            // TODO add serviceName in ddServer.deleteService method
-            // to avoid using private request method
-            await ddServer.$reqDeleteService(serviceName);
+
+          if(
+            response &&
+              response.status &&
+              response.status.code &&
+              response.status.code !== 200
+            ) {
 
             this.setState({
               spinner: false,
               publishMessage: {
-                isError: false,
-                content: `Service is now available on Predict page.`
+                isError: true,
+                content: `${response.status.msg}: ${response.status.dd_msg}`
               }
             });
+
           } else {
-            this.setState({
-              spinner: false,
-              publishMessage: {
-                isError: false,
-                content: `Service has been published.`,
-                serviceName: serviceName
-              }
-            });
+
+            modelRepositoriesStore.refresh();
+            if (this.state.deleteAfterPublish) {
+              // TODO add serviceName in ddServer.deleteService method
+              // to avoid using private request method
+              await ddServer.$reqDeleteService(serviceName);
+
+              this.setState({
+                spinner: false,
+                publishMessage: {
+                  isError: false,
+                  content: `Service is now available on Predict page.`
+                }
+              });
+            } else {
+              this.setState({
+                spinner: false,
+                publishMessage: {
+                  isError: false,
+                  content: `Service has been published.`,
+                  serviceName: serviceName
+                }
+              });
+            }
+
           }
+
         }
       });
     }
