@@ -39,6 +39,91 @@ export default class Repository {
     return this.jsonMetrics.body.mltype;
   }
 
+  metricsValue(attr) {
+
+    let value = '--';
+    let metricKey = attr;
+
+    if (!this.jsonMetrics)
+      return value;
+
+    const { measure, measure_hist } = this.jsonMetrics.body;
+
+    // Some accuracy values are stored in acc or accp metrics field
+    // Modify input metric key if this field is not the correct target
+    if(
+      metricKey === "acc" &&
+        typeof measure[metricKey] === "undefined" &&
+        typeof measure["accp"] !== "undefined"
+    ) {
+      metricKey = "accp";
+    } else if (
+      metricKey === "accp" &&
+        typeof measure[metricKey] === "undefined" &&
+        typeof measure["acc"] !== "undefined"
+    ) {
+      metricKey = "acc";
+    }
+
+    if (measure && measure[metricKey]) {
+      value = measure[metricKey];
+    } else if (
+      measure_hist &&
+      measure_hist[`${metricKey}_hist`] &&
+      measure_hist[`${metricKey}_hist`].length > 0
+    ) {
+      value =
+        measure_hist[`${metricKey}_hist`][measure_hist[`${metricKey}_hist`].length - 1];
+    }
+
+    return value;
+  }
+
+  metricsBestValue(attr) {
+
+    let value = '--';
+    let metricKey = attr;
+
+    if (!this.jsonMetrics)
+      return value;
+
+    const measure_hist = this.jsonMetrics
+      ? this.jsonMetrics.body.measure_hist
+      : this.measure_hist;
+
+    // Some accuracy values are stored in acc or accp metrics field
+    // Modify input metric key if this field is not the correct target
+    if(
+      metricKey === "acc" &&
+        typeof measure_hist[`${metricKey}_hist`] === "undefined" &&
+        typeof measure_hist["accp_hist"] !== "undefined"
+    ) {
+      metricKey = "accp";
+    } else if (
+      metricKey === "accp" &&
+        typeof measure_hist[`${metricKey}_hist`] === "undefined" &&
+        typeof measure_hist["acc_hist"] !== "undefined"
+    ) {
+      metricKey = "acc";
+    }
+
+    if (
+      measure_hist &&
+      measure_hist[`${metricKey}_hist`] &&
+      measure_hist[`${metricKey}_hist`].length > 0
+    ) {
+
+      if(['acc', 'accp', 'meaniou', 'map', 'f1'].includes(metricKey)) {
+        value = Math.max.apply(Math, measure_hist[`${metricKey}_hist`])
+      } else {
+        // train_loss, L1_mean_error, mcll, eucll
+        value = Math.min.apply(Math, measure_hist[`${metricKey}_hist`])
+      }
+    }
+
+    return value;
+  }
+
   @computed
   get benchmarksPath() {
     return this.path + '/benchmarks';
