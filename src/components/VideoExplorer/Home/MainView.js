@@ -127,6 +127,10 @@ class MainView extends React.Component {
   }
 
   handleFrameClick(frameId) {
+
+    // remove autoscroll
+    this.setState({autoScroll: false});
+
     const { videoExplorerStore } = this.props;
     videoExplorerStore.setFrame(frameId)
 
