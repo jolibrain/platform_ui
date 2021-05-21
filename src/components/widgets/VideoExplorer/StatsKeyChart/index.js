@@ -30,6 +30,7 @@ class StatsKeyChart extends React.Component {
       datasets: [
         {
           data: dataKeys.map(k => data[k]),
+          backgroundColor: "rgba(55,126,184,1)"
         }
       ]
     }
