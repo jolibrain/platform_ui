@@ -130,12 +130,8 @@ class MainView extends React.Component {
     const { videoExplorerStore } = this.props;
     videoExplorerStore.setFrame(frameId)
 
-    const frameIndex = videoExplorerStore.selectedFrame.index > 0 ?
-          videoExplorerStore.selectedFrame.index - 1
-          :
-          videoExplorerStore.selectedFrame.index
-
-    const frameFraction = (frameIndex + 1) / videoExplorerStore.frames.length;
+    const { selectedFrame, frames } = videoExplorerStore;
+    const frameFraction = selectedFrame.index / frames.length;
 
     this.player.seekTo(frameFraction, 'fraction')
   }
