@@ -121,7 +121,7 @@ class MultiTitle extends React.Component {
       <table className="title trainingmonitor-multititle">
         <thead>
           <tr>
-            { tableColumns.map(col => <th>{col.text}</th>) }
+            { tableColumns.map((col, k) => <th key={k}>{col.text}</th>) }
           </tr>
         </thead>
         <tbody>
