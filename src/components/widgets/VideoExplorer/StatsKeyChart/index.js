@@ -25,12 +25,25 @@ class StatsKeyChart extends React.Component {
     const dataKeys = Object.keys(data)
                            .sort((a, b) => parseInt(a) - parseInt(b))
 
+    let values = dataKeys.map(k => data[k]);
+    if(options.valueFormat) {
+      switch(options.valueFormat) {
+          case 'percent':
+            values = dataKeys
+              .map(k => Math.round(data[k] * 100) + '%');
+            break;
+          default:
+            break;
+      }
+    }
+
     const chartData = {
       labels: dataKeys.map(k => parseInt(k)),
       datasets: [
         {
-          data: dataKeys.map(k => data[k]),
-          backgroundColor: "rgba(55,126,184,1)"
+          data: values,
+          backgroundColor: options.chartColors ?
+            options.chartColors : "rgba(55,126,184,1)"
         }
       ]
     }
