@@ -14,59 +14,28 @@ import { docco } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 import RightPanel from "../commons/RightPanel";
 
 import SourceFolderSelector from "../../widgets/VideoExplorer/SourceFolderSelector"
+import FrameFilter from "../../widgets/VideoExplorer/FrameFilter"
 import Frame from "../../widgets/VideoExplorer/Frame"
 import StatsKeyChart from "../../widgets/VideoExplorer/StatsKeyChart"
 
-import Slider, { SliderTooltip } from 'rc-slider';
-
-const createSliderWithTooltip = Slider.createSliderWithTooltip;
-const Range = createSliderWithTooltip(Slider.Range);
-const { Handle } = Slider;
-
-const intHandle = props => {
-  const { value, dragging, index, ...restProps } = props;
-  return (
-    <SliderTooltip
-      prefixCls="rc-slider-tooltip"
-      overlay={value}
-      visible={dragging}
-      placement="top"
-      key={index}
-    >
-      <Handle value={value} {...restProps} />
-    </SliderTooltip>
-  );
-};
-
-const floatHandle = props => {
-  const { value, dragging, index, ...restProps } = props;
-  return (
-    <SliderTooltip
-      prefixCls="rc-slider-tooltip"
-      overlay={value.toFixed(2)}
-      visible={dragging}
-      placement="top"
-      key={index}
-    >
-      <Handle value={value.toFixed(2)} {...restProps} />
-    </SliderTooltip>
-  );
-};
-
-const percentHandle = props => {
-  const { value, dragging, index, ...restProps } = props;
-  return (
-    <SliderTooltip
-      prefixCls="rc-slider-tooltip"
-      overlay={`${value} %`}
-      visible={dragging}
-      placement="top"
-      key={index}
-    >
-      <Handle value={value} {...restProps} />
-    </SliderTooltip>
-  );
-};
+/*
+  <div className="form-group row">
+    <legend className="col-form-label">PK</legend>
+    <br/>
+    <Range
+      handle={floatHandle}
+      min={this.state.pkMinFilterLimit}
+      max={this.state.pkMaxFilterLimit}
+      step={0.01}
+      defaultValue={[
+        pkMinFilter,
+        pkMaxFilter
+      ]}
+      onAfterChange={this.handlePkFilterChange}
+    />
+  </div>
+    : null }
+  */
 
 @inject("videoExplorerStore")
 @inject("configStore")
@@ -85,18 +54,15 @@ class MainView extends React.Component {
     this.state = {
       currentTime: null,
       autoScroll: false,
-      cableDistanceFilter: 0,
-      cableMinNumberFilter: 0,
-      cableMaxNumberFilter: 4,
-      isVideoPkAvailable: false,
-      pkMinFilterLimit: 0,
-      pkMaxFilterLimit: 100,
+      filters: [],
       isFeedbackSubmitted: false,
       isGeneratingZip: false,
     };
 
     this.frameRef = React.createRef();
     this.feedbackRef = React.createRef();
+
+    this.visibleFrames = this.visibleFrames.bind(this);
 
     this.handleVideoSelection = this.handleVideoSelection.bind(this)
 
@@ -108,9 +74,8 @@ class MainView extends React.Component {
     this.toggleBoundingBoxes = this.toggleBoundingBoxes.bind(this);
     this.toggleAutoScroll = this.toggleAutoScroll.bind(this);
 
-    this.handleCableDistanceChange = this.handleCableDistanceChange.bind(this);
-    this.handleCableNumberChange = this.handleCableNumberChange.bind(this);
-    this.handlePkFilterChange = this.handlePkFilterChange.bind(this);
+    this.handleFilterChange = this.handleFilterChange.bind(this);
+    this.handleFilterReset = this.handleFilterReset.bind(this);
 
     this.handleFeedbackSubmit = this.handleFeedbackSubmit.bind(this)
 
@@ -158,22 +123,11 @@ class MainView extends React.Component {
 
     const { selectedVideo } = videoExplorerStore;
 
-    const isVideoPkAvailable =
-          typeof selectedVideo.stats.min_PK !== "undefined" &&
-          typeof selectedVideo.stats.max_PK !== "undefined"
-
     // reset state when a video is selected
     this.setState({
       currentTime: null,
-      cableDistanceFilter: 0,
-      cableMinNumberFilter: 0,
-      cableMaxNumberFilter: 4,
-      isVideoPkAvailable: isVideoPkAvailable,
-      pkMinFilter: selectedVideo.stats.min_PK,
-      pkMaxFilter: selectedVideo.stats.max_PK,
-      pkMinFilterLimit: selectedVideo.stats.min_PK,
-      pkMaxFilterLimit: selectedVideo.stats.max_PK,
       autoScroll: false,
+      filters: []
     });
   }
 
@@ -232,29 +186,32 @@ class MainView extends React.Component {
     this.setState({currentTime: currentTime});
   }
 
-  handleCableDistanceChange(value) {
-    this.setState({
-      cableDistanceFilter: value,
-      autoScroll: false,
-    })
+  handleFilterChange(filterConfig, value) {
 
-    if(value > 0)
-      this.setState({cableMinNumberFilter: 1})
+    let filters = this.state.filters;
+    const filter = filters.find(f => f.id === filterConfig.id);
+
+    if(filter) {
+      filter.value = value
+    } else {
+      filters.push({
+        id: filterConfig.id,
+        statKey: filterConfig.statKey,
+        filterBehavior: filterConfig.filterBehavior,
+        value: value
+      })
+    }
+
+    this.setState({
+      filters: filters,
+      autoscroll: false
+    })
   }
 
-  handleCableNumberChange(values) {
+  handleFilterReset() {
     this.setState({
-      cableMinNumberFilter: values[0],
-      cableMaxNumberFilter: values[1],
-      autoScroll: false,
-    })
-  }
-
-  handlePkFilterChange(values) {
-    this.setState({
-      pkMinFilter: values[0],
-      pkMaxFilter: values[1],
-      autoScroll: false,
+      filters: [],
+      autoscroll: false
     })
   }
 
@@ -275,70 +232,10 @@ class MainView extends React.Component {
   async handleDownloadZipFrames() {
     this.setState({isGeneratingZip: true})
     var zip = new JSZip();
-    const {
-      isVideoPkAvailable,
-      pkMinFilter,
-      pkMaxFilter,
-      pkMinFilterLimit,
-      pkMaxFilterLimit,
-      cableMinNumberFilter,
-      cableMaxNumberFilter,
-      cableDistanceFilter
-    } = this.state;
 
     const { selectedVideo, frames } = this.props.videoExplorerStore;
 
-    const isPkFilterActive =
-          isVideoPkAvailable &&
-          (pkMinFilter !== pkMinFilterLimit ||
-           pkMaxFilter !== pkMaxFilterLimit)
-
-    const visibleFrames = frames
-      .filter(f => {
-
-        let visible = typeof f !== undefined;
-
-        visible = visible &&
-          f.stats &&
-          f.stats['cables'] &&
-          f.stats['cables'].length >= cableMinNumberFilter &&
-          f.stats['cables'].length <= cableMaxNumberFilter
-
-        if(isPkFilterActive) {
-          visible = visible &&
-            f.stats['PK'] &&
-            parseFloat(f.stats['PK']) >= pkMinFilter &&
-            parseFloat(f.stats['PK']) <= pkMaxFilter;
-        }
-
-        if(
-          cableDistanceFilter > 0 &&
-            f.stats &&
-            f.stats['cables'] &&
-            f.stats['cables'].length > 0
-        ) {
-          visible = visible &&
-            f.stats['cables'].some(c => {
-
-              // If cable value is inferior to 0
-              //    - cable on the left position from center
-              //    - value is visible if inferior to negative cableDistanceFilter
-
-              // If cable value is superior to 0
-              //    - cable on the right position from center
-              //    - value is visible if superior to cableDistanceFilter
-
-              const value = parseInt(c * 100);
-
-              return value < 0 ?
-                value <= 0 - cableDistanceFilter
-                :
-                value >= cableDistanceFilter
-            })
-        }
-
-        return visible;
-      })
+    const visibleFrames = this.visibleFrames();
 
     for (let index = 0; index < visibleFrames.length; index++) {
       const frame = visibleFrames[index]
@@ -360,18 +257,43 @@ class MainView extends React.Component {
     this.setState({isGeneratingZip: false})
   }
 
+  visibleFrames() {
+    const { videoExplorerStore } = this.props;
+    const { frames } = videoExplorerStore;
+
+    return frames
+          .filter(f => {
+            return typeof f !== undefined &&
+              this.state.filters.every(uiFilter => {
+                let isIncluded = true;
+
+                switch(uiFilter.filterBehavior) {
+                  case "arrayLengthInsideRange":
+                    isIncluded =
+                      f.stats[uiFilter.statKey].length >= uiFilter.value[0] &&
+                      f.stats[uiFilter.statKey].length <= uiFilter.value[1]
+                    break;
+                  case "valueInsideRange":
+                    isIncluded =
+                      parseFloat(f.stats[uiFilter.statKey]) >= uiFilter.value[0] &&
+                      parseFloat(f.stats[uiFilter.statKey]) <= uiFilter.value[1]
+                    break;
+                  case "someMoreThanAbsolutePercent":
+                    isIncluded = f.stats[uiFilter.statKey].some(val => {
+                      return Math.abs(val * 100) > uiFilter.value
+                    })
+                    break;
+                  default:
+                    break;
+                }
+
+                return isIncluded;
+              })
+          })
+  }
+
   render() {
     const { configStore, gpuStore, videoExplorerStore } = this.props;
-    const {
-      cableMinNumberFilter,
-      cableMaxNumberFilter,
-      isVideoPkAvailable,
-      pkMinFilterLimit,
-      pkMaxFilterLimit,
-      pkMinFilter,
-      pkMaxFilter,
-      cableDistanceFilter
-    } = this.state;
 
     let mainClassNames = [
       "main-view",
@@ -422,63 +344,41 @@ class MainView extends React.Component {
       }
     }
 
-    const isPkFilterActive =
-          isVideoPkAvailable &&
-          (pkMinFilter !== pkMinFilterLimit ||
-           pkMaxFilter !== pkMaxFilterLimit)
-
-    const visibleFrames = frames
-          .filter(f => {
-
-            let visible = typeof f !== undefined;
-
-            visible = visible &&
-              f.stats &&
-              f.stats['cables'] &&
-              f.stats['cables'].length >= cableMinNumberFilter &&
-              f.stats['cables'].length <= cableMaxNumberFilter
-
-            if (isPkFilterActive) {
-              visible = visible &&
-                f.stats['PK'] &&
-                parseFloat(f.stats['PK']) >= pkMinFilter &&
-                parseFloat(f.stats['PK']) <= pkMaxFilter
-            }
-
-            if(
-              cableDistanceFilter > 0 &&
-                f.stats &&
-                f.stats['cables'] &&
-                f.stats['cables'].length > 0
-            ) {
-              visible = visible &&
-                f.stats['cables'].some(c => {
-
-                  // If cable value is inferior to 0
-                  //    - cable on the left position from center
-                  //    - value is visible if inferior to negative cableDistanceFilter
-
-                  // If cable value is superior to 0
-                  //    - cable on the right position from center
-                  //    - value is visible if superior to cableDistanceFilter
-
-                  const value = parseInt(c * 100);
-
-                  return value < 0 ?
-                    value <= 0 - cableDistanceFilter
-                    :
-                    value >= cableDistanceFilter
-                })
-            }
-
-            return visible;
-          })
+    const visibleFrames = this.visibleFrames();
 
     const feedbackAvailable =
           typeof settings.feedbackPath !== 'undefined' &&
           settings.feedbackPath.length > 0;
 
     if(selectedVideo) {
+
+      const frameFilters = chronoItemSelectors
+            .filters
+            .filter(filterConfig => {
+
+              // When filterConfig contains requiredStatKeys
+              // then only include this ui filter when video stats also
+              // contains this information
+
+              let isIncluded = true;
+
+              if(typeof filterConfig.requiredStatKeys !== "undefined") {
+                isIncluded = filterConfig.requiredStatKeys.every(statKey => {
+                  return typeof selectedVideo.stats[statKey] !== "undefined"
+                })
+              }
+
+              return isIncluded;
+
+            })
+            .map((filterConfig, index) => {
+              return (<FrameFilter
+                        key={index}
+                        stats={selectedVideo.stats}
+                        filterConfig={filterConfig}
+                        handleFilterChange={this.handleFilterChange}
+                      />)
+            })
 
       return (
         <div className={mainClassNames.join(" ")}>
@@ -512,7 +412,7 @@ class MainView extends React.Component {
                       <input
                         type="checkbox"
                         onChange={this.toggleBoundingBoxes}
-                        checked={videoExplorerStore.settings.boundingBoxes}/>
+                        checked={settings.boundingBoxes}/>
                       &nbsp; Bounding Boxes
                     </div>
                   </div>
@@ -644,54 +544,31 @@ class MainView extends React.Component {
                 </div>
 
                 <div className="col-3">
+
                   <div className="d-flex">
                     <form>
-                      { isVideoPkAvailable ?
-                      <div className="form-group row">
-                        <legend className="col-form-label">PK</legend>
-                        <br/>
-                        <Range
-                          handle={floatHandle}
-                          min={this.state.pkMinFilterLimit}
-                          max={this.state.pkMaxFilterLimit}
-                          step={0.01}
-                          defaultValue={[
-                            pkMinFilter,
-                            pkMaxFilter
-                          ]}
-                          onAfterChange={this.handlePkFilterChange}
-                        />
-                      </div>
-                        : null }
-                      <div className="form-group row">
-                        <legend className="col-form-label">Number of Cables</legend>
-                        <br/>
-                        <Range
-                          handle={intHandle}
-                          min={0}
-                          max={4}
-                          defaultValue={[
-                            this.state.cableMinNumberFilter,
-                            this.state.cableMaxNumberFilter
-                          ]}
-                          onAfterChange={this.handleCableNumberChange}
-                        />
-                      </div>
-                      <div className="form-group row">
-                        <legend className="col-form-label">Exclude cable distance from center</legend>
-                        <br/>
-                        <Slider
-                          id="cableDistanceFilter"
-                          handle={percentHandle}
-                          onAfterChange={this.handleCableDistanceChange}
-                        />
-                      </div>
+                      {frameFilters}
                     </form>
                   </div>
 
                   <div className="row">
                     <div className="col">
                       Frames {visibleFrames.length} / {frames.length}
+                      {
+                        frameFilters.length > 0 &&
+                          visibleFrames.length < frames.length ?
+                          (
+                            <span>
+                              <br/>
+                              <a
+                                onClick={this.handleFilterReset}
+                                className="badge badge-secondary"
+                              >
+                                <i className="fas fa-times-circle" /> Reset filters
+                              </a>
+                            </span>
+                          ) : null
+                      }
                       <br/>
                       <a
                         onClick={this.handleDownloadZipFrames}
