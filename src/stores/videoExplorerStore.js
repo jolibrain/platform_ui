@@ -56,19 +56,20 @@ export class videoExplorerStore {
                     for (let index = 0; index < videoTitles.length; index++) {
 
                         const videoTitle = videoTitles[index];
+                        const videoJson = jsonContent.videos[videoTitle];
 
                         if(!this.processingVideos.map(v => v.title).includes(videoTitle)) {
 
                             this.processingVideos.push({
                                 id: nanoid(),
                                 title: videoTitle,
-                                status: jsonContent.videos[videoTitle].status,
-                                message: jsonContent.videos[videoTitle].message
+                                status: videoJson.status,
+                                message: videoJson.message,
+                                timestamp: videoJson.date
                             });
 
                         } else {
 
-                            const videoJson = jsonContent.videos[videoTitle];
                             const video = this.processingVideos
                                               .find(v => v.title === videoTitle);
 
@@ -78,6 +79,7 @@ export class videoExplorerStore {
 
                             video.status = videoJson.status;
                             video.message = videoJson.message;
+                            video.timestamp = videoJson.date;
 
                         }
                     }
