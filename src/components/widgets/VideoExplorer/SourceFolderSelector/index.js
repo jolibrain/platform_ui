@@ -28,6 +28,7 @@ class SourceFolderSelector extends React.Component {
         handleVideoSelection(selectedVideoPathInput.value);
 
         inputRef.clear();
+        inputRef.blur();
         inputRef.hideMenu();
     }
 
