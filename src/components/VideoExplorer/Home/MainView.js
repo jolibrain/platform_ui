@@ -546,7 +546,7 @@ class MainView extends React.Component {
                 <div className="col-3">
 
                   <div className="d-flex">
-                    <form>
+                    <form style={{width: "95%"}}>
                       {frameFilters}
                     </form>
                   </div>
