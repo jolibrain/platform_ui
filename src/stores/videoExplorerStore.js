@@ -37,11 +37,7 @@ export class videoExplorerStore {
     }
 
     async refresh() {
-
-        if(
-            !this.settings ||
-                !this.settings.rootPath
-          )
+        if(!this.settings || !this.settings.rootPath)
             return null;
 
         await this.loadVideoPaths(this.outputFolderPath)
@@ -72,11 +68,16 @@ export class videoExplorerStore {
 
                         } else {
 
+                            const videoJson = jsonContent.videos[videoTitle];
                             const video = this.processingVideos
                                               .find(v => v.title === videoTitle);
 
-                            video.status = jsonContent.videos[videoTitle].status;
-                            video.message = jsonContent.videos[videoTitle].message;
+                            if(video.status !== videoJson.status) {
+                                this.refresh();
+                            }
+
+                            video.status = videoJson.status;
+                            video.message = videoJson.message;
 
                         }
                     }
