@@ -85,7 +85,9 @@ export class buildInfoStore {
   loadLatestDockerTag() {
     this.$reqDockerTags().then(
       action(dockerTags => {
-        this.latestDockerTag = dockerTags && dockerTags
+        this.latestDockerTag = dockerTags &&
+          dockerTags.results &&
+          dockerTags.results
           .sort((a, b) => {
             return moment(a.last_updated)
               .diff(b.last_updated)
