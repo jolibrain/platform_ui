@@ -19,12 +19,16 @@ export class buildInfoStore {
   @computed
   get isUpdatable() {
 
+    const versionRegex = /v(\d+)\.(\d+)\.(\d+).*/gm;
+
     // By default, platform_ui is not updatable
     let updatable = false;
 
     if (
       this.version &&
-        this.latestDockerTag
+        this.latestDockerTag &&
+        versionRegex.test(this.version) &&
+        versionRegex.test(this.latestDockerTag)
     ) {
 
       // if information is available
@@ -42,8 +46,6 @@ export class buildInfoStore {
       // version: v0.10.0
       // latestDockerTag: v0.10.0
       // updatable: false
-
-      const versionRegex = /v(\d+)\.(\d+)\.(\d+).*/gm;
 
       const localMatch = versionRegex.exec(this.version);
       const localMajor = parseInt(localMatch[1]),
@@ -89,11 +91,11 @@ export class buildInfoStore {
           dockerTags.results &&
           dockerTags.results
           .sort((a, b) => {
-            return moment(a.last_updated)
-              .diff(b.last_updated)
+            return moment(b.last_updated)
+              .diff(a.last_updated)
           }).find(tag => {
             return tag.name.match(/v\d+\.\d+\.\d+$/g)
-          })
+          }).name;
       })
     );
   }
