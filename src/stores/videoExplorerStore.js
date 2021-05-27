@@ -148,19 +148,12 @@ export class videoExplorerStore {
         )
             return null;
 
-        let frameIndex = this.selectedFrame.index
-        let currentTime = frameIndex / parseFloat(this.selectedVideo.stats.fps);
+        // selectedFrame.index starts at 1
+        let currentTime = (this.selectedFrame.index - 1)
+            / parseFloat(this.selectedVideo.stats.fps);
 
-        // Firefox has a seeking issue
-        // https://github.com/CookPete/react-player/issues/981
-        const firefoxAgent = navigator.userAgent.indexOf("Firefox") > -1;
-
-        if(firefoxAgent) {
-            frameIndex = this.selectedFrame.index - 1
-            currentTime = frameIndex / parseFloat(this.selectedVideo.stats.fps);
-            // round currentTime in order to seek correct frame in FF
-            currentTime = Math.ceil(currentTime * 1.00005 * 100) / 100;
-        }
+        // round currentTime in order to seek correct frame in Firefox
+        currentTime = Math.ceil(currentTime * 1.00005 * 100) / 100;
 
         return currentTime
     }
