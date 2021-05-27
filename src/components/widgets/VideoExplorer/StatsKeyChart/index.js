@@ -30,7 +30,7 @@ class StatsKeyChart extends React.Component {
       switch(options.valueFormat) {
           case 'percent':
             values = dataKeys
-              .map(k => Math.round(data[k] * 100));
+            .map(k => (data[k] * 100).toFixed(2));
             break;
           default:
             break;
