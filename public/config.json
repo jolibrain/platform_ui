@@ -261,6 +261,6 @@
     "systemPath": "/opt/platform/",
     "maxDepth": 2
   },
-  "componentBlacklist": ["LinkChat"],
+  "componentBlacklist": ["LinkChat", "LinkVideoExplorer"],
   "placeholders": {}
 }
