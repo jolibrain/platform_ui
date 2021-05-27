@@ -132,11 +132,37 @@ export class videoExplorerStore {
 
     @computed
     get selectedFrame() {
-
         if(!this.frames || this.frames.length === 0)
             return null;
-               
+
         return this.frames.find(f => f && f.isSelected)
+    }
+
+    @computed
+    get selectedFrameCurrentTime() {
+        if(
+            !this.frames ||
+                this.frames.length === 0 ||
+                !this.selectedVideo.stats ||
+                !this.selectedVideo.stats.fps
+        )
+            return null;
+
+        let frameIndex = this.selectedFrame.index
+        let currentTime = frameIndex / parseFloat(this.selectedVideo.stats.fps);
+
+        // Firefox has a seeking issue
+        // https://github.com/CookPete/react-player/issues/981
+        const firefoxAgent = navigator.userAgent.indexOf("Firefox") > -1;
+
+        if(firefoxAgent) {
+            frameIndex = this.selectedFrame.index - 1
+            currentTime = frameIndex / parseFloat(this.selectedVideo.stats.fps);
+            // round currentTime in order to seek correct frame in FF
+            currentTime = Math.ceil(currentTime * 1.00005 * 100) / 100;
+        }
+
+        return currentTime
     }
 
     @action

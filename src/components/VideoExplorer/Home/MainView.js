@@ -18,25 +18,6 @@ import FrameFilter from "../../widgets/VideoExplorer/FrameFilter"
 import Frame from "../../widgets/VideoExplorer/Frame"
 import StatsKeyChart from "../../widgets/VideoExplorer/StatsKeyChart"
 
-/*
-  <div className="form-group row">
-    <legend className="col-form-label">PK</legend>
-    <br/>
-    <Range
-      handle={floatHandle}
-      min={this.state.pkMinFilterLimit}
-      max={this.state.pkMaxFilterLimit}
-      step={0.01}
-      defaultValue={[
-        pkMinFilter,
-        pkMaxFilter
-      ]}
-      onAfterChange={this.handlePkFilterChange}
-    />
-  </div>
-    : null }
-  */
-
 @inject("videoExplorerStore")
 @inject("configStore")
 @inject("gpuStore")
@@ -75,7 +56,6 @@ class MainView extends React.Component {
     this.toggleAutoScroll = this.toggleAutoScroll.bind(this);
 
     this.handleFilterChange = this.handleFilterChange.bind(this);
-    this.handleFilterReset = this.handleFilterReset.bind(this);
 
     this.handleFeedbackSubmit = this.handleFeedbackSubmit.bind(this)
 
@@ -99,10 +79,8 @@ class MainView extends React.Component {
     const { videoExplorerStore } = this.props;
     videoExplorerStore.setFrame(frameId)
 
-    const { selectedFrame, frames } = videoExplorerStore;
-    const frameFraction = selectedFrame.index / frames.length;
-
-    this.player.seekTo(frameFraction, 'fraction')
+    const { selectedFrameCurrentTime } = videoExplorerStore;
+    this.player.seekTo(selectedFrameCurrentTime)
   }
 
   toggleBoundingBoxes() {
@@ -120,8 +98,6 @@ class MainView extends React.Component {
   handleVideoSelection(value) {
     const { videoExplorerStore } = this.props;
     videoExplorerStore.setVideoPath(value);
-
-    const { selectedVideo } = videoExplorerStore;
 
     // reset state when a video is selected
     this.setState({
@@ -204,13 +180,6 @@ class MainView extends React.Component {
 
     this.setState({
       filters: filters,
-      autoscroll: false
-    })
-  }
-
-  handleFilterReset() {
-    this.setState({
-      filters: [],
       autoscroll: false
     })
   }
@@ -373,7 +342,7 @@ class MainView extends React.Component {
             })
             .map((filterConfig, index) => {
               return (<FrameFilter
-                        key={index}
+                        key={`filter-${index}-${selectedVideo.id}`}
                         stats={selectedVideo.stats}
                         filterConfig={filterConfig}
                         handleFilterChange={this.handleFilterChange}
@@ -447,7 +416,7 @@ class MainView extends React.Component {
                             settings.statsChart
                                     .map((chartSettings, k) => {
                               return (<StatsKeyChart
-                                key={k}
+                                key={`stats-${k}-${selectedVideo.id}`}
                                 stats={selectedVideo.stats}
                                 options={chartSettings}
                                       />)
@@ -554,22 +523,6 @@ class MainView extends React.Component {
                   <div className="row">
                     <div className="col">
                       Frames {visibleFrames.length} / {frames.length}
-                      {
-                        frameFilters.length > 0 &&
-                          visibleFrames.length < frames.length ?
-                          (
-                            <span>
-                              <br/>
-                              <a
-                                onClick={this.handleFilterReset}
-                                className="badge badge-secondary"
-                              >
-                                <i className="fas fa-times-circle" /> Reset filters
-                              </a>
-                            </span>
-                          ) : null
-                      }
-                      <br/>
                       <a
                         onClick={this.handleDownloadZipFrames}
                         className="badge badge-secondary"
