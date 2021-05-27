@@ -1,5 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react";
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 @observer
 class Frame extends React.Component {
@@ -90,12 +91,10 @@ class Frame extends React.Component {
             subtitle.map((v, index) => <h2 key={index}>{v}</h2>)
           }
           <div className="text-center">
-            <img
-              src={frame.imageSrc.thumb}
+            <LazyLoadImage
               alt={frame.index}
-              loading="lazy"
-              style={{width: '200px'}}
-            />
+              src={frame.imageSrc.thumb}
+              width={200} />
           </div>
         </div>
       </div>
