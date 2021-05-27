@@ -1,5 +1,12 @@
 # DeepDetect Platform UI (Changelog)
 
+### [0.17.5](https://github.com/jolibrain/platform_ui/compare/v0.17.4...v0.17.5) (2021-05-27)
+
+
+### Bug Fixes
+
+* test docker version tag before to flag update status ([fc9d2fb](https://github.com/jolibrain/platform_ui/commit/fc9d2fb2e1dd03340eb289d78270e8c9fce3ad72))
+
 ### [0.17.4](https://github.com/jolibrain/platform_ui/compare/v0.17.3...v0.17.4) (2021-05-27)
 
 ### [0.17.3](https://github.com/jolibrain/platform_ui/compare/v0.17.2...v0.17.3) (2021-05-27)
