@@ -191,11 +191,7 @@ export default class Repository {
 
   @computed
   get isTimeseries() {
-      return this.jsonConfig &&
-        this.jsonConfig.parameters &&
-        this.jsonConfig.parameters.input &&
-        this.jsonConfig.parameters.input.connector &&
-        this.jsonConfig.parameters.input.connector === "csvts"
+      return this.mltype === "timeserie";
   }
 
   _load() {

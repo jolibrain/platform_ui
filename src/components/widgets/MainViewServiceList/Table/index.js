@@ -43,7 +43,7 @@ class Table extends React.Component {
           ],
           filterService: (service) => {
             return typeof service.mltype !== "undefined" &&
-              service.mltype === "timeseries";
+              service.mltype === "timeserie";
           }
         },
         {
