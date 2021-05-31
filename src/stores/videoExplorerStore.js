@@ -270,18 +270,23 @@ export class videoExplorerStore {
                         const fPath = path.join(rootPath, folder.href, "/");
                         const fLabel = fPath.replace(new RegExp(this.settings.nginxPath, "gm"), "");
 
-                        const infoFile = await fetch(path.join(fPath, "info.json"));
-                        const infoJson = await infoFile.json();
+                        try {
+                            const infoFile = await fetch(path.join(fPath, "info.json"));
+                            const infoJson = await infoFile.json();
 
-                        if(!this.videoPaths.map(v => v.name).includes(folder.name)) {
-                            this.videoPaths.push({
-                                id: nanoid(),
-                                name: folder.name,
-                                path: fPath,
-                                label: fLabel,
-                                frames: [],
-                                stats: infoJson
-                            });
+                            if(!this.videoPaths.map(v => v.name).includes(folder.name)) {
+                                this.videoPaths.push({
+                                    id: nanoid(),
+                                    name: folder.name,
+                                    path: fPath,
+                                    label: fLabel,
+                                    frames: [],
+                                    stats: infoJson
+                                });
+                            }
+                        } catch (error) {
+                            // error can be raised when info.json is missing
+                            // console.log(error)
                         }
                     }
                 })
