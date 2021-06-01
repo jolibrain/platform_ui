@@ -12,20 +12,13 @@ class MenusLink extends React.Component {
 
     const Menus = linkMenus.map((menu, index) => {
       return menu.urls && menu.urls.length > 0 ?
-        (
-        <div key={index}>
-          <MenuDropdown {...menu} />
-        </div>
-      )
+        <MenuDropdown key={index} {...menu} />
       :
-        (
-        <div key={index}>
-          <Menu {...menu} />
-        </div>
-      );
+        <Menu key={index} {...menu} />
+      ;
     });
 
-    return <div>{Menus}</div>;
+    return <>{Menus}</>;
   }
 }
 
