@@ -162,7 +162,7 @@ class PublishTrainingModal extends React.Component {
             response &&
               response.status &&
               response.status.code &&
-              response.status.code !== 200
+              ![200, 201].includes(response.status.code)
             ) {
 
             this.setState({
