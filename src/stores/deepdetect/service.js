@@ -247,27 +247,60 @@ export default class deepdetectService {
 
     if (
       this.respInfo &&
-      this.respInfo.body &&
-      this.respInfo.body.parameters &&
-      this.respInfo.body.parameters.mllib &&
-      this.respInfo.body.parameters.mllib[0] &&
-      typeof this.respInfo.body.parameters.mllib[0].gpuid !== "undefined"
-    ) {
-      gpuid = this.respInfo.body.parameters.mllib[0].gpuid;
+        this.respInfo.body &&
+        this.respInfo.body.parameters &&
+        this.respInfo.body.parameters.mllib ) {
+
+      if(
+        Array.isArray(this.respInfo.body.parameters.mllib) &&
+          this.respInfo.body.parameters.mllib[0] &&
+          typeof this.respInfo.body.parameters.mllib[0].gpuid !== "undefined"
+      ) {
+
+        gpuid = this.respInfo.body.parameters.mllib[0].gpuid;
+
+      } else if (
+          typeof this.respInfo.body.parameters.mllib.gpuid !== "undefined"
+      ) {
+
+        gpuid = this.respInfo.body.parameters.mllib.gpuid;
+
+      }
     }
 
     return gpuid;
   }
 
   @computed
-  get isTimeseries() {
-    return this.respInfo &&
+  get connector() {
+    let connector = null;
+
+    if(
+      this.respInfo &&
       this.respInfo.body &&
       this.respInfo.body.parameters &&
-      this.respInfo.body.parameters.input &&
-      this.respInfo.body.parameters.input[0] &&
-      this.respInfo.body.parameters.input[0].connector &&
-      this.respInfo.body.parameters.input[0].connector === "csvts"
+      typeof this.respInfo.body.parameters.input !== "undefined"
+    ) {
+
+      if(Array.isArray(this.respInfo.body.parameters.input)) {
+
+        connector = this.respInfo.body.parameters.input[0] &&
+          this.respInfo.body.parameters.input[0].connector;
+
+      } else {
+
+        connector = this.respInfo.body.parameters.input.connector;
+
+      }
+
+    }
+
+    return connector;
+  }
+
+  @computed
+  get isTimeseries() {
+    return ["csvts", "timeserie"].includes(this.connector);
   }
 
   @action
@@ -621,13 +654,7 @@ export default class deepdetectService {
     }
 
     if (
-      this.respInfo &&
-      this.respInfo.body &&
-      this.respInfo.body.parameters &&
-      this.respInfo.body.parameters.input &&
-      this.respInfo.body.parameters.input[0] &&
-      this.respInfo.body.parameters.input[0].connector &&
-      this.respInfo.body.parameters.input[0].connector === "csvts" &&
+        this.connector === "csvts" &&
         input.csv &&
         input.csv.meta &&
         input.csv.meta.fields
