@@ -29,18 +29,8 @@ class Imaginate extends React.Component {
     let connector = null;
 
     if (service) {
-      const serviceInfo = service.respInfo;
 
-      if (
-        serviceInfo &&
-        serviceInfo.body &&
-        serviceInfo.body.parameters &&
-        serviceInfo.body.parameters.input &&
-        serviceInfo.body.parameters.input.length === 1 &&
-        serviceInfo.body.parameters.input[0].connector
-      ) {
-        connector = serviceInfo.body.parameters.input[0].connector;
-      }
+      connector = service.connector;
 
       let mediaType = null;
 
@@ -136,7 +126,7 @@ class Imaginate extends React.Component {
         connectorComponent = (
           <div className="alert alert-warning" role="alert">
             <i className="fas fa-exclamation-circle" /> Missing attribute{" "}
-            <code>body.parameters.input[0].connector</code> in Service json.
+            <code>body.parameters.input.connector</code> in Service json.
           </div>
         );
         break;
