@@ -220,6 +220,15 @@ class PublishTrainingModal extends React.Component {
             <p>{publishMessage.content}</p>
           </div>
         );
+      } else if(this.state.deleteAfterPublish) {
+        message = (
+          <div className="alert alert-success" role="alert">
+            <p>
+              <b>Success!</b>
+            </p>
+            <p>{publishMessage.content}</p>
+          </div>
+        );
       } else {
         message = (
           <div className="alert alert-success" role="alert">
