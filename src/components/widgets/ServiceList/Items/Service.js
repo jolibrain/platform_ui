@@ -23,6 +23,7 @@ class ServiceItem extends React.Component {
           to={`/${service.settings.training ? "training" : "predict"}/${
             service.serverName
           }/${service.name}`}
+          title={service.name}
         >
           <span className="nav-item-name">
             {service.settings.training ? (

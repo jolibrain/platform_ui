@@ -13,6 +13,7 @@ class Chain extends React.Component {
         <Link
           id={`serviceList-chain-${chain.name}`}
           to={`/chains/${chain.name}`}
+          title={chain.name}
         >
           <span className="nav-item-name">
             <i className="fas fa-link" />
