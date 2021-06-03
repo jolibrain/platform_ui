@@ -139,6 +139,14 @@ class PublishTrainingModal extends React.Component {
                 content: `${err.status.msg}: ${err.status.dd_msg}`
               }
             });
+          } else if (err.message){
+            this.setState({
+              spinner: false,
+              publishMessage: {
+                isError: true,
+                content: `Error publishing model: ${err.message}`
+              }
+            });
           } else {
             this.setState({
               spinner: false,
