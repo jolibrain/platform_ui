@@ -174,6 +174,7 @@ class MainView extends React.Component {
         id: filterConfig.id,
         statKey: filterConfig.statKey,
         filterBehavior: filterConfig.filterBehavior,
+        filterComponent: filterConfig.filterComponent,
         value: value
       })
     }
@@ -228,7 +229,12 @@ class MainView extends React.Component {
 
   visibleFrames() {
     const { videoExplorerStore } = this.props;
-    const { frames } = videoExplorerStore;
+    const { selectedVideo, frames } = videoExplorerStore;
+
+    if(typeof selectedVideo === 'undefined')
+      return [];
+   
+    const { stats } = selectedVideo;
 
     return frames
           .filter(f => {
@@ -236,16 +242,33 @@ class MainView extends React.Component {
               this.state.filters.every(uiFilter => {
                 let isIncluded = true;
 
+                const { filterComponent } = uiFilter;
+                const { statKeyLimits } = filterComponent;
+
+                // Check if uiFilter is set on min/max bounds
+                // If it's the case, current frame should be included
+                const isRangeBounds =
+                      typeof statKeyLimits !== 'undefined' &&
+                      statKeyLimits.length === 2 &&
+                      uiFilter.value[0] === parseFloat(stats[statKeyLimits[0]].toFixed(2)) &&
+                      uiFilter.value[1] === parseFloat(stats[statKeyLimits[1]].toFixed(2));
+
                 switch(uiFilter.filterBehavior) {
                   case "arrayLengthInsideRange":
                     isIncluded =
-                      f.stats[uiFilter.statKey].length >= uiFilter.value[0] &&
-                      f.stats[uiFilter.statKey].length <= uiFilter.value[1]
+                      isRangeBounds ||
+                      (
+                        f.stats[uiFilter.statKey].length >= uiFilter.value[0] &&
+                          f.stats[uiFilter.statKey].length <= uiFilter.value[1]
+                      )
                     break;
                   case "valueInsideRange":
                     isIncluded =
-                      parseFloat(f.stats[uiFilter.statKey]) >= uiFilter.value[0] &&
-                      parseFloat(f.stats[uiFilter.statKey]) <= uiFilter.value[1]
+                      isRangeBounds ||
+                      (
+                        parseFloat(f.stats[uiFilter.statKey]) >= uiFilter.value[0] &&
+                          parseFloat(f.stats[uiFilter.statKey]) <= uiFilter.value[1]
+                      )
                     break;
                   case "someMoreThanAbsolutePercent":
                     isIncluded = f.stats[uiFilter.statKey].some(val => {
