@@ -213,7 +213,7 @@ class MainView extends React.Component {
       const imageBlob = await imageFile.blob();
       zip.file(`frame_${frame.index}.png`, imageBlob, {binary: true})
 
-      const jsonFile = await fetch(frame.jsonFile);
+      const jsonFile = await fetch(frame.jsonFilePath);
       const jsonBlob = await jsonFile.blob();
       zip.file(`frame_${frame.index}.json`, jsonBlob, {binary: true})
 

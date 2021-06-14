@@ -212,6 +212,7 @@ export class videoExplorerStore {
                     isSelected: false,
                     index: parseInt(frameIndex),
                     jsonFile: jsonFile,
+                    jsonFilePath: `${videoPath}${jsonFile}`,
                     imageSrc: {
                         'original': `${videoPath}frame${frameIndex}.png`,
                         'thumb': `${videoPath}${thumbFolder}frame${frameIndex}.png`,
