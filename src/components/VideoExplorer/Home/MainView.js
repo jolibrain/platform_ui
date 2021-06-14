@@ -80,7 +80,7 @@ class MainView extends React.Component {
     videoExplorerStore.setFrame(frameId)
 
     const { selectedFrameCurrentTime } = videoExplorerStore;
-    this.player.seekTo(selectedFrameCurrentTime)
+    this.player.seekTo(selectedFrameCurrentTime, 'seconds')
   }
 
   toggleBoundingBoxes() {
