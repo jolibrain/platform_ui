@@ -430,16 +430,6 @@ class MeasureChart extends React.Component {
 
     }
 
-    if (this.props.useBestValue && bestValue) {
-      displayedValue = bestValue;
-      bestValue = null;
-    }
-
-    if (this.props.useMinValue && minValue) {
-      displayedValue = minValue;
-      minValue = null;
-    }
-
     const badgeIndex = index % 8;
 
     return (
@@ -602,7 +592,7 @@ class MeasureChart extends React.Component {
           <div className="description row">
             {values}
             <h4>
-              {title} {this.props.useBestValue ? "(best)" : null}
+              {title}
               {this.props.showLogScale ? (
                 <span className="logScale">
                   <input type="checkbox" onChange={this.toggleLogScale} /> Log
