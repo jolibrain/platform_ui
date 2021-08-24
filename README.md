@@ -285,3 +285,5 @@ ci/release.sh
 
 Then, the new release will be available as a *Draft* on github release page,
 this *Draft* flag can be removed by editing the release information.
+
+More information about release tools and workflow in [ci/README.md](ci/README.md)
