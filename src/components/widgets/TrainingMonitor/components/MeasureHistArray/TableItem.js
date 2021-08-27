@@ -119,7 +119,7 @@ class TableItem extends React.Component {
     const badgeIndex = index % 8;
 
     return (
-      <h4>
+      <h4 key={`badge-${badgeIndex}`}>
         <i className={`fa fa-circle chart-badge-${badgeIndex}`} />
         {value}
         {bestValue ? bestValue : null}
@@ -152,6 +152,7 @@ class TableItem extends React.Component {
 
     return (
       <Sparklines
+        key={`sparkline-${index}`}
         data={sparkData}
         min={Math.floor(Math.min(...sparkData))}
         max={Math.ceil(Math.max(...sparkData))}

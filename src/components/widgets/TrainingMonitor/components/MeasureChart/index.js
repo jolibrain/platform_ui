@@ -433,7 +433,7 @@ class MeasureChart extends React.Component {
     const badgeIndex = index % 8;
 
     return (
-      <h3>
+      <h3 key={`badge-${badgeIndex}`}>
         <i className={`fa fa-circle chart-badge-${badgeIndex}`} />
         {displayedValue}{" "}
         {this.props.showMinValue && minValue && minValue !== '--' ? (
