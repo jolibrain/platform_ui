@@ -169,4 +169,11 @@ table.trainingmonitor-multititle {
   tbody tr:hover .delete {
     opacity: 1;
   }
+
+  .btn-publish-service {
+    background-color: rgba(255,255,255,0.8);
+  }
+  .btn-publish-service:hover {
+    background-color: #2caeba
+  }
 }

@@ -10,7 +10,8 @@ class MultiTitle extends React.Component {
     const {
       services,
       hiddenRepositoriesIndexes,
-      handleRepositoryVisibility
+      handleRepositoryVisibility,
+      handlePublishModalServiceIndex
     } = this.props;
 
     let tableColumns = [
@@ -107,12 +108,25 @@ class MultiTitle extends React.Component {
       {
         text: "",
         formatter: (value, props) => {
-          return <i
-            className={`chart-badge-${parseInt(props.serviceIndex) % 8} fa fa-2x fa-toggle-${
+          return <>
+                   <i
+                     className={`chart-badge-${parseInt(props.serviceIndex) % 8} fa fa-2x fa-toggle-${
               props.isVisible ? "off" : "on"
             }`}
-            onClick={props.handleRepositoryVisibility.bind(this, props.serviceIndex)}
-          />
+                     onClick={props.handleRepositoryVisibility.bind(this, props.serviceIndex)}
+                   />
+                   {
+                     props.handlePublishModalServiceIndex ?
+                       <><br/>
+                         <a className="btn btn-outline-secondary btn-publish-service"
+                        onClick={props.handlePublishModalServiceIndex.bind(this, props.serviceIndex)}
+                           >
+                      <i
+                        className={`publish-badge-${parseInt(props.serviceIndex) % 8} fas fa-plus`}
+                      /></a></>
+                       : null
+                   }
+          </>
         }
       }
     ]);
@@ -133,6 +147,7 @@ class MultiTitle extends React.Component {
                 serviceIndex={index}
                 isVisible={hiddenRepositoriesIndexes.includes(index)}
                 handleRepositoryVisibility={handleRepositoryVisibility}
+                handlePublishModalServiceIndex={handlePublishModalServiceIndex}
                 tableColumns={tableColumns}
               />
             );
@@ -146,6 +161,7 @@ class MultiTitle extends React.Component {
 MultiTitle.propTypes = {
   services: PropTypes.array.isRequired,
   hiddenRepositoriesIndexes: PropTypes.array,
-  handleRepositoryVisibility: PropTypes.func
+  handleRepositoryVisibility: PropTypes.func,
+  handlePublishModalServiceIndex: PropTypes.func
 };
 export default MultiTitle;
