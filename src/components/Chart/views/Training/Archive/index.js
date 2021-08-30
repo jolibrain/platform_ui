@@ -1,13 +1,18 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import { inject, observer } from "mobx-react";
+import Modal from "react-bootstrap4-modal";
 
+import Modals from "./Modals";
 import RightPanel from "../../../commons/RightPanel";
 
 import MultiTitle from "../../../../widgets/TrainingMonitor/components/MultiTitle";
 import GeneralInfo from "../../../../widgets/TrainingMonitor/components/GeneralInfo";
 import MeasureHistArray from "../../../../widgets/TrainingMonitor/components/MeasureHistArray";
 
+import PublishTrainingModal from "../../../../widgets/modals/PublishTrainingModal";
+
+@inject("modalStore")
 @inject("modelRepositoriesStore")
 @inject("configStore")
 @inject("gpuStore")
@@ -20,12 +25,26 @@ class ModelCompare extends React.Component {
     this.state = {
       repositories: [],
       hiddenRepositoriesIndexes: [],
-      error: null
+      error: null,
+      publishModalServiceIndex: -1
     };
 
     this.handleRepositoryVisibility = this.handleRepositoryVisibility.bind(
       this
     );
+
+    this.modalBackdropClicked = this.modalBackdropClicked.bind(this);
+    this.handlePublishModalServiceIndex = this.handlePublishModalServiceIndex.bind(this);
+  }
+
+  modalBackdropClicked() {
+    this.setState({publishModalServiceIndex: -1})
+    this.props.modalStore.setVisible("publishTraining", false);
+  }
+
+  handlePublishModalServiceIndex(serviceIndex) {
+    this.setState({publishModalServiceIndex: serviceIndex})
+    this.props.modalStore.setVisible("publishTraining", true);
   }
 
   handleRepositoryVisibility(index) {
@@ -77,7 +96,12 @@ class ModelCompare extends React.Component {
   }
 
   render() {
-    const { repositories, hiddenRepositoriesIndexes, error } = this.state;
+    const {
+      repositories,
+      hiddenRepositoriesIndexes,
+      error,
+      publishModalServiceIndex
+    } = this.state;
 
     const visibleRepositories = repositories.map((repository, index) => {
       return hiddenRepositoriesIndexes.includes(index) ? null : repository;
@@ -99,6 +123,7 @@ class ModelCompare extends React.Component {
               services={repositories}
               hiddenRepositoriesIndexes={hiddenRepositoriesIndexes}
               handleRepositoryVisibility={this.handleRepositoryVisibility}
+              handlePublishModalServiceIndex={this.handlePublishModalServiceIndex}
             />
             <div className="content p-4">
               <GeneralInfo services={visibleRepositories} />
@@ -125,6 +150,12 @@ class ModelCompare extends React.Component {
             <RightPanel />
           </div>
         )}
+        <Modals
+          service={
+            publishModalServiceIndex !== -1 ?
+              repositories[publishModalServiceIndex] : null
+          }
+        />
       </div>
     );
   }
