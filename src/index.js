@@ -23,6 +23,7 @@ import datasetStore from "./stores/datasetStore";
 import videoExplorerStore from "./stores/videoExplorerStore";
 import modalStore from "./stores/modalStore";
 import authTokenStore from "./stores/authTokenStore";
+import pathFilterStore from "./stores/pathFilterStore";
 
 const stores = {
   configStore,
@@ -35,7 +36,8 @@ const stores = {
   datasetStore,
   videoExplorerStore,
   modalStore,
-  authTokenStore
+  authTokenStore,
+  pathFilterStore
 };
 
 // For easier debugging

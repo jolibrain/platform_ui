@@ -10,6 +10,7 @@ import RightPanel from "../commons/RightPanel";
 @inject("modelRepositoriesStore")
 @inject("configStore")
 @inject("gpuStore")
+@inject("pathFilterStore")
 @withRouter
 @observer
 class MainView extends React.Component {
@@ -19,8 +20,7 @@ class MainView extends React.Component {
     this.state = {
       filterServiceName: "",
       selectedComparePath: [],
-      archiveLayout: "list",
-      filteredPath: []
+      archiveLayout: "list"
     };
 
     this.handleServiceFilter = this.handleServiceFilter.bind(this);
@@ -29,7 +29,6 @@ class MainView extends React.Component {
     this.handleClickRefreshArchive = this.handleClickRefreshArchive.bind(this);
 
     this.handleCompareStateChange = this.handleCompareStateChange.bind(this);
-    this.handlePathFilter = this.handlePathFilter.bind(this);
     this.removeFilteredPath = this.removeFilteredPath.bind(this);
 
     this.handleClickArchiveLayoutCard = this.handleClickArchiveLayoutCard.bind(this);
@@ -60,15 +59,6 @@ class MainView extends React.Component {
     this.setState({ selectedComparePath: selectedComparePath });
   }
 
-  handlePathFilter(filter) {
-
-    if(!this.state.filteredPath.includes(filter))
-      this.setState({
-        filteredPath: [...this.state.filteredPath, filter]
-      })
-
-  }
-
   removeFilteredPath(filter) {
     let newFilteredPath = [...this.state.filteredPath]
     newFilteredPath.splice(newFilteredPath.indexOf(filter), 1)
@@ -96,11 +86,15 @@ class MainView extends React.Component {
   }
 
   render() {
-    const { deepdetectStore, modelRepositoriesStore } = this.props;
+    const {
+      deepdetectStore,
+      modelRepositoriesStore,
+      pathFilterStore
+    } = this.props;
 
     if (!deepdetectStore.isReady) return null;
 
-    const { filterServiceName, filteredPath } = this.state;
+    const { filterServiceName } = this.state;
 
     const { trainingServices } = deepdetectStore;
     const displayedTrainingServices = trainingServices
@@ -136,8 +130,8 @@ class MainView extends React.Component {
         const filteredByServiceNameInput = filterServiceName.length === 0 ||
               r.name.includes(filterServiceName);
 
-        const filteredByPathTag = filteredPath.length === 0 ||
-              filteredPath.every(item => {
+        const filteredByPathTag = pathFilterStore.filters.length === 0 ||
+              pathFilterStore.filters.every(item => {
                 return r.path.split("/").includes(item);
               });
 
@@ -283,11 +277,14 @@ class MainView extends React.Component {
             <div className="archiveTrainingList archive">
               <div className="filterPath-list">
               {
-                filteredPath.map((item, i) => {
+                pathFilterStore.filters.map((item, i) => {
                   return <span
                            key={i}
                            className="badge badge-dark"
-                  onClick={this.removeFilteredPath.bind(this, item)}
+                           onClick={
+                             pathFilterStore
+                               .removePathFilter.bind(this, item)
+                           }
                          >
                     <i className="fas fa-times"></i> {item}
                   </span>
@@ -299,7 +296,6 @@ class MainView extends React.Component {
                 layout={this.state.archiveLayout}
                 services={displayedArchiveRepositories}
                 handleCompareStateChange={this.handleCompareStateChange}
-                handlePathFilter={this.handlePathFilter}
                 selectedComparePath={this.state.selectedComparePath}
               />
             </div>
