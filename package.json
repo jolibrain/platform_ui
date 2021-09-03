@@ -67,7 +67,7 @@
     "react-codemirror2": "^7.2.1",
     "react-cookie": "^4.0.3",
     "react-data-table-component": "^7.0.0-alpha-4",
-    "react-dev-utils": "^10.2.1",
+    "react-dev-utils": "^11.0.4",
     "react-dom": "^16.13.1",
     "react-lazy-load-image-component": "^1.5.1",
     "react-paginate": "^7.1.0",
