@@ -44,7 +44,10 @@ export default class Repository {
     let value = '--';
     let metricKey = attr;
 
-    if (!this.jsonMetrics)
+    if (
+      !this.jsonMetrics ||
+        typeof this.jsonMetrics.body === "undefined"
+       )
       return value;
 
     const { measure, measure_hist } = this.jsonMetrics.body;
