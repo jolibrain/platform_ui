@@ -1,7 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import { inject, observer } from "mobx-react";
-import Modal from "react-bootstrap4-modal";
 
 import Modals from "./Modals";
 import RightPanel from "../../../commons/RightPanel";
@@ -9,8 +8,6 @@ import RightPanel from "../../../commons/RightPanel";
 import MultiTitle from "../../../../widgets/TrainingMonitor/components/MultiTitle";
 import GeneralInfo from "../../../../widgets/TrainingMonitor/components/GeneralInfo";
 import MeasureHistArray from "../../../../widgets/TrainingMonitor/components/MeasureHistArray";
-
-import PublishTrainingModal from "../../../../widgets/modals/PublishTrainingModal";
 
 @inject("modalStore")
 @inject("modelRepositoriesStore")
