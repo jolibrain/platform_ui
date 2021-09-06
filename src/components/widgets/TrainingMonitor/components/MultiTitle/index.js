@@ -117,13 +117,17 @@ class MultiTitle extends React.Component {
                    />
                    {
                      props.handlePublishModalServiceIndex ?
-                       <><br/>
-                         <a className="btn btn-outline-secondary btn-publish-service"
-                        onClick={props.handlePublishModalServiceIndex.bind(this, props.serviceIndex)}
-                           >
-                      <i
-                        className={`publish-badge-${parseInt(props.serviceIndex) % 8} fas fa-plus`}
-                      /></a></>
+                       <>
+                         <br/>
+                         <button
+                           className="btn btn-outline-secondary btn-publish-service"
+                           onClick={props.handlePublishModalServiceIndex.bind(this, props.serviceIndex)}
+                          >
+                           <i
+                             className={`publish-badge-${parseInt(props.serviceIndex) % 8} fas fa-plus`}
+                           />
+                         </button>
+                       </>
                        : null
                    }
           </>
