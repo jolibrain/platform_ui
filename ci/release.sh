@@ -7,7 +7,9 @@ kind=${1:-patch}
 
 cd $here/..
 
-git rm CHANGELOG.md
+if [ -f "CHANGELOG.md" ]; then
+  git rm CHANGELOG.md
+fi
 yarn run standard-version -r $kind
 tag=$(cat package.json | jq -r .version)
 

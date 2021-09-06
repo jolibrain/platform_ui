@@ -8,7 +8,7 @@ git clone https://github.com/jolibrain/platform_ui.git
 cd platform_ui
 ./ci/release.sh
 # by default, release a new patch version: v0.18.0 -> v0.18.1
-# to release a minor version - v0.18.0 -> v0.19.0: ./ci/release.sh -minor
+# to release a minor version - v0.18.0 -> v0.19.0: ./ci/release.sh minor
 ```
 2. Edit newly created _Draft_ release to publish it on github: https://github.com/jolibrain/platform_ui/releases
 3. Find release on jenkins `platform-ui-docker-build` tag tab, and press start icon to schedule a build: http://ip_ci/job/platform-ui-docker-build/view/tags/
