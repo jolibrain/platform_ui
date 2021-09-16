@@ -15,7 +15,6 @@ import CsvConnector from "./connectors/Csv";
 class Imaginate extends React.Component {
   constructor(props) {
     super(props);
-    console.log("Imaginate")
 
     this.getServiceConnector = this.getServiceConnector.bind(this);
   }
