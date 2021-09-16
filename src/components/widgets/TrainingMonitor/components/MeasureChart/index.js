@@ -17,6 +17,7 @@ class MeasureChart extends React.Component {
     // colors from src/styles/palettes/chart-badges.scss
     this.state = {
       logScale: false,
+      iterTimeScale: false,
       colors: {
         light: [
           "rgba(55,126,184,0.2)",
@@ -59,6 +60,12 @@ class MeasureChart extends React.Component {
     this.getChartDataset = this.getChartDataset.bind(this);
 
     this.toggleLogScale = this.toggleLogScale.bind(this);
+    this.toggleIterTimeScale = this.toggleIterTimeScale.bind(this);
+  }
+
+  toggleIterTimeScale() {
+    const isIterTimeScale = !this.state.iterTimeScale;
+    this.setState({ iterTimeScale: isIterTimeScale });
   }
 
   toggleLogScale() {
@@ -597,6 +604,13 @@ class MeasureChart extends React.Component {
                 <span className="logScale">
                   <input type="checkbox" onChange={this.toggleLogScale} /> Log
                   Scale
+                </span>
+              ) : (
+                ""
+              )}
+              {this.props.showIterTimeScale || true ? (
+                <span className="iterTimeScale">
+                  <input type="checkbox" onChange={this.toggleIterTimeScale} /> Iteration Time on X axe
                 </span>
               ) : (
                 ""

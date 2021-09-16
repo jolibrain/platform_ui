@@ -58,11 +58,13 @@
         width: 100%;
         font-weight: 400;
 
-        span.logScale {
+        span.logScale,
+        span.iterTimeScale {
           float: right;
           font-size: 16px;
           position: relative;
           top: 4px;
+          padding-left: 10px;
 
           input {
             position: relative;
