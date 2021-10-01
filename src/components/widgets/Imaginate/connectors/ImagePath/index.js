@@ -9,6 +9,8 @@ import Threshold from "../commons/Threshold";
 import BoundingBox from "../commons/BoundingBox";
 import Controls from "../commons/BoundingBox/Controls";
 
+import GanCanvas from "../commons/GanCanvas";
+
 import InputForm from "../commons/InputForm";
 import ParamSlider from "../commons/ParamSlider";
 import ParamText from "../commons/ParamText";
@@ -307,6 +309,18 @@ class ImagePathConnector extends React.Component {
       );
     }
 
+    let isGanDisplay = false;
+    if (input &&
+        input.postData &&
+        input.postData.parameters &&
+        input.postData.parameters.input &&
+        !input.postData.parameters.input.segmentation &&
+        input.postData.parameters.mllib &&
+        input.postData.parameters.mllib.extract_layer &&
+        input.postData.parameters.mllib.extract_layer === "last") {
+      isGanDisplay = true;
+    }
+
     // Hide controls when displaying categories as description
     // For example, in OCR models
     let boundingBoxControls = true;
@@ -364,15 +378,22 @@ class ImagePathConnector extends React.Component {
               )}
             </div>
             <div className="row">
-              <BoundingBox
-                selectedBoxIndex={this.state.selectedBoxIndex}
-                onOver={this.onOver}
-                input={toJS(service.selectedInput)}
-                displaySettings={toJS(serviceSettings.display)}
-                boxFormat={this.state.boxFormat}
-                showLabels={this.state.showLabels}
-                showSegmentation={showSegmentation}
-              />
+              {
+                isGanDisplay ?
+                  <GanCanvas
+                    input={toJS(service.selectedInput)}
+                  />
+                :
+                <BoundingBox
+                  selectedBoxIndex={this.state.selectedBoxIndex}
+                  onOver={this.onOver}
+                  input={toJS(service.selectedInput)}
+                  displaySettings={toJS(serviceSettings.display)}
+                  boxFormat={this.state.boxFormat}
+                  showLabels={this.state.showLabels}
+                  showSegmentation={showSegmentation}
+                />
+              }
             </div>
           </div>
           <div className="col-md-5">
