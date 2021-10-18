@@ -39,7 +39,7 @@ class TitleItem extends React.Component {
     return value ? parseFloat(value) : "--";
   }
 
-  getBestValue(selector) {
+  getMeasureValue(selector) {
 
     const { service } = this.props;
 
@@ -59,7 +59,7 @@ class TitleItem extends React.Component {
 
   }
 
-  getMeasureValue(selector) {
+  getBestValue(selector) {
 
     const { service } = this.props;
     let value = '--';
