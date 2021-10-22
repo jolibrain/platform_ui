@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 
 import MeasureChart from "../MeasureChart";
+import MeasureMultiAttrChart from "../MeasureMultiAttrChart";
 
 // # Training Monitor
 //
@@ -137,6 +138,31 @@ class GeneralInfo extends React.Component {
             title="Map"
             key="map"
             attribute="map"
+            steppedLine
+            showBest
+            useBestValue
+            layout={layout}
+            {...this.props}
+          />
+        );
+      }
+
+      const multipleMapDataset = Object.keys(measure)
+                                          .filter(key => {
+                                            // get map measure keys
+                                            return /^map_.*/.test(key)
+                                          })
+                                          .filter(key => {
+                                            // filter out test measures
+                                            return !/map_\d+_.*/.test(key)
+                                          });
+
+      if(multipleMapDataset.length > 0) {
+        infoCharts.push(
+          <MeasureMultiAttrChart
+            title="Map"
+            key="map-datasets"
+            attributes={multipleMapDataset}
             steppedLine
             showBest
             useBestValue
