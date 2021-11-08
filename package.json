@@ -70,6 +70,7 @@
     "react-dev-utils": "^11.0.4",
     "react-dom": "^16.13.1",
     "react-lazy-load-image-component": "^1.5.1",
+    "react-loading-skeleton": "^3.0.1",
     "react-paginate": "^7.1.0",
     "react-papaparse": "^3.11.0",
     "react-player": "^2.9.0",
