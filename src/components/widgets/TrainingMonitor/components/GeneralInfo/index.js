@@ -162,11 +162,11 @@ class GeneralInfo extends React.Component {
                                             return /^map_.*/.test(key)
                                           })
                                           .filter(key => {
-                                            // filter out test measures
+                                            // keep test measures
                                             return !/map_\d+_.*/.test(key)
                                           });
 
-      if(multipleMapDataset.length > 0) {
+      if(multipleMapDataset.length > 1) {
         infoCharts.push(
           <MeasureMultiAttrChart
             title="Map"
