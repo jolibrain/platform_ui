@@ -88,6 +88,15 @@ class GeneralInfo extends React.Component {
         mltype = service.respInfo.body.mltype;
     }
 
+    const hasMeasureElapsedTime = services.some(service => {
+      const measure_hist = service.jsonMetrics
+        ? service.jsonMetrics.body.measure_hist
+        : service.measure_hist;
+
+      return 'elapsed_time_ms_hist' in measure_hist;
+    })
+
+    // showIterTimeScale={hasMeasureElapsedTime}
     infoCharts.push(
       <MeasureChart
         title="Train Loss"
