@@ -4,6 +4,8 @@ import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 import moment from "moment"
 import ReactPaginate from 'react-paginate';
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 import PredictItem from "./Predict";
 import TrainingItem from "./Training";
@@ -538,7 +540,18 @@ class Table extends React.Component {
             { tableHeadContent }
           </thead>
           <tbody>
-            { tableBodyContent }
+            { tableBodyContent.length === 0 ?
+              Array.apply(null, Array(5)).map(() => {
+                return <tr>{this.state.columns
+                    .filter(column => !column.hide)
+                    .map((column, index) => <td>
+                                              <Skeleton
+                                                height={30}
+                                              />
+                         </td>)}</tr>
+              })
+              : tableBodyContent
+            }
           </tbody>
         </table>
         <ReactPaginate
