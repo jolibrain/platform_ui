@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
-
 import Cards from "./Cards";
 import Table from "./Table";
 
