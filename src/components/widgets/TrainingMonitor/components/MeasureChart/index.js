@@ -608,7 +608,7 @@ class MeasureChart extends React.Component {
               ) : (
                 ""
               )}
-              {this.props.showIterTimeScale || true ? (
+              {this.props.showIterTimeScale ? (
                 <span className="iterTimeScale">
                   <input type="checkbox" onChange={this.toggleIterTimeScale} /> Iteration Time on X axe
                 </span>
