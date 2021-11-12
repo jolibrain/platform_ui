@@ -98,22 +98,34 @@ class TableItem extends React.Component {
     }
 
     let bestValue = null;
+
     if(
-      measureHistKey.indexOf("eucll") !== -1 ||
-        measureHistKey.indexOf("L1_mean_error") !== -1 ||
-        measureHistKey.indexOf("L1_max_error")  !== -1
+      measure_hist[measureHistKey] !== undefined &&
+        Array.isArray(measure_hist[measureHistKey])
     ) {
-      bestValue = Math.min(...measure_hist[measureHistKey]).toFixed(5)
-      if(bestValue > 1) {
-        bestValue = parseFloat(bestValue).toFixed(3);
+
+      if(
+        measureHistKey.indexOf("eucll") !== -1 ||
+          measureHistKey.indexOf("L1_mean_error") !== -1 ||
+          measureHistKey.indexOf("L1_max_error")  !== -1
+      ) {
+
+        bestValue = Math.min(...measure_hist[measureHistKey]).toFixed(5)
+        if(bestValue > 1) {
+          bestValue = parseFloat(bestValue).toFixed(3);
+        }
+        bestValue = " - min: " + bestValue;
+
+      } else {
+
+        bestValue = Math.max(...measure_hist[measureHistKey]).toFixed(5)
+        if(bestValue > 1) {
+          bestValue = parseFloat(bestValue).toFixed(3);
+        }
+        bestValue = " - max: " + bestValue;
+
       }
-      bestValue = " - min: " + bestValue;
-    } else {
-      bestValue = Math.max(...measure_hist[measureHistKey]).toFixed(5)
-      if(bestValue > 1) {
-        bestValue = parseFloat(bestValue).toFixed(3);
-      }
-      bestValue = " - max: " + bestValue;
+
     }
 
     const badgeIndex = index % 8;
