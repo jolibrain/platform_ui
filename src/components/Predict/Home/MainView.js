@@ -255,32 +255,21 @@ class MainView extends React.Component {
                 ""
               )}
 
-              {modelRepositoriesStore.isRefreshing &&
-              publicRepositories.length === 0 ? (
-                <button
-                  type="button"
-                  className="btn btn-outline-dark"
-                  onClick={this.handleClickRefreshServices}
-                >
-                  Syncing Public Repositories...
-                </button>
-              ) : (
-                <div>
-                  <PredictServiceList
-                    services={privateRepositories}
-                    layout={this.state.predictLayout}
-                    handleBenchmarkStateChange={this.handleBenchmarkStateChange}
-                  />
+              <div>
+                <PredictServiceList
+                  services={privateRepositories}
+                  layout={this.state.predictLayout}
+                  handleBenchmarkStateChange={this.handleBenchmarkStateChange}
+                />
 
-                  <hr />
+                <hr />
 
-                  <PredictServiceList
-                    services={publicRepositories}
-                    layout={this.state.predictLayout}
-                    handleBenchmarkStateChange={this.handleBenchmarkStateChange}
-                  />
-                </div>
-              )}
+                <PredictServiceList
+                  services={publicRepositories}
+                  layout={this.state.predictLayout}
+                  handleBenchmarkStateChange={this.handleBenchmarkStateChange}
+                />
+              </div>
             </div>
 
             <RightPanel />
