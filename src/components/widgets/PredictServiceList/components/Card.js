@@ -80,12 +80,14 @@ class Card extends React.Component {
               </span>
             </h5>
 
-            <h6 className="card-subtitle mb-2 text-muted">
-              {repository.jsonConfig &&
-              repository.jsonConfig.description &&
-              repository.jsonConfig.description.length > 0
-                ? repository.jsonConfig.description
-                : " "}
+            <h6 className="card-subtitle text-muted">
+              <span className="title">
+                {repository.jsonConfig &&
+                repository.jsonConfig.description &&
+                repository.jsonConfig.description.length > 0
+                  ? repository.jsonConfig.description
+                  : " "}
+              </span>
             </h6>
 
             <div className="row process-icons">

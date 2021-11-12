@@ -30,7 +30,15 @@
 
     .card-subtitle {
       color: $neutral_blue_8;
-      height: 19px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      margin-bottom: 0.75rem;
+
+      &:hover {
+        white-space: normal;
+        word-break: break-all;
+      }
     }
 
     .process-icons {
