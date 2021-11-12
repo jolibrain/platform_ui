@@ -6,7 +6,6 @@ import RightPanel from "../commons/RightPanel";
 
 import Title from "../../widgets/TrainingMonitor/components/Title";
 import GeneralInfo from "../../widgets/TrainingMonitor/components/GeneralInfo";
-import MeasureHistArray from "../../widgets/TrainingMonitor/components/MeasureHistArray";
 
 import Breadcrumb from "../../widgets/Breadcrumb";
 
@@ -54,7 +53,6 @@ class MainView extends React.Component {
           </div>
           <div className="content p-4">
             <GeneralInfo services={[service]} />
-            <MeasureHistArray services={[service]} />
             <RightPanel />
           </div>
         </div>
