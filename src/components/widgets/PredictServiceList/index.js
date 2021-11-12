@@ -6,25 +6,41 @@ import { withRouter } from "react-router-dom";
 import Card from "./components/Card";
 import ListItem from "./components/ListItem";
 
+import SkeletonCard from "./skeletons/Card";
+
 @inject("configStore")
+@inject("modelRepositoriesStore")
 @withRouter
 @observer
 class PredictServiceList extends React.Component {
-  renderCards() {
-    const { services } = this.props;
+
+  renderSkeletonCards() {
     return (
       <div id="predictServiceList-cards" className="serviceQuickCreate row">
-        {services.map((service, index) => {
-          return (
-            <Card
-              key={`${index}-${service.name}`}
-              repository={service}
-              {...this.props}
-            />
-          );
-        })}
+        { [...Array(3)].map(() => <SkeletonCard />) }
       </div>
     );
+  }
+
+  renderCards() {
+    const { services, modelRepositoriesStore } = this.props;
+    return modelRepositoriesStore.isRefreshing &&
+      services.length === 0 ?
+      this.renderSkeletonCards()
+      :
+      (
+        <div id="predictServiceList-cards" className="serviceQuickCreate row">
+          {services.map((service, index) => {
+            return (
+              <Card
+                key={`${index}-${service.name}`}
+                repository={service}
+                {...this.props}
+              />
+            );
+          })}
+        </div>
+      );
   }
 
   renderList() {
