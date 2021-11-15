@@ -296,7 +296,6 @@ const Webserver = {
   getFile: path =>
     superagent
       .get(URL_JSON_PREFIX + path)
-      .buffer(true)
       .parse(({ text }) => {
 
         // JSON might be malformed and might contain NaN values
@@ -336,7 +335,6 @@ const Webserver = {
   getFileMeta: path =>
     superagent
       .get(URL_JSON_PREFIX + path)
-      .buffer(true)
       .parse(({ text }) => {
 
         // JSON might be malformed and might contain NaN values
