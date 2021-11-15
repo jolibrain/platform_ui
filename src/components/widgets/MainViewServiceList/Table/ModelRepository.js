@@ -145,7 +145,7 @@ class ModelRepositoryItem extends React.Component {
 
             let bestValue = null;
 
-            if (data.bestValueCallback) {
+            if (data.bestValue) {
               bestValue = service.metricsBestValue(data.selector)
               bestValue = data.formatter ?
                     data.formatter(bestValue, service) : bestValue;
@@ -153,7 +153,7 @@ class ModelRepositoryItem extends React.Component {
 
             content = (
               <>
-                { bestValue ? bestValue : value }
+                { bestValue !== null ? bestValue : value }
               </>
             )
           }
