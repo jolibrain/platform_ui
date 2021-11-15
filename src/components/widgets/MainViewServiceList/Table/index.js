@@ -207,7 +207,7 @@ class Table extends React.Component {
           isValue: true,
           hide: false,
           toggable: true,
-          bestValueCallback: this.bestMinValue,
+          bestValue: true,
           formatter: this.formatFloatValue
         },
         {
@@ -216,7 +216,7 @@ class Table extends React.Component {
           isValue: true,
           hide: true,
           toggable: true,
-          bestValueCallback: this.bestMaxValue,
+          bestValue: true,
           formatter: this.formatFloatValue
         },
         {
@@ -225,7 +225,7 @@ class Table extends React.Component {
           isValue: true,
           hide: true,
           toggable: true,
-          bestValueCallback: this.bestMaxValue,
+          bestValue: true,
           formatter: this.formatFloatValue
         },
         {
@@ -234,7 +234,7 @@ class Table extends React.Component {
           isValue: true,
           hide: true,
           toggable: true,
-          bestValueCallback: this.bestMaxValue,
+          bestValue: true,
           formatter: this.formatFloatValue
         },
         {
@@ -243,7 +243,7 @@ class Table extends React.Component {
           isValue: true,
           hide: true,
           toggable: true,
-          bestValueCallback: this.bestMaxValue,
+          bestValue: true,
           formatter: this.formatFloatValue
         },
         {
@@ -252,7 +252,7 @@ class Table extends React.Component {
           isValue: true,
           hide: true,
           toggable: true,
-          bestValueCallback: this.bestMinValue,
+          bestValue: true,
           formatter: this.formatFloatValue
         },
         {
@@ -261,7 +261,7 @@ class Table extends React.Component {
           isValue: true,
           hide: true,
           toggable: true,
-          bestValueCallback: this.bestMinValue,
+          bestValue: true,
           formatter: this.formatFloatValue
         },
         {
@@ -270,7 +270,7 @@ class Table extends React.Component {
           isValue: true,
           hide: true,
           toggable: true,
-          bestValueCallback: this.bestMinValue,
+          bestValue: true,
           formatter: this.formatFloatValue
         },
         {

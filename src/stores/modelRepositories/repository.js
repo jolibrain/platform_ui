@@ -87,7 +87,10 @@ export default class Repository {
     let value = '--';
     let metricKey = attr;
 
-    if (!this.jsonMetrics)
+    if (
+      !this.jsonMetrics ||
+        !this.jsonMetrics.body
+    )
       return value;
 
     const measure_hist = this.jsonMetrics
