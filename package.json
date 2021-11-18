@@ -1,6 +1,6 @@
 {
   "name": "platform-ui",
-  "version": "0.19.4",
+  "version": "0.19.5",
   "private": true,
   "description": "DeepDetect Platform UI",
   "dependencies": {
@@ -80,6 +80,7 @@
     "react-tooltip": "^4.2.9",
     "react-webcam": "^5.2.2",
     "reactstrap": "^8.5.1",
+    "recharts": "^2.1.6",
     "resolve": "1.15.0",
     "resolve-url-loader": "3.1.1",
     "sass-loader": "8.0.2",
