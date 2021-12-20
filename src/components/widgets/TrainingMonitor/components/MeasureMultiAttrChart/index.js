@@ -446,11 +446,11 @@ class MeasureMultiAttrChart extends React.Component {
             service &&
             typeof service !== 'undefined' &&
             typeof service.measure !== 'undefined' &&
-                typeof service.measure.test_names !== 'undefined' &&
-                typeof service.measure.test_names[datasetIndex] !== 'undefined' &&
-                service.measure.test_names[datasetIndex].length > 0
+                typeof service.measures !== 'undefined' &&
+                typeof service.measures[datasetIndex] !== 'undefined' &&
+                typeof service.measures[datasetIndex].test_name !== 'undefined'
         ) {
-            datasetName = service.measure.test_names[datasetIndex];
+            datasetName = service.measures[datasetIndex].test_name;
         }
 
         return (
