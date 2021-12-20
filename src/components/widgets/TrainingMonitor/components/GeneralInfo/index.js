@@ -73,13 +73,16 @@ class GeneralInfo extends React.Component {
     if (!service || (!service.jsonMetrics && !service.respInfo)) return null;
 
     let measure,
+        measures,
       mltype = null;
 
     if (service.jsonMetrics) {
       measure = service.jsonMetrics.body.measure;
+      measures = service.jsonMetrics.body.measures;
       mltype = service.jsonMetrics.body.mltype;
     } else {
       measure = service.measure;
+      measures = service.measures;
       if (
         service.respInfo &&
         service.respInfo.body &&
@@ -156,22 +159,20 @@ class GeneralInfo extends React.Component {
         );
       }
 
-      const multipleMapDataset = Object.keys(measure)
-                                          .filter(key => {
-                                            // get map measure keys
-                                            return /^map_.*/.test(key)
-                                          })
-                                          .filter(key => {
-                                            // keep test measures
-                                            return !/map_\d+_.*/.test(key)
-                                          });
+      const multipleMapDataset = typeof measures !== 'undefined' &&
+            measures.length > 1 &&
+            measures.every( m => typeof m['map'] !== 'undefined' )
 
-      if(multipleMapDataset.length > 1) {
+      if(multipleMapDataset) {
+
+        const multipleDatasetAttr = measures
+              .map(m => `map_test${m['test_id']}`)
+
         infoCharts.push(
           <MeasureMultiAttrChart
             title="Map"
             key="map-datasets"
-            attributes={multipleMapDataset}
+            attributes={multipleDatasetAttr}
             steppedLine
             showBest
             useBestValue

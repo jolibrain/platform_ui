@@ -215,6 +215,23 @@ export default class deepdetectService {
   }
 
   @computed
+  get measures() {
+    let value = null;
+
+    if (
+      !this.isTraining &&
+      this.respTrainMetrics &&
+      this.respTrainMetrics.body
+    ) {
+      value = this.respTrainMetrics.body.measures;
+    } else if (this.respTraining && this.respTraining.body) {
+      value = this.respTraining.body.measures;
+    }
+
+    return value;
+  }
+
+  @computed
   get measure_hist() {
     let value = null;
 
