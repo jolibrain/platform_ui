@@ -63,6 +63,7 @@ class App extends React.Component {
       dataRepositoriesStore,
       videoExplorerStore,
       buildInfoStore,
+      datasetStore,
     } = this.props;
 
     configStore.loadConfig(config => {
@@ -98,6 +99,8 @@ class App extends React.Component {
         if (config.videoExplorer) {
           videoExplorerStore.setup(config);
         }
+
+        datasetStore.setup(config);
 
         buildInfoStore.loadBuildInfo();
       }
