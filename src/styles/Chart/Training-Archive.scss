@@ -1,0 +1,51 @@
+.trainingmonitorCompare {
+
+
+    .bboxDisplay {
+
+        display: block;
+        max-width: 30vw;
+        max-height: 30vh;
+
+        img,
+        .boundingBoxCanvas,
+        .boundingSegmentationCanvas {
+            display: block;
+            padding: 0 10px;
+            max-width: 100% !important;
+            max-height: 100% !important;
+        }
+
+    }
+
+    .imageSelection {
+
+        h5 {
+        }
+
+        .placeholder {
+
+            margin-bottom: 10px;
+            cursor: pointer;
+
+            img {
+                display: flex;
+                background-color: #ccc;
+                width: 75px;
+                height: 75px;
+                padding: 3px;
+                border: 1px solid #002;
+            }
+
+            img.active {
+                border: 1px solid #00F;
+            }
+
+            span {
+                font-size: 12px;
+            }
+        }
+       
+    }
+
+}
