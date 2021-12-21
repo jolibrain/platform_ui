@@ -8,6 +8,8 @@ import Title from "../../widgets/TrainingMonitor/components/Title";
 import GeneralInfo from "../../widgets/TrainingMonitor/components/GeneralInfo";
 import MeasureHistArray from "../../widgets/TrainingMonitor/components/MeasureHistArray";
 
+import CompareImagesBbox from "../../widgets/TrainingMonitor/components/CompareImagesBbox";
+
 import Breadcrumb from "../../widgets/Breadcrumb";
 
 @inject("deepdetectStore")
@@ -53,6 +55,7 @@ class MainView extends React.Component {
             <Breadcrumb service={service} isTraining={true} />
           </div>
           <div className="content p-4">
+            <CompareImagesBbox service={service} />
             <GeneralInfo services={[service]} />
             <MeasureHistArray services={[service]} />
             <RightPanel />
