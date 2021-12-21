@@ -526,23 +526,15 @@ class MeasureChart extends React.Component {
           label: (tooltipItem, data) => {
 
             let label = null;
+            const values = `${tooltipItem.xLabel}, ${parseFloat(tooltipItem.yLabel).toFixed(5)}`
 
             if (data.datasets && data.datasets.length > 0) {
 
               const selectedDataset = data.datasets[tooltipItem.datasetIndex];
 
-              if (
-                selectedDataset &&
-                  selectedDataset.data &&
-                  selectedDataset.data.length > 0
-              ) {
-                let datasetValue = parseFloat(selectedDataset.data[tooltipItem.index]).toFixed(5);
-                if(datasetValue > 1) {
-                  datasetValue = parseFloat(datasetValue).toFixed(3);
-                }
-
-                label = selectedDataset.label + ": " + datasetValue;
-              }
+              label = selectedDataset && selectedDataset.label ?
+                `${selectedDataset.label}: ${values}`
+                : values;
 
             }
 
