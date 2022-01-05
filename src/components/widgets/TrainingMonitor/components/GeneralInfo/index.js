@@ -114,7 +114,8 @@ class GeneralInfo extends React.Component {
 
     let hasMap = false,
         hasEucll = false,
-        hasMeanIou = false;
+        hasMeanIou = false,
+        meanIouKey;
 
     if (typeof measure !== "undefined" && measure !== null) {
       if (typeof measure.accp !== "undefined") {
@@ -201,18 +202,25 @@ class GeneralInfo extends React.Component {
         typeof measure.eucll !== "undefined" &&
           !service.isTimeseries
       ) {
-        hasMeanIou = true;
-        infoCharts.push(
-          <MeasureChart
-            title="Mean IOU"
-            attribute="meaniou"
-            key="meaniou"
-            steppedLine
-            showBest
-            layout={layout}
-            {...this.props}
-          />
-        );
+
+        meanIouKey = Object.keys(measure)
+                            .find(k => k.startsWith('meaniou'))
+
+        if(typeof meanIouKey !== 'undefined') {
+
+          hasMeanIou = true;
+          infoCharts.push(
+            <MeasureChart
+              title="Mean IOU"
+              key="meaniou"
+              attribute={meanIouKey}
+              steppedLine
+              showBest
+              layout={layout}
+              {...this.props}
+            />
+          );
+        }
       }
     }
 
@@ -227,38 +235,52 @@ class GeneralInfo extends React.Component {
       !hasMeanIou &&
         mltype !== "segmentation" &&
         service.bestModel &&
-        service.bestModel.meaniou &&
         !service.isTimeseries
     ) {
-      hasMeanIou = true;
-      infoCharts.push(
-        <MeasureChart
-          title="Mean IOU"
-          attribute="meaniou"
-          key="meaniou"
-          steppedLine
-          showBest
-          layout={layout}
-          {...this.props}
-        />
-      );
+
+      meanIouKey = Object.keys(service.bestModel)
+                            .find(k => k.startsWith('meaniou'))
+
+      if(typeof meanIouKey !== 'undefined') {
+
+        hasMeanIou = true;
+        infoCharts.push(
+          <MeasureChart
+            title="Mean IOU"
+            key="meaniou"
+            attribute={meanIouKey}
+            steppedLine
+            showBest
+            layout={layout}
+            {...this.props}
+          />
+        );
+
+      }
     }
 
     switch (mltype) {
       case "segmentation":
 
         if(!hasMeanIou) {
-          infoCharts.push(
-            <MeasureChart
-              title="Mean IOU"
-              attribute="meaniou"
-              key="meaniou"
-              steppedLine
-              showBest
-              layout={layout}
-              {...this.props}
-            />
-          );
+          meanIouKey = Object.keys(measure)
+                             .find(k => k.startsWith('meaniou'))
+
+          if(typeof meanIouKey !== 'undefined') {
+
+            infoCharts.push(
+              <MeasureChart
+                title="Mean IOU"
+                key='meaiou'
+                attribute={meanIouKey}
+                steppedLine
+                showBest
+                layout={layout}
+                {...this.props}
+              />
+            );
+           
+          }
         }
 
         infoCharts.push(
