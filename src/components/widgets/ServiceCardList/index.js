@@ -31,7 +31,7 @@ class ServiceCardList extends React.Component {
           );
         } else if (service.isDataset) {
           card = <DatasetCard key={index} dataset={service} />;
-        } else if (service.settings && service.settings.training) {
+        } else if (service.isTraining) {
           card = <TrainingCard key={index} service={service} />;
         } else {
           card = <PredictCard key={index} service={service} />;

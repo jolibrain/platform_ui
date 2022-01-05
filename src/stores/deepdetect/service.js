@@ -434,7 +434,7 @@ export default class deepdetectService {
 
   @action
   stopTraining(callback) {
-    if (this.settings.training) {
+    if (this.isTraining) {
       this.$reqStopTraining().then(callback);
     }
   }
