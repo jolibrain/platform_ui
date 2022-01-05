@@ -20,13 +20,13 @@ class ServiceItem extends React.Component {
       <li className={selectedService ? "selected" : ""}>
         <Link
           id={`serviceList-${service.name}`}
-          to={`/${service.settings.training ? "training" : "predict"}/${
+          to={`/${service.isTraining ? "training" : "predict"}/${
             service.serverName
           }/${service.name}`}
           title={service.name}
         >
           <span className="nav-item-name">
-            {service.settings.training ? (
+            {service.isTraining ? (
               <i className="fas fa-braille" />
             ) : (
               <i className="fas fa-cube" />

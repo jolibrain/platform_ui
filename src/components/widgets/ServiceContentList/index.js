@@ -22,7 +22,7 @@ class ServiceContentList extends React.Component {
         let content = null;
         if (service.jsonMetrics || service.bestModel) {
           content = <ModelRepositoryContent key={index} service={service} />;
-        } else if (service.settings && service.settings.training) {
+        } else if (service.isTraining) {
           //content = <TrainingContent key={index} service={service} />;
         } else {
           //content = <PredictContent key={index} service={service} />;
