@@ -19,8 +19,9 @@ class MeasureHistArray extends React.Component {
         Object.keys(service.measure_hist)
               .sort()
               .filter(k => {
-                return k !== "iteration_hist" &&
-                  k !== "train_loss_hist" &&
+                return !k.startsWith("iteration") &&
+                  !k.startsWith("train_loss") &&
+                  !k.startsWith("elapsed_time") &&
                   k.indexOf("_sampling") === -1
               })
         : []; // check on service.measure_hist, empty array if undefined
