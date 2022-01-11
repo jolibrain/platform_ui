@@ -1,9 +1,9 @@
 # DeepDetect Platform UI (Changelog)
 
-## [0.20.0](https://github.com/jolibrain/platform_ui/compare/v0.19.5...v0.20.0) (2021-12-21)
+### [0.20.1](https://github.com/jolibrain/platform_ui/compare/v0.20.0...v0.20.1) (2022-01-11)
 
 
 ### Bug Fixes
 
-* add x-value on training chart tooltips ([4d0614b](https://github.com/jolibrain/platform_ui/commit/4d0614b296159fb3196d7df82d4add20e0a300cb))
-* use services measures array to display training multiple dataset ([64eed84](https://github.com/jolibrain/platform_ui/commit/64eed8436ff57fcaaeae30630811f94dae9ebb1c))
+* check key prefixes to display main Mean IOU ([1d63180](https://github.com/jolibrain/platform_ui/commit/1d63180831477769e791199fa988dde5edf0c654))
+* use service.isTraining ([22362c3](https://github.com/jolibrain/platform_ui/commit/22362c321ffce163627b136bf1a6696c1522ec63))
