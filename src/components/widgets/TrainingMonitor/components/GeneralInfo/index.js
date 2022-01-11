@@ -54,11 +54,20 @@ class GeneralInfo extends React.Component {
       layout: "col-md-6"
     };
 
-    this.selectedLayout = this.selectLayout.bind(this);
+    this.selectLayout = this.selectLayout.bind(this);
+    this.findMeasureAttr = this.findMeasureAttr.bind(this);
   }
 
   selectLayout(layout) {
     this.setState({ layout: layout });
+  }
+
+  // When measure attribute key includes suffixes,
+  // ie. `meaniou_test0` is the key for `meaniou` attribute,
+  // returns this key to display main charts
+  findMeasureAttr(measure, rootKey) {
+    return Object.keys(measure)
+                 .find(k => k.startsWith(rootKey))
   }
 
   render() {
@@ -74,7 +83,16 @@ class GeneralInfo extends React.Component {
 
     let measure,
         measures,
-      mltype = null;
+        mltype = null,
+        trainLossAttr,
+        accpAttr,
+        accAttr,
+        meanIouAttr,
+        meanAccAttr,
+        f1Attr,
+        mcllAttr,
+        eucllAttr,
+        mapAttr;
 
     if (service.jsonMetrics) {
       measure = service.jsonMetrics.body.measure;
@@ -100,42 +118,55 @@ class GeneralInfo extends React.Component {
     // })
 
     // showIterTimeScale={hasMeasureElapsedTime}
-    infoCharts.push(
-      <MeasureChart
-        title="Train Loss"
-        key="train_loss"
-        attribute="train_loss"
-        showMinValue
-        showLogScale
-        layout={layout}
-        {...this.props}
-      />
-    );
+
+    trainLossAttr = this.findMeasureAttr(measure, 'train_loss');
+
+    if (typeof trainLossAttr !== "undefined") {
+
+      infoCharts.push(
+        <MeasureChart
+          title="Train Loss"
+          attribute={trainLossAttr}
+          key="train_loss"
+          showMinValue
+          showLogScale
+          layout={layout}
+          {...this.props}
+        />
+      );
+
+    }
 
     let hasMap = false,
         hasEucll = false,
-        hasMeanIou = false,
-        meanIouKey;
+        hasMeanIou = false;
 
     if (typeof measure !== "undefined" && measure !== null) {
-      if (typeof measure.accp !== "undefined") {
+
+      accpAttr = this.findMeasureAttr(measure, 'accp');
+      accAttr = this.findMeasureAttr(measure, 'acc');
+
+      if (typeof accpAttr !== "undefined") {
+
         infoCharts.push(
           <MeasureChart
             title="Accuracy"
+            attribute={accpAttr}
             key="accp"
-            attribute="accp"
             steppedLine
             showBest
             layout={layout}
             {...this.props}
           />
         );
-      } else if (typeof measure.acc !== "undefined") {
+
+      } else if (typeof accAttr !== "undefined") {
+
         infoCharts.push(
           <MeasureChart
             title="Accuracy"
+            attribute={accAttr}
             key="acc"
-            attribute="acc"
             steppedLine
             showBest
             layout={layout}
@@ -144,13 +175,17 @@ class GeneralInfo extends React.Component {
         );
       }
 
-      if (typeof measure.map !== "undefined") {
+      mapAttr = this.findMeasureAttr(measure, 'map');
+
+      if (typeof mapAttr !== "undefined") {
+
         hasMap = true;
+
         infoCharts.push(
           <MeasureChart
             title="Map"
+            attribute={mapAttr}
             key="map"
-            attribute="map"
             steppedLine
             showBest
             useBestValue
@@ -183,13 +218,17 @@ class GeneralInfo extends React.Component {
         );
       }
 
-      if (typeof measure.eucll !== "undefined") {
+      eucllAttr = this.findMeasureAttr(measure, 'eucll');
+
+      if (typeof eucllAttr !== "undefined") {
+
         hasEucll = true;
+
         infoCharts.push(
           <MeasureChart
             title="Eucll"
-            attribute="eucll"
             key="eucll"
+            attribute={eucllAttr}
             steppedLine
             showMinValue
             layout={layout}
@@ -199,21 +238,19 @@ class GeneralInfo extends React.Component {
       }
 
       if (
-        typeof measure.eucll !== "undefined" &&
+        typeof eucllAttr !== "undefined" &&
           !service.isTimeseries
       ) {
 
-        meanIouKey = Object.keys(measure)
-                            .find(k => k.startsWith('meaniou'))
-
-        if(typeof meanIouKey !== 'undefined') {
+        meanIouAttr = this.findMeasureAttr(measure, 'meaniou');
+        if(typeof meanIouAttr !== 'undefined') {
 
           hasMeanIou = true;
           infoCharts.push(
             <MeasureChart
               title="Mean IOU"
               key="meaniou"
-              attribute={meanIouKey}
+              attribute={meanIouAttr}
               steppedLine
               showBest
               layout={layout}
@@ -238,17 +275,16 @@ class GeneralInfo extends React.Component {
         !service.isTimeseries
     ) {
 
-      meanIouKey = Object.keys(service.bestModel)
-                            .find(k => k.startsWith('meaniou'))
+      meanIouAttr = this.findMeasureAttr(measure, 'meaniou');
 
-      if(typeof meanIouKey !== 'undefined') {
+      if(typeof meanIouAttr !== 'undefined') {
 
         hasMeanIou = true;
         infoCharts.push(
           <MeasureChart
             title="Mean IOU"
             key="meaniou"
-            attribute={meanIouKey}
+            attribute={meanIouAttr}
             steppedLine
             showBest
             layout={layout}
@@ -263,16 +299,16 @@ class GeneralInfo extends React.Component {
       case "segmentation":
 
         if(!hasMeanIou) {
-          meanIouKey = Object.keys(measure)
-                             .find(k => k.startsWith('meaniou'))
 
-          if(typeof meanIouKey !== 'undefined') {
+          meanIouAttr = this.findMeasureAttr(measure, 'meaniou');
+
+          if(typeof meanIouAttr !== 'undefined') {
 
             infoCharts.push(
               <MeasureChart
                 title="Mean IOU"
-                key='meaiou'
-                attribute={meanIouKey}
+                key='meaniou'
+                attribute={meanIouAttr}
                 steppedLine
                 showBest
                 layout={layout}
@@ -283,77 +319,123 @@ class GeneralInfo extends React.Component {
           }
         }
 
-        infoCharts.push(
-          <MeasureChart
-            title="Mean Accuracy"
-            attribute="meanacc"
-            key="meanacc"
-            steppedLine
-            layout={layout}
-            {...this.props}
-          />
-        );
-        break;
-      case "detection":
-        if (!hasMap)
+        meanAccAttr = this.findMeasureAttr(measure, 'meanacc');
+
+        if(typeof meanAccAttr !== 'undefined') {
+
           infoCharts.push(
             <MeasureChart
-              title="MAP"
-              attribute="map"
-              key="map"
+              title="Mean Accuracy"
+              key="meanacc"
+              attribute={meanAccAttr}
               steppedLine
-              showBest
-              useBestValue
               layout={layout}
               {...this.props}
             />
           );
+
+        }
+
+        break;
+
+      case "detection":
+
+        if (!hasMap) {
+
+          mapAttr = this.findMeasureAttr(measure, 'map');
+
+          if(typeof mapAttr !== 'undefined') {
+            infoCharts.push(
+              <MeasureChart
+                title="MAP"
+                attribute={mapAttr}
+                key="map"
+                steppedLine
+                showBest
+                useBestValue
+                layout={layout}
+                {...this.props}
+              />
+            );
+          }
+
+        }
         break;
       case "classification":
-        infoCharts.push(
-          <MeasureChart
-            title="Mean Accuracy"
-            attribute="meanacc"
-            key="meanacc"
-            steppedLine
-            layout={layout}
-            {...this.props}
-          />
-        );
-        infoCharts.push(
-          <MeasureChart
-            title="F1"
-            attribute="f1"
-            key="f1"
-            steppedLine
-            layout={layout}
-            {...this.props}
-          />
-        );
-        infoCharts.push(
-          <MeasureChart
-            title="Mcll"
-            attribute="mcll"
-            key="mcll"
-            steppedLine
-            layout={layout}
-            {...this.props}
-          />
-        );
-        break;
-      case "regression":
-        if (!hasEucll)
+
+        meanAccAttr = this.findMeasureAttr(measure, 'meanacc');
+        f1Attr = this.findMeasureAttr(measure, 'f1');
+        mcllAttr = this.findMeasureAttr(measure, 'mcll');
+
+        if(typeof meanAccAttr !== 'undefined') {
+
           infoCharts.push(
             <MeasureChart
-              title="Eucll"
-              attribute="eucll"
-              key="eucll"
+              title="Mean Accuracy"
+              attribute={meanAccAttr}
+              key="meanacc"
               steppedLine
-              showMinValue
               layout={layout}
               {...this.props}
             />
           );
+
+        }
+
+        if(typeof f1Attr !== 'undefined') {
+
+          infoCharts.push(
+            <MeasureChart
+              title="F1"
+              attribute={f1Attr}
+              key="f1"
+              steppedLine
+              layout={layout}
+              {...this.props}
+            />
+          );
+
+        }
+
+        if(typeof mcllAttr !== 'undefined') {
+
+          infoCharts.push(
+            <MeasureChart
+              title="Mcll"
+              attribute={mcllAttr}
+              key="mcll"
+              steppedLine
+              layout={layout}
+              {...this.props}
+            />
+          );
+
+        }
+
+        break;
+      case "regression":
+
+        if (!hasEucll) {
+
+          eucllAttr = this.findMeasureAttr(measure, 'eucll');
+
+          if(typeof eucllAttr !== 'undefined') {
+            infoCharts.push(
+              <MeasureChart
+                title="Eucll"
+                attribute={eucllAttr}
+                key="eucll"
+                steppedLine
+                showMinValue
+                layout={layout}
+                {...this.props}
+              />
+            );
+
+          }
+
+        }
+
         break;
       case "ctc":
         break;
