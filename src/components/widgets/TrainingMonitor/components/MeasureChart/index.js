@@ -375,7 +375,7 @@ class MeasureChart extends React.Component {
     if (service) {
       displayedValue = this.getValue(service, attribute);
 
-      if (attribute === "train_loss" && displayedValue !== "--") {
+      if (attribute.startsWith("train_loss") && displayedValue !== "--") {
         displayedValue = parseFloat(displayedValue);
 
         if (typeof displayedValue.toFixed === "function") {
