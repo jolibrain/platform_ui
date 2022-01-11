@@ -84,7 +84,6 @@ class GeneralInfo extends React.Component {
     let measure,
         measures,
         mltype = null,
-        trainLossAttr,
         accpAttr,
         accAttr,
         meanIouAttr,
