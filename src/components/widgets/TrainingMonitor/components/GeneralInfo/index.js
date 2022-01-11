@@ -119,23 +119,17 @@ class GeneralInfo extends React.Component {
 
     // showIterTimeScale={hasMeasureElapsedTime}
 
-    trainLossAttr = this.findMeasureAttr(measure, 'train_loss');
-
-    if (typeof trainLossAttr !== "undefined") {
-
-      infoCharts.push(
-        <MeasureChart
-          title="Train Loss"
-          attribute={trainLossAttr}
-          key="train_loss"
-          showMinValue
-          showLogScale
-          layout={layout}
-          {...this.props}
-        />
-      );
-
-    }
+    infoCharts.push(
+      <MeasureChart
+        title="Train Loss"
+        attribute="train_loss"
+        key="train_loss"
+        showMinValue
+        showLogScale
+        layout={layout}
+        {...this.props}
+      />
+    );
 
     let hasMap = false,
         hasEucll = false,
