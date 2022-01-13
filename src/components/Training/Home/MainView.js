@@ -254,7 +254,7 @@ class MainView extends React.Component {
                   ) : null}
                 </h3>
               </div>
-              <div className="col-2 layout-select">
+              <div className="col-2 layout-select d-none">
                 <i
                   className={ this.state.archiveLayout === "card" ?
                               "fas fa-th-large active"
