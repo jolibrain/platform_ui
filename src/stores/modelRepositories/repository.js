@@ -115,15 +115,18 @@ export default class Repository {
 
     if (
       measure_hist &&
-      measure_hist[`${metricKey}_hist`] &&
-      measure_hist[`${metricKey}_hist`].length > 0
+        typeof Object.keys(measure_hist)
+                     .find(k => k.startsWith(metricKey)) !== 'undefined'
     ) {
 
+      const metricHistKey = Object.keys(measure_hist)
+                                  .find(k => k.startsWith(metricKey))
+
       if(['acc', 'accp', 'meaniou', 'map', 'f1'].includes(metricKey)) {
-        value = Math.max.apply(Math, measure_hist[`${metricKey}_hist`])
+        value = Math.max.apply(Math, measure_hist[metricHistKey])
       } else {
         // train_loss, L1_mean_error, mcll, eucll
-        value = Math.min.apply(Math, measure_hist[`${metricKey}_hist`])
+        value = Math.min.apply(Math, measure_hist[metricHistKey])
       }
     }
 
