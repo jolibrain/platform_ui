@@ -858,7 +858,10 @@ export default class deepdetectService {
       if (bestModelTxt.length > 0) {
         bestModelTxt
           .split("\n")
-          .filter(a => a.length > 0)
+          .filter(a =>
+                  a.length > 0 &&
+                  !a.startsWith('test_name')
+                 )
           .map(a => a.split(":"))
           .forEach(content => {
             bestModel[content[0]] = content[1];
