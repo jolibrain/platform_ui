@@ -68,15 +68,20 @@ export default class Repository {
       metricKey = "acc";
     }
 
-    if (measure && measure[metricKey]) {
+    if (
+      measure &&
+        typeof measure[metricKey] !== 'undefined'
+    ) {
       value = measure[metricKey];
     } else if (
       measure_hist &&
-      measure_hist[`${metricKey}_hist`] &&
-      measure_hist[`${metricKey}_hist`].length > 0
+        typeof Object.keys(measure_hist)
+                     .find(k => k.startsWith(metricKey)) !== 'undefined'
     ) {
+      const metricHistKey = Object.keys(measure_hist)
+                                  .find(k => k.startsWith(metricKey));
       value =
-        measure_hist[`${metricKey}_hist`][measure_hist[`${metricKey}_hist`].length - 1];
+        measure_hist[metricHistKey][measure_hist[metricHistKey].length - 1];
     }
 
     return value;
