@@ -150,10 +150,12 @@ class MeasureChart extends React.Component {
 
     if (
       measure_hist &&
-      measure_hist[`${attr}_hist`] &&
-      measure_hist[`${attr}_hist`].length > 0
+        Object.keys(measure_hist)
+              .find(k => k.startsWith(attr))
     ) {
-      value = Math.min.apply(Math, measure_hist[`${attr}_hist`]);
+      const attrKey = Object.keys(measure_hist)
+                            .find(k => k.startsWith(attr))
+      value = Math.min.apply(Math, measure_hist[attrKey]);
     }
 
     if(value) {
@@ -175,10 +177,12 @@ class MeasureChart extends React.Component {
 
     if (
       measure_hist &&
-      measure_hist[`${attr}_hist`] &&
-      measure_hist[`${attr}_hist`].length > 0
+        Object.keys(measure_hist)
+              .find(k => k.startsWith(attr))
     ) {
-      value = Math.max.apply(Math, measure_hist[`${attr}_hist`]);
+      const attrKey = Object.keys(measure_hist)
+                            .find(k => k.startsWith(attr))
+      value = Math.max.apply(Math, measure_hist[attrKey]);
     }
 
     if(value) {
@@ -207,11 +211,13 @@ class MeasureChart extends React.Component {
       value = measure[attr];
     } else if (
       measure_hist &&
-      measure_hist[`${attr}_hist`] &&
-      measure_hist[`${attr}_hist`].length > 0
+        Object.keys(measure_hist)
+              .find(k => k.startsWith(attr))
     ) {
+      const attrKey = Object.keys(measure_hist)
+                            .find(k => k.startsWith(attr))
       value =
-        measure_hist[`${attr}_hist`][measure_hist[`${attr}_hist`].length - 1];
+        measure_hist[attrKey][measure_hist[attrKey].length - 1];
     }
 
     if (value && !["remain_time_str", "iteration"].includes(attr)) {
@@ -234,13 +240,15 @@ class MeasureChart extends React.Component {
 
     if (
       measure_hist &&
-      measure_hist[`${attr}_hist`] &&
-      measure_hist[`${attr}_hist`].length > 0
+        Object.keys(measure_hist)
+              .find(k => k.startsWith(attr))
     ) {
-      measures = toJS(measure_hist[`${attr}_hist`]);
+      const attrKey = Object.keys(measure_hist)
+                            .find(k => k.startsWith(attr))
+      measures = toJS(measure_hist[attrKey]);
       // Remove Infinity values from measure_hist
       if (measures.some(x => x === Infinity)) {
-        measures = measure_hist[`${attr}_hist`].map(x => {
+        measures = measure_hist[attrKey].map(x => {
           return x === Infinity ? 0 : x;
         });
       }
@@ -293,18 +301,20 @@ class MeasureChart extends React.Component {
 
     if (
       measure_hist &&
-      measure_hist[`${attr}_hist`] &&
-      measure_hist[`${attr}_hist`].length > 0
+        Object.keys(measure_hist)
+              .find(k => k.startsWith(attr))
     ) {
+      const attrKey = Object.keys(measure_hist)
+                            .find(k => k.startsWith(attr))
       let labels = [],
-        measures = toJS(measure_hist[`${attr}_hist`]),
+        measures = toJS(measure_hist[attrKey]),
         datasets = services.map((s, index) => {
           return s ? this.getChartDataset(s, attr, index) : {};
         });
 
       // Remove Infinity values from measure_hist
       if (measures.some(x => x === Infinity)) {
-        measures = measure_hist[`${attr}_hist`].map(x => {
+        measures = measure_hist[attrKey].map(x => {
           return x === Infinity ? 0 : x;
         });
       }
