@@ -70,14 +70,72 @@ class MultiTitle extends React.Component {
         }
       });
     } else {
-      tableColumns.push({
-        text: "MAP (best)",
-        selector: "map",
-        isBest: true,
-        formatter: (value, props) => {
-          return value !== "--" ? parseFloat(value).toFixed(5) : value;
-        }
-      });
+
+      switch (firstService.mltype) {
+        case "segmentation":
+          tableColumns.push({
+            text: "Mean IOU (best)",
+            selector: "meaniou",
+            isBest: true,
+            formatter: (value, props) => {
+              return value !== "--" ? parseFloat(value).toFixed(5) : value;
+            }
+          });
+          break;
+        case "detection":
+          tableColumns.push({
+            text: "MAP",
+            selector: "map",
+            formatter: (value, props) => {
+              return value !== "--" ? parseFloat(value).toFixed(5) : value;
+            }
+          });
+          break;
+        case "ctc":
+          tableColumns.push({
+            text: "Acc",
+            selector: "acc",
+            formatter: (value, props) => {
+              return value !== "--" ? parseFloat(value).toFixed(5) : value;
+            }
+          });
+          break;
+        case "classification":
+          tableColumns.push({
+            text: "Acc",
+            selector: "acc",
+            formatter: (value, props) => {
+              return value !== "--" ? parseFloat(value).toFixed(5) : value;
+            }
+          });
+          tableColumns.push({
+            text: "f1",
+            selector: "f1",
+            formatter: (value, props) => {
+              return value !== "--" ? parseFloat(value).toFixed(5) : value;
+            }
+          });
+          tableColumns.push({
+            text: "mcll",
+            selector: "mcll",
+            formatter: (value, props) => {
+              return value !== "--" ? parseFloat(value).toFixed(5) : value;
+            }
+          });
+          break;
+        case "regression":
+        case "autoencoder":
+          tableColumns.push({
+            text: "eucll",
+            selector: "eucll",
+            formatter: (value, props) => {
+              return value !== "--" ? parseFloat(value).toFixed(5) : value;
+            }
+          });
+          break;
+        default:
+          break;
+      }
     }
 
     tableColumns = tableColumns.concat([
