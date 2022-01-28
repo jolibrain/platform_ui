@@ -135,7 +135,14 @@ class MainView extends React.Component {
                 return r.path.split("/").includes(item);
               });
 
-        return filteredByServiceNameInput && filteredByPathTag;
+        // Hide service that are currently running
+        const filteredNotRunning = !displayedTrainingServices
+              .map(s => s.name)
+              .includes(r.name);
+
+        return filteredNotRunning &&
+          filteredByServiceNameInput &&
+          filteredByPathTag;
       })
       .slice()
       .sort((a, b) => {
