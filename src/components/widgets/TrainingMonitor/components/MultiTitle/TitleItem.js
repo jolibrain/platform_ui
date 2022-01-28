@@ -6,37 +6,48 @@ import { observer } from "mobx-react";
 class TitleItem extends React.Component {
   constructor(props) {
     super(props);
-    this.getValue = this.getValue.bind(this);
+    this.getHistValue = this.getHistValue.bind(this);
     this.getBestValue = this.getBestValue.bind(this);
     this.getMeasureValue = this.getMeasureValue.bind(this);
   }
 
-  getValue(attr) {
+  getHistValue(attr) {
     const { service } = this.props;
 
-    let measure, measure_hist;
-    if (service.jsonMetrics) {
-      measure = service.jsonMetrics.body.measure;
-      measure_hist = service.jsonMetrics.body.measure_hist;
-    } else {
-      measure = service.measure;
-      measure_hist = service.measure_hist;
-    }
+    const measure_hist = service.jsonMetrics
+      ? service.jsonMetrics.body.measure_hist
+      : service.measure_hist;
 
     let value = null;
-
-    if (measure) {
-      value = measure[attr];
-    } else if (
+    if (
       measure_hist &&
-      measure_hist[`${attr}_hist`] &&
-      measure_hist[`${attr}_hist`].length > 0
+        Object.keys(measure_hist)
+              .find(k => k.startsWith(attr))
     ) {
-      value =
-        measure_hist[`${attr}_hist`][measure_hist[`${attr}_hist`].length - 1];
+      const attrKeys = Object.keys(measure_hist)
+                             .filter(k => k.startsWith(attr))
+                             .sort((a, b) => {
+                               // sort by measure_hist key
+                               // example:
+                               // ['map_1_hist', 'map_2_hist', 'map_hist']
+                               // should be sorted as
+                               // ['map_hist', 'map_1_hist', 'map_2_hist']
+                               const indexA = parseInt(a.split('_')[1].charAt(0), 10);
+                               const indexB = parseInt(b.split('_')[1].charAt(0), 10);
+                               return (isNaN(indexA) ? 0 : indexA) - (isNaN(indexB) ? 0 : indexB)
+                             })
+
+      if(attrKeys.length === 1) {
+        value =
+          measure_hist[attrKeys[0]][measure_hist[attrKeys[0]].length - 1];
+      } else if(attrKeys.length > 1) {
+        value = attrKeys.map(k => {
+          return measure_hist[k][measure_hist[k].length - 1];
+        })
+      }
     }
 
-    return value ? parseFloat(value) : "--";
+    return value;
   }
 
   getMeasureValue(selector) {
@@ -90,8 +101,15 @@ class TitleItem extends React.Component {
               value = this.getBestValue(column.selector);
             } else if (column.isMeasure) {
               value = this.getMeasureValue(column.selector);
-            } else if (column.isValue) {
-              value = this.getValue(column.selector);
+
+              // if not found in measure hash,
+              // try to fetch value inside measure_hist array
+              if(value === '--') {
+                value = this.getHistValue(column.selector);
+              }
+
+            } else if (column.isHistValue) {
+              value = this.getHistValue(column.selector);
             } else {
               value = service[column.selector]
             }

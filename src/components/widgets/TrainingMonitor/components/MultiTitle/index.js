@@ -25,7 +25,7 @@ class MultiTitle extends React.Component {
       {
         text: "Train Loss",
         selector: "train_loss",
-        isValue: true,
+        isHistValue: true,
         formatter: (value, props) => {
           let content = value;
           if (value && typeof value.toFixed === "function") {
@@ -86,8 +86,25 @@ class MultiTitle extends React.Component {
           tableColumns.push({
             text: "MAP",
             selector: "map",
+            isHistValue: true,
             formatter: (value, props) => {
-              return value !== "--" ? parseFloat(value).toFixed(5) : value;
+              let output = '--';
+
+              if(Array.isArray(value)) {
+                output = <>
+                           {value.map((v, index) => {
+                             return <>
+                             {index}: {parseFloat(v).toFixed(5)} <br/>
+                                    </>
+                           })}
+                         </>
+              } else {
+                output = value !== "--" ?
+                  parseFloat(value).toFixed(5)
+                  :
+                  value;
+              }
+              return output;
             }
           });
           break;
