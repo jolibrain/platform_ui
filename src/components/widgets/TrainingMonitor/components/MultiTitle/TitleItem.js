@@ -18,7 +18,7 @@ class TitleItem extends React.Component {
       ? service.jsonMetrics.body.measure_hist
       : service.measure_hist;
 
-    let value = null;
+    let value = '--';
     if (
       measure_hist &&
         Object.keys(measure_hist)
@@ -39,10 +39,10 @@ class TitleItem extends React.Component {
 
       if(attrKeys.length === 1) {
         value =
-          measure_hist[attrKeys[0]][measure_hist[attrKeys[0]].length - 1];
+          parseFloat(measure_hist[attrKeys[0]][measure_hist[attrKeys[0]].length - 1]).toFixed(5)
       } else if(attrKeys.length > 1) {
         value = attrKeys.map(k => {
-          return measure_hist[k][measure_hist[k].length - 1];
+          return parseFloat(measure_hist[k][measure_hist[k].length - 1]).toFixed(5);
         })
       }
     }
