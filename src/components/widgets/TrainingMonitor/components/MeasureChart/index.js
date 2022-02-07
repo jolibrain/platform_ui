@@ -212,10 +212,20 @@ class MeasureChart extends React.Component {
     } else if (
       measure_hist &&
         Object.keys(measure_hist)
-              .find(k => k.startsWith(attr))
+              .find(k => {
+                return attr === "train_loss" ?
+                  k.startsWith(attr) && k.indexOf("_test") === -1
+                  :
+                  k.startsWith(attr)
+              })
     ) {
       const attrKey = Object.keys(measure_hist)
-                            .find(k => k.startsWith(attr))
+                            .find(k => {
+                              return attr === "train_loss" ?
+                                k.startsWith(attr) && k.indexOf("_test") === -1
+                              :
+                                k.startsWith(attr)
+                            })
       value =
         measure_hist[attrKey][measure_hist[attrKey].length - 1];
     }
@@ -241,10 +251,20 @@ class MeasureChart extends React.Component {
     if (
       measure_hist &&
         Object.keys(measure_hist)
-              .find(k => k.startsWith(attr))
+              .find(k => {
+                return attr === "train_loss" ?
+                  k.startsWith(attr) && k.indexOf("_test") === -1
+                  :
+                  k.startsWith(attr)
+              })
     ) {
       const attrKey = Object.keys(measure_hist)
-                            .find(k => k.startsWith(attr))
+                            .find(k => {
+                              return attr === "train_loss" ?
+                                k.startsWith(attr) && k.indexOf("_test") === -1
+                              :
+                                k.startsWith(attr)
+                            })
       measures = toJS(measure_hist[attrKey]);
       // Remove Infinity values from measure_hist
       if (measures.some(x => x === Infinity)) {
@@ -302,10 +322,20 @@ class MeasureChart extends React.Component {
     if (
       measure_hist &&
         Object.keys(measure_hist)
-              .find(k => k.startsWith(attr))
+              .find(k => {
+                return attr === "train_loss" ?
+                  k.startsWith(attr) && k.indexOf("_test") === -1
+                :
+                  k.startsWith(attr)
+              })
     ) {
       const attrKey = Object.keys(measure_hist)
-                            .find(k => k.startsWith(attr))
+                            .find(k => {
+                              return attr === "train_loss" ?
+                                k.startsWith(attr) && k.indexOf("_test") === -1
+                              :
+                                k.startsWith(attr)
+                            })
       let labels = [],
         measures = toJS(measure_hist[attrKey]),
         datasets = services.map((s, index) => {
@@ -385,7 +415,10 @@ class MeasureChart extends React.Component {
     if (service) {
       displayedValue = this.getValue(service, attribute);
 
-      if (attribute.startsWith("train_loss") && displayedValue !== "--") {
+      if (
+        attribute.startsWith("train_loss") &&
+          displayedValue !== "--"
+      ) {
         displayedValue = parseFloat(displayedValue);
 
         if (typeof displayedValue.toFixed === "function") {
