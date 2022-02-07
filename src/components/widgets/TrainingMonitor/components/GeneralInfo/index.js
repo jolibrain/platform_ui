@@ -66,7 +66,9 @@ class GeneralInfo extends React.Component {
   // ie. `meaniou_test0` is the key for `meaniou` attribute,
   // returns this key to display main charts
   findMeasureAttr(measure, rootKey) {
+    // filter: filter out keys containing class index
     return Object.keys(measure)
+                 .filter(k => !k.match(/.*_\d+_.*/))
                  .find(k => k.startsWith(rootKey))
   }
 
