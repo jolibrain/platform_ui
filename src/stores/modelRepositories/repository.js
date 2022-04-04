@@ -172,6 +172,10 @@ export default class Repository {
 
   @computed
   get downloadableFiles() {
+    const torchWeightFile = this.files
+      .filter(f => f.endsWith(".pt"))
+      .slice(0, 1);
+
     const caffemodelFile = this.files
       .filter(f => f.includes("caffemodel"))
       .sort((a, b) => {
@@ -187,6 +191,7 @@ export default class Repository {
     });
 
     return caffemodelFile
+      .concat(torchWeightFile)
       .concat(variousFiles)
       .filter(f => f.indexOf("~") === -1);
   }
