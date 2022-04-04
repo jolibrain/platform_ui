@@ -62,6 +62,7 @@ class MeasureMultiAttrChart extends React.Component {
     }
 
     toggleLogScale() {
+        const { beginAtZero } = this.props;
         const isLogScale = !this.state.logScale;
         this.setState({ logScale: isLogScale });
 
@@ -87,6 +88,7 @@ class MeasureMultiAttrChart extends React.Component {
             // https://github.com/chartjs/Chart.js/issues/4722#issuecomment-353067548
             yAxe.type = "logarithmic";
             yAxe.ticks = {
+                beginAtZero: typeof beginAtZero !== 'undefined',
                 labels: {
                     index: ["min", "max"],
                     significand: [1],
@@ -126,7 +128,9 @@ class MeasureMultiAttrChart extends React.Component {
         } else {
             // Restore initial linear y axe, with no tick options
             yAxe.type = "linear";
-            yAxe.ticks = {};
+            yAxe.ticks = {
+                beginAtZero: typeof beginAtZero !== 'undefined',
+            };
         }
 
         chartInstance.update();
@@ -501,7 +505,7 @@ class MeasureMultiAttrChart extends React.Component {
     }
 
     render() {
-        const { title, attributes } = this.props;
+        const { title, attributes, beginAtZero } = this.props;
         const { services } = this.props;
 
         const chartData = this.getChartData(attributes);
@@ -583,7 +587,12 @@ class MeasureMultiAttrChart extends React.Component {
                             }
                         }
                     }
-                ]
+                ],
+                yAxes: [{
+                    ticks:{
+                        beginAtZero: typeof beginAtZero !== 'undefined',
+                    }
+                }]
             }
         };
 

@@ -87,6 +87,9 @@ class MultiTitle extends React.Component {
             text: "MAP",
             selector: "map",
             isHistValue: true,
+            classNameFormatter: (props) => {
+              return `map-cell-${props.serviceIndex % 8}`
+            },
             formatter: (value, props) => {
               let output = '--';
 

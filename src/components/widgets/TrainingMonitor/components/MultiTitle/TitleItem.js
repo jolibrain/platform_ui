@@ -26,14 +26,33 @@ class TitleItem extends React.Component {
     ) {
       const attrKeys = Object.keys(measure_hist)
                              .filter(k => k.startsWith(attr))
+                             .filter(k => {
+                               // Do not match testing keys
+                               // example:
+                               // ['map_test2', 'map_test1', 'map_1_test1', 'map_1_test2']
+                               // should be sorted as
+                               // ['map_test2', 'map_test1']
+                               const re = new RegExp(`^${attr}_\\d+_.*$`, 'g');
+                               return !k.match(re)
+                             })
                              .sort((a, b) => {
                                // sort by measure_hist key
                                // example:
-                               // ['map_1_hist', 'map_2_hist', 'map_hist']
+                               // ['map_test2', 'map_test1']
                                // should be sorted as
-                               // ['map_hist', 'map_1_hist', 'map_2_hist']
-                               const indexA = parseInt(a.split('_')[1].charAt(0), 10);
-                               const indexB = parseInt(b.split('_')[1].charAt(0), 10);
+                               // ['map_test1', 'map_test2']
+                               const indexAmatch = a.match(/\d+$/);
+                               const indexBmatch = b.match(/\d+$/);
+                               let indexA, indexB;
+                               if(
+                                 indexAmatch &&
+                                   indexBmatch &&
+                                   indexAmatch.length > 0 &&
+                                   indexBmatch.length > 0
+                               ) {
+                                 indexA = parseInt([0], 10);
+                                 indexB = parseInt(b.match(/\d+$/)[0], 10);
+                               }
                                return (isNaN(indexA) ? 0 : indexA) - (isNaN(indexB) ? 0 : indexB)
                              })
 

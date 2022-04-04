@@ -84,7 +84,6 @@ class GeneralInfo extends React.Component {
     if (!service || (!service.jsonMetrics && !service.respInfo)) return null;
 
     let measure,
-        measures,
         mltype = null,
         accpAttr,
         accAttr,
@@ -97,11 +96,9 @@ class GeneralInfo extends React.Component {
 
     if (service.jsonMetrics) {
       measure = service.jsonMetrics.body.measure;
-      measures = service.jsonMetrics.body.measures;
       mltype = service.jsonMetrics.body.mltype;
     } else {
       measure = service.measure;
-      measures = service.measures;
       if (
         service.respInfo &&
         service.respInfo.body &&
@@ -125,6 +122,7 @@ class GeneralInfo extends React.Component {
         title="Train Loss"
         attribute="train_loss"
         key="train_loss"
+        beginAtZero
         showMinValue
         showLogScale
         layout={layout}
@@ -175,43 +173,49 @@ class GeneralInfo extends React.Component {
       if (typeof mapAttr !== "undefined") {
 
         hasMap = true;
+        const reMap = new RegExp(`map_test\\d+`, 'g')
+        const multipleMapDatasetKeys = Object.keys(measure)
+                    .filter(k => k.match(reMap));
 
-        infoCharts.push(
-          <MeasureChart
-            title="Map"
-            attribute={mapAttr}
-            key="map"
-            steppedLine
-            showBest
-            useBestValue
-            layout={layout}
-            {...this.props}
-          />
-        );
+        if(
+          multipleMapDatasetKeys &&
+            multipleMapDatasetKeys.length > 0
+        ) {
+
+          infoCharts.push(
+            <MeasureMultiAttrChart
+              title="Map"
+              key="map-datasets"
+              attributes={multipleMapDatasetKeys}
+              beginAtZero
+              steppedLine
+              showBest
+              useBestValue
+              layout={layout}
+              {...this.props}
+            />
+          );
+
+        } else {
+
+          infoCharts.push(
+            <MeasureChart
+              title="Map"
+              attribute={mapAttr}
+              key="map"
+              beginAtZero
+              steppedLine
+              showBest
+              useBestValue
+              layout={layout}
+              {...this.props}
+            />
+          );
+
+        }
+
       }
 
-      const multipleMapDataset = typeof measures !== 'undefined' &&
-            measures.length > 1 &&
-            measures.every( m => typeof m['map'] !== 'undefined' )
-
-      if(multipleMapDataset) {
-
-        const multipleDatasetAttr = measures
-              .map(m => `map_test${m['test_id']}`)
-
-        infoCharts.push(
-          <MeasureMultiAttrChart
-            title="Map"
-            key="map-datasets"
-            attributes={multipleDatasetAttr}
-            steppedLine
-            showBest
-            useBestValue
-            layout={layout}
-            {...this.props}
-          />
-        );
-      }
 
       eucllAttr = this.findMeasureAttr(measure, 'eucll');
 
@@ -224,6 +228,7 @@ class GeneralInfo extends React.Component {
             title="Eucll"
             key="eucll"
             attribute={eucllAttr}
+            beginAtZero
             steppedLine
             showMinValue
             layout={layout}
@@ -444,6 +449,7 @@ class GeneralInfo extends React.Component {
           title="L1 Mean Error"
           attribute="L1_mean_error"
           key="L1_mean_error"
+          beginAtZero
           steppedLine
           showMinValue
           layout={layout}
@@ -455,6 +461,7 @@ class GeneralInfo extends React.Component {
           title="L2 Mean Error"
           attribute="L2_mean_error"
           key="L2_mean_error"
+          beginAtZero
           steppedLine
           showMinValue
           layout={layout}
