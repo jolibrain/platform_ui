@@ -22,7 +22,9 @@ class GpuStatServer extends React.Component {
             return <GpuStatsFormat key={index} index={index} gpu={gpu} />;
           });
       }
-    } else {
+    }
+
+    if (server.error) {
       classNames += " gpuinfo-not-available"
     }
 
