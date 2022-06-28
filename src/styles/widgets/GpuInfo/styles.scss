@@ -1,6 +1,10 @@
 .gpuinfo {
   margin-top: 20px;
 
+  .gpuinfo-not-available {
+    color: $support_red_6;
+  }
+
   h4 {
     color: $neutral_blue_4;
   }

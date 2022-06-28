@@ -22,6 +22,8 @@ class GpuStatServer extends React.Component {
             return <GpuStatsFormat key={index} index={index} gpu={gpu} />;
           });
       }
+    } else {
+      classNames += " gpuinfo-not-available"
     }
 
     let externalLink;
