@@ -1,14 +1,13 @@
 import { observable, action, computed } from "mobx";
 import agent from "../agent";
 import path from "path";
-import { nanoid } from 'nanoid';
 import moment from 'moment';
 
 export class videoExplorerStore {
     @observable loaded = false;
     @observable settings = {};
 
-    @observable videoPaths = [];
+    @observable videos = [];
     @observable frames = [];
 
     @observable processingVideos = [];
@@ -28,74 +27,73 @@ export class videoExplorerStore {
     async updateProcessingVideos() {
         if(
             !this.settings ||
-                !this.settings.rootPath ||
-                !this.settings.videoProcessingJson
+                !this.settings.processingApiUrl
           )
             return null;
 
-        await this.loadProcessingVideos(this.settings.videoProcessingJson)
+        await this.loadProcessingVideos()
     }
 
     async refresh() {
-        if(!this.settings || !this.settings.rootPath)
+      if(
+        !this.settings || 
+        !this.settings.storageApiUrl
+      )
             return null;
 
-        await this.loadVideoPaths(this.outputFolderPath)
+        await this.loadVideoPaths()
         this.loaded = true;
     }
 
     @action
-    async loadProcessingVideos(jsonPath) {
+    async loadProcessingVideos() {
         new Promise(resolve => {
 
-            this.$reqFile(jsonPath)
+            fetch(this.settings.processingApiUrl)
+                .then(response => response.json())
                 .then(async jsonContent => {
 
-                    const videoTitles = Object.keys(jsonContent.videos)
+                  const { jobs } = jsonContent;
 
-                    for (let index = 0; index < videoTitles.length; index++) {
+                  for (let index = 0; index < jobs.length; index++) {
 
-                        const videoTitle = videoTitles[index];
-                        const videoJson = jsonContent.videos[videoTitle];
+                    const job = jobs[index];
 
-                        if(!this.processingVideos.map(v => v.title).includes(videoTitle)) {
+                    if(!this.processingVideos.map(v => v.uuid).includes(job.uuid)) {
 
-                            this.processingVideos.push({
-                                id: nanoid(),
-                                title: videoTitle,
-                                status: videoJson.status,
-                                message: videoJson.message,
-                                timestamp: videoJson.date
-                            });
+                      const videoResponse = await fetch(
+                        path.join(
+                          this.settings.storageApiUrl,
+                          job.uuid
+                        )
+                      )
+                      const videoJson = await videoResponse.json()
 
-                        } else {
+                      this.processingVideos.push({
+                        ...job,
+                        ...videoJson
+                      });
 
-                            const video = this.processingVideos
-                                              .find(v => v.title === videoTitle);
+                    } else {
 
-                            if(video.status !== videoJson.status) {
-                                this.refresh();
-                            }
+                      const video = this.processingVideos
+                                          .find(v => v.uuid === job.uuid);
 
-                            video.status = videoJson.status;
-                            video.message = videoJson.message;
-                            video.timestamp = videoJson.date;
+                      if(video.status !== job.status) {
+                          this.refresh();
+                      }
 
-                        }
+                      video.status = job.status;
+                      video.message = job.message;
+                      video.date = job.date;
                     }
+
+                  }
                 })
                 .catch(e => {
                     //console.log(e);
                 });
         });
-    }
-
-    $reqFolder(rootPath) {
-        return agent.Webserver.listFolders(rootPath);
-    }
-
-    $reqFile(path) {
-        return agent.Webserver.getFile(path);
     }
 
     @computed
@@ -111,7 +109,7 @@ export class videoExplorerStore {
     @computed
     get videoSrc() {
         return this.selectedVideo ?
-            `${this.selectedVideo.path}${this.videoType}` : ""
+            `/data/videos/${this.selectedVideo.uuid}/${this.videoType}` : ""
     }
 
     @computed
@@ -122,12 +120,12 @@ export class videoExplorerStore {
     @computed
     get videoType() {
         return this.settings && this.settings.boundingBoxes ?
-            "output_bbox.mp4" : "output.mp4"
+            "output/output.mp4" : `input/${this.selectedVideo.filename}`
     }
 
     @computed
     get selectedVideo() {
-        return this.videoPaths.find(v => v.isSelected)
+        return this.videos.find(v => v.isSelected)
     }
 
     @computed
@@ -142,16 +140,16 @@ export class videoExplorerStore {
     @action
     setVideoPath(videoName) {
         this.frames = []
-        this.videoPaths.forEach(v => v.isSelected = false)
-        this.videoPaths.find(v => v.name === videoName).isSelected = true
+        this.videos.forEach(v => v.isSelected = false)
+        this.videos.find(v => v.filename === videoName).isSelected = true
 
         this.loadSelectedFrames()
     }
 
     @action
-    setFrame(frameId) {
+    setFrame(fname) {
         this.frames.forEach(f => f.isSelected = false)
-        this.frames.find(f => f.id === frameId).isSelected = true
+        this.frames.find(f => f.fname === fname).isSelected = true
     }
 
     @action
@@ -167,45 +165,18 @@ export class videoExplorerStore {
 
     @action
     async loadSelectedFrames() {
-        const thumbFolder = this.settings.folders.thumbs;
-
-        const videoPath = this.selectedVideo.path;
-        const videoFiles = await agent.Webserver.listFiles(videoPath);
+        const video = this.selectedVideo;
+        const videoPath = `/data/videos/${video.uuid}/output/`
 
         const statsPath = path.join(videoPath, "stats.json");
-        const stats = await agent.Webserver.getFile(statsPath);
-        const indexedStats = stats.reduce(function(map, obj) {
-            map[obj.fname.split('/').pop()] = obj;
-            return map;
-        }, {});
 
-        const jsonFiles = videoFiles
-              .filter(jsonFile => /^frame.*\.json$/.test(jsonFile))
-
-        const buildFrame = (jsonFile) => {
-            const regexpFrame = /(\d+)\.json$/;
-            const match = jsonFile.match(regexpFrame);
-
-            if(match) {
-                const frameIndex = match[1]
-                return {
-                    id: nanoid(),
-                    isSelected: false,
-                    index: parseInt(frameIndex),
-                    jsonFile: jsonFile,
-                    imageSrc: {
-                        'original': `${videoPath}frame${frameIndex}.png`,
-                        'thumb': `${videoPath}${thumbFolder}frame${frameIndex}.png`,
-                    },
-                    stats: indexedStats[`frame${frameIndex}.png`]
-                }
-            } else {
-                return null;
-            }
+        try {
+            const statsFile = await fetch(statsPath);
+            this.frames = await statsFile.json();
+        } catch(e) {
+            console.log("Failed to get stats.json")
+            console.log(e)
         }
-
-        this.frames = jsonFiles
-            .map(buildFrame)
 
         if(this.frames.length > 0) {
             this.frames[0].isSelected = true;
@@ -214,25 +185,26 @@ export class videoExplorerStore {
     }
 
     @action
-    async loadVideoPaths(rootPath) {
+    async loadVideoPaths() {
         new Promise(resolve => {
 
-            this.$reqFolder(rootPath)
-                .then(async content => {
-                    const { folders } = content;
+            fetch(this.settings.storageApiUrl)
+              .then(response => response.json())
+              .then(async storageJson => {
+                    const { videos } = storageJson;
 
-                    const filteredFolders = folders.filter(f => {
+                    const filteredFolders = videos.filter(f => {
                         let keepFolder = true;
 
                         if (this.settings.filter) {
                             if (this.settings.filter.exclude) {
                                 keepFolder = this.settings.filter.exclude.every(
-                                    e => f.href.indexOf(e) === -1
+                                    e => f.filepath.indexOf(e) === -1
                                 );
                             }
                         }
 
-                        //
+                        // UNMAINTAINED: API change
                         // Uncomment following section if you need to debug filter
                         //
                         // if (!keepFolder)
@@ -247,27 +219,23 @@ export class videoExplorerStore {
                     });
 
                     for (let index = 0; index < filteredFolders.length; index++) {
-                        const folder = filteredFolders[index];
-                        const fPath = path.join(rootPath, folder.href, "/");
-                        const fLabel = fPath.replace(new RegExp(this.settings.nginxPath, "gm"), "");
+                        const video = videos[index];
 
-                        const infoFile = await fetch(path.join(fPath, "info.json"));
-                        const infoJson = await infoFile.json();
+                        const infoPath = path.join(
+                            `/data/videos/${video.uuid}/output/`,
+                            "info.json"
+                        )
+                        const infoFile = await fetch(infoPath);
+                        video.stats = await infoFile.json();
 
-                        if(!this.videoPaths.map(v => v.name).includes(folder.name)) {
-                            this.videoPaths.push({
-                                id: nanoid(),
-                                name: folder.name,
-                                path: fPath,
-                                label: fLabel,
-                                frames: [],
-                                stats: infoJson
-                            });
+                        if(!this.videos.map(v => v.uuid).includes(video.uuid)) {
+                            this.videos.push(video)
                         }
                     }
                 })
                 .catch(e => {
-                    //console.log(e);
+                    console.log("Exception while loading video storage")
+                    console.log(e);
                 });
         });
     }

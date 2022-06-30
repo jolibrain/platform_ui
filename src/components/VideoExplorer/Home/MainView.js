@@ -126,16 +126,17 @@ class MainView extends React.Component {
     }
   }
 
-  handleFrameClick(frameId) {
+  handleFrameClick(fname) {
 
     // remove autoscroll
     this.setState({autoScroll: false});
 
     const { videoExplorerStore } = this.props;
-    videoExplorerStore.setFrame(frameId)
+    videoExplorerStore.setFrame(fname)
 
     const { selectedFrame, frames } = videoExplorerStore;
-    const frameFraction = selectedFrame.index / frames.length;
+    const frameFraction = parseInt(selectedFrame.fname.split("/").pop().replace(".jpg", ""))
+          / frames.length;
 
     this.player.seekTo(frameFraction, 'fraction')
   }
@@ -299,26 +300,24 @@ class MainView extends React.Component {
         let visible = typeof f !== undefined;
 
         visible = visible &&
-          f.stats &&
-          f.stats['cables'] &&
-          f.stats['cables'].length >= cableMinNumberFilter &&
-          f.stats['cables'].length <= cableMaxNumberFilter
+          f.cables &&
+          f.cables.length >= cableMinNumberFilter &&
+          f.cables.length <= cableMaxNumberFilter
 
         if(isPkFilterActive) {
           visible = visible &&
-            f.stats['PK'] &&
-            parseFloat(f.stats['PK']) >= pkMinFilter &&
-            parseFloat(f.stats['PK']) <= pkMaxFilter;
+            f.PK &&
+            f.PK >= pkMinFilter &&
+            f.PK <= pkMaxFilter;
         }
 
         if(
           cableDistanceFilter > 0 &&
-            f.stats &&
-            f.stats['cables'] &&
-            f.stats['cables'].length > 0
+            f.cables &&
+            f.cables.length > 0
         ) {
           visible = visible &&
-            f.stats['cables'].some(c => {
+            f.cables.some(c => {
 
               // If cable value is inferior to 0
               //    - cable on the left position from center
@@ -403,18 +402,17 @@ class MainView extends React.Component {
     let frameTitle = ""
 
     if(selectedFrame) {
-      frameTitle = `Frame ${selectedFrame.index}`
+      frameTitle = `Frame ${parseInt(selectedFrame.fname.split("/").pop().replace(".jpg", ""))}`
 
       if(
         settings.selectedFrameTitleAttributes &&
-          settings.selectedFrameTitleAttributes.length > 0 &&
-          selectedFrame.stats
+          settings.selectedFrameTitleAttributes.length > 0
       ) {
 
         settings.selectedFrameTitleAttributes.forEach(attr => {
 
-          if(selectedFrame.stats[attr]) {
-            frameTitle += ` - ${attr}: ${selectedFrame.stats[attr]}`;
+          if(selectedFrame[attr]) {
+            frameTitle += ` - ${attr}: ${parseFloat(selectedFrame[attr]).toFixed(3)}`;
           }
 
         })
@@ -433,26 +431,24 @@ class MainView extends React.Component {
             let visible = typeof f !== undefined;
 
             visible = visible &&
-              f.stats &&
-              f.stats['cables'] &&
-              f.stats['cables'].length >= cableMinNumberFilter &&
-              f.stats['cables'].length <= cableMaxNumberFilter
+              f.cables &&
+              f.cables.length >= cableMinNumberFilter &&
+              f.cables.length <= cableMaxNumberFilter
 
             if (isPkFilterActive) {
               visible = visible &&
-                f.stats['PK'] &&
-                parseFloat(f.stats['PK']) >= pkMinFilter &&
-                parseFloat(f.stats['PK']) <= pkMaxFilter
+                f.PK &&
+                f.PK >= pkMinFilter &&
+                f.PK <= pkMaxFilter
             }
 
             if(
               cableDistanceFilter > 0 &&
-                f.stats &&
-                f.stats['cables'] &&
-                f.stats['cables'].length > 0
+                f.cables &&
+                f.cables.length > 0
             ) {
               visible = visible &&
-                f.stats['cables'].some(c => {
+                f.cables.some(c => {
 
                   // If cable value is inferior to 0
                   //    - cable on the left position from center
@@ -519,18 +515,18 @@ class MainView extends React.Component {
 
                   <div className="row">
                     <div className="col-md-6">
-                      <h4><i className="fas fa-film"></i> {selectedVideo.name}</h4>
+                      <h4><i className="fas fa-film"></i> {selectedVideo.filename}</h4>
                       <p>
                         <a
-                          href={`${selectedVideo.path}output.mp4`}
-                          download={`${selectedVideo.name}.mp4`}
+                          href={`/data/videos/${selectedVideo.uuid}/input/${selectedVideo.filename}`}
+                          download={`${selectedVideo.filename}`}
                           className="badge badge-secondary"
                         >
                           <i className="fas fa-download" /> Original video
                         </a> &nbsp;
                         <a
-                          href={`${selectedVideo.path}output_bbox.mp4`}
-                          download={`${selectedVideo.name}_bbox.mp4`}
+                          href={`/data/videos/${selectedVideo.uuid}/output.mp4`}
+                          download={`${selectedVideo.filename.replace(".avi", "_bbox.avi")}`}
                           className="badge badge-secondary"
                         >
                           <i className="fas fa-download" /> Video with bounding boxes
@@ -560,30 +556,20 @@ class MainView extends React.Component {
 
                   {
                     selectedFrame ?
-                    <div className="col-md-6" key={selectedFrame.id}>
+                      <div className="col-md-6" key={parseInt(selectedFrame.fname.split("/").pop().replace(".jpg", ""))}>
                       <h4>
                         <i className="far fa-image"></i> {frameTitle}
                       </h4>
                       <p>
                         <a
-                          href={`${selectedVideo.path}${selectedFrame.jsonFile}`}
-                          download={`${selectedVideo.name}_${selectedFrame.jsonFile}`}
-                          className="badge badge-secondary"
-                        >
-                          <i className="fas fa-download" /> JSON
-                        </a>
-                        &nbsp;
-                        <a
-                          href={`${selectedVideo.path}${selectedFrame.jsonFile.replace('.json', '.png')}`}
-                          download={`${selectedVideo.name}_${selectedFrame.jsonFile.replace('.json', '.png')}`}
+                          href={`${selectedFrame.fname}`}
                           className="badge badge-secondary"
                         >
                           <i className="fas fa-download" /> Image
                         </a>
                         &nbsp;
                         <a
-                          href={`${selectedVideo.path}${settings.folders.bbox_images}${selectedFrame.jsonFile.replace('.json', '.png')}`}
-                          download={`${selectedVideo.name}_${selectedFrame.jsonFile.replace('.json', '_bbox.png')}`}
+                          href={`${selectedFrame.fname.replace("/output/", "/input/")}`}
                           className="badge badge-secondary"
                         >
                           <i className="fas fa-download" /> Image with bounding-boxes
@@ -593,7 +579,7 @@ class MainView extends React.Component {
                         language={"json"}
                         style={docco}
                       >
-                        {JSON.stringify(selectedFrame.stats, null, 2)}
+                        {JSON.stringify(selectedFrame, null, 2)}
                       </SyntaxHighlighter>
 
                       {

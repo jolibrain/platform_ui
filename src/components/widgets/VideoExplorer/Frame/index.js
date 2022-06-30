@@ -16,22 +16,18 @@ class Frame extends React.Component {
 
     let subtitles = "";
 
-    // Frame json stat is not available
-    if(!frame.stats)
-      return subtitles;
-
     if( Array.isArray(cardSubtitle) ) {
 
       subtitles = cardSubtitle.map(subtitle => {
-        let value = frame.stats[subtitle.statsKey];
+        let value = frame[subtitle.statsKey];
 
         let label = '';
 
         if(showLabel) {
           label = subtitle.label
 
-          if(Array.isArray(frame.stats[subtitle.statsKey])) {
-            label += ` (${frame.stats[subtitle.statsKey].length})`
+          if(Array.isArray(frame[subtitle.statsKey])) {
+            label += ` (${frame[subtitle.statsKey].length})`
           }
         }
 
@@ -54,8 +50,10 @@ class Frame extends React.Component {
       })
 
     } else {
-      const value = frame.stats[cardSubtitle.statsKey];
-      subtitles = value ? `${showLabel ? cardSubtitle.label : ''} ${value}` : ''
+      const value = frame[cardSubtitle.statsKey];
+      subtitles = value ?
+        `${showLabel ? cardSubtitle.label : ''} ${value}`
+        : ''
     }
 
     return subtitles;
@@ -66,9 +64,9 @@ class Frame extends React.Component {
     const { frame, onFrameClick, selectors } = this.props;
     const { showLabel, cardTitle } = selectors;
 
-    const title = frame.stats &&
-          frame.stats[cardTitle] ?
-          `${showLabel ? cardTitle : ''} ${frame.stats[cardTitle]}` : ''
+    const title = frame[cardTitle] ?
+          `${showLabel ? cardTitle : ''} ${parseFloat(frame[cardTitle]).toFixed(3)}`
+          : ''
 
     const subtitle = this.formatSubtitles();
 
@@ -81,18 +79,20 @@ class Frame extends React.Component {
       <div
         key={ frame.id }
         className={ frameClassName }
-        onClick={onFrameClick.bind(this, frame.id)}
+        onClick={onFrameClick.bind(this, frame.fname)}
       >
         <div className="marker"/>
         <div className="timeline-content">
-          <h1>{title} - Frame {frame.index}</h1>
+          <h1>{title} - Frame {parseInt(frame.fname.split("/").pop().replace(".jpg", ""))}</h1>
           {
-            subtitle.map((v, index) => <h2 key={index}>{v}</h2>)
+            typeof subtitle.map !== "undefined" ?
+              subtitle.map((v, index) => <h2 key={index}>{v}</h2>)
+            : null
           }
           <div className="text-center">
             <img
-              src={frame.imageSrc.thumb}
-              alt={frame.index}
+              src={frame.fname.replace("/frames/", "/thumbs/")}
+              alt={parseInt(frame.fname.split("/").pop().replace(".jpg", ""))}
               loading="lazy"
               style={{width: '200px'}}
             />

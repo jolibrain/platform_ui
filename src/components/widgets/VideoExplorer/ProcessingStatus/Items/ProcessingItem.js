@@ -10,16 +10,16 @@ class ProcessingItem extends React.Component {
 
         let icon
         switch (video.status) {
-            case "Pending":
+            case "pending":
                 icon = "fas fa-clock"
                 break;
-            case "Processing":
+            case "processing":
                 icon = "fas fa-spinner fa-spin"
                 break;
-            case "Failed":
+            case "failed":
                 icon = "fas fa-exclamation-triangle"
                 break;
-            case "Done":
+            case "done":
             default:
                 icon = "fas fa-check-square"
                 break;
@@ -29,7 +29,7 @@ class ProcessingItem extends React.Component {
             <li>
               <i className={icon}/>
 
-              {decodeURIComponent(video.title)}
+              {decodeURIComponent(video.filename)}
 
               { video.message ?
                 <span><br/><code>{video.message}</code></span>

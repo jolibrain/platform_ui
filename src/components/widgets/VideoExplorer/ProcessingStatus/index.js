@@ -21,24 +21,24 @@ class ProcessingStatus extends React.Component {
     const processingItems = processingVideos
           .filter(v => {
 
-              // filter video in sidebar when video contains a timestamp
-              // and excludeAfterSecondsDelay setting is available
-              let includeVideoItem = true;
+            // filter video in sidebar when video contains a timestamp
+            // and excludeAfterSecondsDelay setting is available
+            let includeVideoItem = true;
 
-              if(settings.processingStatusSidebar &&
-                 settings.processingStatusSidebar.excludeAfterSecondsDelay &&
-                 v.timestamp
-                ) {
-                  const { excludeAfterSecondsDelay } = settings.processingStatusSidebar;
+            if(settings.processingStatusSidebar &&
+               settings.processingStatusSidebar.excludeAfterSecondsDelay &&
+               v.elapsed_ms
+              ) {
+              const { excludeAfterSecondsDelay } = settings.processingStatusSidebar;
 
-                  // video is included in sidebar list
-                  // when its timestamp + settings delay in seconds
-                  // happens after current timestamp
-                  includeVideoItem = moment(v.timestamp)
-                      .add(excludeAfterSecondsDelay, 'seconds')
-                      .isAfter(moment());
-              }
-              return includeVideoItem;
+              // video is included in sidebar list
+              // when its timestamp + settings delay in seconds
+              // happens after current timestamp
+
+              includeVideoItem = (v.elapsed_ms / 1000) > excludeAfterSecondsDelay
+            }
+
+            return includeVideoItem;
           })
           .map((video, index) => {
               return <ProcessingItem key={index} video={video} />;

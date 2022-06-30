@@ -39,8 +39,8 @@ class SourceFolderSelector extends React.Component {
             <Typeahead
                  id="inlineFormInputVideoPath"
                  ref={this.typeaheadRef}
-                 options={videoExplorerStore.videoPaths}
-                 labelKey={"name"}
+                 options={videoExplorerStore.videos}
+                 labelKey={"filename"}
                  placeholder="Select processed video folder"
                  onChange={this.handleInputChange}
                />
