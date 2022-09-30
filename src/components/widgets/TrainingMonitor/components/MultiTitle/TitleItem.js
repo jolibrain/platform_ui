@@ -90,7 +90,6 @@ class TitleItem extends React.Component {
   }
 
   getBestValue(selector) {
-
     const { service } = this.props;
     let value = '--';
 

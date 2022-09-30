@@ -25,7 +25,7 @@ class MultiTitle extends React.Component {
       {
         text: "Train Loss",
         selector: "train_loss",
-        isHistValue: true,
+        isMeasure: true,
         formatter: (value, props) => {
           let content = value;
           if (value && typeof value.toFixed === "function") {
@@ -60,102 +60,117 @@ class MultiTitle extends React.Component {
     const firstService = services.length > 0 ?
           services[0] : null;
 
-    if( firstService.isTimeSeries ) {
-      tableColumns.push({
-        text: "Eucll (best)",
-        selector: "eucll",
-        isBest: true,
-        formatter: (value, props) => {
-          return value !== "--" ? parseFloat(value).toFixed(5) : value;
-        }
-      });
-    } else {
+    if (firstService.isTimeseries) {
+      firstService.mltype = "timeserie";
+    }
 
-      switch (firstService.mltype) {
-        case "segmentation":
-          tableColumns.push({
-            text: "Mean IOU (best)",
-            selector: "meaniou",
-            isBest: true,
-            formatter: (value, props) => {
-              return value !== "--" ? parseFloat(value).toFixed(5) : value;
-            }
-          });
-          break;
-        case "detection":
-          tableColumns.push({
-            text: "MAP",
-            selector: "map",
-            isHistValue: true,
-            classNameFormatter: (props) => {
-              return `map-cell-${props.serviceIndex % 8}`
-            },
-            formatter: (value, props) => {
-              let output = '--';
+    switch (firstService.mltype) {
+      case "segmentation":
+        tableColumns.push({
+          text: "Mean IOU (best)",
+          selector: "meaniou",
+          isBest: true,
+          formatter: (value, props) => {
+            return value !== "--" ? parseFloat(value).toFixed(5) : value;
+          }
+        });
+        break;
+      case "detection":
+        tableColumns.push({
+          text: "MAP (best)",
+          selector: "map",
+          isBest: true,
+          classNameFormatter: (props) => {
+            return `map-cell-${props.serviceIndex % 8}`
+          },
+          formatter: (value, props) => {
+            let output = '--';
 
-              if(Array.isArray(value)) {
-                output = <>
-                           {value.map((v, index) => {
-                             return <>
-                             {index}: {parseFloat(v).toFixed(5)} <br/>
-                                    </>
-                           })}
-                         </>
-              } else {
-                output = value !== "--" ?
-                  parseFloat(value).toFixed(5)
-                  :
-                  value;
-              }
-              return output;
+            if(Array.isArray(value)) {
+              output = <>
+                         {value.map((v, index) => {
+                           return <>
+                           {index}: {parseFloat(v).toFixed(5)} <br/>
+                                  </>
+                         })}
+                       </>
+            } else {
+              output = value !== "--" ?
+                parseFloat(value).toFixed(5)
+                :
+                value;
             }
-          });
-          break;
-        case "ctc":
-          tableColumns.push({
-            text: "Acc",
-            selector: "acc",
-            formatter: (value, props) => {
-              return value !== "--" ? parseFloat(value).toFixed(5) : value;
-            }
-          });
-          break;
-        case "classification":
-          tableColumns.push({
-            text: "Acc",
-            selector: "acc",
-            formatter: (value, props) => {
-              return value !== "--" ? parseFloat(value).toFixed(5) : value;
-            }
-          });
-          tableColumns.push({
-            text: "f1",
-            selector: "f1",
-            formatter: (value, props) => {
-              return value !== "--" ? parseFloat(value).toFixed(5) : value;
-            }
-          });
-          tableColumns.push({
-            text: "mcll",
-            selector: "mcll",
-            formatter: (value, props) => {
-              return value !== "--" ? parseFloat(value).toFixed(5) : value;
-            }
-          });
-          break;
-        case "regression":
-        case "autoencoder":
-          tableColumns.push({
-            text: "eucll",
-            selector: "eucll",
-            formatter: (value, props) => {
-              return value !== "--" ? parseFloat(value).toFixed(5) : value;
-            }
-          });
-          break;
-        default:
-          break;
-      }
+            return output;
+          }
+        });
+        break;
+      case "ctc":
+        tableColumns.push({
+          text: "Acc (best)",
+          selector: "acc",
+          isBest: true,
+          formatter: (value, props) => {
+            return value !== "--" ? parseFloat(value).toFixed(5) : value;
+          }
+        });
+        break;
+      case "classification":
+        tableColumns.push({
+          text: "Acc (best)",
+          selector: "acc",
+          isBest: true,
+          formatter: (value, props) => {
+            return value !== "--" ? parseFloat(value).toFixed(5) : value;
+          }
+        });
+        tableColumns.push({
+          text: "F1 (best)",
+          selector: "f1",
+          isBest: true,
+          formatter: (value, props) => {
+            return value !== "--" ? parseFloat(value).toFixed(5) : value;
+          }
+        });
+        tableColumns.push({
+          text: "Mcll (best)",
+          selector: "mcll",
+          isBest: true,
+          formatter: (value, props) => {
+            return value !== "--" ? parseFloat(value).toFixed(5) : value;
+          }
+        });
+        break;
+      case "regression":
+      case "autoencoder":
+        tableColumns.push({
+          text: "Eucll (best)",
+          selector: "eucll",
+          isBest: true,
+          formatter: (value, props) => {
+            return value !== "--" ? parseFloat(value).toFixed(5) : value;
+          }
+        });
+        break;
+      case "timeserie":
+        tableColumns.push({
+          text: "Eucll (best)",
+          selector: "eucll",
+          isBest: true,
+          formatter: (value, props) => {
+            return value !== "--" ? parseFloat(value).toFixed(5) : value;
+          }
+        });
+        tableColumns.push({
+          text: "L1 mean error (best)",
+          selector: "L1_mean_error",
+          isBest: true,
+          formatter: (value, props) => {
+            return value !== "--" ? parseFloat(value).toFixed(5) : value;
+          }
+        });
+        break;
+      default:
+        break;
     }
 
     tableColumns = tableColumns.concat([
