@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 
 import MeasureChart from "../MeasureChart";
-import MeasureMultiAttrChart from "../MeasureMultiAttrChart";
 
 // # Training Monitor
 //
@@ -56,6 +55,7 @@ class GeneralInfo extends React.Component {
 
     this.selectLayout = this.selectLayout.bind(this);
     this.findMeasureAttr = this.findMeasureAttr.bind(this);
+    this.hasMeasureAttr = this.hasMeasureAttr.bind(this);
   }
 
   selectLayout(layout) {
@@ -70,6 +70,11 @@ class GeneralInfo extends React.Component {
     return Object.keys(measure)
                  .filter(k => !k.match(/.*_\d+_.*/))
                  .find(k => k.startsWith(rootKey))
+  }
+
+  hasMeasureAttr(measure, rootKey) {
+    return Object.keys(measure)
+                 .filter(k => !k.match(/.*_\d+_.*/)).length !== 0;
   }
 
   render() {
@@ -136,15 +141,11 @@ class GeneralInfo extends React.Component {
 
     if (typeof measure !== "undefined" && measure !== null) {
 
-      accpAttr = this.findMeasureAttr(measure, 'accp');
-      accAttr = this.findMeasureAttr(measure, 'acc');
-
-      if (typeof accpAttr !== "undefined") {
-
+      if (this.hasMeasureAttr("accp")) {
         infoCharts.push(
           <MeasureChart
             title="Accuracy"
-            attribute={accpAttr}
+            attribute={"accp"}
             key="accp"
             steppedLine
             showBest
@@ -152,13 +153,11 @@ class GeneralInfo extends React.Component {
             {...this.props}
           />
         );
-
-      } else if (typeof accAttr !== "undefined") {
-
+      } else if (this.hasMeasureAttr("acc")) {
         infoCharts.push(
           <MeasureChart
             title="Accuracy"
-            attribute={accAttr}
+            attribute={"acc"}
             key="acc"
             steppedLine
             showBest
@@ -167,67 +166,32 @@ class GeneralInfo extends React.Component {
           />
         );
       }
-
-      mapAttr = this.findMeasureAttr(measure, 'map');
-
-      if (typeof mapAttr !== "undefined") {
-
+      if (this.hasMeasureAttr(measure, 'map')) {
         hasMap = true;
-        const reMap = new RegExp(`map_test\\d+`, 'g')
-        const multipleMapDatasetKeys = Object.keys(measure)
-                    .filter(k => k.match(reMap));
 
-        if(
-          multipleMapDatasetKeys &&
-            multipleMapDatasetKeys.length > 0
-        ) {
-
-          infoCharts.push(
-            <MeasureMultiAttrChart
-              title="Map"
-              key="map-datasets"
-              attributes={multipleMapDatasetKeys}
-              beginAtZero
-              steppedLine
-              showBest
-              useBestValue
-              layout={layout}
-              {...this.props}
-            />
-          );
-
-        } else {
-
-          infoCharts.push(
-            <MeasureChart
-              title="Map"
-              attribute={mapAttr}
-              key="map"
-              beginAtZero
-              steppedLine
-              showBest
-              useBestValue
-              layout={layout}
-              {...this.props}
-            />
-          );
-
-        }
-
+        infoCharts.push(
+          <MeasureChart
+            title="Map"
+            attribute={"map"}
+            key="map"
+            beginAtZero
+            steppedLine
+            showBest
+            useBestValue
+            layout={layout}
+            {...this.props}
+          />
+        );
       }
 
-
-      eucllAttr = this.findMeasureAttr(measure, 'eucll');
-
-      if (typeof eucllAttr !== "undefined") {
-
+      if (this.hasMeasureAttr(measure, "eucll")) {
         hasEucll = true;
 
         infoCharts.push(
           <MeasureChart
             title="Eucll"
             key="eucll"
-            attribute={eucllAttr}
+            attribute={"eucll"}
             beginAtZero
             steppedLine
             showMinValue
@@ -238,19 +202,17 @@ class GeneralInfo extends React.Component {
       }
 
       if (
-        typeof eucllAttr !== "undefined" &&
+        hasEucll &&
           !service.isTimeseries
       ) {
-
-        meanIouAttr = this.findMeasureAttr(measure, 'meaniou');
-        if(typeof meanIouAttr !== 'undefined') {
+        if(this.hasMeasureAttr(measure, "meaniou")) {
 
           hasMeanIou = true;
           infoCharts.push(
             <MeasureChart
               title="Mean IOU"
               key="meaniou"
-              attribute={meanIouAttr}
+              attribute={"meaniou"}
               steppedLine
               showBest
               layout={layout}
@@ -274,17 +236,13 @@ class GeneralInfo extends React.Component {
         service.bestModel &&
         !service.isTimeseries
     ) {
-
-      meanIouAttr = this.findMeasureAttr(measure, 'meaniou');
-
-      if(typeof meanIouAttr !== 'undefined') {
-
+      if(this.hasMeasureAttr(measure, "meaniou")) {
         hasMeanIou = true;
         infoCharts.push(
           <MeasureChart
             title="Mean IOU"
             key="meaniou"
-            attribute={meanIouAttr}
+            attribute={"meaniou"}
             steppedLine
             showBest
             layout={layout}
@@ -300,10 +258,7 @@ class GeneralInfo extends React.Component {
 
         if(!hasMeanIou) {
 
-          meanIouAttr = this.findMeasureAttr(measure, 'meaniou');
-
-          if(typeof meanIouAttr !== 'undefined') {
-
+          if(this.hasMeasureAttr(measure, "meaniou")) {
             infoCharts.push(
               <MeasureChart
                 title="Mean IOU"
@@ -315,19 +270,15 @@ class GeneralInfo extends React.Component {
                 {...this.props}
               />
             );
-           
           }
         }
 
-        meanAccAttr = this.findMeasureAttr(measure, 'meanacc');
-
-        if(typeof meanAccAttr !== 'undefined') {
-
+        if(this.hasMeasureAttr(measure, "meanacc")) {
           infoCharts.push(
             <MeasureChart
               title="Mean Accuracy"
               key="meanacc"
-              attribute={meanAccAttr}
+              attribute={"meanacc"}
               steppedLine
               layout={layout}
               {...this.props}
@@ -342,14 +293,15 @@ class GeneralInfo extends React.Component {
 
         if (!hasMap) {
 
-          mapAttr = this.findMeasureAttr(measure, 'map');
+          if (this.hasMeasureAttr(measure, 'map')) {
+            hasMap = true;
 
-          if(typeof mapAttr !== 'undefined') {
             infoCharts.push(
               <MeasureChart
-                title="MAP"
-                attribute={mapAttr}
+                title="Map"
+                attribute={"map"}
                 key="map"
+                beginAtZero
                 steppedLine
                 showBest
                 useBestValue
@@ -358,58 +310,49 @@ class GeneralInfo extends React.Component {
               />
             );
           }
-
         }
         break;
       case "classification":
-
-        meanAccAttr = this.findMeasureAttr(measure, 'meanacc');
-        f1Attr = this.findMeasureAttr(measure, 'f1');
-        mcllAttr = this.findMeasureAttr(measure, 'mcll');
-
-        if(typeof meanAccAttr !== 'undefined') {
+        if(this.hasMeasureAttr(measure, 'meanacc')) {
 
           infoCharts.push(
             <MeasureChart
               title="Mean Accuracy"
-              attribute={meanAccAttr}
+              attribute={'meanacc'}
               key="meanacc"
               steppedLine
               layout={layout}
               {...this.props}
             />
           );
-
         }
 
-        if(typeof f1Attr !== 'undefined') {
+        if(this.hasMeasureAttr(measure, 'f1')) {
 
           infoCharts.push(
             <MeasureChart
               title="F1"
-              attribute={f1Attr}
+              attribute={'f1'}
               key="f1"
               steppedLine
               layout={layout}
               {...this.props}
             />
           );
-
         }
 
-        if(typeof mcllAttr !== 'undefined') {
+        if(this.hasMeasureAttr(measure, 'mcll')) {
 
           infoCharts.push(
             <MeasureChart
               title="Mcll"
-              attribute={mcllAttr}
+              attribute={'mcll'}
               key="mcll"
               steppedLine
               layout={layout}
               {...this.props}
             />
           );
-
         }
 
         break;
@@ -417,13 +360,11 @@ class GeneralInfo extends React.Component {
 
         if (!hasEucll) {
 
-          eucllAttr = this.findMeasureAttr(measure, 'eucll');
-
-          if(typeof eucllAttr !== 'undefined') {
+          if(this.hasMeasureAttr(measure, 'eucll')) {
             infoCharts.push(
               <MeasureChart
                 title="Eucll"
-                attribute={eucllAttr}
+                attribute={'eucll'}
                 key="eucll"
                 steppedLine
                 showMinValue
@@ -431,9 +372,7 @@ class GeneralInfo extends React.Component {
                 {...this.props}
               />
             );
-
           }
-
         }
 
         break;

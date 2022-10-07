@@ -55,6 +55,7 @@ class MeasureChart extends React.Component {
 
     this.getServiceValue = this.getServiceValue.bind(this);
     this.getValue = this.getValue.bind(this);
+    this.getAttrKeys = this.getAttrKeys.bind(this);
 
     this.getChartData = this.getChartData.bind(this);
     this.getChartDataset = this.getChartDataset.bind(this);
@@ -69,6 +70,7 @@ class MeasureChart extends React.Component {
   }
 
   toggleLogScale() {
+    const { beginAtZero } = this.props;
     const isLogScale = !this.state.logScale;
     this.setState({ logScale: isLogScale });
 
@@ -133,10 +135,27 @@ class MeasureChart extends React.Component {
     } else {
       // Restore initial linear y axe, with no tick options
       yAxe.type = "linear";
-      yAxe.ticks = {};
+      yAxe.ticks = {
+          beginAtZero: typeof beginAtZero !== 'undefined'
+      };
     }
 
     chartInstance.update();
+  }
+
+  getAttrKeys(measure_hist, attr) {
+    let attrKeys = Object.keys(measure_hist)
+      .filter(k => {
+          if (k === attr + "_hist")
+            return true;
+          if (attr !== "train_loss") {
+            const reAttr = new RegExp(attr + `_test\\d+_hist`, 'g');
+            if (k.match(reAttr))
+                return true;
+          }
+          return false;
+    });
+    return attrKeys;
   }
 
   getMinValue(service, attr) {
@@ -207,27 +226,10 @@ class MeasureChart extends React.Component {
 
     let value = null;
 
-    if (measure) {
+    if (measure && measure[attr]) {
       value = measure[attr];
-    } else if (
-      measure_hist &&
-        Object.keys(measure_hist)
-              .find(k => {
-                return attr === "train_loss" ?
-                  k.startsWith(attr) && k.indexOf("_test") === -1
-                  :
-                  k.startsWith(attr)
-              })
-    ) {
-      const attrKey = Object.keys(measure_hist)
-                            .find(k => {
-                              return attr === "train_loss" ?
-                                k.startsWith(attr) && k.indexOf("_test") === -1
-                              :
-                                k.startsWith(attr)
-                            })
-      value =
-        measure_hist[attrKey][measure_hist[attrKey].length - 1];
+    } else if (measure_hist && measure_hist[attr]) {
+      value = measure_hist[attr][measure_hist[attr].length - 1];
     }
 
     if (value && !["remain_time_str", "iteration"].includes(attr)) {
@@ -240,7 +242,7 @@ class MeasureChart extends React.Component {
     return value !== null ? value : "--";
   }
 
-  getChartDataset(service, attr, index) {
+  getChartDataset(service, attrKey, index) {
     let measure_hist, measures;
     if (service.jsonMetrics) {
       measure_hist = service.jsonMetrics.body.measure_hist;
@@ -248,30 +250,13 @@ class MeasureChart extends React.Component {
       measure_hist = service.measure_hist;
     }
 
-    if (
-      measure_hist &&
-        Object.keys(measure_hist)
-              .find(k => {
-                return attr === "train_loss" ?
-                  k.startsWith(attr) && k.indexOf("_test") === -1
-                  :
-                  k.startsWith(attr)
-              })
-    ) {
-      const attrKey = Object.keys(measure_hist)
-                            .find(k => {
-                              return attr === "train_loss" ?
-                                k.startsWith(attr) && k.indexOf("_test") === -1
-                              :
-                                k.startsWith(attr)
-                            })
-      measures = toJS(measure_hist[attrKey]);
-      // Remove Infinity values from measure_hist
-      if (measures.some(x => x === Infinity)) {
-        measures = measure_hist[attrKey].map(x => {
-          return x === Infinity ? 0 : x;
-        });
-      }
+    console.log(attrKey);
+    measures = toJS(measure_hist[attrKey]);
+    // Remove Infinity values from measure_hist
+    if (measures.some(x => x === Infinity)) {
+      measures = measure_hist[attrKey].map(x => {
+        return x === Infinity ? 0 : x;
+      });
     }
 
     // old colors
@@ -300,111 +285,119 @@ class MeasureChart extends React.Component {
   getChartData(attr) {
     const { services } = this.props;
 
+    let chartData = {
+        labels: [],
+        datasets: []
+    };
+
     // get first not null service
     const notNullServices = services.filter(s => s)
-    let service = null;
 
-    if(notNullServices.length > 0) {
-      service = services.filter(s => s)[0];
-    }
-
-    let measure_hist, measure;
-    if (service.jsonMetrics) {
-      measure_hist = service.jsonMetrics.body.measure_hist;
-      measure = service.jsonMetrics.body.measure;
-    } else if (service.measure_hist && service.measure){
-      measure_hist = service.measure_hist;
-      measure = service.measure;
-    }
-
-    let chartData = {};
-
-    if (
-      measure_hist &&
-        Object.keys(measure_hist)
-              .find(k => {
-                return attr === "train_loss" ?
-                  k.startsWith(attr) && k.indexOf("_test") === -1
-                :
-                  k.startsWith(attr)
-              })
+    for(
+        let serviceIndex = 0;
+        serviceIndex < notNullServices.length;
+        serviceIndex++
     ) {
-      const attrKey = Object.keys(measure_hist)
-                            .find(k => {
-                              return attr === "train_loss" ?
-                                k.startsWith(attr) && k.indexOf("_test") === -1
-                              :
-                                k.startsWith(attr)
-                            })
-      let labels = [],
-        measures = toJS(measure_hist[attrKey]),
-        datasets = services.map((s, index) => {
-          return s ? this.getChartDataset(s, attr, index) : {};
+        const service = notNullServices[serviceIndex];
+
+        let measure_hist, measure;
+        if (service.jsonMetrics) {
+            measure_hist = service.jsonMetrics.body.measure_hist;
+            measure = service.jsonMetrics.body.measure;
+        } else if (service.measure_hist && service.measure){
+            measure_hist = service.measure_hist;
+            measure = service.measure;
+        }
+
+        let attrKeys = this.getAttrKeys(measure_hist, attr);
+        const itKey = Object.keys(measure_hist).find(k => {
+          return k.startsWith("iteration_");
         });
 
-      // Remove Infinity values from measure_hist
-      if (measures.some(x => x === Infinity)) {
-        measures = measure_hist[attrKey].map(x => {
-          return x === Infinity ? 0 : x;
-        });
-      }
+        for(
+            let attrIndex = 0;
+            attrIndex < attrKeys.length;
+            attrIndex++
+        ) {
+            const attrKey = attrKeys[attrIndex];
+            const datasetIndex = serviceIndex * attrKeys.length + attrIndex;
 
-      if (measure && measure.iteration) {
-        // Create labels array from iteration count
-        const ratio = measure.iteration / measures.length;
-        for (var i = 0; i < measures.length; i++) {
-          labels.push(parseInt(i * ratio, 10));
-        }
+            let labels = [],
+                measures = toJS(measure_hist[attrKey]),
+                dataset = this.getChartDataset(service, attrKey, datasetIndex);
 
-        // Force latest label to be iteration number
-        labels[labels.length - 1] = measure.iteration;
-      } else {
-        // When measure object is not available
-        // in archived jobs for example
-        for (var j = 0; j < measures.length; j++) {
-          labels.push(j);
-        }
-      }
+            // Remove Infinity values from measure_hist
+            if (measures.some(x => x === Infinity)) {
+              measures = measure_hist[attrKey].map(x => {
+                return x === Infinity ? 0 : x;
+              });
+            }
 
-      // Fill chartData with missing items
-      const maxDatasetLength = Math.max.apply(
-        null,
-        datasets.map(d => (d.data ? d.data.length : 0))
-      );
+            // Get labels
+            if (itKey && attr !== "train_loss") {
+              for (var i = 0; i < measures.length; i++) {
+                labels.push(measure_hist[itKey][i]);
+              }
+            } else if (measure && measure.iteration) {
+              // Create labels array from iteration count
+              const ratio = measure.iteration / measures.length;
+              for (var k = 0; k < measures.length; k++) {
+                labels.push(parseInt(k * ratio, 10));
+              }
 
-      datasets.forEach(d => {
-        if (d.data && d.data.length < maxDatasetLength) {
-          const emptyItems = new Array(maxDatasetLength - d.data.length);
-          d.data.push(...emptyItems);
-          d.radius.push(...emptyItems);
-          d.pointBackgroundColor.push(...emptyItems);
-        }
-      });
+              // Force latest label to be iteration number
+              labels[labels.length - 1] = measure.iteration;
+            } else {
+              // When measure object is not available
+              // in archived jobs for example
+              for (var j = 0; j < measures.length; j++) {
+                labels.push(j);
+              }
+            }
 
-      chartData = {
-        labels: labels,
-        datasets: datasets
-      };
-    }
+            chartData.datasets.push(dataset);
+            if (!chartData.labels || labels.length > chartData.labels.length)
+                chartData.labels = labels;
+          }
+     }
+
+     // Fill chartData with missing items
+     const maxDatasetLength = Math.max.apply(
+       null,
+       chartData.datasets.map(d => (d.data ? d.data.length : 0))
+     );
+
+     chartData.datasets.forEach(d => {
+       if (d.data && d.data.length < maxDatasetLength) {
+         const emptyItems = new Array(maxDatasetLength - d.data.length);
+         d.data.push(...emptyItems);
+         d.radius.push(...emptyItems);
+         d.pointBackgroundColor.push(...emptyItems);
+       }
+    });
 
     // Add dummy data at the end of array to clearly see stepped line
     if (
-      this.props.steppedLine &&
-        chartData.datasets &&
-        chartData.datasets.length > 0 &&
-        chartData.datasets[0].data &&
-        chartData.datasets[0].data.length > 0
+        this.props.steppedLine &&
+            chartData.datasets &&
+            chartData.datasets.length > 0
     ) {
-
-      const data = chartData.datasets[0].data;
-      chartData.labels.unshift(0);
-      chartData.datasets[0].data.push(data[data.length - 1]);
-
+        chartData.labels.unshift(0);
+        for(let i = 0; i < chartData.datasets.length; i++) {
+            if(
+                chartData.datasets[i].data &&
+                    chartData.datasets[i].data.length > 0
+            ) {
+                const data = chartData.datasets[i].data;
+                chartData.datasets[i].data.push(data[data.length - 1]);
+            }
+        }
     }
 
     return chartData;
   }
 
+  /* Get values html to display under the chart */
   getServiceValue(service, index, attribute, chartData = null) {
     let displayedValue = "--",
       bestValue = null,
@@ -473,14 +466,13 @@ class MeasureChart extends React.Component {
 
             }
           }
-
         }
-
       }
-
     }
 
     const badgeIndex = index % 8;
+    const attrName = attribute.endsWith("_hist") ?
+            attribute.substr(0, attribute.length - 5) : attribute;
 
     return (
       <h3 key={`badge-${badgeIndex}`}>
@@ -496,7 +488,7 @@ class MeasureChart extends React.Component {
         ) : (
           ""
         )}
-        <span className="serviceName"> - {service.name}</span>
+        <span className="serviceName"> - {service.name}.{attrName}</span>
       </h3>
     );
   }
@@ -530,7 +522,7 @@ class MeasureChart extends React.Component {
   }
 
   render() {
-    const { title, attribute } = this.props;
+    const { title, attribute, beginAtZero } = this.props;
     const { services } = this.props;
 
     const chartData = this.getChartData(attribute);
@@ -604,13 +596,29 @@ class MeasureChart extends React.Component {
               }
             }
           }
-        ]
+        ],
+        yAxes: [{
+          ticks:{
+            beginAtZero: !this.state.logScale && typeof beginAtZero !== 'undefined',
+          }
+        }]
       }
     };
 
-    const values = services.filter(s => s).map((service, index) =>
-      this.getServiceValue(service, index, attribute, chartData)
-    );
+    const values = services.filter(s => s).map((service, serviceIndex) => {
+        let measure_hist;
+        if (service.jsonMetrics) {
+            measure_hist = service.jsonMetrics.body.measure_hist;
+        } else if (service.measure_hist){
+            measure_hist = service.measure_hist;
+        }
+
+        let attrKeys = this.getAttrKeys(measure_hist, attribute);
+        return attrKeys.map((attrKey, attrIndex) => {
+            const datasetIndex = serviceIndex * attrKeys.length + attrIndex;
+            return this.getServiceValue(service, datasetIndex, attrKey, chartData)
+        });
+    });
 
     // if not data available, hide chart
     if (
