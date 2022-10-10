@@ -206,197 +206,197 @@ class GeneralInfo extends React.Component {
           );
         }
       }
-    }
 
-    //
-    // Some segmentation services doesn't declare themselves with
-    // body.mltype: segmentation
-    //
-    // Fix this issue by finding if service best model file includes
-    // meaniou key
-    //
-    if (
-      !hasMeanIou &&
-        mltype !== "segmentation" &&
-        service.bestModel &&
-        !service.isTimeseries
-    ) {
-      if(this.hasMeasureAttr(measure, "meaniou")) {
-        hasMeanIou = true;
+      //
+      // Some segmentation services doesn't declare themselves with
+      // body.mltype: segmentation
+      //
+      // Fix this issue by finding if service best model file includes
+      // meaniou key
+      //
+      if (
+        !hasMeanIou &&
+          mltype !== "segmentation" &&
+          service.bestModel &&
+          !service.isTimeseries
+      ) {
+        if(this.hasMeasureAttr(measure, "meaniou")) {
+          hasMeanIou = true;
+          infoCharts.push(
+            <MeasureChart
+              title="Mean IOU"
+              key="meaniou"
+              attribute={"meaniou"}
+              steppedLine
+              showBest
+              layout={layout}
+              {...this.props}
+            />
+          );
+
+        }
+      }
+
+      switch (mltype) {
+        case "segmentation":
+
+          if(!hasMeanIou) {
+
+            if(this.hasMeasureAttr(measure, "meaniou")) {
+              infoCharts.push(
+                <MeasureChart
+                  title="Mean IOU"
+                  key='meaniou'
+                  attribute={"meaniou"}
+                  beginAtZero
+                  steppedLine
+                  showBest
+                  layout={layout}
+                  {...this.props}
+                />
+              );
+            }
+          }
+
+          if(this.hasMeasureAttr(measure, "meanacc")) {
+            infoCharts.push(
+              <MeasureChart
+                title="Mean Accuracy"
+                key="meanacc"
+                attribute={"meanacc"}
+                beginAtZero
+                steppedLine
+                layout={layout}
+                {...this.props}
+              />
+            );
+
+          }
+
+          break;
+
+        case "detection":
+
+          if (!hasMap) {
+
+            if (this.hasMeasureAttr(measure, 'map')) {
+              hasMap = true;
+
+              infoCharts.push(
+                <MeasureChart
+                  title="Map"
+                  attribute={"map"}
+                  key="map"
+                  beginAtZero
+                  steppedLine
+                  showBest
+                  useBestValue
+                  layout={layout}
+                  {...this.props}
+                />
+              );
+            }
+          }
+          break;
+        case "classification":
+          if(this.hasMeasureAttr(measure, 'meanacc')) {
+
+            infoCharts.push(
+              <MeasureChart
+                title="Mean Accuracy"
+                attribute={'meanacc'}
+                key="meanacc"
+                beginAtZero
+                steppedLine
+                layout={layout}
+                {...this.props}
+              />
+            );
+          }
+
+          if(this.hasMeasureAttr(measure, 'f1')) {
+
+            infoCharts.push(
+              <MeasureChart
+                title="F1"
+                attribute={'f1'}
+                key="f1"
+                beginAtZero
+                steppedLine
+                layout={layout}
+                {...this.props}
+              />
+            );
+          }
+
+          if(this.hasMeasureAttr(measure, 'mcll')) {
+
+            infoCharts.push(
+              <MeasureChart
+                title="Mcll"
+                attribute={'mcll'}
+                key="mcll"
+                beginAtZero
+                steppedLine
+                layout={layout}
+                {...this.props}
+              />
+            );
+          }
+
+          break;
+        case "regression":
+
+          if (!hasEucll) {
+
+            if(this.hasMeasureAttr(measure, 'eucll')) {
+              infoCharts.push(
+                <MeasureChart
+                  title="Eucll"
+                  attribute={'eucll'}
+                  key="eucll"
+                  steppedLine
+                  showMinValue
+                  layout={layout}
+                  {...this.props}
+                />
+              );
+            }
+          }
+
+          break;
+        case "ctc":
+          break;
+        default:
+          break;
+      }
+
+      if ( service.isTimeseries ) {
         infoCharts.push(
           <MeasureChart
-            title="Mean IOU"
-            key="meaniou"
-            attribute={"meaniou"}
+            title="L1 Mean Error"
+            attribute="L1_mean_error"
+            key="L1_mean_error"
+            beginAtZero
             steppedLine
-            showBest
+            showMinValue
             layout={layout}
             {...this.props}
           />
         );
-
+        infoCharts.push(
+          <MeasureChart
+            title="L2 Mean Error"
+            attribute="L2_mean_error"
+            key="L2_mean_error"
+            beginAtZero
+            steppedLine
+            showMinValue
+            layout={layout}
+            {...this.props}
+          />
+        );
       }
-    }
-
-    switch (mltype) {
-      case "segmentation":
-
-        if(!hasMeanIou) {
-
-          if(this.hasMeasureAttr(measure, "meaniou")) {
-            infoCharts.push(
-              <MeasureChart
-                title="Mean IOU"
-                key='meaniou'
-                attribute={"meaniou"}
-                beginAtZero
-                steppedLine
-                showBest
-                layout={layout}
-                {...this.props}
-              />
-            );
-          }
-        }
-
-        if(this.hasMeasureAttr(measure, "meanacc")) {
-          infoCharts.push(
-            <MeasureChart
-              title="Mean Accuracy"
-              key="meanacc"
-              attribute={"meanacc"}
-              beginAtZero
-              steppedLine
-              layout={layout}
-              {...this.props}
-            />
-          );
-
-        }
-
-        break;
-
-      case "detection":
-
-        if (!hasMap) {
-
-          if (this.hasMeasureAttr(measure, 'map')) {
-            hasMap = true;
-
-            infoCharts.push(
-              <MeasureChart
-                title="Map"
-                attribute={"map"}
-                key="map"
-                beginAtZero
-                steppedLine
-                showBest
-                useBestValue
-                layout={layout}
-                {...this.props}
-              />
-            );
-          }
-        }
-        break;
-      case "classification":
-        if(this.hasMeasureAttr(measure, 'meanacc')) {
-
-          infoCharts.push(
-            <MeasureChart
-              title="Mean Accuracy"
-              attribute={'meanacc'}
-              key="meanacc"
-              beginAtZero
-              steppedLine
-              layout={layout}
-              {...this.props}
-            />
-          );
-        }
-
-        if(this.hasMeasureAttr(measure, 'f1')) {
-
-          infoCharts.push(
-            <MeasureChart
-              title="F1"
-              attribute={'f1'}
-              key="f1"
-              beginAtZero
-              steppedLine
-              layout={layout}
-              {...this.props}
-            />
-          );
-        }
-
-        if(this.hasMeasureAttr(measure, 'mcll')) {
-
-          infoCharts.push(
-            <MeasureChart
-              title="Mcll"
-              attribute={'mcll'}
-              key="mcll"
-              beginAtZero
-              steppedLine
-              layout={layout}
-              {...this.props}
-            />
-          );
-        }
-
-        break;
-      case "regression":
-
-        if (!hasEucll) {
-
-          if(this.hasMeasureAttr(measure, 'eucll')) {
-            infoCharts.push(
-              <MeasureChart
-                title="Eucll"
-                attribute={'eucll'}
-                key="eucll"
-                steppedLine
-                showMinValue
-                layout={layout}
-                {...this.props}
-              />
-            );
-          }
-        }
-
-        break;
-      case "ctc":
-        break;
-      default:
-        break;
-    }
-
-    if ( service.isTimeseries ) {
-      infoCharts.push(
-        <MeasureChart
-          title="L1 Mean Error"
-          attribute="L1_mean_error"
-          key="L1_mean_error"
-          beginAtZero
-          steppedLine
-          showMinValue
-          layout={layout}
-          {...this.props}
-        />
-      );
-      infoCharts.push(
-        <MeasureChart
-          title="L2 Mean Error"
-          attribute="L2_mean_error"
-          key="L2_mean_error"
-          beginAtZero
-          steppedLine
-          showMinValue
-          layout={layout}
-          {...this.props}
-        />
-      );
     }
 
     return (
