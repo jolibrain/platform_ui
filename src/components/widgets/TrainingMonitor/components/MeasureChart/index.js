@@ -155,6 +155,10 @@ class MeasureChart extends React.Component {
           }
           return false;
     });
+    attrKeys.sort();
+    if (JSON.stringify(attrKeys) === `["${attr}_hist", "${attr}_test0_hist"]`) {
+        attrKeys = [attr + "_hist"];
+    }
     return attrKeys;
   }
 
@@ -250,7 +254,6 @@ class MeasureChart extends React.Component {
       measure_hist = service.measure_hist;
     }
 
-    console.log(attrKey);
     measures = toJS(measure_hist[attrKey]);
     // Remove Infinity values from measure_hist
     if (measures.some(x => x === Infinity)) {
