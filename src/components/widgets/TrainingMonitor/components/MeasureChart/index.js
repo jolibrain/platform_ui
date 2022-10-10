@@ -299,6 +299,7 @@ class MeasureChart extends React.Component {
 
     // get first not null service
     const notNullServices = services.filter(s => s)
+    let datasetIndex = 0;
 
     for(
         let serviceIndex = 0;
@@ -314,6 +315,11 @@ class MeasureChart extends React.Component {
         } else if (service.measure_hist && service.measure){
             measure_hist = service.measure_hist;
             measure = service.measure;
+        }
+
+        // service not loaded yet
+        if (typeof(measure_hist) === "undefined") {
+          continue;
         }
 
         let attrKeys = this.getAttrKeys(measure_hist, attr);
@@ -364,6 +370,8 @@ class MeasureChart extends React.Component {
             chartData.datasets.push(dataset);
             if (!chartData.labels || labels.length > chartData.labels.length)
                 chartData.labels = labels;
+
+            datasetIndex++;
           }
      }
 
@@ -607,23 +615,31 @@ class MeasureChart extends React.Component {
         yAxes: [{
           ticks:{
             beginAtZero: !this.state.logScale && typeof beginAtZero !== 'undefined',
+            min: hasRange ? range[0] : undefined,
+            max: hasRange ? range[1] : undefined,
           }
         }]
       }
     };
 
-    const values = services.filter(s => s).map((service, serviceIndex) => {
+    let datasetIndex = 0;
+    const values = services.filter(s => s).map(service => {
         let measure_hist;
         if (service.jsonMetrics) {
             measure_hist = service.jsonMetrics.body.measure_hist;
         } else if (service.measure_hist){
             measure_hist = service.measure_hist;
         }
+        // service not loaded yet
+        if (typeof(measure_hist) === "undefined") {
+          return "";
+        }
 
         let attrKeys = this.getAttrKeys(measure_hist, attribute);
-        return attrKeys.map((attrKey, attrIndex) => {
-            const datasetIndex = serviceIndex * attrKeys.length + attrIndex;
-            return this.getServiceValue(service, datasetIndex, attrKey, chartData)
+        return attrKeys.map(attrKey => {
+            let serviceValue = this.getServiceValue(service, datasetIndex, attrKey, chartData);
+            datasetIndex++;
+            return serviceValue;
         });
     });
 
