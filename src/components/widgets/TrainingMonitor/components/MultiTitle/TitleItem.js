@@ -27,7 +27,7 @@ class TitleItem extends React.Component {
       const attrKeys = Object.keys(measure_hist)
                              .filter(k => k.startsWith(attr))
                              .filter(k => {
-                               // Do not match testing keys
+                               // Do not match class keys
                                // example:
                                // ['map_test2', 'map_test1', 'map_1_test1', 'map_1_test2']
                                // should be sorted as

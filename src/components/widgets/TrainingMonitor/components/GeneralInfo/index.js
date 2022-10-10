@@ -54,7 +54,6 @@ class GeneralInfo extends React.Component {
     };
 
     this.selectLayout = this.selectLayout.bind(this);
-    this.findMeasureAttr = this.findMeasureAttr.bind(this);
     this.hasMeasureAttr = this.hasMeasureAttr.bind(this);
   }
 
@@ -62,19 +61,11 @@ class GeneralInfo extends React.Component {
     this.setState({ layout: layout });
   }
 
-  // When measure attribute key includes suffixes,
-  // ie. `meaniou_test0` is the key for `meaniou` attribute,
-  // returns this key to display main charts
-  findMeasureAttr(measure, rootKey) {
-    // filter: filter out keys containing class index
-    return Object.keys(measure)
-                 .filter(k => !k.match(/.*_\d+_.*/))
-                 .find(k => k.startsWith(rootKey))
-  }
-
   hasMeasureAttr(measure, rootKey) {
-    return Object.keys(measure)
-                 .filter(k => !k.match(/.*_\d+_.*/)).length !== 0;
+    let key = Object.keys(measure)
+                 .filter(k => !k.match(/.*_\d+_.*/)) // filter out per-class metrics (e.g. map_1_test0)
+                 .find(k => k.startsWith(rootKey));
+    return typeof(key) != "undefined";
   }
 
   render() {
@@ -89,15 +80,7 @@ class GeneralInfo extends React.Component {
     if (!service || (!service.jsonMetrics && !service.respInfo)) return null;
 
     let measure,
-        mltype = null,
-        accpAttr,
-        accAttr,
-        meanIouAttr,
-        meanAccAttr,
-        f1Attr,
-        mcllAttr,
-        eucllAttr,
-        mapAttr;
+        mltype = null;
 
     if (service.jsonMetrics) {
       measure = service.jsonMetrics.body.measure;
@@ -109,7 +92,7 @@ class GeneralInfo extends React.Component {
         service.respInfo.body &&
         service.respInfo.body.mltype
       )
-        mltype = service.respInfo.body.mltype;
+      mltype = service.respInfo.body.mltype;
     }
 
     // const hasMeasureElapsedTime = services.some(service => {
@@ -141,24 +124,27 @@ class GeneralInfo extends React.Component {
 
     if (typeof measure !== "undefined" && measure !== null) {
 
-      if (this.hasMeasureAttr("accp")) {
+      console.log("hi");
+      if (this.hasMeasureAttr(measure, "accp")) {
         infoCharts.push(
           <MeasureChart
             title="Accuracy"
             attribute={"accp"}
             key="accp"
+            beginAtZero
             steppedLine
             showBest
             layout={layout}
             {...this.props}
           />
         );
-      } else if (this.hasMeasureAttr("acc")) {
+      } else if (this.hasMeasureAttr(measure, "acc")) {
         infoCharts.push(
           <MeasureChart
             title="Accuracy"
             attribute={"acc"}
             key="acc"
+            beginAtZero
             steppedLine
             showBest
             layout={layout}
