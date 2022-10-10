@@ -124,7 +124,6 @@ class GeneralInfo extends React.Component {
 
     if (typeof measure !== "undefined" && measure !== null) {
 
-      console.log("hi");
       if (this.hasMeasureAttr(measure, "accp")) {
         infoCharts.push(
           <MeasureChart
@@ -249,7 +248,8 @@ class GeneralInfo extends React.Component {
               <MeasureChart
                 title="Mean IOU"
                 key='meaniou'
-                attribute={meanIouAttr}
+                attribute={"meaniou"}
+                beginAtZero
                 steppedLine
                 showBest
                 layout={layout}
@@ -265,6 +265,7 @@ class GeneralInfo extends React.Component {
               title="Mean Accuracy"
               key="meanacc"
               attribute={"meanacc"}
+              beginAtZero
               steppedLine
               layout={layout}
               {...this.props}
@@ -306,6 +307,7 @@ class GeneralInfo extends React.Component {
               title="Mean Accuracy"
               attribute={'meanacc'}
               key="meanacc"
+              beginAtZero
               steppedLine
               layout={layout}
               {...this.props}
@@ -320,6 +322,7 @@ class GeneralInfo extends React.Component {
               title="F1"
               attribute={'f1'}
               key="f1"
+              beginAtZero
               steppedLine
               layout={layout}
               {...this.props}
@@ -334,6 +337,7 @@ class GeneralInfo extends React.Component {
               title="Mcll"
               attribute={'mcll'}
               key="mcll"
+              beginAtZero
               steppedLine
               layout={layout}
               {...this.props}

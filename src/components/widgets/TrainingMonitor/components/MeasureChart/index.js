@@ -146,10 +146,11 @@ class MeasureChart extends React.Component {
   getAttrKeys(measure_hist, attr) {
     let attrKeys = Object.keys(measure_hist)
       .filter(k => {
-          if (k === attr + "_hist")
+          if (k === `${attr}_hist`)
             return true;
+          // measures from test sets
           if (attr !== "train_loss") {
-            const reAttr = new RegExp(attr + `_test\\d+_hist`, 'g');
+            const reAttr = new RegExp(`^${attr}_test\\d+_hist$`, 'g');
             if (k.match(reAttr))
                 return true;
           }
