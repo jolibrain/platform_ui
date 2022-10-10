@@ -70,12 +70,13 @@ class MeasureChart extends React.Component {
   }
 
   toggleLogScale() {
-    const { beginAtZero } = this.props;
+    const { beginAtZero, range } = this.props;
     const isLogScale = !this.state.logScale;
     this.setState({ logScale: isLogScale });
 
     const { chartInstance } = this.chartReference;
-    let yAxe
+    let yAxe;
+    const hasRange = range && range.length === 2;
 
     if(
       chartInstance &&
@@ -136,7 +137,9 @@ class MeasureChart extends React.Component {
       // Restore initial linear y axe, with no tick options
       yAxe.type = "linear";
       yAxe.ticks = {
-          beginAtZero: typeof beginAtZero !== 'undefined'
+          beginAtZero: typeof beginAtZero !== 'undefined',
+          min: hasRange ? range[0] : undefined,
+          max: hasRange ? range[1] : undefined,
       };
     }
 
@@ -324,7 +327,6 @@ class MeasureChart extends React.Component {
             attrIndex++
         ) {
             const attrKey = attrKeys[attrIndex];
-            const datasetIndex = serviceIndex * attrKeys.length + attrIndex;
 
             let labels = [],
                 measures = toJS(measure_hist[attrKey]),
@@ -526,10 +528,11 @@ class MeasureChart extends React.Component {
   }
 
   render() {
-    const { title, attribute, beginAtZero } = this.props;
+    const { title, attribute, beginAtZero, range } = this.props;
     const { services } = this.props;
 
     const chartData = this.getChartData(attribute);
+    const hasRange = range && range.length === 2;
 
     let chartOptions = {
       showAllTooltips: true,

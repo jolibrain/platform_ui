@@ -130,7 +130,7 @@ class GeneralInfo extends React.Component {
             title="Accuracy"
             attribute={"accp"}
             key="accp"
-            beginAtZero
+            range={[0,1]}
             steppedLine
             showBest
             layout={layout}
@@ -143,7 +143,7 @@ class GeneralInfo extends React.Component {
             title="Accuracy"
             attribute={"acc"}
             key="acc"
-            beginAtZero
+            range={[0,1]}
             steppedLine
             showBest
             layout={layout}
@@ -159,7 +159,7 @@ class GeneralInfo extends React.Component {
             title="Map"
             attribute={"map"}
             key="map"
-            beginAtZero
+            range={[0,1]}
             steppedLine
             showBest
             useBestValue
@@ -198,6 +198,7 @@ class GeneralInfo extends React.Component {
               title="Mean IOU"
               key="meaniou"
               attribute={"meaniou"}
+              range={[0,1]}
               steppedLine
               showBest
               layout={layout}
@@ -227,6 +228,7 @@ class GeneralInfo extends React.Component {
               title="Mean IOU"
               key="meaniou"
               attribute={"meaniou"}
+              range={[0,1]}
               steppedLine
               showBest
               layout={layout}
@@ -248,7 +250,7 @@ class GeneralInfo extends React.Component {
                   title="Mean IOU"
                   key='meaniou'
                   attribute={"meaniou"}
-                  beginAtZero
+                  range={[0,1]}
                   steppedLine
                   showBest
                   layout={layout}
@@ -264,7 +266,7 @@ class GeneralInfo extends React.Component {
                 title="Mean Accuracy"
                 key="meanacc"
                 attribute={"meanacc"}
-                beginAtZero
+                range={[0,1]}
                 steppedLine
                 layout={layout}
                 {...this.props}
@@ -287,7 +289,7 @@ class GeneralInfo extends React.Component {
                   title="Map"
                   attribute={"map"}
                   key="map"
-                  beginAtZero
+                  range={[0,1]}
                   steppedLine
                   showBest
                   useBestValue
@@ -306,7 +308,7 @@ class GeneralInfo extends React.Component {
                 title="Mean Accuracy"
                 attribute={'meanacc'}
                 key="meanacc"
-                beginAtZero
+                range={[0,1]}
                 steppedLine
                 layout={layout}
                 {...this.props}
@@ -321,7 +323,7 @@ class GeneralInfo extends React.Component {
                 title="F1"
                 attribute={'f1'}
                 key="f1"
-                beginAtZero
+                range={[0,1]}
                 steppedLine
                 layout={layout}
                 {...this.props}
@@ -355,6 +357,7 @@ class GeneralInfo extends React.Component {
                   title="Eucll"
                   attribute={'eucll'}
                   key="eucll"
+                  beginAtZero
                   steppedLine
                   showMinValue
                   layout={layout}

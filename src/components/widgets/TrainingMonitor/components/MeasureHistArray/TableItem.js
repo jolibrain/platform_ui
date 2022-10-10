@@ -163,12 +163,45 @@ class TableItem extends React.Component {
       );
     }
 
+    // data bounds
+    let dataMin, dataMax;
+    if ([
+        "acc",
+        "accp",
+        "precision",
+        "recall",
+        "meanacc",
+        "meaniou",
+        "f1",
+        "map"
+      ].some(prefix => measureHistKey.startsWith(`${prefix}_`))) {
+
+        dataMin = 0;
+        dataMax = 100;
+    } else if ([
+        "eucll",
+        "mcll",
+        "L1_mean_error",
+        "L2_mean_error",
+      ].some(prefix => measureHistKey.startsWith(`${prefix}_`)) ||
+        measureHistKey.indexOf("_loss") !== -1) {
+
+        dataMin = 0;
+        dataMax = Math.ceil(Math.max(...sparkData));
+    } else {
+        dataMin = Math.floor(Math.min(...sparkData));
+        dataMax = Math.ceil(Math.max(...sparkData));
+    }
+    console.log(measureHistKey + " : "  + dataMax);
+
     return (
       <Sparklines
         key={`sparkline-${index}`}
         data={sparkData}
-        min={Math.floor(Math.min(...sparkData))}
-        max={Math.ceil(Math.max(...sparkData))}
+        min={dataMin}
+        max={dataMax}
+        width={240}
+        height={100}
       >
         <SparklinesLine
           color={this.state.colors[index]}
