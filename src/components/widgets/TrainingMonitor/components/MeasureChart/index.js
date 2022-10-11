@@ -559,6 +559,10 @@ class MeasureChart extends React.Component {
             speed: 5000,
             threshold: 2000,
             sensitivity: 0.0001,
+          },
+          pan: {
+            enabled: true,
+            mode: 'x'
           }
         }
       },
