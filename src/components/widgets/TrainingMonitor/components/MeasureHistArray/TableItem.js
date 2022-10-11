@@ -171,7 +171,9 @@ class TableItem extends React.Component {
         "precision",
         "recall",
         "meanacc",
+        "clacc",
         "meaniou",
+        "cliou",
         "f1",
         "map"
       ].some(prefix => measureHistKey.startsWith(`${prefix}_`))) {
