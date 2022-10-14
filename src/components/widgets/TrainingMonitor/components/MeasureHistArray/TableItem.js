@@ -194,7 +194,6 @@ class TableItem extends React.Component {
         dataMin = Math.floor(Math.min(...sparkData));
         dataMax = Math.ceil(Math.max(...sparkData));
     }
-    console.log(measureHistKey + " : "  + dataMax);
 
     return (
       <Sparklines
