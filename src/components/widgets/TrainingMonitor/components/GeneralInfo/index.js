@@ -366,6 +366,20 @@ class GeneralInfo extends React.Component {
               );
             }
           }
+          if(this.hasMeasureAttr(measure, 'l1')) {
+              infoCharts.push(
+                      <MeasureChart
+                  title="L1"
+                  attribute={'l1'}
+                  key="l1"
+                  beginAtZero
+                  steppedLine
+                  showMinValue
+                  layout={layout}
+                  {...this.props}
+                      />
+              );
+          }
 
           break;
         case "ctc":
