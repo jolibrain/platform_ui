@@ -380,6 +380,20 @@ class GeneralInfo extends React.Component {
                       />
               );
           }
+          if(this.hasMeasureAttr(measure, 'percent')) {
+              infoCharts.push(
+                      <MeasureChart
+                  title="percent"
+                  attribute={'percent'}
+                  key="percent"
+                  beginAtZero
+                  steppedLine
+                  showMinValue
+                  layout={layout}
+                  {...this.props}
+                      />
+              );
+          }
 
           break;
         case "ctc":
