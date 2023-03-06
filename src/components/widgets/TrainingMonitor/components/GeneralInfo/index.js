@@ -92,7 +92,7 @@ class GeneralInfo extends React.Component {
         service.respInfo.body &&
         service.respInfo.body.mltype
       )
-      mltype = service.respInfo.body.mltype;
+        mltype = service.respInfo.body.mltype;
     }
 
     // const hasMeasureElapsedTime = services.some(service => {

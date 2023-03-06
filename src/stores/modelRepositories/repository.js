@@ -124,10 +124,20 @@ export default class Repository {
                      .find(k => k.startsWith(metricKey)) !== 'undefined'
     ) {
 
-      const metricHistKey = Object.keys(measure_hist)
-                                  .find(k => k.startsWith(metricKey))
+      let metricHistKey = Object.keys(measure_hist)
+                                .find(k => k === metricKey + "_hist")
 
-      if(['acc', 'accp', 'meaniou', 'map', 'f1'].includes(metricKey)) {
+      if (typeof metricHistKey === "undefined") {
+        // try to find in test0 instead (legacy)
+        metricHistKey = Object.keys(measure_hist)
+                              .find(k => k === metricKey + "_test0_hist")
+
+      }
+
+      if (typeof metricHistKey === "undefined") {
+        value = "--";
+      }
+      else if(['acc', 'accp', 'meaniou', 'map', 'f1'].includes(metricKey)) {
         value = Math.max.apply(Math, measure_hist[metricHistKey])
       } else {
         // train_loss, L1_mean_error, mcll, eucll

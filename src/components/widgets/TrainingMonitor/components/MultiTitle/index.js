@@ -27,7 +27,11 @@ class MultiTitle extends React.Component {
         selector: "train_loss",
         isMeasure: true,
         formatter: (value, props) => {
+          if (Array.isArray(value) && value.length >= 1) {
+            value = value[0];
+          }
           let content = value;
+
           if (value && typeof value.toFixed === "function") {
             if (value > 1) {
               content = value.toFixed(3);
@@ -49,6 +53,12 @@ class MultiTitle extends React.Component {
         text: "Iterations",
         selector: "iteration",
         isMeasure: true,
+        formatter: (value, props) => {
+          if (Array.isArray(value) && value.length >= 1) {
+            value = value[0];
+          }
+          return value !== "--" ? parseInt(value) : value;
+        }
       },
       {
         text: "Iteration (best)",

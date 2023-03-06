@@ -125,7 +125,6 @@ class TitleItem extends React.Component {
               if(value === '--') {
                 value = this.getHistValue(column.selector);
               }
-
             } else if (column.isHistValue) {
               value = this.getHistValue(column.selector);
             } else {
