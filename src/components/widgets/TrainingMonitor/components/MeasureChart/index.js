@@ -271,7 +271,7 @@ class MeasureChart extends React.Component {
     // dark: hsl(210, 22%, 80%)
 
     return {
-      label: service.name,
+      label: service.name + "." + attrKey,
       data: measures ? measures : [],
       fill: false,
       lineTension: 0,
