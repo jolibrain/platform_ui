@@ -4,7 +4,7 @@ export DOCKER_BUILDKIT=1
 
 [ "${JENKINS_URL}" ] && set -x
 
-image_url="jolibrain/platform_ui"
+image_url="docker.jolibrain.com/platform_ui"
 
 PR_NUMBER=$(echo $GIT_BRANCH | sed -n '/^PR-/s/PR-//gp')
 if [ "$TAG_NAME" ]; then

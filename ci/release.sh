@@ -18,8 +18,8 @@ sed -ne "/^## \[$tag\]/,/^##.*202/p" CHANGELOG.md | sed -e '$d' -e '1d' > note.m
 cat >> note.md <<EOF
 ### Docker images:
 
-* Platform UI: \`docker pull jolibrain/deepdetect_ui:$tag\`
-* All images available on https://hub.docker.com/u/jolibrain
+* Platform UI: \`docker pull docker.jolibrain.com/deepdetect_ui:$tag\`
+* All images available on https://docker.jolibrain.com/
 EOF
 
 trap "rm -f note.md" EXIT

@@ -57,7 +57,7 @@ class AboutDropdown extends React.Component {
         <div className="dropdown-divider" />
         <a
           className="dropdown-item version-link"
-          href="https://hub.docker.com/r/jolibrain/platform_ui/tags"
+          href="https://docker.jolibrain.com/"
           target="_blank"
           rel="noopener noreferrer"
         >

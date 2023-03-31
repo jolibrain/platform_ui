@@ -33,5 +33,5 @@ http://ip_ci/job/platform-ui-docker-build/
 
 Jenkins script is available in `platform_ui` repository: `ci/Jenkinsfile.docker`:
 
-- it runs the script `ci/build-docker-image.sh` to build `jolibrain/platform_ui` docker image, tag it with the correct version number and push it to docker hub.
+- it runs the script `ci/build-docker-image.sh` to build `docker.jolibrain.com/platform_ui` docker image, tag it with the correct version number and push it to docker hub.
 - it updates the dockerhub readme with `docker-pushrm`: https://github.com/christian-korneck/docker-pushrm//
