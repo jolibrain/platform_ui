@@ -57,7 +57,7 @@ function margs_check {
 # Main
 margs_precheck $# $1
 
-IMAGE_NAME="jolibrain/platform_ui"
+IMAGE_NAME="docker.jolibrain.com/platform_ui"
 
 # Args while-loop
 while [ "$1" != "" ];
