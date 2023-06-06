@@ -26,6 +26,7 @@ export class deepdetectStore {
     return this.servers.find(s => s.isActive);
   }
 
+  // content of dd_server/info
   @computed
   get service() {
     return this.server.service;

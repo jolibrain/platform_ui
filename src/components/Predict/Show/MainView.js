@@ -45,6 +45,7 @@ class MainView extends React.Component {
       "name",
       "description",
       "stats",
+      "parameters",
       "model_stats",
       "service_stats"
     ]
