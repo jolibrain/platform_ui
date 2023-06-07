@@ -1,4 +1,4 @@
-FROM node:12.22.12 as builder
+FROM node:16.20.0 as builder
 ADD . /app
 WORKDIR /app
 RUN yarn install
