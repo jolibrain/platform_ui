@@ -31,9 +31,9 @@ docker build \
     .
 
 if [ "$TMP_TAG" != "dev" ]; then
-    docker tag $image_url:$TMP_TAG ceres:5000/$image_url:$TMP_TAG
-    docker push ceres:5000/$image_url:$TMP_TAG
-    docker rmi ceres:5000/$image_url:$TMP_TAG
+    docker tag $image_url:$TMP_TAG
+    docker push $image_url:$TMP_TAG
+    docker rmi $image_url:$TMP_TAG
 
     if [ "$TAG_NAME" ]; then
         docker tag $image_url:$TMP_TAG $image_url:${TAG_NAME}
