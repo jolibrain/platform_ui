@@ -31,7 +31,6 @@ docker build \
     .
 
 if [ "$TMP_TAG" != "dev" ]; then
-    docker tag $image_url:$TMP_TAG
     docker push $image_url:$TMP_TAG
     docker rmi $image_url:$TMP_TAG
 
