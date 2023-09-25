@@ -15,8 +15,7 @@ class PredictAddServiceModal extends React.Component {
       serviceName: "",
       gpuId: 0,
       addErrors: [],
-      mediaType: null,
-      isTensorRt: false
+      mediaType: null
     };
 
     this.validateBeforeSubmit = this.validateBeforeSubmit.bind(this);
@@ -27,7 +26,6 @@ class PredictAddServiceModal extends React.Component {
     this.handleGpuIdChange = this.handleGpuIdChange.bind(this);
     this.handleMediaChange = this.handleMediaChange.bind(this);
 
-    this.handleTensorRtToggle = this.handleTensorRtToggle.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -56,10 +54,6 @@ class PredictAddServiceModal extends React.Component {
   handleCancel() {
     this.setState({ addErrors: [] });
     this.props.modalStore.setVisible("addService", false);
-  }
-
-  handleTensorRtToggle(event) {
-    this.setState({ isTensorRt: !event.target.value })
   }
 
   validateBeforeSubmit() {
@@ -105,10 +99,6 @@ class PredictAddServiceModal extends React.Component {
     this.setState({ spinner: true });
 
     let serviceData = repository.jsonConfig;
-
-    if(this.state.isTensorRt) {
-      serviceData.mllib = "tensorrt";
-    }
 
     if (serviceData.parameters.output) {
       serviceData.parameters.output.store_config = false;
@@ -208,21 +198,6 @@ class PredictAddServiceModal extends React.Component {
               />
               <small id="serviceNameHelp" className="form-text text-muted">
                 name of the Predict service, it must be unique.
-              </small>
-            </div>
-
-            <div className="form-group">
-              <input
-                type="checkbox"
-                defaultChecked={this.state.isTensorRt}
-                onChange={this.handleToggleTensorRt}
-              />{" "}
-              TensorRt Service
-              <small
-                id="tensorRtServiceHelp"
-                className="form-text text-muted"
-              >
-                If checked, service will be created with TensorRt mllib
               </small>
             </div>
 
