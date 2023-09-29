@@ -1,6 +1,5 @@
 import { observable, action, computed } from "mobx";
 import agent from "../agent";
-import moment from "moment";
 
 export class buildInfoStore {
   @observable isReady = false;
@@ -90,12 +89,9 @@ export class buildInfoStore {
         this.latestDockerTag = dockerTags &&
           dockerTags.results &&
           dockerTags.results
-          .sort((a, b) => {
-            return moment(b.last_updated)
-              .diff(a.last_updated)
-          }).find(tag => {
-            return tag.name.match(/v\d+\.\d+\.\d+$/g)
-          }).name;
+          .find(tag => {
+            return tag.match(/v\d+\.\d+\.\d+$/g)
+          });
       })
     );
   }
