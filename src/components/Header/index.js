@@ -14,6 +14,7 @@ import VideoExplorerLink from "./links/VideoExplorer";
 import JupyterLink from "./links/Jupyter";
 import DataLink from "./links/Data";
 import DocumentationLink from "./links/Documentation";
+import SwaggerLink from "./links/Swagger";
 import ChatLink from "./links/Chat";
 import MenusLink from "./links/Menus";
 
@@ -89,6 +90,9 @@ class Header extends React.Component {
 
       if (!configStore.isComponentBlacklisted("LinkDocumentation"))
         rightLinks.push(<DocumentationLink key='documentationLink' />);
+
+      if (!configStore.isComponentBlacklisted("LinkSwagger"))
+        rightLinks.push(<SwaggerLink key='swaggerLink' />);
 
       if (!configStore.isComponentBlacklisted("AboutDropdown"))
         rightLinks.push(<AboutDropdown key='aboutDropdown' />);
