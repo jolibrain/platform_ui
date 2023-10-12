@@ -195,10 +195,11 @@ class Table extends React.Component {
         //   toggable: false
         // },
         {
-          text: "Iterations",
+          text: "Iterations (best)",
           selector: "iteration",
           isValue: true,
           hide: false,
+          showBest: true
           //toggable: true
         },
         {

@@ -50,7 +50,11 @@ export default class Repository {
        )
       return value;
 
-    const { measure, measure_hist } = this.jsonMetrics.body;
+    const {
+      measure,
+      measure_hist,
+      measure_sampling
+    } = this.jsonMetrics.body;
 
     // Some accuracy values are stored in acc or accp metrics field
     // Modify input metric key if this field is not the correct target
@@ -102,6 +106,8 @@ export default class Repository {
       ? this.jsonMetrics.body.measure_hist
       : this.measure_hist;
 
+    const { measure_sampling } = this.jsonMetrics.body;
+
     // Some accuracy values are stored in acc or accp metrics field
     // Modify input metric key if this field is not the correct target
     if(
@@ -139,6 +145,11 @@ export default class Repository {
       }
       else if(['acc', 'accp', 'meaniou', 'map', 'f1'].includes(metricKey)) {
         value = Math.max.apply(Math, measure_hist[metricHistKey])
+
+      } else if(['iteration'].includes(metricKey)) {
+
+        value = this.bestModel['iteration']
+
       } else {
         // train_loss, L1_mean_error, mcll, eucll
         value = Math.min.apply(Math, measure_hist[metricHistKey])
