@@ -145,17 +145,16 @@ class ModelRepositoryItem extends React.Component {
 
             let bestValue = null;
 
-            if (data.bestValue) {
+            if (data.bestValue || data.showBest) {
               bestValue = service.metricsBestValue(data.selector)
               bestValue = data.formatter ?
                     data.formatter(bestValue, service) : bestValue;
             }
 
-            content = (
-              <>
-                { bestValue !== null ? bestValue : value }
-              </>
-            )
+            content = data.showBest ?
+              (<>{value}<br/>{ bestValue !== null ? <small>({bestValue})</small> : null }</>)
+            :
+              (<>{ bestValue !== null ? bestValue : value }</>)
           }
 
           return <td key={index}>{content}</td>
