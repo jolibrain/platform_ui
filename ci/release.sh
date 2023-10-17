@@ -3,7 +3,7 @@
 set -e
 
 here=$(readlink -f $(dirname $0))
-kind=${1:-minor}
+kind=${1:-patch}
 
 cd $here/..
 
@@ -18,7 +18,7 @@ sed -ne "/^## \[$tag\]/,/^##.*202/p" CHANGELOG.md | sed -e '$d' -e '1d' > note.m
 cat >> note.md <<EOF
 ### Docker images:
 
-* Platform UI: \`docker pull docker.jolibrain.com/deepdetect_ui:$tag\`
+* Platform UI: \`docker pull docker.jolibrain.com/platform_ui:$tag\`
 * All images available on https://docker.jolibrain.com/
 EOF
 
