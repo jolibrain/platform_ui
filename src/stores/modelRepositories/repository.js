@@ -53,7 +53,6 @@ export default class Repository {
     const {
       measure,
       measure_hist,
-      measure_sampling
     } = this.jsonMetrics.body;
 
     // Some accuracy values are stored in acc or accp metrics field
@@ -105,8 +104,6 @@ export default class Repository {
     const measure_hist = this.jsonMetrics
       ? this.jsonMetrics.body.measure_hist
       : this.measure_hist;
-
-    const { measure_sampling } = this.jsonMetrics.body;
 
     // Some accuracy values are stored in acc or accp metrics field
     // Modify input metric key if this field is not the correct target
