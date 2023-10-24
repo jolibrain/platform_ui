@@ -133,6 +133,7 @@
     "@craco/craco": "^7.1.0",
     "@jridgewell/sourcemap-codec": "^1.4.15",
     "@rollup/plugin-terser": "^0.4.4",
+    "@testing-library/jest-dom": "^6.1.4",
     "autoprefixer": "^10.4.16",
     "babel-plugin-named-asset-import": "^0.3.8",
     "babel-plugin-transform-class-properties": "^6.24.1",
