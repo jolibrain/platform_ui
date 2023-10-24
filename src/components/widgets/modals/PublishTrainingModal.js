@@ -1,13 +1,10 @@
 import React from "react";
 import { withRouter, Link } from "react-router-dom";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 
-@inject("deepdetectStore")
-@inject("modelRepositoriesStore")
-@inject("modalStore")
-@observer
-@withRouter
-class PublishTrainingModal extends React.Component {
+import stores from "../../../stores/rootStore";
+
+const PublishTrainingModal = withRouter(observer(class PublishTrainingModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -32,7 +29,8 @@ class PublishTrainingModal extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { modelRepositoriesStore, service } = nextProps;
+    const { modelRepositoriesStore } = stores;
+    const { service } = nextProps;
 
     if (!service) return null;
 
@@ -60,12 +58,13 @@ class PublishTrainingModal extends React.Component {
   }
 
   handleCancel() {
+    const { modalStore } = stores;
     this.setState({ publishMessage: null });
-    this.props.modalStore.setVisible("publishTraining", false);
+    modalStore.setVisible("publishTraining", false);
   }
 
   handlePublishTraining() {
-    const { deepdetectStore, modelRepositoriesStore } = this.props;
+    const { deepdetectStore, modelRepositoriesStore } = stores;
     const { serviceName, targetRepository } = this.state;
 
     if (serviceName.length === 0) {
@@ -356,5 +355,5 @@ class PublishTrainingModal extends React.Component {
       </div>
     );
   }
-}
+}));
 export default PublishTrainingModal;

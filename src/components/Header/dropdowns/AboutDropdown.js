@@ -1,10 +1,9 @@
 /* eslint jsx-a11y/anchor-is-valid: "off" */
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
+import stores from "../../../stores/rootStore";
 
-@inject("buildInfoStore")
-@observer
-class AboutDropdown extends React.Component {
+const AboutDropdown = observer(class AboutDropdown extends React.Component {
   constructor(props) {
     super(props);
 
@@ -48,7 +47,7 @@ class AboutDropdown extends React.Component {
   }
 
   render() {
-    const { buildInfoStore } = this.props;
+    const { buildInfoStore } = stores;
 
     let updateInfo = null;
 
@@ -139,8 +138,5 @@ class AboutDropdown extends React.Component {
       </li>
     );
   }
-}
-
-AboutDropdown.propTypes = {};
-
+});
 export default AboutDropdown;

@@ -1,38 +1,35 @@
-import { observable, action, computed } from "mobx";
+import { makeAutoObservable } from "mobx";
 import agent from "../../agent";
 
 import deepdetectService from "./service";
 
 export default class deepdetectServer {
-  @observable name = "";
-  @observable settings = {};
+  name = "";
+  settings = {};
 
-  @observable isActive = false;
-  @observable services = [];
+  isActive = false;
+  services = [];
 
-  @observable respInfo = null;
+  respInfo = null;
 
   constructor(opts) {
+    makeAutoObservable(this);
     this.name = opts.name;
     this.settings = opts.settings;
   }
 
-  @computed
   get infoPath() {
     return `${this.settings.path}/info`;
   }
 
-  @computed
   get service() {
     return this.services.find(s => s.isActive);
   }
 
-  @computed
   get isWritable() {
     return this.settings.isWritable;
   }
 
-  @action
   setServiceIndex(serviceIndex) {
     const currentServiceIndex = this.services.findIndex(s => s.isActive);
     if (currentServiceIndex !== serviceIndex) {
@@ -41,7 +38,6 @@ export default class deepdetectServer {
     }
   }
 
-  @action
   setService(serviceName) {
     const currentService = this.services.find(s => s.isActive);
     if (currentService && currentService.name !== serviceName) {
@@ -67,33 +63,48 @@ export default class deepdetectServer {
     return agent.Deepdetect.deleteService(this.settings, name);
   }
 
-  @computed
   get isDown() {
     if (!this.respInfo) return true;
     return !(this.respInfo.head && this.respInfo.head.services);
   }
 
-  @computed
   get respInfoServices() {
     if (!this.respInfo || !this.respInfo.head || !this.respInfo.head.services)
       return [];
     return this.respInfo.head.services;
   }
 
-  @computed
   get respInfoServiceNames() {
     return this.respInfoServices.map(s => s.name);
   }
 
-  @action
+  _updateRespInfo(respInfo) {
+    this.respInfo = respInfo;
+  }
+
+  _updateIsReady() {
+    this.isReady = true;
+  }
+
+  _updateServicesList(services) {
+    this.services = services;
+  }
+
+  _updateServicesListAddService(service) {
+    this.services.push(service);
+  }
+
   async loadServices(status = false) {
     try {
-      this.respInfo = await agent.Deepdetect.info(this.settings);
+      await agent.Deepdetect.info(this.settings)
+                 .then(respInfo => this._updateRespInfo(respInfo))
 
       if (!this.isDown) {
-        this.services = this.services
-          .slice()
-          .filter(s => this.respInfoServiceNames.includes(s.name));
+        this._updateServicesList(
+          this.services
+              .slice()
+              .filter(s => this.respInfoServiceNames.includes(s.name))
+        );
 
         this.respInfoServices.forEach(serviceSettings => {
           let existingService = this.services.find(
@@ -101,14 +112,14 @@ export default class deepdetectServer {
           );
 
           if (existingService) {
-            existingService.settings = serviceSettings;
+            existingService._updateSettings(serviceSettings);
           } else if (this.isWritable) {
             const service = new deepdetectService({
               serviceSettings: serviceSettings,
               serverName: this.name,
               serverSettings: this.settings
             });
-            this.services.push(observable(service));
+            this._updateServicesListAddService(service);
           }
         });
       }
@@ -133,7 +144,6 @@ export default class deepdetectServer {
     }
   }
 
-  @action
   async newService(name, data, callback) {
     let response = null;
     let error = null;
@@ -146,7 +156,6 @@ export default class deepdetectServer {
     callback(response, error);
   }
 
-  @action
   async deleteService(serviceName, callback) {
     if (!this.isWritable) return null;
 
@@ -160,7 +169,6 @@ export default class deepdetectServer {
     if (callback && typeof callback === "function") callback(resp);
   }
 
-  @action
   stopTraining(callback) {
     this.service.stopTraining(callback);
     this.loadServices();

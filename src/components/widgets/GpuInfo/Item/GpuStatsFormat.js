@@ -1,8 +1,7 @@
 import React from "react";
 import { observer } from "mobx-react";
 
-@observer
-class GpuStatsFormat extends React.Component {
+const GpuStatsFormat = observer(class GpuStatsFormat extends React.Component {
   constructor(props) {
     super(props);
 
@@ -68,5 +67,5 @@ class GpuStatsFormat extends React.Component {
       </div>
     );
   }
-}
+});
 export default GpuStatsFormat;

@@ -1,10 +1,8 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 import { Line } from "react-chartjs-2";
 
-@observer
-class FpsChart extends React.Component {
+const FpsChart = observer(class FpsChart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -136,10 +134,5 @@ class FpsChart extends React.Component {
       </div>
     );
   }
-}
-
-FpsChart.propTypes = {
-  services: PropTypes.array.isRequired,
-  hiddenRepositoriesIndexes: PropTypes.array
-};
+});
 export default FpsChart;

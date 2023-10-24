@@ -1,15 +1,18 @@
-import { observable, action } from "mobx";
+import { makeAutoObservable } from "mobx";
 import async from "async";
 
 import GpuStatServer from "./server";
 
-export class GpuStore {
-  @observable refreshRate = 5000;
-  @observable servers = [];
+export default class GpuStore {
+  refreshRate = 5000;
+  servers = [];
 
-  @observable firstLoad = true;
+  firstLoad = true;
 
-  @action
+  constructor() {
+    makeAutoObservable(this);
+  }
+
   setup(configStore) {
     const { gpuInfo } = configStore;
     this.refreshRate = gpuInfo.refreshRate;
@@ -21,7 +24,6 @@ export class GpuStore {
     }
   }
 
-  @action
   loadGpuInfo() {
     async.forever(
       next => {
@@ -50,5 +52,3 @@ export class GpuStore {
     );
   }
 }
-
-export default new GpuStore();

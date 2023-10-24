@@ -1,9 +1,7 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 
-@observer
-class List extends React.Component {
+const List = observer(class List extends React.Component {
   constructor(props) {
     super(props);
     this.categoryDisplay = this.categoryDisplay.bind(this);
@@ -58,12 +56,5 @@ class List extends React.Component {
       </div>
     );
   }
-}
-
-List.propTypes = {
-  input: PropTypes.object.isRequired,
-  selectedBoxIndex: PropTypes.number,
-  onOver: PropTypes.func,
-  onLeave: PropTypes.func
-};
+});
 export default List;

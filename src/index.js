@@ -1,63 +1,36 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
+import LoadableApp from "./LoadableApp";
+import reportWebVitals from './reportWebVitals';
 
 import * as serviceWorker from './serviceWorker';
 
 import { HashRouter } from "react-router-dom";
 import { configure } from "mobx";
-import { Provider } from "mobx-react";
 import { CookiesProvider } from "react-cookie";
 
 import "./styles/styles.scss";
 
-import App from "./components/App";
+import store from "./stores/rootStore";
+import { createContext } from "react";
 
-import configStore from "./stores/configStore";
-import buildInfoStore from "./stores/buildInfoStore";
-import gpuStore from "./stores/gpuStore";
-import deepdetectStore from "./stores/deepdetectStore";
-import imaginateStore from "./stores/imaginateStore";
-import modelRepositoriesStore from "./stores/modelRepositoriesStore";
-import dataRepositoriesStore from "./stores/dataRepositoriesStore";
-import datasetStore from "./stores/datasetStore";
-import videoExplorerStore from "./stores/videoExplorerStore";
-import modalStore from "./stores/modalStore";
-import authTokenStore from "./stores/authTokenStore";
-import pathFilterStore from "./stores/pathFilterStore";
-
-const stores = {
-  configStore,
-  buildInfoStore,
-  gpuStore,
-  deepdetectStore,
-  imaginateStore,
-  modelRepositoriesStore,
-  dataRepositoriesStore,
-  datasetStore,
-  videoExplorerStore,
-  modalStore,
-  authTokenStore,
-  pathFilterStore
-};
-
-// For easier debugging
-window._____APP_STATE_____ = stores;
+const GlobalStore = createContext(store);
 
 configure({
   enforActions: true
 });
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Provider {...stores}>
-      <CookiesProvider>
-        <HashRouter>
-          <App />
-        </HashRouter>
-      </CookiesProvider>
-    </Provider>
-  </React.StrictMode>,
-  document.getElementById("root")
+const container = document.getElementById("root");
+const root = createRoot(container);
+
+root.render(
+  <GlobalStore.Provider>
+    <CookiesProvider>
+      <HashRouter>
+        <LoadableApp />
+      </HashRouter>
+    </CookiesProvider>
+  </GlobalStore.Provider>
 );
 
 
@@ -65,3 +38,21 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
+if (module.hot && process.env.NODE_ENV === "development") {
+  module.hot.accept("./components/App", () => {
+    root.render(
+      <GlobalStore.Provider>
+        <CookiesProvider>
+          <HashRouter>
+            <LoadableApp />
+          </HashRouter>
+        </CookiesProvider>
+      </GlobalStore.Provider>
+    );
+  });
+}

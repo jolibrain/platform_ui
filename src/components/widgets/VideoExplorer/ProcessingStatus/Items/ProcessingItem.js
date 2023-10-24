@@ -1,10 +1,6 @@
 import React from "react";
-import { observer } from "mobx-react";
-import { withRouter } from "react-router-dom";
 
-@withRouter
-@observer
-class ProcessingItem extends React.Component {
+const ProcessingItem = class ProcessingItem extends React.Component {
     render() {
         const { video } = this.props;
 
@@ -38,5 +34,5 @@ class ProcessingItem extends React.Component {
             </li>
         );
     }
-}
+};
 export default ProcessingItem;

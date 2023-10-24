@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
@@ -8,9 +7,7 @@ import TrainingCard from "./Training";
 import ModelRepositoryCard from "./ModelRepository";
 import DatasetCard from "./Dataset";
 
-@withRouter
-@observer
-class Cards extends React.Component {
+const Cards = withRouter(observer(class Cards extends React.Component {
 
     render() {
 
@@ -42,10 +39,5 @@ class Cards extends React.Component {
 
     }
 
-}
-
-Cards.propTypes = {
-  services: PropTypes.array.isRequired,
-  handleCompareStateChange: PropTypes.func,
-};
+}));
 export default Cards;

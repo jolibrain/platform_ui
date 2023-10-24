@@ -1,5 +1,5 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 import ReactTooltip from "react-tooltip";
@@ -11,15 +11,14 @@ import { withCookies } from "react-cookie";
 
 import copy from "copy-to-clipboard";
 
-@inject("imaginateStore")
-@inject("deepdetectStore")
-@inject("authTokenStore")
-@observer
-class PredictCommand extends React.Component {
+import stores from "../../../../../../../stores/rootStore";
+
+const PredictCommand = observer(class PredictCommand extends React.Component {
   constructor(props) {
     super(props);
 
-    const { service } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service } = imaginateStore;
 
     this.state = {
       copied: false,
@@ -32,7 +31,8 @@ class PredictCommand extends React.Component {
   }
 
   curlCommand() {
-    const { service } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service } = imaginateStore;
     const { cookies } = this.props;
 
     let command = ["curl"];
@@ -67,13 +67,15 @@ class PredictCommand extends React.Component {
     // Moving to CodeMirror is tricky because it'd call componentWillReceiveProps
     // so you don't know if you need to update the curlCommand or not
     // Would it need to be moved to a children Component ?
-    const { service } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service } = imaginateStore;
     this.setState({ jsonConfig: service.selectedInput.postData });
     ReactTooltip.rebuild();
   }
 
   handleCurlChange(editor, data, value) {
-    const { service } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service } = imaginateStore;
     const curlCommand = `curl -X POST '${window.location.origin}${service.serverSettings.path}/predict' -d '`;
 
     const jsonConfig = value.replace(curlCommand, "").slice(0, -1);
@@ -90,7 +92,8 @@ class PredictCommand extends React.Component {
   }
 
   render() {
-    const { service } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service } = imaginateStore;
 
     if (service.selectedInput === null) return null;
 
@@ -129,6 +132,6 @@ class PredictCommand extends React.Component {
       </div>
     );
   }
-}
+});
 
 export default withCookies(PredictCommand);

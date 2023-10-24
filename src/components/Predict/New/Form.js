@@ -1,7 +1,7 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import { toJS } from "mobx";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import copy from "copy-to-clipboard";
 
 import { Controlled as CodeMirror } from "react-codemirror2";
@@ -13,12 +13,9 @@ import { Typeahead, Menu, MenuItem } from "react-bootstrap-typeahead";
 import "react-bootstrap-typeahead/css/Typeahead.css";
 //import "react-bootstrap-typeahead/css/Typeahead-bs4.css";
 
-@inject("imaginateStore")
-@inject("deepdetectStore")
-@inject("modelRepositoriesStore")
-@observer
-@withRouter
-class Form extends React.Component {
+import stores from "../../../stores/rootStore";
+
+const Form = withRouter(observer(class Form extends React.Component {
   constructor(props) {
     super(props);
 
@@ -37,9 +34,9 @@ class Form extends React.Component {
 
     this.typeaheadRef = React.createRef();
 
-    const ddStore = this.props.deepdetectStore;
+    const { deepdetectStore } = stores;
 
-    let defaultConfig = ddStore.settings.services.defaultConfig.find(config => {
+    let defaultConfig = deepdetectStore.settings.services.defaultConfig.find(config => {
       return config.modelName === "default";
     });
 
@@ -58,7 +55,7 @@ class Form extends React.Component {
   }
 
   componentWillMount() {
-    const { modelRepositoriesStore } = this.props;
+    const { deepdetectStore, modelRepositoriesStore } = stores;
     if (!modelRepositoriesStore.isReadyPredict) {
       modelRepositoriesStore.refreshPredict();
     }
@@ -68,9 +65,7 @@ class Form extends React.Component {
 
       this.setState({ selectedLocation: repository ? [repository.name] : [] });
 
-      const ddStore = this.props.deepdetectStore;
-
-      let defaultConfig = ddStore.settings.services.defaultConfig.find(
+      let defaultConfig = deepdetectStore.settings.services.defaultConfig.find(
         config => {
           return config.modelName === repository.modelName;
         }
@@ -107,9 +102,10 @@ class Form extends React.Component {
   }
 
   handleInputChange() {
+    const { modelRepositoriesStore, deepdetectStore } = stores;
     const selectedServiceName = this.typeaheadRef.current.getInput().value;
 
-    const repository = this.props.modelRepositoriesStore.repositories.find(
+    const repository = modelRepositoriesStore.repositories.find(
       r => r.name === selectedServiceName
     );
     this.setState({ selectedLocation: repository ? [repository.name] : [] });
@@ -126,8 +122,7 @@ class Form extends React.Component {
       typeof defaultConfig !== "undefined" &&
       defaultConfig.modelName !== selectedConfig.modelName
     ) {
-      const ddStore = this.props.deepdetectStore;
-      const newConfig = ddStore.settings.services.defaultConfig.find(config => {
+      const newConfig = deepdetectStore.settings.services.defaultConfig.find(config => {
         return config.modelName === selectedConfig.modelName;
       });
 
@@ -147,6 +142,7 @@ class Form extends React.Component {
   }
 
   validateBeforeSubmit() {
+    const { modelRepositoriesStore, deepdetectStore } = stores;
     let errors = [];
 
     const serviceName = this.state.serviceName;
@@ -159,8 +155,7 @@ class Form extends React.Component {
       errors.push("Service name can't be named 'new'");
     }
 
-    const ddStore = this.props.deepdetectStore;
-    const serviceNames = ddStore.server.services.map(s => s.name.toLowerCase());
+    const serviceNames = deepdetectStore.server.services.map(s => s.name.toLowerCase());
 
     if (serviceNames.includes(serviceName.toLowerCase())) {
       errors.push("Service name already exists");
@@ -172,7 +167,7 @@ class Form extends React.Component {
       errors.push("Model Repository Location can't be empty");
     }
 
-    const { repositories } = this.props.modelRepositoriesStore;
+    const { repositories } = modelRepositoriesStore;
     if (!repositories.map(r => r.name).includes(serviceModelLocation)) {
       errors.push("Model Repository Location must exists in predefined list");
     }
@@ -189,12 +184,12 @@ class Form extends React.Component {
   }
 
   submitService() {
+    const { deepdetectStore } = stores;
     if (!this.validateBeforeSubmit()) {
       return null;
     }
 
     let serviceName = this.state.serviceName;
-    const ddStore = this.props.deepdetectStore;
 
     this.setState({ creatingService: true });
 
@@ -206,7 +201,7 @@ class Form extends React.Component {
       serviceData.parameters.output = { store_config: false };
     }
 
-    ddStore.newService(serviceName, serviceData, (resp, err) => {
+    deepdetectStore.newService(serviceName, serviceData, (resp, err) => {
       if (err) {
         this.setState({
           creatingService: false,
@@ -218,18 +213,18 @@ class Form extends React.Component {
           errors: []
         });
 
-        ddStore.setService(serviceName);
+        deepdetectStore.setService(serviceName);
 
         this.props.history.push(
-          `/predict/${ddStore.hostableServer.name}/${serviceName}`
+          `/predict/${deepdetectStore.hostableServer.name}/${serviceName}`
         );
       }
     });
   }
 
   handleCopyClipboard() {
-    const store = this.props.deepdetectStore;
-    const curlCommand = `curl -X PUT '${window.location.origin}${store.server.settings.path}/services/${this.state.serviceName}' -d '${this.state.jsonConfig}'`;
+    const { deepdetectStore } = stores;
+    const curlCommand = `curl -X PUT '${window.location.origin}${deepdetectStore.server.settings.path}/services/${this.state.serviceName}' -d '${this.state.jsonConfig}'`;
 
     copy(curlCommand);
 
@@ -240,14 +235,14 @@ class Form extends React.Component {
   }
 
   handleCurlChange(editor, data, value) {
-    const store = this.props.deepdetectStore;
-    const curlCommand = `curl -X PUT '${window.location.origin}${store.server.settings.path}/services/${this.state.serviceName}' -d '`;
+    const { deepdetectStore } = stores;
+    const curlCommand = `curl -X PUT '${window.location.origin}${deepdetectStore.server.settings.path}/services/${this.state.serviceName}' -d '`;
 
     const jsonConfig = value.replace(curlCommand, "").slice(0, -1);
     this.setState({ jsonConfig: jsonConfig });
   }
 
-  //const { recommendedGpuIndex } = this.props.gpuStore;
+  //const { recommendedGpuIndex } = gpuStore;
   // <div className="form-row">
   //            <div className="form-check">
   //              <input className="form-check-input" type="checkbox" value="" id="checkRecommendedGpu"/>
@@ -258,9 +253,9 @@ class Form extends React.Component {
   //          </div>
 
   render() {
-    const store = this.props.deepdetectStore;
+    const { deepdetectStore, modelRepositoriesStore } = stores;
 
-    if (store.servers.length === 0) {
+    if (deepdetectStore.servers.length === 0) {
       return (
         <div className="alert alert-warning" role="alert">
           <p>No deepdetect server available.</p>
@@ -275,7 +270,7 @@ class Form extends React.Component {
       );
     }
 
-    const curlCommand = `curl -X PUT '${window.location.origin}${store.server.settings.path}/services/${this.state.serviceName}' -d '${this.state.jsonConfig}'`;
+    const curlCommand = `curl -X PUT '${window.location.origin}${deepdetectStore.server.settings.path}/services/${this.state.serviceName}' -d '${this.state.jsonConfig}'`;
 
     const copiedText = this.state.copied ? "Copied!" : "Copy to clipboard";
 
@@ -322,7 +317,7 @@ class Form extends React.Component {
               <Typeahead
                 id="inlineFormInputModelLocation"
                 ref={this.typeaheadRef}
-                options={toJS(this.props.modelRepositoriesStore.repositories)}
+                options={toJS(modelRepositoriesStore.repositories)}
                 placeholder="Model Repository location"
                 onChange={this.handleInputChange}
                 defaultSelected={this.state.selectedLocation}
@@ -422,5 +417,5 @@ class Form extends React.Component {
       </div>
     );
   }
-}
+}));
 export default Form;

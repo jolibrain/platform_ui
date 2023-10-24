@@ -1,4 +1,4 @@
-import { action, observable, computed, toJS, runInAction } from "mobx";
+import { makeAutoObservable, toJS, runInAction } from "mobx";
 import store from "store";
 
 import moment from "moment";
@@ -12,35 +12,35 @@ import agent from "../../agent";
 import ServiceConstants from "../../constants/ServiceConstants";
 
 export default class deepdetectService {
-  @observable isActive = false;
+  isActive = false;
 
-  @observable
   status = {
     client: ServiceConstants.CLIENT_STATUS.NONE,
     server: ServiceConstants.SERVER_STATUS.NONE
   };
 
-  @observable settings = {};
+  settings = {};
 
-  @observable serverName = "";
-  @observable serverSettings = {};
+  serverName = "";
+  serverSettings = {};
 
-  @observable inputs = [];
+  inputs = [];
 
-  @observable confidence = null;
+  confidence = null;
 
-  @observable respInfo = null;
-  @observable respTraining = null;
-  @observable respTrainMetrics = null;
+  respInfo = null;
+  respTraining = null;
+  respTrainMetrics = null;
 
-  @observable respBestModel = null;
-  @observable bestModel = null;
+  respBestModel = null;
+  bestModel = null;
 
-  @observable refresh = Math.random();
+  refresh = Math.random();
 
-  @observable uiParams = {};
+  uiParams = {};
 
   constructor(opts) {
+    makeAutoObservable(this);
     this.settings = opts.serviceSettings;
 
     // Proper settings for various mltypes
@@ -65,7 +65,7 @@ export default class deepdetectService {
     }
 
     if (typeof this.settings.request === "undefined")
-      this.settings.request = {};
+      this._updateSettingsEmptyRequest()
 
     this.serverName = opts.serverName;
     this.serverSettings = opts.serverSettings;
@@ -74,8 +74,21 @@ export default class deepdetectService {
     this.serviceInfo();
   }
 
+  _updateSettings(settings) {
+    this.settings.request = settings;
+  }
+
+  _updateSettingsEmptyRequest() {
+    this.settings.request = {};
+  }
+
+  _updateRespInfo(respInfo) {
+    this.respInfo = respInfo;
+  }
+
   async serviceInfo() {
-    this.respInfo = await this.$reqServiceInfo();
+    const respInfo = await this.$reqServiceInfo();
+    this._updateRespInfo(respInfo);
 
     const hasJobs =
       this.respInfo &&
@@ -92,6 +105,10 @@ export default class deepdetectService {
     return this.respInfo;
   }
 
+  _updateSettingsNotTraining() {
+    this.settings.training = false;
+  }
+
   async trainInfo() {
 
     //
@@ -102,7 +119,7 @@ export default class deepdetectService {
     //
     this.respTraining = await this.$reqTrainInfo();
     if (this.respTraining instanceof Error) {
-      this.settings.training = false;
+      this._updateSettingsNotTraining();
     }
 
     this.respTrainMetrics = await this.$reqTrainMetrics();
@@ -113,7 +130,6 @@ export default class deepdetectService {
     return this.respTraining;
   }
 
-  @computed
   get isRequesting() {
     return (
       this.status.client === ServiceConstants.CLIENT_STATUS.REQUESTING ||
@@ -124,7 +140,6 @@ export default class deepdetectService {
     );
   }
 
-  @computed
   get isTraining() {
     return (
       this.respTraining &&
@@ -133,7 +148,6 @@ export default class deepdetectService {
     );
   }
 
-  @computed
   get requestType() {
     let requestType = null;
 
@@ -163,29 +177,24 @@ export default class deepdetectService {
     return requestType;
   }
 
-  @computed
   get name() {
     return this.settings.name;
   }
 
-  @computed
   get type() {
     return this.respInfo && this.respInfo.body ?
       this.respInfo.body.type : null
   }
 
-  @computed
   get selectedInput() {
     return this.inputs.find(i => i.isActive);
   }
 
-  @computed
   get urlGetService() {
     const serverPath = this.serverSettings.path;
     return `${serverPath}/services/${this.name}`;
   }
 
-  @computed
   get trainJob() {
     let jobId = null;
 
@@ -197,7 +206,6 @@ export default class deepdetectService {
     return jobId;
   }
 
-  @computed
   get measure() {
     let value = null;
 
@@ -214,7 +222,6 @@ export default class deepdetectService {
     return value;
   }
 
-  @computed
   get measures() {
     let value = null;
 
@@ -231,7 +238,6 @@ export default class deepdetectService {
     return value;
   }
 
-  @computed
   get measure_hist() {
     let value = null;
 
@@ -248,7 +254,6 @@ export default class deepdetectService {
     return value;
   }
 
-  @computed
   get urlTraining() {
     if (!this.trainJob) {
       return null;
@@ -258,7 +263,6 @@ export default class deepdetectService {
     return `${serverPath}/train?service=${this.name}&job=${this.trainJob}&parameters.output.measure_hist=true&parameters.output.max_hist_points=1000`;
   }
 
-  @computed
   get gpuid() {
     let gpuid = "--";
 
@@ -288,7 +292,6 @@ export default class deepdetectService {
     return gpuid;
   }
 
-  @computed
   get connector() {
     let connector = null;
 
@@ -315,12 +318,10 @@ export default class deepdetectService {
     return connector;
   }
 
-  @computed
   get isTimeseries() {
     return ["csvts", "timeserie"].includes(this.connector);
   }
 
-  @action
   shuffleInputs() {
     let shuffledInputs = [...this.inputs];
     for (let i = shuffledInputs.length - 1; i > 0; i--) {
@@ -330,7 +331,6 @@ export default class deepdetectService {
     this.inputs = shuffledInputs;
   }
 
-  @action
   selectInput(index) {
     let input = this.inputs.find(i => i.isActive);
 
@@ -339,7 +339,6 @@ export default class deepdetectService {
     if (this.inputs[index]) this.inputs[index].isActive = true;
   }
 
-  @action
   addInput(content) {
     let activeInput = this.inputs.find(i => i.isActive);
     if (activeInput) {
@@ -352,7 +351,6 @@ export default class deepdetectService {
     this.inputs.push(input);
   }
 
-  @action
   addOrReplaceInput(index, content) {
     let activeInput = this.inputs.find(i => i.isActive);
     if (activeInput) {
@@ -370,7 +368,6 @@ export default class deepdetectService {
     }
   }
 
-  @action
   async addInputFromPath(
     folder,
     systemPath,
@@ -396,24 +393,20 @@ export default class deepdetectService {
     callback(this.inputs);
   }
 
-  @action
   clearAllInputs() {
     this.inputs = [];
   }
 
-  @action
   clearInput(index) {
     if (index > -1 && this.inputs.length > index - 1) {
       this.inputs.splice(index, 1);
     }
   }
 
-  @action
   removeStore() {
     store.remove(`autosave_service_${this.serverName}_${this.name}`);
   }
 
-  @action
   predict(widgetSettings = {}) {
     if (this.inputs.length === 0) {
       return null;
@@ -423,7 +416,6 @@ export default class deepdetectService {
     this._predictRequest(widgetSettings);
   }
 
-  @action
   predictChain(widgetSettings = {}, chain) {
     if (this.inputs.length === 0) {
       return null;
@@ -432,7 +424,6 @@ export default class deepdetectService {
     this._chainRequest(widgetSettings, chain);
   }
 
-  @action
   stopTraining(callback) {
     if (this.isTraining) {
       this.$reqStopTraining().then(callback);
@@ -440,25 +431,25 @@ export default class deepdetectService {
   }
 
   async $reqFileFromPath(path) {
-    this.status.client = ServiceConstants.CLIENT_STATUS.REQUESTING_FILES;
+    this._updateStatusClient(ServiceConstants.CLIENT_STATUS.REQUESTING_FILES);
     const files = await agent.Webserver.listFiles(path);
-    this.status.client = ServiceConstants.CLIENT_STATUS.NONE;
+    this._updateStatusClient(ServiceConstants.CLIENT_STATUS.NONE);
 
     return files;
   }
 
   async $reqPostPredict() {
-    this.status.client = ServiceConstants.CLIENT_STATUS.REQUESTING_PREDICT;
+    this._updateStatusClient(ServiceConstants.CLIENT_STATUS.REQUESTING_PREDICT);
     const info = await agent.Deepdetect.postPredict(
       this.serverSettings,
       toJS(this.selectedInput.postData)
     );
-    this.status.client = ServiceConstants.CLIENT_STATUS.NONE;
+    this._updateStatusClient(ServiceConstants.CLIENT_STATUS.NONE);
     return info;
   }
 
   async $reqPutChain(serverPath = null) {
-    this.status.client = ServiceConstants.CLIENT_STATUS.REQUESTING_PREDICT;
+    this._updateStatusClient(ServiceConstants.CLIENT_STATUS.REQUESTING_PREDICT);
 
     let putServerSettings = this.serverSettings;
     if (serverPath) {
@@ -470,12 +461,12 @@ export default class deepdetectService {
       moment().milliseconds(),
       toJS(this.selectedInput.putData)
     );
-    this.status.client = ServiceConstants.CLIENT_STATUS.NONE;
+    this._updateStatusClient(ServiceConstants.CLIENT_STATUS.NONE);
     return info;
   }
 
   async $reqTrainInfo(job = 1, timeout = 0, history = false) {
-    this.status.client = ServiceConstants.CLIENT_STATUS.REQUESTING_TRAINING;
+    this._updateStatusClient(ServiceConstants.CLIENT_STATUS.REQUESTING_TRAINING);
     const info = await agent.Deepdetect.getTrain(
       this.serverSettings,
       this.name,
@@ -484,12 +475,12 @@ export default class deepdetectService {
       false, // history
       10000 // max history points
     );
-    this.status.client = ServiceConstants.CLIENT_STATUS.NONE;
+    this._updateStatusClient(ServiceConstants.CLIENT_STATUS.NONE);
     return info;
   }
 
   async $reqTrainMetrics() {
-    this.status.client = ServiceConstants.CLIENT_STATUS.REQUESTING_TRAINING;
+    this._updateStatusClient(ServiceConstants.CLIENT_STATUS.REQUESTING_TRAINING);
 
     let metrics = null;
 
@@ -513,28 +504,31 @@ export default class deepdetectService {
       }
     }
 
-    this.status.client = ServiceConstants.CLIENT_STATUS.NONE;
+    this._updateStatusClient(ServiceConstants.CLIENT_STATUS.NONE);
     return metrics;
   }
 
+  _updateStatusClient(status) {
+    this.status.client = status;
+  }
+
   async $reqServiceInfo() {
-    this.status.client = ServiceConstants.CLIENT_STATUS.REQUESTING_SERVICE_INFO;
+    this._updateStatusClient(ServiceConstants.CLIENT_STATUS.REQUESTING_SERVICE_INFO);
     const info = await agent.Deepdetect.getService(
       this.serverSettings,
       this.name
     );
-    this.status.client = ServiceConstants.CLIENT_STATUS.NONE;
+    this._updateStatusClient(ServiceConstants.CLIENT_STATUS.NONE);
     return info;
   }
 
   async $reqStopTraining() {
-    this.status.client =
-      ServiceConstants.CLIENT_STATUS.REQUESTING_STOP_TRAINING;
+    this._updateStatusClient(ServiceConstants.CLIENT_STATUS.REQUESTING_STOP_TRAINING);
     const info = await agent.Deepdetect.stopTraining(
       this.serverSettings,
       this.name
     );
-    this.status.client = ServiceConstants.CLIENT_STATUS.NONE;
+    this._updateStatusClient(ServiceConstants.CLIENT_STATUS.NONE);
     return info;
   }
 
@@ -700,7 +694,6 @@ export default class deepdetectService {
     }
   }
 
-  @action
   async _predictRequest(settings) {
     let input = this.inputs.find(i => i.isActive);
 
@@ -738,7 +731,6 @@ export default class deepdetectService {
     }
   }
 
-  @action
   async _chainRequest(settings, chain) {
     let input = this.inputs.find(i => i.isActive);
 
@@ -847,7 +839,6 @@ export default class deepdetectService {
     }
   }
 
-  @action
   async _loadBestModel() {
     try {
       let bestModel = {};

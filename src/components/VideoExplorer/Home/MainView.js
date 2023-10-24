@@ -1,6 +1,6 @@
 /* eslint jsx-a11y/anchor-is-valid: "off" */
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
 import ReactPlayer from 'react-player'
@@ -18,16 +18,9 @@ import FrameFilter from "../../widgets/VideoExplorer/FrameFilter"
 import Frame from "../../widgets/VideoExplorer/Frame"
 import StatsKeyChart from "../../widgets/VideoExplorer/StatsKeyChart"
 
-@inject("videoExplorerStore")
-@inject("configStore")
-@inject("gpuStore")
-@withRouter
-@observer
-class MainView extends React.Component {
+import stores from "../../../stores/rootStore";
 
-  ref = player => {
-    this.player = player
-  }
+const MainView = withRouter(observer(class MainView extends React.Component {
 
   constructor(props) {
     super(props);
@@ -38,10 +31,10 @@ class MainView extends React.Component {
       filters: [],
       isFeedbackSubmitted: false,
       isGeneratingZip: false,
+      ref: React.createRef(),
+      frameRef: React.createRef(),
+      feedbackRef: React.createRef()
     };
-
-    this.frameRef = React.createRef();
-    this.feedbackRef = React.createRef();
 
     this.visibleFrames = this.visibleFrames.bind(this);
 
@@ -64,7 +57,7 @@ class MainView extends React.Component {
   }
 
   componentDidMount() {
-    const { videoExplorerStore } = this.props;
+    const { videoExplorerStore } = stores;
 
     if (videoExplorerStore.loaded === false) {
       videoExplorerStore.refresh();
@@ -76,7 +69,7 @@ class MainView extends React.Component {
     // remove autoscroll
     this.setState({autoScroll: false});
 
-    const { videoExplorerStore } = this.props;
+    const { videoExplorerStore } = stores;
     videoExplorerStore.setFrame(frameId)
 
     const { selectedFrameCurrentTime } = videoExplorerStore;
@@ -84,7 +77,7 @@ class MainView extends React.Component {
   }
 
   toggleBoundingBoxes() {
-    const { videoExplorerStore } = this.props;
+    const { videoExplorerStore } = stores;
 
     this.setState({currentTime: this.player.getCurrentTime()});
 
@@ -96,7 +89,7 @@ class MainView extends React.Component {
   }
 
   handleVideoSelection(value) {
-    const { videoExplorerStore } = this.props;
+    const { videoExplorerStore } = stores;
     videoExplorerStore.setVideoPath(value);
 
     // reset state when a video is selected
@@ -117,7 +110,7 @@ class MainView extends React.Component {
 
   onPlayerProgress(progress) {
     if(this.state.autoScroll) {
-      const { videoExplorerStore } = this.props;
+      const { videoExplorerStore } = stores;
 
       const currentTime = this.player.getCurrentTime();
       const duration = this.player.getDuration();
@@ -140,7 +133,7 @@ class MainView extends React.Component {
   }
 
   onPlayerPause() {
-    const { videoExplorerStore } = this.props;
+    const { videoExplorerStore } = stores;
 
     const currentTime = this.player.getCurrentTime();
     const duration = this.player.getDuration();
@@ -186,7 +179,7 @@ class MainView extends React.Component {
   }
 
   handleFeedbackSubmit(event) {
-    const { videoExplorerStore } = this.props;
+    const { videoExplorerStore } = stores;
 
     event.preventDefault();
 
@@ -203,7 +196,8 @@ class MainView extends React.Component {
     this.setState({isGeneratingZip: true})
     var zip = new JSZip();
 
-    const { selectedVideo, frames } = this.props.videoExplorerStore;
+    const { videoExplorerStore } = stores;
+    const { selectedVideo, frames } = videoExplorerStore;
 
     const visibleFrames = this.visibleFrames();
 
@@ -228,7 +222,7 @@ class MainView extends React.Component {
   }
 
   visibleFrames() {
-    const { videoExplorerStore } = this.props;
+    const { videoExplorerStore } = stores;
     const { selectedVideo, frames } = videoExplorerStore;
 
     if(typeof selectedVideo === 'undefined')
@@ -238,7 +232,7 @@ class MainView extends React.Component {
 
     return frames
           .filter(f => {
-            return typeof f !== undefined &&
+            return typeof f !== "undefined" &&
               this.state.filters.every(uiFilter => {
                 let isIncluded = true;
 
@@ -285,7 +279,7 @@ class MainView extends React.Component {
   }
 
   render() {
-    const { configStore, gpuStore, videoExplorerStore } = this.props;
+    const { configStore, gpuStore, videoExplorerStore } = stores;
 
     let mainClassNames = [
       "main-view",
@@ -387,7 +381,7 @@ class MainView extends React.Component {
 
                   <div className='video-main-display player-wrapper'>
                     <ReactPlayer
-                      ref={this.ref}
+                      ref={this.state.ref}
                       className='react-player'
                       url={videoExplorerStore.videoSrc}
                       width='100%'
@@ -508,7 +502,7 @@ class MainView extends React.Component {
                                   className="form-control"
                                   id="feedbackTextArea"
                                   rows="3"
-                                  ref={this.feedbackRef}
+                                  ref={this.state.feedbackRef}
                                 />
                                 <button
                                   type="submit"
@@ -596,7 +590,7 @@ class MainView extends React.Component {
                               <div
                                 key={f.id}
                                 className="scrollFrame"
-                                ref={f.isSelected ? this.frameRef : null}
+                                ref={f.isSelected ? this.state.frameRef : null}
                               >
                                 <Frame
                                   frame={f}
@@ -633,5 +627,5 @@ class MainView extends React.Component {
       )
     }
   }
-}
+}));
 export default MainView;

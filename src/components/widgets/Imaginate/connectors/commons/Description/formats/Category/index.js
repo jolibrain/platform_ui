@@ -1,12 +1,11 @@
 import React from "react";
 import { findDOMNode } from "react-dom";
-import PropTypes from "prop-types";
 import ReactTooltip from "react-tooltip";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 
-@inject("imaginateStore")
-@observer
-class Category extends React.Component {
+import stores from "../../../../../../../../stores/rootStore";
+
+const Category = observer(class Category extends React.Component {
   constructor(props) {
     super(props);
     this._nodes = new Map();
@@ -48,10 +47,12 @@ class Category extends React.Component {
 
   categoryDisplay(isRegression, category, index) {
 
+    const { imaginateStore } = stores;
     let serviceSettings = null;
-    if(this.props.imaginateStore &&
-       this.props.imaginateStore.serviceSettings) {
-      serviceSettings = this.props.imaginateStore.serviceSettings
+    if(
+      imaginateStore &&
+       imaginateStore.serviceSettings) {
+      serviceSettings = imaginateStore.serviceSettings
     }
 
     const { onOver, onLeave } = this.props;
@@ -143,11 +144,5 @@ class Category extends React.Component {
       </div>
     );
   }
-}
-
-Category.propTypes = {
-  input: PropTypes.object.isRequired,
-  onOver: PropTypes.func,
-  onLeave: PropTypes.func
-};
+});
 export default Category;

@@ -1,14 +1,11 @@
 import React from "react";
-import PropTypes from "prop-types";
 
-import { observer } from "mobx-react";
 import { toJS } from "mobx";
 import { Chart, Line } from "react-chartjs-2";
 
 import 'chartjs-plugin-zoom';
 
-@observer
-class MeasureChart extends React.Component {
+const MeasureChart = class MeasureChart extends React.Component {
   chartReference = {};
 
   constructor(props) {
@@ -691,15 +688,5 @@ class MeasureChart extends React.Component {
       </div>
     );
   }
-}
-
-MeasureChart.propTypes = {
-  title: PropTypes.string.isRequired,
-  attribute: PropTypes.string.isRequired,
-  layout: PropTypes.string.isRequired,
-  steppedLine: PropTypes.bool,
-  showBest: PropTypes.bool,
-  showMinValue: PropTypes.bool,
-  services: PropTypes.array.isRequired
 };
 export default MeasureChart;

@@ -1,5 +1,5 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 
 import Category from "./formats/Category";
 import Expectation from "./formats/Expectation";
@@ -10,9 +10,9 @@ import Nns from "./formats/Nns";
 import Rois from "./formats/Rois";
 import Simple from "./formats/Simple";
 
-@inject("imaginateStore")
-@observer
-class Description extends React.Component {
+import stores from "../../../../../../stores/rootStore";
+
+const Description = observer(class Description extends React.Component {
 
   constructor(props) {
     super(props);
@@ -22,7 +22,8 @@ class Description extends React.Component {
 
   selectDisplayFormat() {
 
-    const { service, serviceSettings } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service, serviceSettings } = imaginateStore;
     const input = service.selectedInput;
 
     let displayFormat = null;
@@ -136,7 +137,8 @@ class Description extends React.Component {
   }
 
   render() {
-    const { service } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service } = imaginateStore;
 
     if (!service || !service.selectedInput) return null;
 
@@ -202,6 +204,6 @@ class Description extends React.Component {
 
     return <div>{output}</div>;
   }
-}
+});
 
 export default Description;

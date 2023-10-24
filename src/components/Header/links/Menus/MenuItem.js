@@ -1,6 +1,6 @@
 import React from "react";
 
-class MenuItem extends React.Component {
+const MenuItem = class MenuItem extends React.Component {
   render() {
     const { name, icon, url } = this.props;
 
@@ -24,6 +24,6 @@ class MenuItem extends React.Component {
       </a>
     );
   }
-}
+};
 
 export default MenuItem;

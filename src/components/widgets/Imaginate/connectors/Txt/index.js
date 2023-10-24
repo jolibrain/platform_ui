@@ -1,5 +1,5 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 
 import InputList from "./InputList";
 import InputForm from "./InputForm";
@@ -8,9 +8,9 @@ import ParamSlider from "../commons/ParamSlider";
 import Description from "../commons/Description";
 import CardCommands from "../commons/CardCommands";
 
-@inject("imaginateStore")
-@observer
-class TxtConnector extends React.Component {
+import stores from "../../../../../stores/rootStore";
+
+const TxtConnector = observer(class TxtConnector extends React.Component {
   constructor(props) {
     super(props);
 
@@ -30,23 +30,26 @@ class TxtConnector extends React.Component {
   }
 
   handleConfidenceThreshold(value) {
-    const { serviceSettings } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { serviceSettings } = imaginateStore;
     serviceSettings.threshold.confidence = parseFloat((value / 100).toFixed(2));
     if (serviceSettings.threshold.confidence === 0) {
       serviceSettings.threshold.confidence = 0.01;
     }
-    this.props.imaginateStore.predict();
+    imaginateStore.predict();
   }
 
   handleBestThreshold(value) {
-    const { serviceSettings } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { serviceSettings } = imaginateStore;
     serviceSettings.request.best = parseInt(value, 10);
     this.setState({ sliderBest: value });
-    this.props.imaginateStore.predict();
+    imaginateStore.predict();
   }
 
   render() {
-    const { serviceSettings } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { serviceSettings } = imaginateStore;
 
     let uiControls = [];
 
@@ -93,5 +96,5 @@ class TxtConnector extends React.Component {
       </div>
     );
   }
-}
+});
 export default TxtConnector;

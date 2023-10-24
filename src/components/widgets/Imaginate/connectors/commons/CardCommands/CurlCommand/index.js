@@ -4,11 +4,11 @@ import { withRouter } from "react-router-dom";
 import PredictCommand from "./predict";
 import ChainCommand from "./chain";
 
-@withRouter
-class CurlCommand extends React.Component {
+const CurlCommand = withRouter(class CurlCommand extends React.Component {
   render() {
-    const { path } = this.props.match;
+    const { match } = this.props;
+    const { path } = match;
     return path.startsWith("/predict/") ? <PredictCommand /> : <ChainCommand />;
   }
-}
+});
 export default CurlCommand;

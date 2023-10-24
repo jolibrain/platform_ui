@@ -1,11 +1,10 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
+import stores from "../../../stores/rootStore";
 
-@inject("deepdetectStore")
-@observer
-class Swagger extends React.Component {
+const Swagger = observer(class Swagger extends React.Component {
     render() {
-        const { deepdetectStore } = this.props;
+        const { deepdetectStore } = stores;
 
         // Find first not down server
         const selectedServer = deepdetectStore.servers.find(s => !s.isDown);
@@ -33,6 +32,6 @@ class Swagger extends React.Component {
 
         }
     }
-}
+});
 
 export default Swagger;

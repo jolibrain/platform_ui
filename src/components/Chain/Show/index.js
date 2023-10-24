@@ -1,5 +1,5 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
 import Header from "../../Header";
@@ -7,19 +7,16 @@ import LeftPanel from "../commons/LeftPanel";
 import MainView from "./MainView";
 import Modals from "./Modals";
 
-@inject("deepdetectStore")
-@inject("imaginateStore")
-@inject("configStore")
-@withRouter
-@observer
-class ChainShow extends React.Component {
+import stores from "../../../stores/rootStore";
+
+const ChainShow = withRouter(observer(class ChainShow extends React.Component {
   constructor(props) {
     super(props);
     this.setDeepdetectServer = this.setDeepdetectServer.bind(this);
   }
 
   async setDeepdetectServer(params) {
-    const { deepdetectStore, imaginateStore } = this.props;
+    const { deepdetectStore, imaginateStore } = stores;
 
     if (!deepdetectStore.isReady) {
       return null;
@@ -65,7 +62,8 @@ class ChainShow extends React.Component {
   }
 
   render() {
-    if (this.props.configStore.isComponentBlacklisted("Chain")) return null;
+    const { configStore } = stores;
+    if (configStore.isComponentBlacklisted("Chain")) return null;
 
     return (
       <div>
@@ -78,5 +76,5 @@ class ChainShow extends React.Component {
       </div>
     );
   }
-}
+}));
 export default ChainShow;

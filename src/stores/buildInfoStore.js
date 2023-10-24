@@ -1,11 +1,15 @@
-import { observable, action, computed } from "mobx";
+import { makeAutoObservable } from "mobx";
 import agent from "../agent";
 
-export class buildInfoStore {
-  @observable isReady = false;
+export default class buildInfoStore {
+  isReady = false;
 
-  @observable version = "dev";
-  @observable latestDockerTag = null;
+  version = "dev";
+  latestDockerTag = null;
+
+  constructor() {
+    makeAutoObservable(this);
+  }
 
   $reqDockerTags() {
     return agent.BuildInfo.getDockerTags();
@@ -15,7 +19,6 @@ export class buildInfoStore {
     return agent.BuildInfo.getVersion();
   }
 
-  @computed
   get isUpdatable() {
 
     const versionRegex = /v(\d+)\.(\d+)\.(\d+).*/gm;
@@ -64,37 +67,38 @@ export class buildInfoStore {
     return updatable;
   }
 
-  @action
-  loadBuildInfo(callback = () => {}) {
-    this.$reqVersion().then(
-      action(version => {
-
-        if(
-          typeof version !== 'undefined' &&
-            version
-        ) {
-          this.version = version;
-          this.loadLatestDockerTag();
-        }
-
-        callback(this);
-      })
-    );
+  _updateVersion(version) {
+    this.version = version;
   }
 
-  @action
+  _updateDockerTag(dockerTag) {
+    this.latestDockerTag = dockerTag;
+  }
+
+  loadBuildInfo(callback = () => {}) {
+    this.$reqVersion().then(version => {
+
+      if(
+        typeof version !== 'undefined' &&
+          version
+      ) {
+        this._updateVersion(version);
+        this.loadLatestDockerTag();
+      }
+
+      callback(this);
+    })
+  }
+
   loadLatestDockerTag() {
-    this.$reqDockerTags().then(
-      action(dockerTags => {
-        this.latestDockerTag = dockerTags &&
-          dockerTags.results &&
-          dockerTags.results
-          .find(tag => {
-            return tag.match(/v\d+\.\d+\.\d+$/g)
-          });
-      })
-    );
+    this.$reqDockerTags().then(dockerTags => {
+      const dockerTag = dockerTags &&
+        dockerTags.results &&
+        dockerTags.results
+                  .find(tag => {
+                    return tag.match(/v\d+\.\d+\.\d+$/g)
+                  });
+      this._updateDockerTag(dockerTag);
+    })
   }
 }
-
-export default new buildInfoStore();

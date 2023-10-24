@@ -1,9 +1,9 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 
-@inject("imaginateStore")
-@observer
-class Threshold extends React.Component {
+import stores from "../../../../../stores/rootStore";
+
+const Threshold = observer(class Threshold extends React.Component {
   constructor(props) {
     super(props);
 
@@ -11,21 +11,21 @@ class Threshold extends React.Component {
   }
 
   handleClick(thresholdValue) {
-    const store = this.props.imaginateStore;
-    store.serviceSettings.threshold.confidence = thresholdValue;
-    store.predict();
+    const { imaginateStore } = stores;
+    imaginateStore.serviceSettings.threshold.confidence = thresholdValue;
+    imaginateStore.predict();
   }
 
   render() {
-    const store = this.props.imaginateStore;
+    const { imaginateStore } = stores;
 
     if (
-      !store.service.selectedInput ||
-      !store.serviceSettings.threshold.controls ||
-      (store.service.selectedInput.postData &&
-        store.service.selectedInput.postData.parameters &&
-        store.service.selectedInput.postData.parameters.input &&
-        store.service.selectedInput.postData.parameters.input.segmentation)
+      !imaginateStore.service.selectedInput ||
+      !imaginateStore.serviceSettings.threshold.controls ||
+      (imaginateStore.service.selectedInput.postData &&
+        imaginateStore.service.selectedInput.postData.parameters &&
+        imaginateStore.service.selectedInput.postData.parameters.input &&
+        imaginateStore.service.selectedInput.postData.parameters.input.segmentation)
     ) {
       return null;
     }
@@ -33,23 +33,23 @@ class Threshold extends React.Component {
     let thresholds = [
       {
         name: "Salient",
-        value: store.serviceSettings.threshold.controlSteps[0],
+        value: imaginateStore.serviceSettings.threshold.controlSteps[0],
         classNames: "btn btn-secondary"
       },
       {
         name: "Medium",
-        value: store.serviceSettings.threshold.controlSteps[1],
+        value: imaginateStore.serviceSettings.threshold.controlSteps[1],
         classNames: "btn btn-secondary"
       },
       {
         name: "Detailed",
-        value: store.serviceSettings.threshold.controlSteps[2],
+        value: imaginateStore.serviceSettings.threshold.controlSteps[2],
         classNames: "btn btn-secondary"
       }
     ];
 
     thresholds.forEach(config => {
-      if (config.value === store.serviceSettings.threshold.confidence) {
+      if (config.value === imaginateStore.serviceSettings.threshold.confidence) {
         config.classNames = "btn btn-primary";
       }
     });
@@ -85,5 +85,5 @@ class Threshold extends React.Component {
       </div>
     );
   }
-}
+});
 export default Threshold;

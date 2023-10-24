@@ -1,10 +1,8 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 import { Line } from "react-chartjs-2";
 
-@observer
-class ChartColumn extends React.Component {
+const ChartColumn = observer(class ChartColumn extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -148,11 +146,5 @@ class ChartColumn extends React.Component {
       </div>
     );
   }
-}
-
-ChartColumn.propTypes = {
-  input: PropTypes.object.isRequired,
-  colIndex: PropTypes.number.isRequired,
-  colKey: PropTypes.string.isRequired
-};
+});
 export default ChartColumn;

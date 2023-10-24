@@ -1,16 +1,16 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 
-@inject("deepdetectStore")
-@inject("configStore")
-@observer
-class ServiceInfo extends React.Component {
+import stores from "../../../stores/rootStore";
+
+const ServiceInfo = observer(class ServiceInfo extends React.Component {
   render() {
-    if (this.props.configStore.isComponentBlacklisted("ServiceInfo"))
+
+    const { configStore, deepdetectStore } = stores;
+    if (configStore.isComponentBlacklisted("ServiceInfo"))
       return null;
 
-    const { service } = this.props.deepdetectStore;
-
+    const { service } = deepdetectStore;
     if (!service) return null;
 
     const settings = service.settings;
@@ -49,5 +49,5 @@ class ServiceInfo extends React.Component {
       </div>
     );
   }
-}
+});
 export default ServiceInfo;

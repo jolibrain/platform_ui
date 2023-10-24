@@ -1,10 +1,10 @@
 /* eslint jsx-a11y/anchor-is-valid: "off" */
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 
-@inject("imaginateStore")
-@observer
-class ImageList extends React.Component {
+import stores from "../../../../../stores/rootStore";
+
+const ImageList = observer(class ImageList extends React.Component {
   constructor(props) {
     super(props);
 
@@ -19,39 +19,46 @@ class ImageList extends React.Component {
   }
 
   componentWillMount() {
-    const { service } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service } = imaginateStore;
     this.setState({ inputs: service.inputs });
   }
 
   componentWillReceiveProps(nextProps) {
-    const { service } = nextProps.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service } = imaginateStore;
     this.setState({ inputs: service.inputs });
   }
 
   selectInput(index) {
-    const store = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const store = imaginateStore;
     store.service.selectInput(index);
     store.predict();
   }
 
   handleClearAll() {
-    const { service } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service } = imaginateStore;
     service.clearAllInputs();
   }
 
   handleClearInput(index) {
-    const { service } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service } = imaginateStore;
     service.clearInput(index);
   }
 
   handleClickRandomize() {
-    const { service } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service } = imaginateStore;
     service.shuffleInputs();
     this.setState({ inputs: service.inputs });
   }
 
   render() {
-    const { service } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service } = imaginateStore;
 
     if (!service) return null;
 
@@ -104,5 +111,5 @@ class ImageList extends React.Component {
       );
     }
   }
-}
+});
 export default ImageList;

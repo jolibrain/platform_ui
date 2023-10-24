@@ -1,12 +1,10 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 
-@inject("deepdetectStore")
-@inject("modalStore")
-@observer
-@withRouter
-class StopTrainingModal extends React.Component {
+import stores from "../../../stores/rootStore";
+
+const StopTrainingModal = withRouter(observer(class StopTrainingModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -17,11 +15,13 @@ class StopTrainingModal extends React.Component {
   }
 
   handleCancel() {
-    this.props.modalStore.setVisible("stopTraining", false);
+    const { modalStore } = stores;
+    modalStore.setVisible("stopTraining", false);
   }
 
   handleStopTraining() {
-    const { deepdetectStore, modalStore, history } = this.props;
+    const { deepdetectStore, modalStore } = stores;
+    const { history } = this.props;
     this.setState({ spinner: true });
     deepdetectStore.stopTraining(() => {
       modalStore.setVisible("stopTraining", false);
@@ -30,7 +30,8 @@ class StopTrainingModal extends React.Component {
   }
 
   render() {
-    const { server } = this.props.deepdetectStore;
+    const { deepdetectStore } = stores;
+    const { server } = deepdetectStore;
 
     if (!server || !server.service) return null;
 
@@ -72,5 +73,5 @@ class StopTrainingModal extends React.Component {
       </div>
     );
   }
-}
+}));
 export default StopTrainingModal;

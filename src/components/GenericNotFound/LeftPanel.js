@@ -2,7 +2,7 @@ import React from "react";
 
 import ServiceList from "../widgets/ServiceList";
 
-class LeftPanel extends React.Component {
+const LeftPanel = class LeftPanel extends React.Component {
   render() {
     return (
       <div className="nav-sidebar left-sidebar">
@@ -12,5 +12,5 @@ class LeftPanel extends React.Component {
       </div>
     );
   }
-}
+};
 export default LeftPanel;

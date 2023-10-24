@@ -2,9 +2,7 @@ import React from "react";
 import { observer } from "mobx-react";
 import { Link, withRouter } from "react-router-dom";
 
-@withRouter
-@observer
-class ServiceItem extends React.Component {
+const ServiceItem = withRouter(observer(class ServiceItem extends React.Component {
   render() {
     const { service, match } = this.props;
 
@@ -37,5 +35,5 @@ class ServiceItem extends React.Component {
       </li>
     );
   }
-}
+}));
 export default ServiceItem;

@@ -1,6 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 
 import RightPanel from "../commons/RightPanel";
 
@@ -10,17 +10,14 @@ import MeasureHistArray from "../../widgets/TrainingMonitor/components/MeasureHi
 
 import Breadcrumb from "../../widgets/Breadcrumb";
 
-@inject("deepdetectStore")
-@inject("modalStore")
-@inject("configStore")
-@inject("gpuStore")
-@observer
-@withRouter
-class MainView extends React.Component {
-  render() {
-    if (!this.props.deepdetectStore.isReady) return null;
+import stores from "../../../stores/rootStore";
 
-    const { services } = this.props.deepdetectStore;
+const MainView = withRouter(observer(class MainView extends React.Component {
+  render() {
+    const { configStore, deepdetectStore, gpuStore } = stores;
+    if (!deepdetectStore.isReady) return null;
+
+    const { services } = deepdetectStore;
 
     const { params } = this.props.match;
     const service = services.find(s => {
@@ -39,8 +36,8 @@ class MainView extends React.Component {
 
     let mainClassnames = "main-view content-wrapper"
     if (
-      typeof this.props.configStore.gpuInfo !== "undefined" &&
-        this.props.gpuStore.servers.length > 0
+      typeof configStore.gpuInfo !== "undefined" &&
+        gpuStore.servers.length > 0
     ) {
       mainClassnames = "main-view content-wrapper with-right-sidebar"
     }
@@ -61,5 +58,5 @@ class MainView extends React.Component {
       </div>
     );
   }
-}
+}));
 export default MainView;

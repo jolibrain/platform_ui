@@ -1,6 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 
 import Modals from "./Modals";
 import RightPanel from "../../../commons/RightPanel";
@@ -9,13 +9,9 @@ import MultiTitle from "../../../../widgets/TrainingMonitor/components/MultiTitl
 import GeneralInfo from "../../../../widgets/TrainingMonitor/components/GeneralInfo";
 import MeasureHistArray from "../../../../widgets/TrainingMonitor/components/MeasureHistArray";
 
-@inject("modalStore")
-@inject("modelRepositoriesStore")
-@inject("configStore")
-@inject("gpuStore")
-@observer
-@withRouter
-class ModelCompare extends React.Component {
+import stores from "../../../../../stores/rootStore";
+
+const ModelCompare = withRouter(observer(class ModelCompare extends React.Component {
   constructor(props) {
     super(props);
 
@@ -35,13 +31,15 @@ class ModelCompare extends React.Component {
   }
 
   modalBackdropClicked() {
+    const { modalStore } = stores;
     this.setState({publishModalServiceIndex: -1})
-    this.props.modalStore.setVisible("publishTraining", false);
+    modalStore.setVisible("publishTraining", false);
   }
 
   handlePublishModalServiceIndex(serviceIndex) {
+    const { modalStore } = stores;
     this.setState({publishModalServiceIndex: serviceIndex})
-    this.props.modalStore.setVisible("publishTraining", true);
+    modalStore.setVisible("publishTraining", true);
   }
 
   handleRepositoryVisibility(index) {
@@ -56,7 +54,8 @@ class ModelCompare extends React.Component {
   }
 
   async componentWillMount() {
-    const { match, modelRepositoriesStore } = this.props;
+    const { match } = this.props;
+    const {modelRepositoriesStore } = stores;
     const trainingRepositoryStore = modelRepositoriesStore.repositoryStores.find(
       r => r.name === "training"
     );
@@ -93,6 +92,7 @@ class ModelCompare extends React.Component {
   }
 
   render() {
+    const { configStore, gpuStore } = stores;
     const {
       repositories,
       hiddenRepositoriesIndexes,
@@ -106,8 +106,8 @@ class ModelCompare extends React.Component {
 
     let mainClassnames = "main-view content-wrapper"
     if (
-      typeof this.props.configStore.gpuInfo !== "undefined" &&
-        this.props.gpuStore.servers.length > 0
+      typeof configStore.gpuInfo !== "undefined" &&
+        gpuStore.servers.length > 0
     ) {
       mainClassnames = "main-view content-wrapper with-right-sidebar"
     }
@@ -156,5 +156,5 @@ class ModelCompare extends React.Component {
       </div>
     );
   }
-}
+}));
 export default ModelCompare;

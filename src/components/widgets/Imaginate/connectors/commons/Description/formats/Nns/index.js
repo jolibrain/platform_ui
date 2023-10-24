@@ -1,9 +1,7 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 
-@observer
-class Nns extends React.Component {
+const Nns = observer(class Nns extends React.Component {
   constructor(props) {
     super(props);
     this.nnsItem = this.nnsItem.bind(this);
@@ -66,9 +64,5 @@ class Nns extends React.Component {
 
     return <div className="description-nns row">{cells}</div>;
   }
-}
-
-Nns.propTypes = {
-  input: PropTypes.object.isRequired
-};
+});
 export default Nns;

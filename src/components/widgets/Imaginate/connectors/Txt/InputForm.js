@@ -1,9 +1,9 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 
-@inject("imaginateStore")
-@observer
-class InputForm extends React.Component {
+import stores from "../../../../../stores/rootStore";
+
+const InputForm = observer(class InputForm extends React.Component {
   constructor(props) {
     super(props);
 
@@ -21,9 +21,9 @@ class InputForm extends React.Component {
   }
 
   submitInput(content) {
-    const store = this.props.imaginateStore;
-    store.service.addInput(content);
-    store.predict();
+    const { imaginateStore } = stores;
+    imaginateStore.service.addInput(content);
+    imaginateStore.predict();
   }
 
   render() {
@@ -49,5 +49,5 @@ class InputForm extends React.Component {
       </div>
     );
   }
-}
+});
 export default InputForm;

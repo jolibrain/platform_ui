@@ -1,9 +1,7 @@
 import React from "react";
-import { observer } from "mobx-react";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
-@observer
-class Frame extends React.Component {
+const Frame = class Frame extends React.Component {
 
   constructor(props) {
     super(props);
@@ -101,5 +99,4 @@ class Frame extends React.Component {
     );
   }
 };
-
 export default Frame

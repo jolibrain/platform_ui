@@ -1,18 +1,16 @@
-import { observable, action } from "mobx";
+import { makeAutoObservable } from "mobx";
 import agent from "../agent";
 
-export class configStore {
-  @observable isReady = false;
+export default class configStore {
+  isReady = false;
 
-  @observable layout = "full";
+  layout = "full";
 
-  @observable
   common = {
     name: "DeepDetect",
     gitCommitHash: null
   };
 
-  @observable
   homeComponent = {
     contentType: "json", // TODO: more content types
     title: "DeepDetect Platform",
@@ -23,7 +21,6 @@ export class configStore {
     }
   };
 
-  @observable
   deepdetect = {
     server: {
       path: "/api"
@@ -34,20 +31,16 @@ export class configStore {
     }
   };
 
-  @observable
   gpuInfo = {
     refreshRate: 5000
   };
 
-  @observable
   imaginate = {
     initImages: []
   };
 
-  @observable
   videoExplorer = null;
 
-  @observable
   modelRepositories = [
     {
       name: "public",
@@ -71,85 +64,80 @@ export class configStore {
     }
   ];
 
-  @observable
   dataRepositories = {
     nginxPath: "/data/",
     systemPath: "/opt/platform/data/"
   };
 
-  @observable
   datasets = {
     nginxPath: "/data/datasets/",
     systemPath: "/opt/platform/data/datasets/"
   };
 
-  @observable
   modals = [];
 
-  @observable
   componentBlacklist = [];
 
-  @observable
   placeholders = {};
+
+  constructor() {
+    makeAutoObservable(this)
+  }
 
   $reqConfig(path = "/config.json") {
     return agent.Config.get(path);
   }
 
-  @action
-  loadConfig(callbackAfterLoad = () => {}, path = "/config.json") {
-    this.$reqConfig(path).then(
-      action(config => {
-        if (config) {
-          this.layout = config.layout ? config.layout : this.layout;
+  _processConfigResponse = config => {
+    if (config) {
+      this.layout = config.layout ? config.layout : this.layout;
 
-          this.common = config.common ? config.common : this.common;
+      this.common = config.common ? config.common : this.common;
 
-          this.gpuInfo = config.gpuInfo ? config.gpuInfo : this.gpuInfo;
+      this.gpuInfo = config.gpuInfo ? config.gpuInfo : this.gpuInfo;
 
-          this.deepdetect = config.deepdetect
-            ? config.deepdetect
-            : this.deepdetect;
+      this.deepdetect = config.deepdetect
+        ? config.deepdetect
+        : this.deepdetect;
 
-          this.imaginate = config.imaginate ? config.imaginate : this.imaginate;
+      this.imaginate = config.imaginate ? config.imaginate : this.imaginate;
 
-          this.videoExplorer = config.videoExplorer ? config.videoExplorer : this.videoExplorer;
+      this.videoExplorer = config.videoExplorer ? config.videoExplorer : this.videoExplorer;
 
-          this.modelRepositories = config.modelRepositories
-            ? config.modelRepositories
-            : this.modelRepositories;
+      this.modelRepositories = config.modelRepositories
+        ? config.modelRepositories
+        : this.modelRepositories;
 
-          this.dataRepositories = config.dataRepositories
-            ? config.dataRepositories
-            : this.dataRepositories;
+      this.dataRepositories = config.dataRepositories
+        ? config.dataRepositories
+        : this.dataRepositories;
 
-          this.datasets = config.datasets ? config.datasets : this.datasets;
+      this.datasets = config.datasets ? config.datasets : this.datasets;
 
-          this.homeComponent = config.homeComponent
-            ? config.homeComponent
-            : this.homeComponent;
+      this.homeComponent = config.homeComponent
+        ? config.homeComponent
+        : this.homeComponent;
 
-          this.modals = config.modals ? config.modals : this.modals;
+      this.modals = config.modals ? config.modals : this.modals;
 
-          this.componentBlacklist = config.componentBlacklist
-            ? config.componentBlacklist
-            : this.componentBlacklist;
+      this.componentBlacklist = config.componentBlacklist
+        ? config.componentBlacklist
+        : this.componentBlacklist;
 
-          this.placeholders = config.placeholders
-            ? config.placeholders
-            : this.placeholders;
+      this.placeholders = config.placeholders
+        ? config.placeholders
+        : this.placeholders;
 
-          this.isReady = true;
-        }
+      this.isReady = true;
+    }
+  }
 
-        callbackAfterLoad(this);
-      })
-    );
+  async loadConfig(path = "/config.json") {
+    await this.$reqConfig(path)
+              .then(this._processConfigResponse)
   }
 
   isComponentBlacklisted(componentName) {
     return this.componentBlacklist.includes(componentName);
   }
 }
-
-export default new configStore();

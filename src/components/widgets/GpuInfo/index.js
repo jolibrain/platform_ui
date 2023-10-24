@@ -1,16 +1,17 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 
 import GpuStatServer from "./Server";
 
-@inject("configStore")
-@inject("gpuStore")
-@observer
-class GpuInfo extends React.Component {
-  render() {
-    if (this.props.configStore.isComponentBlacklisted("GpuInfo")) return null;
+import stores from "../../../stores/rootStore";
 
-    const { servers } = this.props.gpuStore;
+const GpuInfo = observer(class GpuInfo extends React.Component {
+  render() {
+
+    const { configStore, gpuStore } = stores;
+    if (configStore.isComponentBlacklisted("GpuInfo")) return null;
+
+    const { servers } = gpuStore;
 
     const jetsonSensors = servers.filter(s => s.type === "jetson");
     const gpuServers = servers.filter(s => s.type === "standard");
@@ -32,5 +33,5 @@ class GpuInfo extends React.Component {
       </div>
     );
   }
-}
+});
 export default GpuInfo;

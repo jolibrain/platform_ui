@@ -1,15 +1,15 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 
 import { Bar } from "react-chartjs-2";
-
 import 'chartjs-plugin-zoom';
 
-@inject("configStore")
-@observer
-class StatsKeyChart extends React.Component {
+import stores from "../../../../stores/rootStore";
+
+const StatsKeyChart = observer(class StatsKeyChart extends React.Component {
   render() {
-    if (this.props.configStore.isComponentBlacklisted("DistributionChart"))
+    const { configStore } = stores;
+    if (configStore.isComponentBlacklisted("DistributionChart"))
       return null;
 
     const { stats, options } = this.props;
@@ -72,5 +72,5 @@ class StatsKeyChart extends React.Component {
       </div>
     );
   }
-}
+});
 export default StatsKeyChart;

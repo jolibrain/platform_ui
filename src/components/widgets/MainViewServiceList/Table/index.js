@@ -1,6 +1,5 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 import moment from "moment"
 import ReactPaginate from 'react-paginate';
@@ -12,10 +11,9 @@ import TrainingItem from "./Training";
 import ModelRepositoryItem from "./ModelRepository";
 import DatasetItem from "./Dataset";
 
-@inject("pathFilterStore")
-@withRouter
-@observer
-class Table extends React.Component {
+import stores from "../../../../stores/rootStore";
+
+const Table = withRouter(observer(class Table extends React.Component {
 
   constructor(props) {
     super(props);
@@ -309,7 +307,7 @@ class Table extends React.Component {
 
   handleFilterClick(event){
     const { pagination } = this.state;
-    const { pathFilterStore } = this.props;
+    const { pathFilterStore } = stores;
 
     pathFilterStore.addPathFilter(event.target.innerHTML);
 
@@ -576,10 +574,5 @@ class Table extends React.Component {
 
   }
 
-}
-
-Table.propTypes = {
-  services: PropTypes.array.isRequired,
-  handleCompareStateChange: PropTypes.func
-};
+}));
 export default Table;

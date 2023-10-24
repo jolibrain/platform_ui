@@ -1,12 +1,13 @@
-import { observable, action, computed } from "mobx";
+import { makeAutoObservable } from "mobx";
 import agent from "../../agent";
 
 export default class GpuStatServer {
-  @observable gpuInfo = null;
-  @observable recommendedGpuIndex = -1;
-  @observable error = false;
+  gpuInfo = null;
+  recommendedGpuIndex = -1;
+  error = false;
 
   constructor(opts) {
+    makeAutoObservable(this);
     this.name = opts.name;
     this.url = opts.url;
     this.aliases = opts.aliases || [];
@@ -16,22 +17,35 @@ export default class GpuStatServer {
     this.externalLinks = opts.externalLinks || [];
   }
 
-  @computed
   get isAvailable() {
     return this.type === "jetson" || this.hasGpu;
   }
 
-  @computed
   get hasGpu() {
     return this.gpuInfo && this.gpuInfo.gpus && this.gpuInfo.gpus.length > 0;
   }
 
-  @action
+  _updateNotError() {
+    this.error = false;
+  }
+
+  _updateIsError() {
+    this.error = true;
+  }
+
+  _updateGpuInfo(gpuInfo) {
+    this.gpuInfo = gpuInfo;
+  }
+
+  _updateRecommendedGpuIndex(recommendedGpuIndex) {
+    this.recommendedGpuIndex = recommendedGpuIndex;
+  }
+
   async loadGpuInfo() {
     const gpuInfo = await this.$reqGpuInfo();
 
     if (gpuInfo) {
-      this.error = false;
+      this._updateNotError();
 
       // Filter out some gpu as defined in config.json
       if (this.filterOutIndexes.length > 0) {
@@ -40,7 +54,7 @@ export default class GpuStatServer {
         );
       }
 
-      this.gpuInfo = gpuInfo;
+      this._updateGpuInfo(gpuInfo);
 
       if (gpuInfo.gpus && gpuInfo.gpus.length > 0) {
         const sortedMemoryGpus = gpuInfo.gpus
@@ -55,13 +69,13 @@ export default class GpuStatServer {
           });
 
         if (sortedMemoryGpus[0] && sortedMemoryGpus[0].index >= 0) {
-          this.recommendedGpuIndex = sortedMemoryGpus[0].index;
+          this._updateRecommendedGpuIndex(sortedMemoryGpus[0].index);
         } else {
-          this.recommendedGpuIndex = -1;
+          this._updateRecommendedGpuIndex(-1);
         }
       }
     } else {
-      this.error = true;
+      this._updateIsError();
     }
   }
 

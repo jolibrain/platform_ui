@@ -1,13 +1,10 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 
-@inject("deepdetectStore")
-@inject("gpuStore")
-@inject("modalStore")
-@observer
-@withRouter
-class PredictAddServiceModal extends React.Component {
+import stores from "../../../stores/rootStore";
+
+const PredictAddServiceModal = withRouter(observer(class PredictAddServiceModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -52,8 +49,9 @@ class PredictAddServiceModal extends React.Component {
   }
 
   handleCancel() {
+    const { modalStore } = stores;
     this.setState({ addErrors: [] });
-    this.props.modalStore.setVisible("addService", false);
+    modalStore.setVisible("addService", false);
   }
 
   validateBeforeSubmit() {
@@ -74,8 +72,8 @@ class PredictAddServiceModal extends React.Component {
     if (serviceName === "new") {
       errors.push("Service name can't be named 'new'");
     }
-    const ddStore = this.props.deepdetectStore;
-    const serviceNames = ddStore.server.services.map(s => s.name.toLowerCase());
+    const { deepdetectStore } = stores;
+    const serviceNames = deepdetectStore.server.services.map(s => s.name.toLowerCase());
 
     if (serviceNames.includes(serviceName.toLowerCase())) {
       errors.push("Service name already exists");
@@ -87,14 +85,13 @@ class PredictAddServiceModal extends React.Component {
   }
 
   handleAddService() {
+    const { deepdetectStore, modalStore } = stores;
     const { repository } = this.props;
     const { serviceName } = this.state;
 
     if (!this.validateBeforeSubmit()) {
       return null;
     }
-
-    const ddStore = this.props.deepdetectStore;
 
     this.setState({ spinner: true });
 
@@ -115,7 +112,7 @@ class PredictAddServiceModal extends React.Component {
 
     serviceData.parameters.mllib.gpuid = this.state.gpuId;
 
-    ddStore.newService(serviceName, serviceData, (resp, err) => {
+    deepdetectStore.newService(serviceName, serviceData, (resp, err) => {
       if (err) {
         const message =
           typeof err.status !== "undefined"
@@ -132,24 +129,25 @@ class PredictAddServiceModal extends React.Component {
           addErrors: []
         });
 
-        ddStore.setService(serviceName);
+        deepdetectStore.setService(serviceName);
 
-        if (ddStore.service && this.state.mediaType) {
-          ddStore.service.uiParams.mediaType = this.state.mediaType;
+        if (deepdetectStore.service && this.state.mediaType) {
+          deepdetectStore.service.uiParams.mediaType = this.state.mediaType;
         }
 
-        this.props.modalStore.setVisible("addService", false);
+        modalStore.setVisible("addService", false);
 
-        const serviceUrl = `/predict/${ddStore.hostableServer.name}/${serviceName}`;
+        const serviceUrl = `/predict/${deepdetectStore.hostableServer.name}/${serviceName}`;
         this.props.history.push(serviceUrl);
       }
     });
   }
 
   render() {
+    const { deepdetectStore, gpuStore } = stores;
     const { serviceName, gpuId } = this.state;
-    const { hostableServer } = this.props.deepdetectStore;
-    const { servers } = this.props.gpuStore;
+    const { hostableServer } = deepdetectStore;
+    const { servers } = gpuStore;
     const gpuStoreServer = servers.find(
       s =>
         s.name === hostableServer.name ||
@@ -348,5 +346,5 @@ class PredictAddServiceModal extends React.Component {
       </div>
     );
   }
-}
+}));
 export default PredictAddServiceModal;

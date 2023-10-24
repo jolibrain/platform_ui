@@ -1,8 +1,7 @@
 /* eslint jsx-a11y/anchor-is-valid: "off" */
 import React from "react";
 
-class MenuDropdown extends React.Component {
-
+const MenuDropdown = class MenuDropdown extends React.Component {
   constructor(props) {
     super(props);
 
@@ -104,6 +103,5 @@ class MenuDropdown extends React.Component {
         </div>
     );
   }
-}
-
+};
 export default MenuDropdown;

@@ -1,5 +1,5 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
 import DataTable from 'react-data-table-component';
@@ -11,11 +11,9 @@ import CardCommands from "../commons/CardCommands";
 
 import ChartColumn from "./ChartColumn";
 
-@inject("imaginateStore")
-@inject("dataRepositoriesStore")
-@withRouter
-@observer
-class CsvConnector extends React.Component {
+import stores from "../../../../../stores/rootStore";
+
+const CsvConnector = withRouter(observer(class CsvConnector extends React.Component {
 
   constructor(props) {
     super(props);
@@ -32,7 +30,7 @@ class CsvConnector extends React.Component {
   }
 
   componentDidMount() {
-    const { dataRepositoriesStore } = this.props;
+    const { dataRepositoriesStore } = stores;
 
     if (dataRepositoriesStore.loaded === false) {
       dataRepositoriesStore.refresh();
@@ -40,8 +38,8 @@ class CsvConnector extends React.Component {
   }
 
   render() {
-
-    const { service } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service } = imaginateStore;
     if (!service) return null;
 
     const input = service.selectedInput;
@@ -178,5 +176,5 @@ class CsvConnector extends React.Component {
       </div>
     );
   }
-}
+}));
 export default CsvConnector;

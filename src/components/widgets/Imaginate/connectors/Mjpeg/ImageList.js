@@ -1,9 +1,9 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 
-@inject("imaginateStore")
-@observer
-class ImageList extends React.Component {
+import stores from "../../../../../stores/rootStore";
+
+const ImageList = observer(class ImageList extends React.Component {
   constructor(props) {
     super(props);
 
@@ -18,28 +18,32 @@ class ImageList extends React.Component {
   }
 
   componentWillMount() {
-    const { service } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service } = imaginateStore;
     this.setState({ inputs: service.inputs });
   }
 
   componentWillReceiveProps(nextProps) {
-    const { service } = nextProps.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service } = imaginateStore;
     this.setState({ inputs: service.inputs });
   }
 
   selectInput(index) {
-    const store = this.props.imaginateStore;
-    store.service.selectInput(index);
-    store.predict();
+    const { imaginateStore } = stores;
+    imaginateStore.service.selectInput(index);
+    imaginateStore.predict();
   }
 
   handleClearAll() {
-    const { service } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service } = imaginateStore;
     service.clearAllInputs();
   }
 
   handleClearInput(index) {
-    const { service } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service } = imaginateStore;
     service.clearInput(index);
   }
 
@@ -53,7 +57,8 @@ class ImageList extends React.Component {
   }
 
   render() {
-    const { service } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service } = imaginateStore;
 
     if (!service) return null;
 
@@ -106,5 +111,5 @@ class ImageList extends React.Component {
       );
     }
   }
-}
+});
 export default ImageList;

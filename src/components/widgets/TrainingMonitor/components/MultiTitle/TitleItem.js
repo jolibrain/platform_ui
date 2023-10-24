@@ -1,9 +1,6 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { observer } from "mobx-react";
 
-@observer
-class TitleItem extends React.Component {
+const TitleItem = class TitleItem extends React.Component {
   constructor(props) {
     super(props);
     this.getHistValue = this.getHistValue.bind(this);
@@ -145,10 +142,5 @@ class TitleItem extends React.Component {
       </tr>
     );
   }
-}
-
-TitleItem.propTypes = {
-  service: PropTypes.object.isRequired,
-  serviceIndex: PropTypes.number
 };
 export default TitleItem;

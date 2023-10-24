@@ -1,14 +1,13 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 import Modal from "react-bootstrap4-modal";
 
 import DeleteServiceModal from "../../widgets/modals/DeleteServiceModal";
 
-@inject("modalStore")
-@withRouter
-@observer
-class Modals extends React.Component {
+import stores from "../../../stores/rootStore";
+
+const Modals = withRouter(observer(class Modals extends React.Component {
   constructor(props) {
     super(props);
 
@@ -16,12 +15,13 @@ class Modals extends React.Component {
   }
 
   modalBackdropClicked(modalName) {
-    this.props.modalStore.setVisible(modalName, false);
+    const { modalStore } = stores;
+    modalStore.setVisible(modalName, false);
   }
 
   render() {
-    const store = this.props.modalStore;
-    const deleteServiceModal = store.getModal("deleteService");
+    const { modalStore } = stores;
+    const deleteServiceModal = modalStore.getModal("deleteService");
 
     let service = null;
     if (deleteServiceModal.params && deleteServiceModal.params.service) {
@@ -37,5 +37,5 @@ class Modals extends React.Component {
       </Modal>
     );
   }
-}
+}));
 export default Modals;

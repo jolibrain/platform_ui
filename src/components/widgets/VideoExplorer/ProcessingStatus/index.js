@@ -1,21 +1,21 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
 import moment from "moment"
 
 import ProcessingItem from "./Items/ProcessingItem";
 
-@inject("videoExplorerStore")
-@inject("configStore")
-@withRouter
-@observer
-class ProcessingStatus extends React.Component {
+import stores from "../../../../stores/rootStore";
+
+const ProcessingStatus = withRouter(observer(class ProcessingStatus extends React.Component {
   render() {
-    if (this.props.configStore.isComponentBlacklisted("ProcessingStatus"))
+
+    const { configStore, videoExplorerStore } = stores;
+
+    if (configStore.isComponentBlacklisted("ProcessingStatus"))
       return null;
 
-    const { videoExplorerStore } = this.props;
     const { settings, processingVideos } = videoExplorerStore;
 
     const processingItems = processingVideos
@@ -56,5 +56,5 @@ class ProcessingStatus extends React.Component {
         }
     </div>);
   }
-}
+}));
 export default ProcessingStatus;

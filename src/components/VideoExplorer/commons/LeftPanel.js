@@ -1,5 +1,5 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
 import ServiceList from "../../widgets/ServiceList";
@@ -7,15 +7,13 @@ import PlaceHolder from "../../widgets/PlaceHolder";
 
 import ProcessingStatus from "../../widgets/VideoExplorer/ProcessingStatus";
 
-@inject("configStore")
-@withRouter
-@observer
-class LeftPanel extends React.Component {
-  render() {
+import stores from "../../../stores/rootStore";
 
-    if (
-      this.props.configStore.isComponentBlacklisted("LeftPanel")
-    )
+const LeftPanel = withRouter(observer(class LeftPanel extends React.Component {
+  render() {
+    const { configStore } = stores;
+
+    if (configStore.isComponentBlacklisted("LeftPanel"))
       return null;
 
     return (
@@ -29,5 +27,5 @@ class LeftPanel extends React.Component {
       </div>
     );
   }
-}
+}));
 export default LeftPanel;

@@ -1,15 +1,13 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 import moment from "moment";
 
 import DownloadModelFiles from "../../DownloadModelFiles";
 
-@inject("deepdetectStore")
-@withRouter
-@observer
-class ListItem extends React.Component {
+import stores from "../../../../stores/rootStore";
+
+const ListItem = withRouter(observer(class ListItem extends React.Component {
   constructor(props) {
     super(props);
 
@@ -38,8 +36,8 @@ class ListItem extends React.Component {
     if (serviceName === "new") {
       errors.push("Service name can't be named 'new'");
     }
-    const ddStore = this.props.deepdetectStore;
-    const serviceNames = ddStore.server.services.map(s => s.name.toLowerCase());
+    const { deepdetectStore } = stores;
+    const serviceNames = deepdetectStore.server.services.map(s => s.name.toLowerCase());
 
     if (serviceNames.includes(serviceName.toLowerCase())) {
       errors.push("Service name already exists");
@@ -71,7 +69,7 @@ class ListItem extends React.Component {
 
     serviceName = serviceName.toLowerCase();
 
-    const ddStore = this.props.deepdetectStore;
+    const { deepdetectStore } = stores;
 
     this.setState({ creatingService: true });
 
@@ -90,7 +88,7 @@ class ListItem extends React.Component {
       serviceData.parameters.input.db = false;
     }
 
-    ddStore.newService(serviceName, serviceData, (resp, err) => {
+    deepdetectStore.newService(serviceName, serviceData, (resp, err) => {
       if (err) {
         this.setState({
           creatingService: false,
@@ -102,10 +100,10 @@ class ListItem extends React.Component {
           errors: []
         });
 
-        ddStore.setService(serviceName);
+        deepdetectStore.setService(serviceName);
 
         this.props.history.push(
-          `/predict/${ddStore.writableServer.name}/${serviceName}`
+          `/predict/${deepdetectStore.writableServer.name}/${serviceName}`
         );
       }
     });
@@ -214,9 +212,5 @@ class ListItem extends React.Component {
       </div>
     );
   }
-}
-
-ListItem.propTypes = {
-  repository: PropTypes.object.isRequired
-};
+}));
 export default ListItem;

@@ -1,17 +1,15 @@
 /* eslint jsx-a11y/anchor-is-valid: "off" */
 import React from "react";
 
-import PropTypes from "prop-types";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 import moment from "moment";
 
 import DownloadModelFiles from "../../DownloadModelFiles";
 
-@inject("modalStore")
-@withRouter
-@observer
-class Card extends React.Component {
+import stores from "../../../../stores/rootStore";
+
+const Card = withRouter(observer(class Card extends React.Component {
   constructor(props) {
     super(props);
 
@@ -26,7 +24,8 @@ class Card extends React.Component {
   }
 
   openAddServiceModal() {
-    const { modalStore, repository } = this.props;
+    const { modalStore } = stores;
+    const { repository } = this.props;
     modalStore.setVisible("addService", true, {
       repository: repository
     });
@@ -145,9 +144,5 @@ class Card extends React.Component {
       </div>
     );
   }
-}
-
-Card.propTypes = {
-  repository: PropTypes.object.isRequired
-};
+}));
 export default Card;

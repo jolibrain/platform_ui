@@ -1,12 +1,11 @@
 import React from "react";
 import { findDOMNode } from "react-dom";
-import PropTypes from "prop-types";
 import ReactTooltip from "react-tooltip";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 
-@inject("imaginateStore")
-@observer
-class Icons extends React.Component {
+import stores from "../../../../../../../../stores/rootStore";
+
+const Icons = observer(class Icons extends React.Component {
   constructor(props) {
     super(props);
     this._nodes = new Map();
@@ -49,7 +48,8 @@ class Icons extends React.Component {
   }
 
   categoryDisplay(category, index) {
-    const { serviceSettings } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { serviceSettings } = imaginateStore;
     const { selectedBoxIndex, onOver, onLeave } = this.props;
 
     let styles = { color: "" };
@@ -126,12 +126,5 @@ class Icons extends React.Component {
       </div>
     );
   }
-}
-
-Icons.propTypes = {
-  input: PropTypes.object.isRequired,
-  selectedBoxIndex: PropTypes.number,
-  onOver: PropTypes.func,
-  onLeave: PropTypes.func
-};
+});
 export default Icons;

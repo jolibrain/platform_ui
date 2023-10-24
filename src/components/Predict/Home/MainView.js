@@ -1,5 +1,5 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { Link, withRouter } from "react-router-dom";
 import moment from "moment";
 
@@ -8,13 +8,9 @@ import RightPanel from "../commons/RightPanel";
 import ServiceCardList from "../../widgets/ServiceCardList";
 import PredictServiceList from "../../widgets/PredictServiceList";
 
-@inject("modelRepositoriesStore")
-@inject("deepdetectStore")
-@inject("configStore")
-@inject("gpuStore")
-@withRouter
-@observer
-class MainView extends React.Component {
+import stores from "../../../stores/rootStore";
+
+const MainView = withRouter(observer(class MainView extends React.Component {
   constructor(props) {
     super(props);
 
@@ -39,7 +35,7 @@ class MainView extends React.Component {
   }
 
   componentWillMount() {
-    const { modelRepositoriesStore } = this.props;
+    const { modelRepositoriesStore } = stores;
     if (!modelRepositoriesStore.isReadyPredict) {
       modelRepositoriesStore.refreshPredict();
     }
@@ -62,7 +58,8 @@ class MainView extends React.Component {
   }
 
   handleClickRefreshServices() {
-    this.props.modelRepositoriesStore.refreshPredict();
+    const { modelRepositoriesStore } = stores;
+    modelRepositoriesStore.refreshPredict();
   }
 
   handleServiceFilter(event) {
@@ -82,7 +79,7 @@ class MainView extends React.Component {
   }
 
   render() {
-    const { deepdetectStore, modelRepositoriesStore } = this.props;
+    const { configStore, gpuStore, deepdetectStore, modelRepositoriesStore } = stores;
     const { filterServiceName } = this.state;
 
     let { predictServices } = deepdetectStore;
@@ -125,8 +122,8 @@ class MainView extends React.Component {
 
     let mainClassnames = "main-view content-wrapper"
     if (
-      typeof this.props.configStore.gpuInfo !== "undefined" &&
-        this.props.gpuStore.servers.length > 0
+      typeof configStore.gpuInfo !== "undefined" &&
+        gpuStore.servers.length > 0
     ) {
       mainClassnames = "main-view content-wrapper with-right-sidebar"
     }
@@ -278,5 +275,5 @@ class MainView extends React.Component {
       </div>
     );
   }
-}
+}));
 export default MainView;

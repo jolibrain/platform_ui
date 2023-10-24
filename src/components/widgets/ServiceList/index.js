@@ -1,20 +1,19 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
 import ServiceItem from "./Items/Service.js";
 import ChainItem from "./Items/Chain.js";
 
-@inject("deepdetectStore")
-@inject("configStore")
-@withRouter
-@observer
-class ServiceList extends React.Component {
+import stores from "../../../stores/rootStore";
+
+const ServiceList = withRouter(observer(class ServiceList extends React.Component {
   render() {
-    if (this.props.configStore.isComponentBlacklisted("ServiceList"))
+    const { configStore, deepdetectStore } = stores;
+    const { match } = this.props;
+    if (configStore.isComponentBlacklisted("ServiceList"))
       return null;
 
-    const { deepdetectStore, match } = this.props;
     const { trainingServices, predictServices } = deepdetectStore;
 
     const predictPatt = /^\/predict/g;
@@ -66,5 +65,5 @@ class ServiceList extends React.Component {
       </ul>
     );
   }
-}
+}));
 export default ServiceList;

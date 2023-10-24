@@ -1,10 +1,11 @@
-import { observable, action } from "mobx";
+import { makeAutoObservable } from "mobx";
 
-export class datasetStore {
-  @observable datasets = [];
+export default class datasetStore {
+  datasets = [];
 
-  @action
+  constructor() {
+    makeAutoObservable(this);
+  }
+
   setup() {}
 }
-
-export default new datasetStore();

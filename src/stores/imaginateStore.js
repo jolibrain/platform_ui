@@ -1,7 +1,6 @@
-import { observable, action, computed } from "mobx";
+import { makeAutoObservable } from "mobx";
 
-export class imaginateStore {
-  @observable
+export default class imaginateStore {
   settings = {
     default: {
       display: {
@@ -56,12 +55,15 @@ export class imaginateStore {
     services: []
   };
 
-  @observable server = null;
-  @observable service = null;
+  server = null;
+  service = null;
 
-  @observable chain = {};
+  chain = {};
 
-  @action
+  constructor() {
+    makeAutoObservable(this);
+  }
+
   setup(configStore) {
     // If both objects have a property with the same name,
     // then the second object property overwrites the first.
@@ -69,14 +71,12 @@ export class imaginateStore {
     this.settings = { ...this.settings, ...configStore.imaginate };
   }
 
-  @action
   connectToDdStore(deepdetectStore) {
     const { server } = deepdetectStore;
     this.server = server;
     this.service = server.service;
   }
 
-  @action
   predict() {
     if (!this.service) return null;
 
@@ -87,7 +87,6 @@ export class imaginateStore {
     }
   }
 
-  @computed
   get isChain() {
     return this.chain &&
       this.chain.content &&
@@ -95,7 +94,6 @@ export class imaginateStore {
       this.chain.content.calls.length > 0;
   }
 
-  @computed
   get serviceSettings() {
     let settings = this.settings.default;
 
@@ -108,5 +106,3 @@ export class imaginateStore {
     return settings;
   }
 }
-
-export default new imaginateStore();

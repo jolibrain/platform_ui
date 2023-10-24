@@ -1,5 +1,5 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
 import Header from "../../Header";
@@ -7,13 +7,11 @@ import LeftPanel from "../commons/LeftPanel";
 import MainView from "./MainView";
 import Modals from "./Modals";
 
-@inject("deepdetectStore")
-@inject("configStore")
-@withRouter
-@observer
-class TrainingShow extends React.Component {
+import stores from "../../../stores/rootStore";
+
+const TrainingShow = withRouter(observer(class TrainingShow extends React.Component {
   componentWillMount() {
-    const { deepdetectStore } = this.props;
+    const { deepdetectStore } = stores;
 
     if (!deepdetectStore.isReady) this.props.history.push("/training");
 
@@ -22,15 +20,16 @@ class TrainingShow extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { deepdetectStore } = this.props;
+    const { deepdetectStore } = stores;
     deepdetectStore.init(nextProps.match.params);
     deepdetectStore.setTrainRefreshMode("service");
   }
 
   render() {
+    const { configStore } = stores;
     if (
-      this.props.configStore.isComponentBlacklisted("Training") ||
-      this.props.configStore.isComponentBlacklisted("TrainingShow")
+      configStore.isComponentBlacklisted("Training") ||
+      configStore.isComponentBlacklisted("TrainingShow")
     )
       return null;
 
@@ -45,5 +44,5 @@ class TrainingShow extends React.Component {
       </div>
     );
   }
-}
+}));
 export default TrainingShow;

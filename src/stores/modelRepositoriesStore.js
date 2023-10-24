@@ -1,11 +1,14 @@
-import { observable, action, computed } from "mobx";
+import { makeAutoObservable } from "mobx";
 
 import RepositoryStore from "./modelRepositories/repositoryStore";
 
-export class modelRepositoriesStore {
-  @observable repositoryStores = [];
+export default class modelRepositoriesStore {
+  repositoryStores = [];
 
-  @action
+  constructor() {
+    makeAutoObservable(this);
+  }
+
   setup(configStore) {
     const { modelRepositories } = configStore;
 
@@ -50,19 +53,16 @@ export class modelRepositoriesStore {
   // Refresh Status
   // when true, it is fetching models from webserver
 
-  @computed
   get isRefreshing() {
     return this.repositoryStores.some(r => r.isRefreshing);
   }
 
-  @computed
   get isRefreshingPredict() {
     return this.repositoryStores
       .filter(r => !r.isTraining)
       .some(r => r.isRefreshing);
   }
 
-  @computed
   get isRefreshingTraining() {
     return this.repositoryStores
       .filter(r => r.isTraining)
@@ -72,26 +72,22 @@ export class modelRepositoriesStore {
   // Ready Status
   // when true, models have been fetched from webserver
 
-  @computed
   get isReady() {
     return this.repositoryStores.every(r => r.isReady);
   }
 
-  @computed
   get isReadyPredict() {
     return this.repositoryStores
       .filter(r => !r.isTraining)
       .every(r => r.isReady);
   }
 
-  @computed
   get isReadyTraining() {
     return this.repositoryStores
       .filter(r => r.isTraining)
       .every(r => r.isReady);
   }
 
-  @computed
   get repositories() {
     return Array.prototype.concat.apply(
       [],
@@ -99,7 +95,6 @@ export class modelRepositoriesStore {
     );
   }
 
-  @computed
   get predictRepositories() {
     return Array.prototype.concat.apply(
       [],
@@ -107,7 +102,6 @@ export class modelRepositoriesStore {
     );
   }
 
-  @computed
   get trainingRepositories() {
     return Array.prototype.concat.apply(
       [],
@@ -120,17 +114,14 @@ export class modelRepositoriesStore {
     return store ? store.repositories : [];
   }
 
-  @computed
   get publicRepositories() {
     return this.storeRepositories("public");
   }
 
-  @computed
   get privateRepositories() {
     return this.storeRepositories("private");
   }
 
-  @computed
   get archivedTrainingRepositories() {
     return this.trainingRepositories.length > 0
       ? this.trainingRepositories.filter(
@@ -139,5 +130,3 @@ export class modelRepositoriesStore {
       : [];
   }
 }
-
-export default new modelRepositoriesStore();

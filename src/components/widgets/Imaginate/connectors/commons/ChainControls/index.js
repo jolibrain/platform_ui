@@ -1,14 +1,13 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
 import ParamSlider from "../ParamSlider";
 import ToggleControl from "../ToggleControl";
 
-@inject("imaginateStore")
-@withRouter
-@observer
-class ChainControls extends React.Component {
+import stores from "../../../../../../stores/rootStore";
+
+const ChainControls = withRouter(observer(class ChainControls extends React.Component {
   constructor(props) {
     super(props);
 
@@ -67,7 +66,8 @@ class ChainControls extends React.Component {
   }
 
   handleMulticropToggle() {
-    const { service, settings } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service, settings } = imaginateStore;
     settings.default.display.chain.multicrop = !settings.default.display.chain
       .multicrop;
 
@@ -77,7 +77,8 @@ class ChainControls extends React.Component {
   }
 
   handleSearchNnThreshold(value) {
-    const { service, settings } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service, settings } = imaginateStore;
     settings.default.display.chain.search_nn = parseInt(value, 10);
 
     if (!service.uiParams.chain) {
@@ -85,11 +86,12 @@ class ChainControls extends React.Component {
     }
     service.uiParams.chain.search_nn = settings.default.display.chain.search_nn;
 
-    this.props.imaginateStore.predict();
+    imaginateStore.predict();
   }
 
   handleMinSizeRatioThreshold(value) {
-    const { service, settings } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service, settings } = imaginateStore;
     settings.default.display.chain.min_size_ratio = parseFloat(
       (value / 100).toFixed(2)
     );
@@ -103,11 +105,12 @@ class ChainControls extends React.Component {
     service.uiParams.chain.min_size_ratio =
       settings.default.display.chain.min_size_ratio;
 
-    this.props.imaginateStore.predict();
+    imaginateStore.predict();
   }
 
   handleRandomCropsThreshold(value) {
-    const { service, settings } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service, settings } = imaginateStore;
     settings.default.display.chain.random_crops = parseInt(value, 10);
 
     if (!service.uiParams.chain) {
@@ -116,7 +119,7 @@ class ChainControls extends React.Component {
     service.uiParams.chain.random_crops =
       settings.default.display.chain.random_crops;
 
-    this.props.imaginateStore.predict();
+    imaginateStore.predict();
   }
 
   nnsItem(nns, index) {
@@ -151,12 +154,13 @@ class ChainControls extends React.Component {
   }
 
   render() {
+    const { imaginateStore } = stores;
     const { path } = this.props.match;
     const isChainService = path.startsWith("/chains/");
 
     if (!isChainService) return null;
 
-    const { selectedBoxIndex, imaginateStore } = this.props;
+    const { selectedBoxIndex } = this.props;
     const input = imaginateStore.service.selectedInput;
     const chainFormat = this.chainFormat(input);
 
@@ -280,5 +284,5 @@ class ChainControls extends React.Component {
 
     return <div>{uiControls}</div>;
   }
-}
+}));
 export default ChainControls;

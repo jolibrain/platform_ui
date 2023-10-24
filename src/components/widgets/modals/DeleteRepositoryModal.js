@@ -1,12 +1,10 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 
-@inject("deepdetectStore")
-@inject("modalStore")
-@observer
-@withRouter
-class DeleteRepositoryModal extends React.Component {
+import stores from "../../../stores/rootStore";
+
+const DeleteRepositoryModal = withRouter(observer(class DeleteRepositoryModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -23,13 +21,15 @@ class DeleteRepositoryModal extends React.Component {
   }
 
   handleCancel() {
+    const { modalStore } = stores;
     this.setState({ deleteError: null });
-    this.props.modalStore.setVisible("deleteRepository", false);
+    modalStore.setVisible("deleteRepository", false);
   }
 
   async handleDeleteRepository() {
 
-    const { modalStore, history, redirect } = this.props;
+    const { modalStore } = stores;
+    const { history, redirect } = this.props;
     const { service } = this.state;
 
     if (service) {
@@ -100,5 +100,5 @@ class DeleteRepositoryModal extends React.Component {
       </div>
     );
   }
-}
+}));
 export default DeleteRepositoryModal;

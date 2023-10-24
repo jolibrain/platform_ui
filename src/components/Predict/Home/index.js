@@ -1,23 +1,24 @@
 import React from "react";
-import { inject } from "mobx-react";
+import { observer } from "mobx-react";
 
 import Header from "../../Header";
 import LeftPanel from "../commons/LeftPanel";
 import MainView from "./MainView";
 import Modals from "./Modals";
 
-@inject("deepdetectStore")
-@inject("configStore")
-class PredictHome extends React.Component {
+import stores from "../../../stores/rootStore";
+
+const PredictHome = observer(class PredictHome extends React.Component {
   componentWillMount() {
-    const { deepdetectStore } = this.props;
+    const { deepdetectStore } = stores;
     deepdetectStore.setTrainRefreshMode(null);
   }
 
   render() {
+    const { configStore } = stores;
     if (
-      this.props.configStore.isComponentBlacklisted("Predict") ||
-      this.props.configStore.isComponentBlacklisted("PredictHome")
+      configStore.isComponentBlacklisted("Predict") ||
+      configStore.isComponentBlacklisted("PredictHome")
     )
       return null;
 
@@ -32,5 +33,5 @@ class PredictHome extends React.Component {
       </div>
     );
   }
-}
+});
 export default PredictHome;

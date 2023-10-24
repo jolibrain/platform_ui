@@ -1,9 +1,7 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 
-@observer
-class Expectation extends React.Component {
+const Expectation = observer(class Expectation extends React.Component {
   render() {
     const { input } = this.props;
     const { classes } = input.json.body.predictions[0];
@@ -20,9 +18,5 @@ class Expectation extends React.Component {
       </span>
     );
   }
-}
-
-Expectation.propTypes = {
-  input: PropTypes.object.isRequired
-};
+});
 export default Expectation;

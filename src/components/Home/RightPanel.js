@@ -1,20 +1,18 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
-import { withRouter } from "react-router-dom";
+import { observer } from "mobx-react";
 
 import GpuInfo from "../widgets/GpuInfo";
 import PlaceHolder from "../widgets/PlaceHolder";
 
-@inject("configStore")
-@inject("gpuStore")
-@withRouter
-@observer
-class RightPanel extends React.Component {
+import stores from "../../stores/rootStore";
+
+const RightPanel = observer(class RightPanel extends React.Component {
   render() {
+    const { configStore, gpuStore } = stores;
 
     if (
-      typeof this.props.configStore.gpuInfo === "undefined" ||
-        this.props.gpuStore.servers.length === 0
+      typeof configStore.gpuInfo === "undefined" ||
+        gpuStore.servers.length === 0
     ) {
       return null;
     }
@@ -29,5 +27,5 @@ class RightPanel extends React.Component {
       </aside>
     );
   }
-}
+});
 export default RightPanel;

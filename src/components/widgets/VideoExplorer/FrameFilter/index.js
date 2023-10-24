@@ -1,5 +1,4 @@
 import React from "react";
-import { observer } from "mobx-react";
 
 import SliderComponent from './FilterComponents/Slider'
 import RangeComponent from './FilterComponents/Range'
@@ -59,8 +58,7 @@ const tooltipHandlers = {
 }
 
 
-@observer
-class FrameFilter extends React.Component {
+const FrameFilter = class FrameFilter extends React.Component {
 
     render() {
 
@@ -98,5 +96,4 @@ class FrameFilter extends React.Component {
         );
     }
 };
-
 export default FrameFilter

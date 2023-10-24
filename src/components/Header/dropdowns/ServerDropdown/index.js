@@ -1,12 +1,11 @@
 /* eslint jsx-a11y/anchor-is-valid: "off" */
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 
 import Item from "./Item";
+import stores from "../../../../stores/rootStore";
 
-@inject("deepdetectStore")
-@observer
-class ServerDropdown extends React.Component {
+const ServerDropdown = observer(class ServerDropdown extends React.Component {
   constructor(props) {
     super(props);
 
@@ -50,7 +49,7 @@ class ServerDropdown extends React.Component {
   }
 
   render() {
-    const { deepdetectStore } = this.props;
+    const { deepdetectStore } = stores;
     const servers = deepdetectStore.servers;
 
     const serversState = servers.map(s => s.isDown);
@@ -99,6 +98,5 @@ class ServerDropdown extends React.Component {
       </li>
     );
   }
-}
-
+});
 export default ServerDropdown;

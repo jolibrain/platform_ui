@@ -1,10 +1,8 @@
 /* eslint jsx-a11y/anchor-is-valid: "off" */
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 
-@inject("imaginateStore")
-@observer
-class Header extends React.Component {
+const Header = observer(class Header extends React.Component {
   render() {
     return (
       <div className="card-header">
@@ -66,5 +64,5 @@ class Header extends React.Component {
       </div>
     );
   }
-}
+});
 export default Header;

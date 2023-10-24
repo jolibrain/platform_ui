@@ -1,7 +1,6 @@
-import { observable, computed, action } from "mobx";
+import { makeAutoObservable } from "mobx";
 
-export class modalStore {
-  @observable
+export default class modalStore {
   modals = [
     {
       name: "addService",
@@ -29,22 +28,21 @@ export class modalStore {
     }
   ];
 
-  @computed
+  constructor() {
+    makeAutoObservable(this);
+  }
+
   get visibleModal() {
     return this.modals.find(modal => modal.visible);
   }
 
-  @action
   getModal(modalName) {
     return this.modals.find(modal => modal.name === modalName);
   }
 
-  @action
   setVisible(modalName, visible = true, params = {}) {
     const modal = this.modals.find(modal => modal.name === modalName);
     modal.visible = visible;
     modal.params = params;
   }
 }
-
-export default new modalStore();

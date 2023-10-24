@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 
 import ServerDropdown from "./dropdowns/ServerDropdown";
 import UserDropdown from "./dropdowns/UserDropdown";
@@ -18,12 +18,12 @@ import SwaggerLink from "./links/Swagger";
 import ChatLink from "./links/Chat";
 import MenusLink from "./links/Menus";
 
-@inject("configStore")
-@observer
-class Header extends React.Component {
+import stores from "../../stores/rootStore";
+
+const Header = observer(class HeaderTitle extends React.Component {
   render() {
 
-    const { configStore } = this.props;
+    const { configStore } = stores;
 
     if (configStore.isComponentBlacklisted("Header"))
       return null;
@@ -83,7 +83,7 @@ class Header extends React.Component {
     }
 
     if (
-      !this.props.configStore.isComponentBlacklisted("HeaderRightLinks")
+      !configStore.isComponentBlacklisted("HeaderRightLinks")
     ) {
       if (!configStore.isComponentBlacklisted("ServerDropdown"))
         rightLinks.push(<ServerDropdown key='serverDropdown' />);
@@ -125,6 +125,6 @@ class Header extends React.Component {
       </header>
     );
   }
-}
+});
 
 export default Header;

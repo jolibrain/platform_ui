@@ -1,19 +1,16 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 
 import RightPanel from "../commons/RightPanel";
 import Imaginate from "../../widgets/Imaginate";
 
-@inject("imaginateStore")
-@inject("deepdetectStore")
-@inject("configStore")
-@inject("gpuStore")
-@withRouter
-@observer
-class MainView extends React.Component {
+import stores from "../../../stores/rootStore";
+
+const MainView = withRouter(observer(class MainView extends React.Component {
+
   render() {
-    const { deepdetectStore } = this.props;
+    const { configStore, deepdetectStore, gpuStore } = stores;
     if (!deepdetectStore.isReady) return null;
 
     const chainName = this.props.match.params.chainName;
@@ -25,8 +22,8 @@ class MainView extends React.Component {
 
     let mainClassnames = "main-view content-wrapper"
     if (
-      typeof this.props.configStore.gpuInfo !== "undefined" &&
-        this.props.gpuStore.servers.length > 0
+      typeof configStore.gpuInfo !== "undefined" &&
+        gpuStore.servers.length > 0
     ) {
       mainClassnames = "main-view content-wrapper with-right-sidebar"
     }
@@ -88,5 +85,5 @@ class MainView extends React.Component {
       </div>
     );
   }
-}
+}));
 export default MainView;

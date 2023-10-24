@@ -1,11 +1,12 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 
-@inject("configStore")
-@observer
-class PlaceHolder extends React.Component {
+import stores from "../../../stores/rootStore";
+
+const PlaceHolder = observer(class PlaceHolder extends React.Component {
   render() {
-    const { placeholders } = this.props.configStore;
+    const { configStore } = stores;
+    const { placeholders } = configStore;
     const config = placeholders[this.props.config];
 
     if (!config) return null;
@@ -21,5 +22,5 @@ class PlaceHolder extends React.Component {
       </div>
     );
   }
-}
+});
 export default PlaceHolder;

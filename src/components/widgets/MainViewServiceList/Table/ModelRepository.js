@@ -1,8 +1,9 @@
 /* eslint jsx-a11y/anchor-is-valid: "off" */
 import React from "react";
-import PropTypes from "prop-types";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { Link, withRouter } from "react-router-dom";
+
+import stores from "../../../../stores/rootStore";
 
 /*
  * # Workflow: publishing after training"
@@ -18,12 +19,7 @@ import { Link, withRouter } from "react-router-dom";
  * it deletes the existing service from the training server
  */
 
-@withRouter
-@inject("deepdetectStore")
-@inject("modelRepositoriesStore")
-@inject("modalStore")
-@observer
-class ModelRepositoryItem extends React.Component {
+const ModelRepositoryItem = withRouter(observer(class ModelRepositoryItem extends React.Component {
   constructor(props) {
     super(props);
 
@@ -44,14 +40,16 @@ class ModelRepositoryItem extends React.Component {
   }
 
   openPublishTrainingModal() {
-    const { modalStore, service } = this.props;
+    const { modalStore } = stores;
+    const { service } = this.props;
     modalStore.setVisible("publishTraining", true, {
       service: service
     });
   }
 
   deleteRepositoryModal() {
-    const { modalStore, service } = this.props;
+    const { modalStore } = stores;
+    const { service } = this.props;
     modalStore.setVisible("deleteRepository", true, {
       service: service
     });
@@ -162,10 +160,5 @@ class ModelRepositoryItem extends React.Component {
 
     return (<tr>{ serviceData }</tr>)
   }
-}
-
-ModelRepositoryItem.propTypes = {
-  service: PropTypes.object,
-  handleCompareStateChange: PropTypes.func
-};
+}));
 export default ModelRepositoryItem;

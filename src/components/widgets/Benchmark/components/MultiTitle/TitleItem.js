@@ -1,9 +1,7 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 
-@observer
-class TitleItem extends React.Component {
+const TitleItem = observer(class TitleItem extends React.Component {
   render() {
     const {
       service,
@@ -60,11 +58,5 @@ class TitleItem extends React.Component {
       </tr>
     );
   }
-}
-
-TitleItem.propTypes = {
-  service: PropTypes.object.isRequired,
-  benchmark: PropTypes.object.isRequired,
-  serviceIndex: PropTypes.number.isRequired
-};
+});
 export default TitleItem;

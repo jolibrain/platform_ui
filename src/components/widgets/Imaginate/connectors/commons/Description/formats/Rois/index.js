@@ -1,11 +1,9 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 
 import Boundingbox from "react-bounding-box";
 
-@observer
-class Rois extends React.Component {
+const Rois = observer(class Rois extends React.Component {
   constructor(props) {
     super(props);
 
@@ -117,10 +115,5 @@ class Rois extends React.Component {
 
     return <div className="description-rois row">{cells}</div>;
   }
-}
-
-Rois.propTypes = {
-  input: PropTypes.object.isRequired,
-  selectedBoxIndex: PropTypes.number
-};
+});
 export default Rois;

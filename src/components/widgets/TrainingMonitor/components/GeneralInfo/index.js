@@ -1,6 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { observer } from "mobx-react";
 
 import MeasureChart from "../MeasureChart";
 
@@ -44,8 +42,7 @@ import MeasureChart from "../MeasureChart";
 //   * eucll
 //
 
-@observer
-class GeneralInfo extends React.Component {
+const GeneralInfo = class GeneralInfo extends React.Component {
   constructor(props) {
     super(props);
 
@@ -458,9 +455,5 @@ class GeneralInfo extends React.Component {
       </div>
     );
   }
-}
-
-GeneralInfo.propTypes = {
-  services: PropTypes.array.isRequired
 };
 export default GeneralInfo;

@@ -1,21 +1,20 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
 import RightPanel from "./RightPanel";
 
-@inject("configStore")
-@inject("gpuStore")
-@withRouter
-@observer
-class MainView extends React.Component {
+import stores from "../../stores/rootStore";
+
+const MainView = withRouter(observer(class MainView extends React.Component {
   render() {
-    const { homeComponent } = this.props.configStore;
+    const { configStore, gpuStore } = stores;
+    const { homeComponent } = configStore;
 
     let mainClassnames = "main-view content-wrapper"
     if (
-      typeof this.props.configStore.gpuInfo !== "undefined" ||
-        this.props.gpuStore.servers.length > 0
+      typeof configStore.gpuInfo !== "undefined" ||
+        gpuStore.servers.length > 0
     ) {
       mainClassnames = "main-view content-wrapper with-right-sidebar"
     }
@@ -38,5 +37,5 @@ class MainView extends React.Component {
       </div>
     );
   }
-}
+}));
 export default MainView;

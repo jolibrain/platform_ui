@@ -66,6 +66,7 @@ const BuildInfo = {
       .withCredentials()
       .end(handleErrors)
       .then(responseBody)
+      .catch(() => {})
 };
 
 /* ====
@@ -376,10 +377,12 @@ const Webserver = {
       })
 };
 
-export default {
+const agent = {
   Config,
   BuildInfo,
   GpuInfo,
   Deepdetect,
   Webserver
 };
+
+export default agent;

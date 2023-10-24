@@ -1,18 +1,15 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 
 import RightPanel from "../../../commons/RightPanel";
 
 import MultiTitle from "../../../../widgets/Benchmark/components/MultiTitle";
 import BenchmarkChart from "../../../../widgets/Benchmark/components/BenchmarkChart";
 
-@inject("modelRepositoriesStore")
-@inject("configStore")
-@inject("gpuStore")
-@observer
-@withRouter
-class ModelBenchmark extends React.Component {
+import stores from "../../../../../stores/rootStore";
+
+const ModelBenchmark = withRouter(observer(class ModelBenchmark extends React.Component {
   constructor(props) {
     super(props);
 
@@ -39,7 +36,8 @@ class ModelBenchmark extends React.Component {
   }
 
   async componentWillMount() {
-    const { match, modelRepositoriesStore } = this.props;
+    const { match } = this.props;
+    const { modelRepositoriesStore } = stores;
     const benchmarkRepositories = modelRepositoriesStore.predictRepositories.filter(
       r => r.benchmarks.length > 0
     );
@@ -74,6 +72,9 @@ class ModelBenchmark extends React.Component {
   }
 
   render() {
+
+    const { configStore, gpuStore } = stores;
+
     const {
       repositories,
       hiddenRepositoriesIndexes,
@@ -82,8 +83,8 @@ class ModelBenchmark extends React.Component {
 
     let mainClassnames = "main-view content-wrapper"
     if (
-      typeof this.props.configStore.gpuInfo !== "undefined" &&
-        this.props.gpuStore.servers.length > 0
+      typeof configStore.gpuInfo !== "undefined" &&
+        gpuStore.servers.length > 0
     ) {
       mainClassnames = "main-view content-wrapper with-right-sidebar"
     }
@@ -127,5 +128,5 @@ class ModelBenchmark extends React.Component {
       </div>
     );
   }
-}
+}));
 export default ModelBenchmark;

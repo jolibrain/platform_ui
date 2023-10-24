@@ -1,13 +1,14 @@
-import { observable, action } from "mobx";
+import { makeAutoObservable } from "mobx";
 
-export class authTokenStore {
-  @observable token = null;
+export default class authTokenStore {
+  token = null;
 
-  @action
+  constructor() {
+    makeAutoObservable(this);
+  }
+
   setup() {
     // TODO replace by token fetching method
     this.token = null;
   }
 }
-
-export default new authTokenStore();

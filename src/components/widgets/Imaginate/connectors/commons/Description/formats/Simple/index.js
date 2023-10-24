@@ -1,9 +1,7 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 
-@observer
-class Simple extends React.Component {
+const Simple = observer(class Simple extends React.Component {
 
 // TODO check if necessary, broken after package update
 //  shouldComponentUpdate(nextProps) {
@@ -44,9 +42,5 @@ class Simple extends React.Component {
       </div>
     );
   }
-}
-
-Simple.propTypes = {
-  input: PropTypes.object.isRequired
-};
+});
 export default Simple;

@@ -1,13 +1,14 @@
 import React from "react";
-import { inject } from "mobx-react";
+import { observer } from "mobx-react";
+import { withRouter } from "react-router-dom";
 
 import Menu from "./Menu";
 import MenuDropdown from "./MenuDropdown";
+import stores from "../../../../stores/rootStore";
 
-@inject("configStore")
-class MenusLink extends React.Component {
+const MenusLink = withRouter(observer(class MenuLink extends React.Component {
   render() {
-    const { configStore } = this.props;
+    const { configStore } = stores;
     const { linkMenus } = configStore.homeComponent.headerLinks;
 
     const Menus = linkMenus.map((menu, index) => {
@@ -20,6 +21,5 @@ class MenusLink extends React.Component {
 
     return <>{Menus}</>;
   }
-}
-
+}));
 export default MenusLink;

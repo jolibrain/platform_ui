@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { inject } from "mobx-react";
+import { observer } from "mobx-react";
+import stores from "../../../stores/rootStore";
 
-@inject("configStore")
-class VideoExplorer extends React.Component {
+const VideoExplorer = observer(class VideoExplorer extends React.Component {
     render() {
-        const { configStore } = this.props;
+        const { configStore } = stores;
 
         const videoExplorerPatt = /^#\/video-explorer/g;
         const selectedItem = videoExplorerPatt.test(window.location.hash);
@@ -27,6 +27,6 @@ class VideoExplorer extends React.Component {
             </li>
         );
     }
-}
+});
 
 export default VideoExplorer;

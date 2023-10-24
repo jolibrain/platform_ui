@@ -1,9 +1,9 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 
-@inject("imaginateStore")
-@observer
-class InputList extends React.Component {
+import stores from "../../../../../stores/rootStore";
+
+const InputList = observer(class InputList extends React.Component {
   constructor(props) {
     super(props);
 
@@ -13,23 +13,26 @@ class InputList extends React.Component {
   }
 
   selectInput(index) {
-    const store = this.props.imaginateStore;
-    store.service.selectInput(index);
-    store.predict();
+    const { imaginateStore } = stores;
+    imaginateStore.service.selectInput(index);
+    imaginateStore.predict();
   }
 
   handleClearAll() {
-    const { service } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service } = imaginateStore;
     service.clearAllInputs();
   }
 
   handleClearInput(index) {
-    const { service } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service } = imaginateStore;
     service.clearInput(index);
   }
 
   render() {
-    const { service } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service } = imaginateStore;
 
     if (!service) return null;
 
@@ -75,5 +78,5 @@ class InputList extends React.Component {
       </div>
     );
   }
-}
+});
 export default InputList;

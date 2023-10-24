@@ -1,5 +1,5 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
 import Header from "../../Header";
@@ -7,12 +7,9 @@ import LeftPanel from "../commons/LeftPanel";
 import MainView from "./MainView";
 import Modals from "./Modals";
 
-@inject("deepdetectStore")
-@inject("imaginateStore")
-@inject("configStore")
-@withRouter
-@observer
-class PredictShow extends React.Component {
+import stores from "../../../stores/rootStore";
+
+const PredictShow = withRouter(observer(class PredictShow extends React.Component {
   constructor(props) {
     super(props);
 
@@ -20,7 +17,7 @@ class PredictShow extends React.Component {
   }
 
   async setDeepdetectServer(params) {
-    const { deepdetectStore, imaginateStore } = this.props;
+    const { deepdetectStore, imaginateStore } = stores;
 
     if (!deepdetectStore.isReady) {
       this.props.history.push("/predict");
@@ -50,9 +47,10 @@ class PredictShow extends React.Component {
   }
 
   render() {
+    const { configStore } = stores;
     if (
-      this.props.configStore.isComponentBlacklisted("Predict") ||
-      this.props.configStore.isComponentBlacklisted("PredictShow")
+      configStore.isComponentBlacklisted("Predict") ||
+      configStore.isComponentBlacklisted("PredictShow")
     )
       return null;
 
@@ -67,5 +65,5 @@ class PredictShow extends React.Component {
       </div>
     );
   }
-}
+}));
 export default PredictShow;

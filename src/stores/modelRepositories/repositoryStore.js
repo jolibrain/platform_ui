@@ -1,22 +1,23 @@
-import { observable, action } from "mobx";
+import { makeAutoObservable } from "mobx";
 import agent from "../../agent";
 import path from "path";
 
 import Repository from "./repository";
 
 export default class RepositoryStore {
-  @observable name;
-  @observable nginxPath;
-  @observable jsonPath;
-  @observable systempPath;
+  name;
+  nginxPath;
+  jsonPath;
+  systempPath;
 
-  @observable isReady = false;
-  @observable isRefreshing = false;
-  @observable isTraining = false;
+  isReady = false;
+  isRefreshing = false;
+  isTraining = false;
 
-  @observable repositories = [];
+  repositories = [];
 
   constructor(config) {
+    makeAutoObservable(this);
     this.name = config.name;
     this.nginxPath = config.nginxPath;
     this.jsonPath = config.jsonPath;
@@ -48,7 +49,6 @@ export default class RepositoryStore {
   }
 
   // Fast load an unique repository
-  @action
   async fastLoad(repoPath) {
     let files = [],
       repository = null;
@@ -70,9 +70,21 @@ export default class RepositoryStore {
     return repository;
   }
 
-  @action
-  async load() {
+  _updateRepositoriesList(repositories) {
+    this.repositories = repositories;
+  }
+
+  _updateStartLoading() {
     this.isRefreshing = true;
+  }
+
+  _updateEndLoading() {
+    this.isReady = true;
+    this.isRefreshing = false;
+  }
+
+  async load() {
+    this._updateStartLoading();
 
     let repositories = await this._loadRepositories(
       this.nginxPath,
@@ -88,16 +100,14 @@ export default class RepositoryStore {
 
     // Merge new repositories
     const repoPaths = new Set(this.repositories.map(r => r.path));
-    this.repositories = [
+    this._updateRepositoriesList([
       ...this.repositories,
       ...repositories.filter(r => !repoPaths.has(r.path))
-    ];
+    ]);
 
-    this.isReady = true;
-    this.isRefreshing = false;
+    this._updateEndLoading();
   }
 
-  @action
   async _loadRepositories(rootPath, isRoot = false) {
     let folders = [],
       files = [];

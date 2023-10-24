@@ -1,12 +1,9 @@
 import React from "react";
-import PropTypes from "prop-types";
 
 import { toJS } from "mobx";
-import { observer } from "mobx-react";
 import { Sparklines, SparklinesLine } from "react-sparklines";
 
-@observer
-class TableItem extends React.Component {
+const TableItem = class TableItem extends React.Component {
   constructor(props) {
     super(props);
 
@@ -258,11 +255,5 @@ class TableItem extends React.Component {
       </tr>
     );
   }
-}
-
-TableItem.propTypes = {
-  measureHistKey: PropTypes.string.isRequired,
-  service: PropTypes.object,
-  services: PropTypes.array
 };
 export default TableItem;

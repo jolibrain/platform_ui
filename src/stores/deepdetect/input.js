@@ -1,22 +1,25 @@
-import { observable, computed } from "mobx";
+import { makeAutoObservable } from "mobx";
 import agent from "../../agent";
 
 export default class Input {
-  @observable isActive = false;
+  isActive = false;
 
-  @observable content = {};
+  content = {};
 
-  @observable postData = {};
-  @observable putData = {};
+  postData = {};
+  putData = {};
 
-  @observable path = null;
-  @observable json = null;
+  path = null;
+  json = null;
 
-  @observable boxes = [];
+  boxes = [];
 
-  @observable csv = null;
+  csv = null;
 
-  @computed
+  constructor() {
+    makeAutoObservable(this);
+  }
+
   get prediction() {
     let prediction = null;
 
@@ -32,7 +35,6 @@ export default class Input {
     return prediction;
   }
 
-  @computed
   get hasPredictionValues() {
     return (
       this.json &&
@@ -43,7 +45,6 @@ export default class Input {
     );
   }
 
-  @computed
   get isCtcOuput() {
     return (
       this.postData &&
@@ -53,7 +54,6 @@ export default class Input {
     );
   }
 
-  @computed
   get isSegmentationInput() {
     return (
       this.postData &&
@@ -63,7 +63,6 @@ export default class Input {
     );
   }
 
-  @computed
   get isChainResult() {
     return (
       this.json &&

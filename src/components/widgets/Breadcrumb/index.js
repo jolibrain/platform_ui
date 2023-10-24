@@ -1,26 +1,26 @@
 /* eslint jsx-a11y/anchor-is-valid: "off" */
 import React from "react";
 import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
-import { inject } from "mobx-react";
+import { observer } from "mobx-react";
 
-@inject("modalStore")
-@inject("configStore")
-class Breadcrumb extends React.Component {
+import stores from "../../../stores/rootStore";
+
+const Breadcrumb = observer(class Breadcrumb extends React.Component {
   constructor(props) {
     super(props);
     this.openDeleteServiceModal = this.openDeleteServiceModal.bind(this);
   }
 
   openDeleteServiceModal() {
-    const { modalStore } = this.props;
+    const { modalStore } = stores;
     modalStore.setVisible("deleteService", true, {
       service: this.props.service
     });
   }
 
   render() {
-    if (this.props.configStore.isComponentBlacklisted("Breadcrumb"))
+    const { configStore } = stores;
+    if (configStore.isComponentBlacklisted("Breadcrumb"))
       return null;
 
     const { service, isTraining } = this.props;
@@ -104,10 +104,5 @@ class Breadcrumb extends React.Component {
       </div>
     );
   }
-}
-
-Breadcrumb.propTypes = {
-  service: PropTypes.object.isRequired,
-  isTraining: PropTypes.bool
-};
+});
 export default Breadcrumb;

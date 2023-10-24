@@ -1,16 +1,15 @@
 import React from "react";
 import store from "store";
-import { inject } from "mobx-react";
+import { observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
 import Header from "../Header";
 import LeftPanel from "./LeftPanel";
 import MainView from "./MainView";
 
-@inject("deepdetectStore")
-@inject("configStore")
-@withRouter
-class Home extends React.Component {
+import stores from "../../stores/rootStore";
+
+const Home = withRouter(observer(class Home extends React.Component {
   constructor(props) {
     super(props);
 
@@ -26,13 +25,15 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
-    const { deepdetectStore } = this.props;
+    const { deepdetectStore } = stores;
     deepdetectStore.setTrainRefreshMode(null);
     this.clearAutosaveStorage();
   }
 
   render() {
-    if (this.props.configStore.isComponentBlacklisted("Home")) return null;
+    const { configStore } = stores;
+    if (configStore.isComponentBlacklisted("Home"))
+      return null;
 
     return (
       <div>
@@ -44,5 +45,5 @@ class Home extends React.Component {
       </div>
     );
   }
-}
+}));
 export default Home;

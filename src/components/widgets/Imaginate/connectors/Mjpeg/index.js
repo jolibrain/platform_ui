@@ -1,7 +1,6 @@
 import React from "react";
 import { toJS } from "mobx";
-import { inject, observer } from "mobx-react";
-import { withRouter } from "react-router-dom";
+import { observer } from "mobx-react";
 
 import BoundingBox from "./BoundingBox";
 import Controls from "./BoundingBox/Controls";
@@ -14,10 +13,9 @@ import Description from "../commons/Description";
 import CardCommands from "../commons/CardCommands";
 import ToggleControl from "../commons/ToggleControl";
 
-@inject("imaginateStore")
-@withRouter
-@observer
-class MjpegConnector extends React.Component {
+import stores from "../../../../../stores/rootStore";
+
+const MjpegConnector = observer(class MjpegConnector extends React.Component {
   constructor(props) {
     super(props);
 
@@ -79,30 +77,34 @@ class MjpegConnector extends React.Component {
   }
 
   handleConfidenceThreshold(value) {
-    const { serviceSettings } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { serviceSettings } = imaginateStore;
     serviceSettings.threshold.confidence = parseFloat((value / 100).toFixed(2));
     if (serviceSettings.threshold.confidence === 0) {
       serviceSettings.threshold.confidence = 0.01;
     }
-    this.props.imaginateStore.predict();
+    imaginateStore.predict();
   }
 
   handleBestThreshold(value) {
-    const { serviceSettings } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { serviceSettings } = imaginateStore;
     serviceSettings.request.best = parseInt(value, 10);
     this.setState({ sliderBest: value });
-    this.props.imaginateStore.predict();
+    imaginateStore.predict();
   }
 
   handleSearchNnThreshold(value) {
-    const { service } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service } = imaginateStore;
     service.uiParams.search_nn = parseInt(value, 10);
     this.setState({ sliderSearchNn: value });
-    this.props.imaginateStore.predict();
+    imaginateStore.predict();
   }
 
   handleMultisearchRois(value) {
-    const { serviceSettings } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { serviceSettings } = imaginateStore;
 
     this.setState({
       multibox_rois: !this.state.multibox_rois,
@@ -111,33 +113,36 @@ class MjpegConnector extends React.Component {
     });
 
     serviceSettings.request.multibox_rois = !this.state.multibox_rois;
-    this.props.imaginateStore.predict();
+    imaginateStore.predict();
   }
 
   handleSegmentationMaskToggle(e) {
-    const { serviceSettings } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { serviceSettings } = imaginateStore;
 
     this.setState({
       segmentationMask: e.target.checked
     });
 
     serviceSettings.request.segmentationMask = e.target.checked;
-    this.props.imaginateStore.predict();
+    imaginateStore.predict();
   }
 
   handleSegmentationConfidenceToggle(e) {
-    const { serviceSettings } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { serviceSettings } = imaginateStore;
 
     this.setState({
       segmentationConfidence: e.target.checked
     });
 
     serviceSettings.request.segmentationConfidence = e.target.checked;
-    this.props.imaginateStore.predict();
+    imaginateStore.predict();
   }
 
   handleUnsupervisedSearchToggle(e) {
-    const { service } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service } = imaginateStore;
 
     // Switch on search
     if (!service.uiParams.unsupervisedSearch && e.target.checked) {
@@ -153,17 +158,19 @@ class MjpegConnector extends React.Component {
     this.setState({
       unsupervisedSearch: e.target.checked
     });
-    this.props.imaginateStore.predict();
+    imaginateStore.predict();
   }
 
   handleExtractLayerChange(layer) {
-    const { service } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service } = imaginateStore;
     service.uiParams.extract_layer = layer;
-    this.props.imaginateStore.predict();
+    imaginateStore.predict();
   }
 
   render() {
-    const { service, serviceSettings } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service, serviceSettings } = imaginateStore;
 
     if (!service) return null;
 
@@ -378,5 +385,5 @@ class MjpegConnector extends React.Component {
       </div>
     );
   }
-}
+});
 export default MjpegConnector;

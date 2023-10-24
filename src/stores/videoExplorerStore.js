@@ -1,26 +1,28 @@
-import { observable, action, computed } from "mobx";
+import { makeAutoObservable } from "mobx";
 import agent from "../agent";
 import path from "path";
 import { nanoid } from 'nanoid';
 import moment from 'moment';
 
-export class videoExplorerStore {
-    @observable loaded = false;
-    @observable settings = {};
+export default class videoExplorerStore {
+    loaded = false;
+    settings = {};
 
-    @observable videoPaths = [];
-    @observable frames = [];
+    videoPaths = [];
+    frames = [];
 
-    @observable processingVideos = [];
+    processingVideos = [];
 
-    @action
+    constructor() {
+        makeAutoObservable(this);
+    }
+
     setup(configStore) {
         this.settings = configStore.videoExplorer;
         this.updateProcessingVideos();
         setInterval(this.updateProcessingVideos.bind(this), 10000)
     }
 
-    @action
     toggleBoundingBoxes() {
         this.settings.boundingBoxes = !this.settings.boundingBoxes;
     }
@@ -44,7 +46,6 @@ export class videoExplorerStore {
         this.loaded = true;
     }
 
-    @action
     async loadProcessingVideos(jsonPath) {
         new Promise(resolve => {
 
@@ -98,39 +99,32 @@ export class videoExplorerStore {
         return agent.Webserver.getFile(path);
     }
 
-    @computed
     get outputFolderPath() {
         return path.join(this.settings.rootPath, this.settings.folders.output)
     }
 
-    @computed
     get feedbacksFolderPath() {
         return path.join(this.settings.rootPath, this.settings.folders.feedbacks)
     }
 
-    @computed
     get videoSrc() {
         return this.selectedVideo ?
             `${this.selectedVideo.path}${this.videoType}` : ""
     }
 
-    @computed
     get videoPoster() {
         return "";
     }
 
-    @computed
     get videoType() {
         return this.settings && this.settings.boundingBoxes ?
             "output_bbox.mp4" : "output.mp4"
     }
 
-    @computed
     get selectedVideo() {
         return this.videoPaths.find(v => v.isSelected)
     }
 
-    @computed
     get selectedFrame() {
         if(!this.frames || this.frames.length === 0)
             return null;
@@ -138,7 +132,6 @@ export class videoExplorerStore {
         return this.frames.find(f => f && f.isSelected)
     }
 
-    @computed
     get selectedFrameCurrentTime() {
         if(
             !this.frames ||
@@ -158,7 +151,6 @@ export class videoExplorerStore {
         return currentTime
     }
 
-    @action
     setVideoPath(videoName) {
         this.frames = []
         this.videoPaths.forEach(v => v.isSelected = false)
@@ -167,13 +159,11 @@ export class videoExplorerStore {
         this.loadSelectedFrames()
     }
 
-    @action
     setFrame(frameId) {
         this.frames.forEach(f => f.isSelected = false)
         this.frames.find(f => f.id === frameId).isSelected = true
     }
 
-    @action
     setFrameIndex(frameIndex) {
         this.frames.forEach(f => f.isSelected = false)
 
@@ -184,7 +174,6 @@ export class videoExplorerStore {
             this.frames[frameIndex].isSelected = true
     }
 
-    @action
     async loadSelectedFrames() {
         const thumbFolder = this.settings.folders.thumbs;
 
@@ -233,7 +222,6 @@ export class videoExplorerStore {
 
     }
 
-    @action
     async loadVideoPaths(rootPath) {
         new Promise(resolve => {
 
@@ -297,7 +285,6 @@ export class videoExplorerStore {
         });
     }
 
-    @action
     writeFeedback(feedbackContent) {
 
         // Check if feedbackPath is set
@@ -329,5 +316,3 @@ export class videoExplorerStore {
         )
     }
 }
-
-export default new videoExplorerStore();

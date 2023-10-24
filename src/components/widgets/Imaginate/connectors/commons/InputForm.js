@@ -1,18 +1,19 @@
 /* eslint jsx-a11y/anchor-is-valid: "off" */
 import React from "react";
 import { toJS } from "mobx";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 // import MjpegDecoder from "mjpeg-decoder";
 
 import { Typeahead, Menu, MenuItem } from "react-bootstrap-typeahead";
 
 import "react-bootstrap-typeahead/css/Typeahead.css";
 //import "react-bootstrap-typeahead/css/Typeahead-bs4.css";
+//
 
-@inject("imaginateStore")
-@inject("dataRepositoriesStore")
-@observer
-class InputForm extends React.Component {
+import stores from "../../../../../stores/rootStore";
+
+const InputForm = observer(class InputForm extends React.Component {
+
   constructor(props) {
     super(props);
 
@@ -127,7 +128,8 @@ class InputForm extends React.Component {
   }
 
   handleInputChange() {
-    const { dataRepositoriesStore, fileExtensionFilter } = this.props;
+    const { imaginateStore, dataRepositoriesStore } = stores;
+    const {fileExtensionFilter } = this.props;
     const { systemPath } = dataRepositoriesStore.settings;
 
     const selected = this.typeaheadRef.current.getInput().value;
@@ -138,7 +140,7 @@ class InputForm extends React.Component {
       );
 
       if (folder) {
-        const { imaginateStore, inputLoadCallback } = this.props;
+        const { inputLoadCallback } = this.props;
 
         const callback = inputLoadCallback ? inputLoadCallback :
               (inputs) => {
@@ -169,7 +171,7 @@ class InputForm extends React.Component {
     const selectedMethod = this.state.availableMethods[index];
 
     if (this.state.availableMethods[index].mediaType) {
-      const { imaginateStore } = this.props;
+      const { imaginateStore } = stores;
       const { service } = imaginateStore;
 
       service.uiParams.mediaType = selectedMethod.mediaType;
@@ -213,7 +215,7 @@ class InputForm extends React.Component {
   }
 
   addUrl(url) {
-    const store = this.props.imaginateStore;
+    const { imaginateStore } = stores;
 
     if (this.state.method.id === "mjpeg") {
       //      const decoder = new MjpegDecoder(url, { interval: 3000 });
@@ -227,8 +229,8 @@ class InputForm extends React.Component {
       //
       //      this.setState({ decoder: decoder });
     } else {
-      store.service.addInput(url);
-      store.predict();
+      imaginateStore.service.addInput(url);
+      imaginateStore.predict();
     }
   }
 
@@ -237,7 +239,7 @@ class InputForm extends React.Component {
       return m.isAvailable;
     });
 
-    const { dataRepositoriesStore } = this.props;
+    const { dataRepositoriesStore } = stores;
 
     return (
       <div className="card inputUrl" ref={this.setWrapperRef}>
@@ -347,6 +349,5 @@ class InputForm extends React.Component {
       </div>
     );
   }
-}
-
+});
 export default InputForm;

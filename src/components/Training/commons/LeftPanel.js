@@ -5,9 +5,7 @@ import { withRouter } from "react-router-dom";
 import ServiceList from "../../widgets/ServiceList";
 import PlaceHolder from "../../widgets/PlaceHolder";
 
-@withRouter
-@observer
-class LeftPanel extends React.Component {
+const LeftPanel = withRouter(observer(class LeftPanel extends React.Component {
   render() {
     return (
       <div className="nav-sidebar left-sidebar">
@@ -19,5 +17,5 @@ class LeftPanel extends React.Component {
       </div>
     );
   }
-}
+}));
 export default LeftPanel;

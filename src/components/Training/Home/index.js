@@ -1,28 +1,29 @@
 import React from "react";
-import { inject } from "mobx-react";
+import { observer } from "mobx-react";
 
 import Header from "../../Header";
 import LeftPanel from "../commons/LeftPanel";
 import MainView from "./MainView";
 import Modals from "./Modals";
 
-@inject("deepdetectStore")
-@inject("configStore")
-class TrainingHome extends React.Component {
+import stores from "../../../stores/rootStore";
+
+const TrainingHome = observer(class TrainingHome extends React.Component {
   componentWillMount() {
-    const { deepdetectStore } = this.props;
+    const { deepdetectStore } = stores;
     deepdetectStore.setTrainRefreshMode("services");
   }
 
   componentWillReceiveProps(nextProps) {
-    const { deepdetectStore } = this.props;
+    const { deepdetectStore } = stores;
     deepdetectStore.setTrainRefreshMode("services");
   }
 
   render() {
+    const { configStore } = stores;
     if (
-      this.props.configStore.isComponentBlacklisted("Training") ||
-      this.props.configStore.isComponentBlacklisted("TrainingHome")
+      configStore.isComponentBlacklisted("Training") ||
+      configStore.isComponentBlacklisted("TrainingHome")
     )
       return null;
 
@@ -37,5 +38,5 @@ class TrainingHome extends React.Component {
       </div>
     );
   }
-}
+});
 export default TrainingHome;

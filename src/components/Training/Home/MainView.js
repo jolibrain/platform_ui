@@ -1,19 +1,14 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { Link, withRouter } from "react-router-dom";
 import moment from "moment";
 
 import MainViewServiceList from "../../widgets/MainViewServiceList";
 import RightPanel from "../commons/RightPanel";
 
-@inject("deepdetectStore")
-@inject("modelRepositoriesStore")
-@inject("configStore")
-@inject("gpuStore")
-@inject("pathFilterStore")
-@withRouter
-@observer
-class MainView extends React.Component {
+import stores from "../../../stores/rootStore";
+
+const MainView = withRouter(observer(class MainView extends React.Component {
   constructor(props) {
     super(props);
 
@@ -36,7 +31,7 @@ class MainView extends React.Component {
   }
 
   componentWillMount() {
-    const { modelRepositoriesStore } = this.props;
+    const { modelRepositoriesStore } = stores;
     if (!modelRepositoriesStore.isReadyTraining) {
       modelRepositoriesStore.refreshTraining();
     }
@@ -66,7 +61,8 @@ class MainView extends React.Component {
   }
 
   handleClickRefreshArchive() {
-    this.props.modelRepositoriesStore.refreshTraining();
+    const { modelRepositoriesStore } = stores;
+    modelRepositoriesStore.refreshTraining();
   }
 
   handleServiceFilter(event) {
@@ -87,10 +83,12 @@ class MainView extends React.Component {
 
   render() {
     const {
+      configStore,
       deepdetectStore,
+      gpuStore,
       modelRepositoriesStore,
       pathFilterStore
-    } = this.props;
+    } = stores;
 
     if (!deepdetectStore.isReady) return null;
 
@@ -153,8 +151,8 @@ class MainView extends React.Component {
 
     let mainClassnames = "main-view content-wrapper"
     if (
-      typeof this.props.configStore.gpuInfo !== "undefined" &&
-        this.props.gpuStore.servers.length > 0
+      typeof configStore.gpuInfo !== "undefined" &&
+        gpuStore.servers.length > 0
     ) {
       mainClassnames = "main-view content-wrapper with-right-sidebar"
     }
@@ -313,5 +311,5 @@ class MainView extends React.Component {
       </div>
     );
   }
-}
+}));
 export default MainView;

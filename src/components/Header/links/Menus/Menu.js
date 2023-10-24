@@ -4,7 +4,7 @@ import React from "react";
 import MenuItem from "./MenuItem";
 import MenuDropdown from "./MenuDropdown";
 
-class Menu extends React.Component {
+const Menu = class Menu extends React.Component {
   constructor(props) {
     super(props);
 
@@ -79,6 +79,6 @@ class Menu extends React.Component {
       );
     }
   }
-}
+};
 
 export default Menu;

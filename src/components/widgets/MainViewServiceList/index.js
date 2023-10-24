@@ -1,17 +1,16 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
 import Cards from "./Cards";
 import Table from "./Table";
 
-@inject("configStore")
-@withRouter
-@observer
-class MainViewServiceList extends React.Component {
+import stores from "../../../stores/rootStore";
+
+const MainViewServiceList = withRouter(observer(class MainViewServiceList extends React.Component {
 
   render() {
+    const { configStore } = stores;
     const {
       services,
       filterServiceName,
@@ -20,7 +19,7 @@ class MainViewServiceList extends React.Component {
 
     if (
       !services ||
-      this.props.configStore.isComponentBlacklisted("MainViewServiceList")
+      configStore.isComponentBlacklisted("MainViewServiceList")
     )
       return null;
 
@@ -49,12 +48,5 @@ class MainViewServiceList extends React.Component {
 
     return (<div className="mainViewServiceList row">{content}</div>);
   }
-}
-
-MainViewServiceList.propTypes = {
-  services: PropTypes.array.isRequired,
-  filterServiceName: PropTypes.string,
-  handleCompareStateChange: PropTypes.func,
-  layout: PropTypes.string
-};
+}));
 export default MainViewServiceList;

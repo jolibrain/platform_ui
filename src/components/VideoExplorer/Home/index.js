@@ -1,18 +1,20 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 
 import Header from "../../Header";
 import LeftPanel from "../commons/LeftPanel";
 import MainView from "./MainView";
 
-@inject("configStore")
-@observer
-class VideoExplorerHome extends React.Component {
+import stores from "../../../stores/rootStore";
 
+const VideoExplorerHome = observer(class VideoExplorerHome extends React.Component {
   render() {
+
+    const { configStore } = stores;
+
     if (
-      this.props.configStore.isComponentBlacklisted("VideoExplorer") ||
-      this.props.configStore.isComponentBlacklisted("VideoExplorerHome")
+      configStore.isComponentBlacklisted("VideoExplorer") ||
+      configStore.isComponentBlacklisted("VideoExplorerHome")
     )
       return null;
 
@@ -25,7 +27,7 @@ class VideoExplorerHome extends React.Component {
     ]
 
     if (
-      !this.props.configStore.isComponentBlacklisted("RightPanel")
+      !configStore.isComponentBlacklisted("RightPanel")
     )
       mainClassNames.push("page-with-contextual-sidebar")
 
@@ -39,5 +41,5 @@ class VideoExplorerHome extends React.Component {
       </div>
     );
   }
-}
+});
 export default VideoExplorerHome;

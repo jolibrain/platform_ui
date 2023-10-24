@@ -1,7 +1,7 @@
 import { autorun, set, toJS } from "mobx";
 import store from "store";
 
-export default function(_this, key) {
+const autoSave = function(_this, key) {
   let firstRun = true;
 
   // will run on change
@@ -24,3 +24,4 @@ export default function(_this, key) {
 
   firstRun = false;
 }
+export default autoSave;

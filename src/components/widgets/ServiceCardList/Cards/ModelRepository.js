@@ -1,9 +1,10 @@
 /* eslint jsx-a11y/anchor-is-valid: "off" */
 import React from "react";
-import PropTypes from "prop-types";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { Link, withRouter } from "react-router-dom";
 import moment from "moment";
+
+import stores from "../../../../stores/rootStore";
 
 /*
  * # Workflow: publishing after training"
@@ -19,12 +20,7 @@ import moment from "moment";
  * it deletes the existing service from the training server
  */
 
-@withRouter
-@inject("deepdetectStore")
-@inject("modelRepositoriesStore")
-@inject("modalStore")
-@observer
-class ModelRepositoryCard extends React.Component {
+const ModelRepositoryCard = withRouter(observer(class ModelRepositoryCard extends React.Component {
   constructor(props) {
     super(props);
 
@@ -50,7 +46,7 @@ class ModelRepositoryCard extends React.Component {
   }
 
   openPublishTrainingModal() {
-    const { modalStore } = this.props;
+    const { modalStore } = stores;
     modalStore.setVisible("publishTraining", true, {
       service: this.props.service
     });
@@ -314,10 +310,5 @@ class ModelRepositoryCard extends React.Component {
       </div>
     );
   }
-}
-
-ModelRepositoryCard.propTypes = {
-  repository: PropTypes.object,
-  handleCompareStateChange: PropTypes.func
-};
+}));
 export default ModelRepositoryCard;

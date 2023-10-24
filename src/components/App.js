@@ -1,7 +1,8 @@
 import React from "react";
+import { hot } from "react-hot-loader";
 
 import { Switch, Route, withRouter } from "react-router-dom";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 
 import Home from "./Home";
 import Loading from "./Loading";
@@ -26,21 +27,9 @@ import GenericNotFound from "./GenericNotFound";
 import Imaginate from "./widgets/Imaginate";
 
 import deepdetectService from "../stores/deepdetect/service";
+import stores from "../stores/rootStore";
 
-@inject("configStore")
-@inject("gpuStore")
-@inject("deepdetectStore")
-@inject("imaginateStore")
-@inject("modelRepositoriesStore")
-@inject("dataRepositoriesStore")
-@inject("datasetStore")
-@inject("videoExplorerStore")
-@inject("modalStore")
-@inject("authTokenStore")
-@inject("buildInfoStore")
-@withRouter
-@observer
-class App extends React.Component {
+const App = withRouter(observer(class App extends React.Component {
   constructor(props) {
     super(props);
 
@@ -51,9 +40,11 @@ class App extends React.Component {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+
+    const { configPath } = this.props;
+
     const {
-      configPath,
       configStore,
       gpuStore,
       deepdetectStore,
@@ -62,50 +53,53 @@ class App extends React.Component {
       modelRepositoriesStore,
       dataRepositoriesStore,
       videoExplorerStore,
-      buildInfoStore,
-    } = this.props;
+      buildInfoStore
+    } = stores;
 
-    configStore.loadConfig(config => {
-      if (config.layout === "minimal") {
-        const serviceSettings = imaginateStore.settings.services[0];
+    await configStore.loadConfig(configPath)
 
-        imaginateStore.service = new deepdetectService({
-          serviceSettings: serviceSettings,
-          serverName: deepdetectStore.server.name,
-          serverSettings: deepdetectStore.server.settings
-        });
-      } else {
-        deepdetectStore.setup(config);
-        deepdetectStore.loadServices(true);
-        deepdetectStore.refreshTrainInfo();
+    if (configStore.layout === "minimal") {
 
-        if (config.gpuInfo) {
-          gpuStore.setup(config);
-          gpuStore.loadGpuInfo();
-        }
+      const serviceSettings = imaginateStore.settings.services[0];
 
-        imaginateStore.setup(config);
-        authTokenStore.setup();
+      imaginateStore.service = new deepdetectService({
+        serviceSettings: serviceSettings,
+        serverName: deepdetectStore.server.name,
+        serverSettings: deepdetectStore.server.settings
+      });
 
-        if (config.modelRepositories) {
-          modelRepositoriesStore.setup(config);
-        }
+    } else {
 
-        if (config.dataRepositories) {
-          dataRepositoriesStore.setup(config);
-        }
+      deepdetectStore.setup(configStore);
+      deepdetectStore.loadServices(true);
+      deepdetectStore.refreshTrainInfo();
 
-        if (config.videoExplorer) {
-          videoExplorerStore.setup(config);
-        }
-
-        buildInfoStore.loadBuildInfo();
+      if (configStore.gpuInfo) {
+        gpuStore.setup(configStore);
+        gpuStore.loadGpuInfo();
       }
-    }, configPath);
+
+      imaginateStore.setup(configStore);
+      authTokenStore.setup();
+
+      if (configStore.modelRepositories) {
+        modelRepositoriesStore.setup(configStore);
+      }
+
+      if (configStore.dataRepositories) {
+        dataRepositoriesStore.setup(configStore);
+      }
+
+      if (configStore.videoExplorer) {
+        videoExplorerStore.setup(configStore);
+      }
+
+      buildInfoStore.loadBuildInfo();
+    }
   }
 
   render() {
-    const { configStore, deepdetectStore } = this.props;
+    const { configStore, deepdetectStore } = stores;
 
     if (!configStore.isReady) return null;
 
@@ -181,10 +175,10 @@ class App extends React.Component {
 
     return appComponent;
   }
-}
+}));
 
 App.defaultProps = {
   configPath: "/config.json"
 }
 
-export default App;
+export default hot(module)(App);

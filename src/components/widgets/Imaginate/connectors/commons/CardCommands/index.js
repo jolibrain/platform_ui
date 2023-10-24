@@ -1,5 +1,5 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 
 import Header from "./Header";
 
@@ -7,9 +7,9 @@ import CurlCommand from "./CurlCommand";
 import JsonResponse from "./JsonResponse";
 import Code from "./Code";
 
-@inject("imaginateStore")
-@observer
-class CardCommands extends React.Component {
+import stores from "../../../../../../stores/rootStore";
+
+const CardCommands = observer(class CardCommands extends React.Component {
   constructor(props) {
     super(props);
 
@@ -25,7 +25,8 @@ class CardCommands extends React.Component {
   }
 
   render() {
-    const { service } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service } = imaginateStore;
     const input = service.selectedInput;
 
     if (typeof input === "undefined" || !input) return null;
@@ -71,5 +72,5 @@ class CardCommands extends React.Component {
       </div>
     );
   }
-}
+});
 export default CardCommands;

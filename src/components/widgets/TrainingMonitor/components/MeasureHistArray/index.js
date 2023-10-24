@@ -1,11 +1,8 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { observer } from "mobx-react";
 
 import Table from "./Table";
 
-@observer
-class MeasureHistArray extends React.Component {
+const MeasureHistArray = class MeasureHistArray extends React.Component {
   render() {
     let { services } = this.props;
 
@@ -72,9 +69,5 @@ class MeasureHistArray extends React.Component {
       </div>
     );
   }
-}
-
-MeasureHistArray.propTypes = {
-  services: PropTypes.array.isRequired
 };
 export default MeasureHistArray;

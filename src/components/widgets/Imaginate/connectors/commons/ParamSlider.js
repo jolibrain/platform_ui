@@ -1,13 +1,11 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 
 import Slider, { createSliderWithTooltip } from "rc-slider";
 import "rc-slider/assets/index.css";
 const SliderWithTooltip = createSliderWithTooltip(Slider);
 
-@inject("imaginateStore")
-@observer
-class ParamSlider extends React.Component {
+const ParamSlider = observer(class ParamSlider extends React.Component {
   render() {
     if (typeof this.props.defaultValue === "undefined") return null;
 
@@ -20,5 +18,5 @@ class ParamSlider extends React.Component {
       </div>
     );
   }
-}
+});
 export default ParamSlider;

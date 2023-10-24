@@ -1,14 +1,11 @@
 /* eslint jsx-a11y/anchor-is-valid: "off" */
 import React from "react";
-import PropTypes from "prop-types";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { Link, withRouter } from "react-router-dom";
 
-@inject("deepdetectStore")
-@inject("modalStore")
-@withRouter
-@observer
-class TrainingCard extends React.Component {
+import stores from "../../../../stores/rootStore";
+
+const TrainingCard = withRouter(observer(class TrainingCard extends React.Component {
   constructor(props) {
     super(props);
 
@@ -19,7 +16,7 @@ class TrainingCard extends React.Component {
   }
 
   openDeleteServiceModal() {
-    const { modalStore } = this.props;
+    const { modalStore } = stores;
     modalStore.setVisible("deleteService", true, {
       service: this.props.service
     });
@@ -389,9 +386,5 @@ class TrainingCard extends React.Component {
       </div>
     );
   }
-}
-
-TrainingCard.propTypes = {
-  service: PropTypes.object.isRequired
-};
+}));
 export default TrainingCard;

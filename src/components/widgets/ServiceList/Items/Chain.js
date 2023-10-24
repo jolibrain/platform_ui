@@ -2,9 +2,7 @@ import React from "react";
 import { observer } from "mobx-react";
 import { Link, withRouter } from "react-router-dom";
 
-@withRouter
-@observer
-class Chain extends React.Component {
+const Chain = withRouter(observer(class Chain extends React.Component {
   render() {
     const { chain } = this.props;
 
@@ -23,5 +21,5 @@ class Chain extends React.Component {
       </li>
     );
   }
-}
+}));
 export default Chain;

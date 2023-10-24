@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import ReactTooltip from "react-tooltip";
 
 class Item extends React.Component {
@@ -54,9 +53,4 @@ class Item extends React.Component {
     );
   }
 }
-
-Item.propTypes = {
-  server: PropTypes.object.isRequired
-};
-
 export default Item;

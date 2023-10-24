@@ -1,12 +1,10 @@
 import React from "react";
-import { observer } from "mobx-react";
 
 import Slider from 'rc-slider';
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 const Range = createSliderWithTooltip(Slider.Range);
 
-@observer
-class RangeComponent extends React.Component {
+const RangeComponent = class RangeComponent extends React.Component {
 
     render() {
 
@@ -39,5 +37,4 @@ class RangeComponent extends React.Component {
         );
     }
 };
-
 export default RangeComponent

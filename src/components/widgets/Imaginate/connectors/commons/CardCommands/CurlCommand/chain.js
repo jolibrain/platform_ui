@@ -1,5 +1,5 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 import ReactTooltip from "react-tooltip";
@@ -12,16 +12,14 @@ import { withCookies } from "react-cookie";
 
 import copy from "copy-to-clipboard";
 
-@inject("imaginateStore")
-@inject("deepdetectStore")
-@inject("authTokenStore")
-@withRouter
-@observer
-class ChainCommand extends React.Component {
+import stores from "../../../../../../../stores/rootStore";
+
+const ChainCommand = withRouter(observer(class ChainCommand extends React.Component {
   constructor(props) {
     super(props);
 
-    const { service } = this.props.imaginateStore;
+    const {imaginateStore} = stores;
+    const { service } = imaginateStore;
 
     this.state = {
       copied: false,
@@ -33,11 +31,12 @@ class ChainCommand extends React.Component {
   }
 
   curlCommand() {
-    const { service } = this.props.imaginateStore;
-    const { cookies } = this.props;
+    const { deepdetectStore, imaginateStore } = stores;
+    const { service } = imaginateStore;
+    const { cookies, match } = this.props;
 
-    const chainName = this.props.match.params.chainName;
-    const chain = this.props.deepdetectStore.chains.find(
+    const chainName = match.params.chainName;
+    const chain = deepdetectStore.chains.find(
       c => c.name === chainName
     );
 
@@ -75,7 +74,8 @@ class ChainCommand extends React.Component {
     // Moving to CodeMirror is tricky because it'd call componentWillReceiveProps
     // so you don't know if you need to update the curlCommand or not
     // Would it need to be moved to a children Component ?
-    const { service } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service } = imaginateStore;
     this.setState({ jsonConfig: service.selectedInput.postData });
     ReactTooltip.rebuild();
   }
@@ -90,7 +90,8 @@ class ChainCommand extends React.Component {
   }
 
   render() {
-    const { service } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service } = imaginateStore;
 
     if (service.selectedInput === null) return null;
 
@@ -121,6 +122,5 @@ class ChainCommand extends React.Component {
       </div>
     );
   }
-}
-
+}));
 export default withCookies(ChainCommand);

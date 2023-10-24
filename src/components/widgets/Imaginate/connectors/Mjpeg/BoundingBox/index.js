@@ -3,8 +3,7 @@ import { observer } from "mobx-react";
 import Boundingbox from "react-bounding-box";
 import seedrandom from "seedrandom";
 
-@observer
-class BoundingBox extends React.Component {
+const BoundingBox = observer(class BoundingBox extends React.Component {
   constructor(props) {
     super(props);
 
@@ -286,5 +285,5 @@ class BoundingBox extends React.Component {
       />
     );
   }
-}
+});
 export default BoundingBox;

@@ -1,14 +1,14 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 import ReactTooltip from "react-tooltip";
 
 import copy from "copy-to-clipboard";
 
-@inject("imaginateStore")
-@observer
-class Code extends React.Component {
+import stores from "../../../../../../../stores/rootStore";
+
+const Code = observer(class Code extends React.Component {
   constructor(props) {
     super(props);
 
@@ -41,7 +41,8 @@ class Code extends React.Component {
   }
 
   javascriptCode() {
-    const { service, settings, chain } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service, settings, chain } = imaginateStore;
 
     let codeSettings = settings.default.code || {};
 
@@ -117,7 +118,8 @@ run()`;
   }
 
   pythonCode() {
-    const { service, settings, chain } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service, settings, chain } = imaginateStore;
 
     let codeSettings = settings.default.code || {};
 
@@ -318,5 +320,5 @@ dd.set_return_format(dd.RETURN_PYTHON)\n\n`;
       </div>
     );
   }
-}
+});
 export default Code;

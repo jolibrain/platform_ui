@@ -1,17 +1,18 @@
 import React from "react";
-import { inject } from "mobx-react";
+import { observer } from "mobx-react";
 
 import Header from "../../Header";
 import LeftPanel from "../commons/LeftPanel";
 import MainView from "./MainView";
 
-@inject("deepdetectStore")
-@inject("configStore")
-class DatasetHome extends React.Component {
+import stores from "../../../stores/rootStore";
+
+const DatasetHome = observer(class DatasetHome extends React.Component {
   render() {
+    const { configStore } = stores;
     if (
-      this.props.configStore.isComponentBlacklisted("Dataset") ||
-      this.props.configStore.isComponentBlacklisted("DatasetHome")
+      configStore.isComponentBlacklisted("Dataset") ||
+      configStore.isComponentBlacklisted("DatasetHome")
     )
       return null;
 
@@ -25,5 +26,5 @@ class DatasetHome extends React.Component {
       </div>
     );
   }
-}
+});
 export default DatasetHome;

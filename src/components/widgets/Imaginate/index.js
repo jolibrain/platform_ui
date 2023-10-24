@@ -1,18 +1,18 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 
 import ImageConnector from "./connectors/Image";
 import ImagePathConnector from "./connectors/ImagePath";
 import TxtConnector from "./connectors/Txt";
-// import WebcamConnector from "./connectors/Webcam";
 import VideoConnector from "./connectors/Video";
 import CsvConnector from "./connectors/Csv";
+// import WebcamConnector from "./connectors/Webcam";
 // import MjpegConnector from "./connectors/Mjpeg";
 
-@inject("imaginateStore")
-@inject("configStore")
-@observer
-class Imaginate extends React.Component {
+import stores from "../../../stores/rootStore";
+
+const Imaginate = observer(class Imaginate extends React.Component {
+
   constructor(props) {
     super(props);
 
@@ -22,7 +22,7 @@ class Imaginate extends React.Component {
   componentWillReceiveProps(nextProps) {}
 
   getServiceConnector() {
-    const { imaginateStore } = this.props;
+    const { imaginateStore } = stores;
     const { service } = imaginateStore;
 
     let connector = null;
@@ -87,9 +87,8 @@ class Imaginate extends React.Component {
   }
 
   render() {
-    if (this.props.configStore.isComponentBlacklisted("Imaginate")) return null;
-
-    const { imaginateStore } = this.props;
+    const { configStore, imaginateStore } = stores
+    if (configStore.isComponentBlacklisted("Imaginate")) return null;
 
     if (!imaginateStore.service) {
       console.log("[ImaginateStore] missing service");
@@ -140,5 +139,5 @@ class Imaginate extends React.Component {
       </div>
     );
   }
-}
+});
 export default Imaginate;

@@ -1,10 +1,8 @@
 import React from "react";
-import { observer } from "mobx-react";
 
 import Slider from 'rc-slider';
 
-@observer
-class SliderComponent extends React.Component {
+const SliderComponent = class SliderComponent extends React.Component {
 
     render() {
 

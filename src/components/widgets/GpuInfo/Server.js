@@ -4,8 +4,7 @@ import { observer } from "mobx-react";
 import GpuStatsFormat from "./Item/GpuStatsFormat";
 import JtopFormat from "./Item/JtopFormat";
 
-@observer
-class GpuStatServer extends React.Component {
+const GpuStatServer = observer(class GpuStatServer extends React.Component {
   render() {
     const { server } = this.props;
 
@@ -62,5 +61,5 @@ class GpuStatServer extends React.Component {
       </div>
     );
   }
-}
+});
 export default GpuStatServer;

@@ -1,10 +1,11 @@
 import React from "react";
-import { inject } from "mobx-react";
+import { observer } from "mobx-react";
 
-@inject("configStore")
-class Data extends React.Component {
+import stores from "../../../stores/rootStore";
+
+const Data = observer(class Data extends React.Component {
   render() {
-    const { configStore } = this.props;
+    const { configStore } = stores;
 
     let href = "/filebrowser";
 
@@ -31,6 +32,6 @@ class Data extends React.Component {
       </li>
     );
   }
-}
+});
 
 export default Data;

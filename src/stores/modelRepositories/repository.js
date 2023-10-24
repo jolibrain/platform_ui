@@ -1,23 +1,23 @@
-import { observable, computed, action, runInAction } from "mobx";
+import { makeAutoObservable } from "mobx";
 import agent from "../../agent";
 
 export default class Repository {
-  @observable path;
-  @observable files;
-  @observable store;
+  path;
+  store;
 
-  @observable fetchError = null;
+  fetchError = null;
 
-  @observable jsonConfig = null;
-  @observable jsonMetrics = null;
-  @observable bestModel = null;
+  jsonConfig = null;
+  jsonMetrics = null;
+  bestModel = null;
 
-  @observable metricsDate = null;
+  metricsDate = null;
 
-  @observable files = [];
-  @observable benchmarks = [];
+  files = [];
+  benchmarks = [];
 
   constructor(path, files, store, fetchError = null) {
+    makeAutoObservable(this);
     this.isRepository = true;
     this.path = path;
     this.files = files;
@@ -27,7 +27,6 @@ export default class Repository {
     this._load();
   }
 
-  @computed
   get mltype() {
     if (
       !this.jsonMetrics ||
@@ -156,17 +155,14 @@ export default class Repository {
     return value;
   }
 
-  @computed
   get benchmarksPath() {
     return this.path + '/benchmarks';
   }
 
-  @computed
   get tags() {
     return this.path.split("/").filter(p => p.length > 0);
   }
 
-  @computed
   get trainingTags() {
     return this.path.split("/").filter(p => {
       return (
@@ -175,7 +171,6 @@ export default class Repository {
     });
   }
 
-  @computed
   get name() {
     return this.path
       .split("/")
@@ -183,12 +178,10 @@ export default class Repository {
       .pop();
   }
 
-  @computed
   get location() {
     return this.store.systemPath + this.path;
   }
 
-  @computed
   get downloadableFiles() {
     const torchWeightFile = this.files
       .filter(f => f.endsWith(".pt"))
@@ -214,7 +207,6 @@ export default class Repository {
       .filter(f => f.indexOf("~") === -1);
   }
 
-  @computed
   get measure_hist() {
     if (
       !this.jsonMetrics ||
@@ -226,7 +218,6 @@ export default class Repository {
     return this.jsonMetrics.body.measure_hist;
   }
 
-  @computed
   get isTimeseries() {
       return this.mltype === "timeserie";
   }
@@ -247,14 +238,12 @@ export default class Repository {
     }
   }
 
-  @action.bound
   async deleteArchivedJob() {
     const isDeleted = await this.$reqDeleteArchivedJob();
     this.store.removeRepository(this.path);
     return isDeleted;
   }
 
-  @action.bound
   async _setMetricsDate() {
     // Do not try to fetch large files
     const filenames = this.files.filter(f => {
@@ -273,49 +262,62 @@ export default class Repository {
         const meta = await agent.Webserver.getFileMeta(
           `${this.path}${filenames[0]}`
         );
-        this.metricsDate = meta.header["last-modified"];
+        this._updateMetricsDate(meta.header["last-modified"]);
       } catch (e) {}
     }
   }
 
-  @action.bound
+  _updateJsonConfigCustom() {
+    // TODO : remove this line when config.json editable
+    this.jsonConfig.parameters.mllib.gpuid = 0;
+
+    // delete this parameter from server config
+    // it'd create an issue when creating a new service
+    // from PredictHome 'Add Service' button
+    //
+    // it's generated when creating a new Service with
+    // the Publish button from Archived Training Jobs
+    this.jsonConfig.parameters.mllib.from_repository = null;
+  }
+
   async _loadJsonConfig() {
     try {
       const meta = await this.$reqJsonConfig();
 
-      this.metricsDate = meta.header["last-modified"];
-      this.jsonConfig = meta.content;
+      this._updateJsonMetrics(meta.content);
+      this._updateMetricsDate(meta.header["last-modified"]);
+      this._updateJsonConfigCustom();
 
-      // TODO : remove this line when config.json editable
-      this.jsonConfig.parameters.mllib.gpuid = 0;
-
-      // delete this parameter from server config
-      // it'd create an issue when creating a new service
-      // from PredictHome 'Add Service' button
-      //
-      // it's generated when creating a new Service with
-      // the Publish button from Archived Training Jobs
-      this.jsonConfig.parameters.mllib.from_repository = null;
     } catch (e) {}
   }
 
-  @action.bound
+  _updateJsonMetrics(jsonMetrics) {
+    this.jsonMetrics = jsonMetrics;
+  }
+
   async _loadJsonMetrics() {
     try {
       const meta = await this.$reqJsonMetrics();
-      this.jsonMetrics = meta.content;
-      this.metricsDate = meta.header["last-modified"];
+      this._updateJsonMetrics(meta.content);
+      this._updateMetricsDate(meta.header["last-modified"]);
     } catch (err) {
       //console.log(`Error while loading repository json metrics - ${this.name} - ${err}`)
     }
   }
 
-  @action
+  _updateMetricsDate(metricsDate) {
+    this.metricsDate = metricsDate;
+  }
+
+  _updateBestModel(bestModel) {
+    this.bestModel = bestModel;
+  }
+
   async _loadBestModel() {
     try {
       let bestModel = {};
       const meta = await this.$reqBestModel();
-      this.metricsDate = meta.header["last-modified"];
+      this._updateMetricsDate(meta.header["last-modified"]);
       const bestModelTxt = meta.content;
 
       // Transform current best_model.txt to json format
@@ -332,15 +334,16 @@ export default class Repository {
           });
       }
 
-      runInAction(() => {
-        this.bestModel = bestModel;
-      });
+      this._updateBestModel(bestModel);
     } catch (e) {
       //console.log(e);
     }
   }
 
-  @action
+  _updateBenchmarks(benchmarks) {
+    this.benchmarks = benchmarks;
+  }
+
   async _loadBenchmarks() {
     try {
       let benchmarks = [];
@@ -363,9 +366,7 @@ export default class Repository {
         }
       }
 
-      runInAction(() => {
-        this.benchmarks = benchmarks;
-      });
+      this._updateBenchmarks(benchmarks);
     } catch (e) {
       //console.log(e);
     }

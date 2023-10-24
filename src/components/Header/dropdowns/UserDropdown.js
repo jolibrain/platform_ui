@@ -1,12 +1,8 @@
 /* eslint jsx-a11y/anchor-is-valid: "off" */
 import React from "react";
-import PropTypes from "prop-types";
-import { inject, observer } from "mobx-react";
 import { withCookies } from "react-cookie";
 
-@inject("configStore")
-@observer
-class UserDropdown extends React.Component {
+const UserDropdown = class UserDropdown extends React.Component {
   constructor(props) {
     super(props);
 
@@ -108,10 +104,5 @@ class UserDropdown extends React.Component {
     //      </li>
     //    );
   }
-}
-
-UserDropdown.propTypes = {
-  cookies: PropTypes.object.isRequired
 };
-
 export default withCookies(UserDropdown);

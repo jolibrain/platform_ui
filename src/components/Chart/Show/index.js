@@ -1,5 +1,5 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 
 import Header from "../../Header";
 import LeftPanel from "../commons/LeftPanel";
@@ -7,12 +7,12 @@ import LeftPanel from "../commons/LeftPanel";
 import TrainingArchive from "../views/Training/Archive";
 import ModelBenchmark from "../views/Model/Benchmark";
 
-@inject("configStore")
-@inject("deepdetectStore")
-@observer
-class ChartShow extends React.Component {
+import stores from "../../../stores/rootStore";
+
+const ChartShow = observer(class ChartShow extends React.Component {
   render() {
-    if (this.props.configStore.isComponentBlacklisted("Chart")) return null;
+    const { configStore } = stores;
+    if (configStore.isComponentBlacklisted("Chart")) return null;
 
     let mainView = null;
     const { chartType } = this.props.match.params;
@@ -38,5 +38,5 @@ class ChartShow extends React.Component {
       </div>
     );
   }
-}
+});
 export default ChartShow;

@@ -1,19 +1,16 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
 import Header from "../../Header";
 import LeftPanel from "../commons/LeftPanel";
 import MainView from "./MainView";
 
-@inject("modelRepositoriesStore")
-@inject("deepdetectStore")
-@inject("configStore")
-@withRouter
-@observer
-class PredictNew extends React.Component {
+import stores from "../../../stores/rootStore";
+
+const PredictNew = withRouter(observer(class PredictNew extends React.Component {
   componentWillMount() {
-    const { deepdetectStore, modelRepositoriesStore } = this.props;
+    const { deepdetectStore, modelRepositoriesStore } = stores;
     if (!modelRepositoriesStore.isReadyPredict) {
       modelRepositoriesStore.refreshPredict();
     }
@@ -21,14 +18,21 @@ class PredictNew extends React.Component {
   }
 
   render() {
+
+    const {
+      configStore,
+      deepdetectStore,
+      modelRepositoriesStore
+    } = stores;
+
     if (
-      this.props.configStore.isComponentBlacklisted("Predict") ||
-      this.props.configStore.isComponentBlacklisted("PredictNew")
+      configStore.isComponentBlacklisted("Predict") ||
+      configStore.isComponentBlacklisted("PredictNew")
     )
       return null;
 
-    const { repositoryStores } = this.props.modelRepositoriesStore;
-    const { services } = this.props.deepdetectStore.settings;
+    const { repositoryStores } = modelRepositoriesStore;
+    const { services } = deepdetectStore.settings;
 
     if (services.length === 0) {
       return (
@@ -68,5 +72,5 @@ class PredictNew extends React.Component {
       );
     }
   }
-}
+}));
 export default PredictNew;

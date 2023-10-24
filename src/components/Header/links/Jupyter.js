@@ -1,10 +1,10 @@
 import React from "react";
-import { inject } from "mobx-react";
+import { observer } from "mobx-react";
+import stores from "../../../stores/rootStore";
 
-@inject("configStore")
-class Jupyter extends React.Component {
+const Jupyter = observer(class Jupyter extends React.Component {
   render() {
-    const { configStore } = this.props;
+    const { configStore } = stores;
 
     let href = "/code/lab";
 
@@ -31,6 +31,6 @@ class Jupyter extends React.Component {
       </li>
     );
   }
-}
+});
 
 export default Jupyter;

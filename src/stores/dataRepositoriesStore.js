@@ -1,14 +1,17 @@
-import { observable, action } from "mobx";
+import { makeAutoObservable } from "mobx";
 import agent from "../agent";
 import path from "path";
 
-export class dataRepositoriesStore {
-  @observable loaded = false;
-  @observable isLoading = false;
-  @observable settings = {};
-  @observable repositories = [];
+export default class dataRepositoriesStore {
+  loaded = false;
+  isLoading = false;
+  settings = {};
+  repositories = [];
 
-  @action
+  constructor() {
+    makeAutoObservable(this);
+  }
+
   setup(configStore) {
     this.settings = configStore.dataRepositories;
 
@@ -32,7 +35,6 @@ export class dataRepositoriesStore {
     return agent.Webserver.listFolders(rootPath);
   }
 
-  @action
   async load(rootPath, level = 0) {
     return new Promise(resolve => {
       let repositories = [];
@@ -105,5 +107,3 @@ export class dataRepositoriesStore {
     });
   }
 }
-
-export default new dataRepositoriesStore();

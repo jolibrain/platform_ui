@@ -1,10 +1,8 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 import { Line } from "react-chartjs-2";
 
-@observer
-class BatchSizeChart extends React.Component {
+const BatchSizeChart = observer(class BatchSizeChart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -129,10 +127,5 @@ class BatchSizeChart extends React.Component {
       </div>
     );
   }
-}
-
-BatchSizeChart.propTypes = {
-  services: PropTypes.array.isRequired,
-  hiddenRepositoriesIndexes: PropTypes.array
-};
+});
 export default BatchSizeChart;

@@ -1,12 +1,7 @@
 /* eslint jsx-a11y/anchor-is-valid: "off" */
 import React from "react";
-import PropTypes from "prop-types";
-import { observer } from "mobx-react";
-import { withRouter } from "react-router-dom";
 
-@withRouter
-@observer
-class DatasetItem extends React.Component {
+const DatasetItem = class DatasetItem extends React.Component {
   render() {
     const dataset = this.props.dataset;
 
@@ -34,9 +29,5 @@ class DatasetItem extends React.Component {
       </div>
     );
   }
-}
-
-DatasetItem.propTypes = {
-  repository: PropTypes.object
 };
 export default DatasetItem;

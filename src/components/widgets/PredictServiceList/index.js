@@ -1,6 +1,5 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { withRouter } from "react-router-dom";
 
 import Card from "./components/Card";
@@ -8,22 +7,21 @@ import ListItem from "./components/ListItem";
 
 import SkeletonCard from "./skeletons/Card";
 
-@inject("configStore")
-@inject("modelRepositoriesStore")
-@withRouter
-@observer
-class PredictServiceList extends React.Component {
+import stores from "../../../stores/rootStore";
+
+const PredictServiceList = withRouter(observer(class PredictServiceList extends React.Component {
 
   renderSkeletonCards() {
     return (
       <div id="predictServiceList-cards" className="serviceQuickCreate row">
-        { [...Array(3)].map(() => <SkeletonCard />) }
+        { [...Array(3)].map((element, index) => <SkeletonCard key={`skeleton-${index}`}/>) }
       </div>
     );
   }
 
   renderCards() {
-    const { services, modelRepositoriesStore } = this.props;
+    const { services } = this.props;
+    const { modelRepositoriesStore } = stores;
     return modelRepositoriesStore.isRefreshing &&
       services.length === 0 ?
       this.renderSkeletonCards()
@@ -65,8 +63,9 @@ class PredictServiceList extends React.Component {
 
   render() {
     const { layout } = this.props;
+    const { configStore } = stores;
 
-    if (this.props.configStore.isComponentBlacklisted("PredictServiceList"))
+    if (configStore.isComponentBlacklisted("PredictServiceList"))
       return null;
 
     let content = null;
@@ -83,10 +82,5 @@ class PredictServiceList extends React.Component {
 
     return content;
   }
-}
-
-PredictServiceList.propTypes = {
-  services: PropTypes.array.isRequired,
-  layout: PropTypes.string
-};
+}));
 export default PredictServiceList;

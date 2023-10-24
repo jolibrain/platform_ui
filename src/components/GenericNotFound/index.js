@@ -4,7 +4,7 @@ import Header from "../Header";
 import LeftPanel from "./LeftPanel";
 import MainView from "./MainView";
 
-class GenericNotFound extends React.Component {
+const GenericNotFound = class GenericNotFound extends React.Component {
   render() {
     return (
       <div>
@@ -16,5 +16,5 @@ class GenericNotFound extends React.Component {
       </div>
     );
   }
-}
+};
 export default GenericNotFound;

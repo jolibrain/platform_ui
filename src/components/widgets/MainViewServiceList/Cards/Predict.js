@@ -1,20 +1,18 @@
 /* eslint jsx-a11y/anchor-is-valid: "off" */
 import React from "react";
-import PropTypes from "prop-types";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { Link, withRouter } from "react-router-dom";
 
-@inject("modalStore")
-@withRouter
-@observer
-class PredictCard extends React.Component {
+import stores from "../../../../stores/rootStore";
+
+const PredictCard = withRouter(observer(class PredictCard extends React.Component {
   constructor(props) {
     super(props);
     this.openDeleteServiceModal = this.openDeleteServiceModal.bind(this);
   }
 
   openDeleteServiceModal() {
-    const { modalStore } = this.props;
+    const { modalStore } = stores;
     modalStore.setVisible("deleteService", true, {
       service: this.props.service
     });
@@ -67,9 +65,5 @@ class PredictCard extends React.Component {
       </div>
     );
   }
-}
-
-PredictCard.propTypes = {
-  service: PropTypes.object.isRequired
-};
+}));
 export default PredictCard;

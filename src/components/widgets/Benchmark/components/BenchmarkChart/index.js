@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 
 import BatchSizeChart from "./ChartTypes/BatchSizeChart";
 import FpsChart from "./ChartTypes/FpsChart";
@@ -57,9 +56,4 @@ class BenchmarkChart extends React.Component {
     );
   }
 }
-
-BenchmarkChart.propTypes = {
-  services: PropTypes.array.isRequired,
-  hiddenRepositoriesIndexes: PropTypes.array,
-};
 export default BenchmarkChart;

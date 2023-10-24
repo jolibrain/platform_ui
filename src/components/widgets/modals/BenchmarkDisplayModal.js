@@ -1,18 +1,16 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
+
+import stores from "../../../stores/rootStore";
 
 import { Line } from "react-chartjs-2";
 
-@inject("deepdetectStore")
-@inject("modalStore")
-@observer
-@withRouter
-class BenchmarkDisplayModale extends React.Component {
-  chartReference = {};
+const BenchmarkDisplayModal = withRouter(observer(class BenchmarkDisplayModal extends React.Component {
 
   constructor(props) {
     super(props);
+    this.chartReference = {};
     this.state = {
       spinner: false,
       serviceName: "",
@@ -53,8 +51,9 @@ class BenchmarkDisplayModale extends React.Component {
   }
 
   handleClose() {
+    const { modalStore } = stores;
     this.setState({ benchmarks: [], serviceName: "" });
-    this.props.modalStore.setVisible("benchmarkDisplay", false);
+    modalStore.setVisible("benchmarkDisplay", false);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -160,5 +159,5 @@ class BenchmarkDisplayModale extends React.Component {
       </div>
     );
   }
-}
-export default BenchmarkDisplayModale;
+}));
+export default BenchmarkDisplayModal;

@@ -1,13 +1,12 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 
 import { Typeahead } from "react-bootstrap-typeahead";
 import "react-bootstrap-typeahead/css/Typeahead.css";
 
-@inject("videoExplorerStore")
-@inject("deepdetectStore")
-@observer
-class SourceFolderSelector extends React.Component {
+import stores from "../../../../stores/rootStore";
+
+const SourceFolderSelector = observer(class SourceFolderSelector extends React.Component {
 
     constructor(props) {
 
@@ -34,7 +33,7 @@ class SourceFolderSelector extends React.Component {
 
     render() {
 
-        const { videoExplorerStore } = this.props;
+        const { videoExplorerStore } = stores;
 
         return <div className="source-folder-selector">
             <Typeahead
@@ -49,6 +48,6 @@ class SourceFolderSelector extends React.Component {
 
     }
 
-};
+});
 
 export default SourceFolderSelector

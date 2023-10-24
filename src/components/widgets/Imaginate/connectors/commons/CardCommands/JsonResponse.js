@@ -1,15 +1,15 @@
 import React from "react";
 import { toJS } from "mobx";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 import ReactTooltip from "react-tooltip";
 
 import copy from "copy-to-clipboard";
 
-@inject("imaginateStore")
-@observer
-class JsonResponse extends React.Component {
+import stores from "../../../../../../stores/rootStore";
+
+const JsonResponse = observer(class JsonResponse extends React.Component {
   constructor(props) {
     super(props);
 
@@ -22,7 +22,8 @@ class JsonResponse extends React.Component {
   }
 
   handleCopyClipboard() {
-    const { service } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service } = imaginateStore;
 
     copy(JSON.stringify(service.selectedInput.json, null, 2));
 
@@ -53,7 +54,8 @@ class JsonResponse extends React.Component {
   }
 
   render() {
-    const { service } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service } = imaginateStore;
     const selectedInput = service.selectedInput;
 
     if (!selectedInput || !selectedInput.json) {
@@ -93,5 +95,5 @@ class JsonResponse extends React.Component {
       </div>
     );
   }
-}
+});
 export default JsonResponse;

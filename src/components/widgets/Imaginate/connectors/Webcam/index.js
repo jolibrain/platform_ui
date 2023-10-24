@@ -1,6 +1,6 @@
 import React from "react";
 import { toJS } from "mobx";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 
 import Webcam from "react-webcam";
 import BoundingBox from "./BoundingBox";
@@ -13,9 +13,9 @@ import ParamSlider from "../commons/ParamSlider";
 import Description from "../commons/Description";
 import CardCommands from "../commons/CardCommands";
 
-@inject("imaginateStore")
-@observer
-class WebcamConnector extends React.Component {
+import stores from "../../../../../stores/rootStore";
+
+const WebcamConnector = observer(class WebcamConnector extends React.Component {
   constructor(props) {
     super(props);
 
@@ -38,7 +38,8 @@ class WebcamConnector extends React.Component {
       this
     );
 
-    const { service } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service } = imaginateStore;
     service.addInput("");
   }
 
@@ -58,14 +59,15 @@ class WebcamConnector extends React.Component {
       return null;
     }
 
-    const { service } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service } = imaginateStore;
 
     var screenshot = canvas
       .toDataURL("image/jpeg", 0.92)
       .replace(/^data:image\/\w+;base64,/, "");
     service.selectedInput.content = screenshot;
 
-    this.props.imaginateStore.predict();
+    imaginateStore.predict();
   }
 
   onOver(index) {
@@ -81,16 +83,18 @@ class WebcamConnector extends React.Component {
   }
 
   handleConfidenceThreshold(value) {
-    const { serviceSettings } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { serviceSettings } = imaginateStore;
     serviceSettings.threshold.confidence = parseFloat((value / 100).toFixed(2));
     if (serviceSettings.threshold.confidence === 0) {
       serviceSettings.threshold.confidence = 0.01;
     }
-    this.props.imaginateStore.predict();
+    imaginateStore.predict();
   }
 
   render() {
-    const { service, serviceSettings } = this.props.imaginateStore;
+    const { imaginateStore } = stores;
+    const { service, serviceSettings } = imaginateStore;
     if (!service) return null;
 
     let uiControls = [];
@@ -150,5 +154,5 @@ class WebcamConnector extends React.Component {
       </div>
     );
   }
-}
+});
 export default WebcamConnector;

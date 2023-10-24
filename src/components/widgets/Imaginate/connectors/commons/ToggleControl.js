@@ -1,9 +1,7 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 
-@observer
-class ToggleControl extends React.Component {
+const ToggleControl = observer(class ToggleControl extends React.Component {
   render() {
     const { title, onChange, value } = this.props;
     const elementId = `check-${Math.random()}`;
@@ -24,11 +22,5 @@ class ToggleControl extends React.Component {
       </div>
     );
   }
-}
-
-ToggleControl.propTypes = {
-  title: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  value: PropTypes.bool
-};
+});
 export default ToggleControl;
