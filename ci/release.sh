@@ -24,3 +24,4 @@ EOF
 
 trap "rm -f note.md" EXIT
 gh release create --title "DeepDetect Platform UI v$tag" -F note.md --latest v$tag
+git push --follow-tags origin master
