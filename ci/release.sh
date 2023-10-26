@@ -23,4 +23,4 @@ cat >> note.md <<EOF
 EOF
 
 trap "rm -f note.md" EXIT
-gh release create --title "DeepDetect Platform UI v$tag" -F note.md -d v$tag
+gh release create --title "DeepDetect Platform UI v$tag" -F note.md --latest v$tag
