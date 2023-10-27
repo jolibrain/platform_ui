@@ -3,13 +3,10 @@ pipeline {
   stages {
     stage('Init') {
       steps {
-/* 
- * FIXME(sileht): Put this in Jenkins lib to be able to load it in all projects
         script {
           def common = load("ci/Jenkinsfile.common");
           common.cancelPreviousBuilds();
         }
-*/
         sh 'printenv | sort'
       }
     }
