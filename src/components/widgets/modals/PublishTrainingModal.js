@@ -115,7 +115,6 @@ const PublishTrainingModal = withRouter(observer(class PublishTrainingModal exte
 
     serviceConfig.parameters.output.store_config = true;
     serviceConfig.parameters.mllib.from_repository = service.location;
-    delete serviceConfig.parameters.mllib.template;
 
     const ddServer = deepdetectStore.hostableServer;
     const existingServices = ddServer.services.map(s => s.name.toLowerCase());
