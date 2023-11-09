@@ -14,6 +14,8 @@ yarn run standard-version -r $kind
 
 tag=$(cat package.json | jq -r .version)
 echo v$tag > public/version
+git add public/version
+git commit -m "chore: update version file to $tag"
 
 sed -ne "/^### \[$tag\]/,/^##.*202/p" CHANGELOG.md \
     | sed -e '0,/^[[:space:]]*$/{//d}' > note.md
