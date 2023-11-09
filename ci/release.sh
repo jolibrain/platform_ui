@@ -15,10 +15,11 @@ yarn run standard-version -r $kind
 tag=$(cat package.json | jq -r .version)
 echo v$tag > public/version
 
-sed -ne "/^## \[$tag\]/,/^##.*202/p" CHANGELOG.md \
-    | sed -e '$d' -e '1d' > note.md
+sed -ne "/^### \[$tag\]/,/^##.*202/p" CHANGELOG.md \
+    | sed -e '0,/^[[:space:]]*$/{//d}' > note.md
 
 cat >> note.md <<EOF
+
 ### Docker images:
 
 * Platform UI: \`docker pull docker.jolibrain.com/platform_ui:$tag\`
