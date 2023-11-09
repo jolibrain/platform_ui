@@ -10,13 +10,9 @@ cd $here/..
 if [ -f "CHANGELOG.md" ]; then
   git rm CHANGELOG.md
 fi
-yarn run standard-version -r $kind
+yarn run standard-version -r $kind --dry-run
 
 tag=$(cat package.json | jq -r .version)
-echo v$tag > public/version
-git add public/version
-git commit -m "chore: update version file to $tag"
-
 sed -ne "/^### \[$tag\]/,/^##.*202/p" CHANGELOG.md \
     | sed -e '0,/^[[:space:]]*$/{//d}' > note.md
 

@@ -1,0 +1,8 @@
+{
+  "bumpFiles": [
+    {
+      "filename": "public/version",
+        "type": "plain-text"
+    }
+  ]
+}
