@@ -185,35 +185,35 @@ const MainView = withRouter(observer(class MainView extends React.Component {
             </div>
 
             <div className="col-lg-6 col-md-12 pb-2">
-              <form className="form-inline">
-                <button
-                  id="refreshServices"
-                  onClick={this.handleClickRefreshArchive}
-                  type="button"
-                  className="btn btn-primary"
-                >
-                  <i
-                    className={
-                      modelRepositoriesStore.isRefreshing
-                        ? "fas fa-spinner fa-spin"
-                        : "fas fa-sync"
-                    }
-                  />
-                </button>
+              <form className="row row-cols-lg-auto g-3 align-items-center">
+                <div className="col-12">
+                  <button
+                    id="refreshServices"
+                    onClick={this.handleClickRefreshArchive}
+                    type="button"
+                    className="btn btn-primary"
+                  >
+                    <i
+                      className={
+                        modelRepositoriesStore.isRefreshing
+                          ? "fas fa-spinner fa-spin"
+                          : "fas fa-sync"
+                      }
+                    />
+                  </button>
+                </div>
 
-                <div className="input-group">
-                  <div className="input-group-prepend">
+                <div className="col-12">
+                  <div className="input-group">
                     <div className="input-group-text">
                       <i className="fas fa-search" />
                     </div>
-                  </div>
-                  <input
-                    type="text"
-                    onChange={this.handleServiceFilter}
-                    placeholder="Filter service name..."
-                    value={filterServiceName}
-                  />
-                  <div className="input-group-append">
+                    <input
+                      type="text"
+                      onChange={this.handleServiceFilter}
+                      placeholder="Filter service name..."
+                      value={filterServiceName}
+                    />
                     <button
                       className="btn btn-secondary"
                       type="button"
