@@ -220,7 +220,7 @@ const MultiTitle = class MultiTitle extends React.Component {
                        <>
                          <br/>
                          <button
-                           className="btn btn-outline-secondary btn-publish-service"
+                           className="btn btn-outline-primary"
                            onClick={props.handlePublishModalServiceIndex.bind(this, props.serviceIndex)}
                           >
                            <i
