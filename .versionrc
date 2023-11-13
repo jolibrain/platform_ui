@@ -1,8 +1,14 @@
 {
+  "packageFiles": [
+    {
+      "filename": "package.json",
+      "type": "json"
+    }
+  ],
   "bumpFiles": [
     {
       "filename": "public/version",
-        "type": "plain-text"
+      "type": "plain-text"
     }
   ]
 }
