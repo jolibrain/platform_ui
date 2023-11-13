@@ -267,6 +267,10 @@ export default class Repository {
     }
   }
 
+  _updateJsonConfig(jsonConfig) {
+    this.jsonConfig = jsonConfig
+  }
+
   _updateJsonConfigCustom() {
     // TODO : remove this line when config.json editable
     this.jsonConfig.parameters.mllib.gpuid = 0;
@@ -284,7 +288,7 @@ export default class Repository {
     try {
       const meta = await this.$reqJsonConfig();
 
-      this._updateJsonMetrics(meta.content);
+      this._updateJsonConfig(meta.content);
       this._updateMetricsDate(meta.header["last-modified"]);
       this._updateJsonConfigCustom();
 

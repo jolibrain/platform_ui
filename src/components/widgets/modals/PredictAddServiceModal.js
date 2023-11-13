@@ -218,13 +218,11 @@ const PredictAddServiceModal = withRouter(observer(class PredictAddServiceModal 
                           className="form-check-label"
                           htmlFor={`inlineGpu${index}`}
                         >
-                          <span className="badge badge-pill">
-                            <i className="far fa-hdd" /> {index}
-                            {gpuStoreServer.recommendedGpuIndex &&
-                            index === gpuStoreServer.recommendedGpuIndex
-                              ? " (*)"
-                              : null}
-                          </span>
+                          <i className="far fa-hdd" /> {index}
+                          {gpuStoreServer.recommendedGpuIndex &&
+                          index === gpuStoreServer.recommendedGpuIndex
+                            ? " (*)"
+                            : null}
                         </label>
                       </div>
                     );
@@ -259,9 +257,7 @@ const PredictAddServiceModal = withRouter(observer(class PredictAddServiceModal 
                       value="txt"
                     />
                     <label className="form-check-label">
-                      <span className="badge badge-pill">
-                        <i className="fas fa-quote-right"></i> Text
-                      </span>
+                      <i className="fas fa-quote-right"></i> Text
                     </label>
                   </div>
 
@@ -274,9 +270,7 @@ const PredictAddServiceModal = withRouter(observer(class PredictAddServiceModal 
                       value="image"
                     />
                     <label className="form-check-label">
-                      <span className="badge badge-pill">
-                        <i className="fas fa-image"></i> Images
-                      </span>
+                      <i className="fas fa-image"></i> Images
                     </label>
                   </div>
 
@@ -288,9 +282,7 @@ const PredictAddServiceModal = withRouter(observer(class PredictAddServiceModal 
                       value="webcam"
                     />
                     <label className="form-check-label">
-                      <span className="badge badge-pill">
-                        <i className="fas fa-camera"></i> Webcam
-                      </span>
+                      <i className="fas fa-camera"></i> Webcam
                     </label>
                   </div>
                 </div>

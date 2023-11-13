@@ -75,7 +75,7 @@ export default class deepdetectService {
   }
 
   _updateSettings(settings) {
-    this.settings.request = settings;
+    this.settings = settings;
   }
 
   _updateSettingsEmptyRequest() {

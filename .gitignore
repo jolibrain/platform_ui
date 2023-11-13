@@ -18,7 +18,6 @@ test/codecept/output/
 .env.production.local
 
 public/auth.json
-public/version
 public/config.json.backup*
 
 npm-debug.log*

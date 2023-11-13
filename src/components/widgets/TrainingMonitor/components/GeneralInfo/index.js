@@ -429,21 +429,21 @@ const GeneralInfo = class GeneralInfo extends React.Component {
 
     return (
       <div>
-        <div className="trainingmonitor-layout row">
+        <div className="trainingmonitor-layout d-inline-flex">
           <i
-            className={`text-right fa fa-stop ${
+            className={`p-2 fa fa-stop ${
               layout === "col-md-12" ? "selected-layout" : ""
             }`}
             onClick={() => this.selectLayout("col-md-12")}
           />
           <i
-            className={`text-right fa fa-th-large ${
+            className={`p-2 fa fa-th-large ${
               layout === "col-md-6" ? "selected-layout" : ""
             }`}
             onClick={() => this.selectLayout("col-md-6")}
           />
           <i
-            className={`text-right fa fa-th ${
+            className={`p-2 fa fa-th ${
               layout === "col-md-3" ? "selected-layout" : ""
             }`}
             onClick={() => this.selectLayout("col-md-3")}

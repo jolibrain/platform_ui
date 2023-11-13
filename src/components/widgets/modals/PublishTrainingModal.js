@@ -261,7 +261,7 @@ const PublishTrainingModal = withRouter(observer(class PublishTrainingModal exte
 
         <div className="modal-body">
           <form>
-            <div className="form-group">
+            <div className="form-group mb-2">
               <label htmlFor="serviceName">Service Name</label>
               <input
                 type="text"
@@ -276,7 +276,7 @@ const PublishTrainingModal = withRouter(observer(class PublishTrainingModal exte
                 name of the Predict service, it must be unique.
               </small>
             </div>
-            <div className="form-group">
+            <div className="form-group mb-2">
               <label htmlFor="targetRepository">Target repository</label>
               <input
                 type="text"
@@ -300,7 +300,7 @@ const PublishTrainingModal = withRouter(observer(class PublishTrainingModal exte
               Delete service after publishing
               <small
                 id="deleteAfterPublishHelp"
-                className="form-text text-muted"
+                className="form-text text-muted block"
               >
                 If checked, service will be deleted after it's been published as
                 an available Predict service

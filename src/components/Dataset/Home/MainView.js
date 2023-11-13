@@ -69,12 +69,10 @@ const MainView = withRouter(observer(class MainView extends React.Component {
             <div className="col-lg-3 col-md-6"></div>
 
             <div className="col-lg-6 col-md-12 pb-2">
-              <form className="form-inline">
+              <form>
                 <div className="input-group">
-                  <div className="input-group-prepend">
-                    <div className="input-group-text">
-                      <i className="fas fa-search" />
-                    </div>
+                  <div className="input-group-text">
+                    <i className="fas fa-search" />
                   </div>
                   <input
                     type="text"
@@ -82,15 +80,13 @@ const MainView = withRouter(observer(class MainView extends React.Component {
                     placeholder="Filter dataset name..."
                     value={this.state.filterDatasetName}
                   />
-                  <div className="input-group-append">
-                    <button
-                      className="btn btn-secondary"
-                      type="button"
-                      onClick={this.cleanDatasetFilter}
-                    >
-                      <i className="fas fa-times-circle" />
-                    </button>
-                  </div>
+                  <button
+                    className="btn btn-secondary"
+                    type="button"
+                    onClick={this.cleanDatasetFilter}
+                  >
+                    <i className="fas fa-times-circle" />
+                  </button>
                 </div>
               </form>
             </div>

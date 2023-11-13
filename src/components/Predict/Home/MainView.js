@@ -154,38 +154,19 @@ const MainView = withRouter(observer(class MainView extends React.Component {
             </div>
 
             <div className="col-lg-6 col-md-12 pb-2">
-              <form className="form-inline">
-                <Link to="/predict/new" className="btn btn-primary">
-                  <i className="fas fa-plus" /> New Service
-                </Link>
-                &nbsp;
-                <button
-                  id="refreshServices"
-                  onClick={this.handleClickRefreshServices}
-                  type="button"
-                  className="btn btn-primary"
-                >
-                  <i
-                    className={
-                      modelRepositoriesStore.isRefreshing
-                        ? "fas fa-sync fa-spin"
-                        : "fas fa-sync"
-                    }
-                  />
-                </button>
-                <div className="input-group">
-                  <div className="input-group-prepend">
-                    <div className="input-group-text">
+              <form className="row row-cols-lg-auto g-3 align-items-center">
+                <div className="col-12">
+                  <div className="input-group">
+                    <span className="input-group-text">
                       <i className="fas fa-search" />
-                    </div>
-                  </div>
-                  <input
-                    type="text"
-                    onChange={this.handleServiceFilter}
-                    placeholder="Filter service name..."
-                    value={this.state.filterServiceName}
-                  />
-                  <div className="input-group-append">
+                    </span>
+                    <input
+                      className="form-control"
+                      type="text"
+                      onChange={this.handleServiceFilter}
+                      placeholder="Filter service name..."
+                      value={this.state.filterServiceName}
+                    />
                     <button
                       className="btn btn-secondary"
                       type="button"
@@ -194,6 +175,27 @@ const MainView = withRouter(observer(class MainView extends React.Component {
                       <i className="fas fa-times-circle" />
                     </button>
                   </div>
+                </div>
+                <div className="col-12">
+                  <Link to="/predict/new" className="btn btn-primary">
+                    <i className="fas fa-plus" /> New Service
+                  </Link>
+                </div>
+                <div className="col-12">
+                  <button
+                    id="refreshServices"
+                    onClick={this.handleClickRefreshServices}
+                    type="button"
+                    className="btn btn-primary"
+                  >
+                    <i
+                      className={
+                        modelRepositoriesStore.isRefreshing
+                          ? "fas fa-sync fa-spin"
+                          : "fas fa-sync"
+                      }
+                    />
+                  </button>
                 </div>
               </form>
             </div>
