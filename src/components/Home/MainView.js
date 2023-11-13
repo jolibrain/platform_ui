@@ -24,8 +24,8 @@ const MainView = withRouter(observer(class MainView extends React.Component {
       <div className={mainClassnames}>
         <div className="container-fluid">
           <div className="content">
-            <div className="row justify-content-center">
-              <h2>{homeComponent.title}</h2>
+            <div className="row">
+              <h2 className="d-flex justify-content-center">{homeComponent.title}</h2>
             </div>
 
             <div className="row justify-content-center">
