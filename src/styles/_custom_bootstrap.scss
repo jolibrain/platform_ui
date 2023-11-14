@@ -7,6 +7,10 @@ $theme-colors: (
   danger: $support_red_5,
 ) !default;
 
+$pagination-color: $primary_cyan_3 !default;
+$pagination-active-color: $neutral_blue_10 !default;
+$pagination-active-bg: $neutral_blue_1 !default;
+
 $grey-900: #323545;
 
 $font-family-base: "Inter UI", sans-serif !default;
