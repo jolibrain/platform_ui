@@ -180,6 +180,13 @@
   .card.commands {
     width: 100%;
 
+    .badge {
+      color: #222 !important;
+      font-weight: 400;
+      background-color: #fff !important;
+      margin-bottom: 5px;
+    }
+
     .card-body {
       padding: 0;
     }
@@ -234,8 +241,6 @@
     margin: 0 auto;
 
     canvas {
-      position: absolute;
-      left: 0;
     }
     .boundingSegmentationCanvas {
       opacity: 0.5;
@@ -293,6 +298,9 @@
 
   #imaginate-image-connector-boundingbox-controls {
     margin: 5px;
+    button {
+      color: #fff !important;
+    }
 
     .form-check {
       margin-left: 20px;

@@ -18,6 +18,25 @@ const ImageList = observer(class ImageList extends React.Component {
     this.handleClickRandomize = this.handleClickRandomize.bind(this);
   }
 
+  handleListKeydown(e) {
+    const { imaginateStore } = stores;
+    const store = imaginateStore;
+
+    if (e.keyCode === 37) {
+      store.service.selectPreviousInput();
+    } else if (e.keyCode === 39) {
+      store.service.selectNextInput();
+    }
+  }
+
+  componentDidMount() {
+    document.body.addEventListener("keydown", this.handleListKeydown.bind(this));
+  }
+
+  componentWillUnmount() {
+    document.body.removeEventListener("keydown", this.handleListKeydown.bind(this));
+  }
+
   componentWillMount() {
     const { imaginateStore } = stores;
     const { service } = imaginateStore;
@@ -31,6 +50,11 @@ const ImageList = observer(class ImageList extends React.Component {
   }
 
   selectInput(index) {
+
+    if ( index < 0 || index >= this.state.inputs.length ) {
+      return;
+    }
+
     const { imaginateStore } = stores;
     const store = imaginateStore;
     store.service.selectInput(index);

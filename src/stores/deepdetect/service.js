@@ -339,6 +339,24 @@ export default class deepdetectService {
     if (this.inputs[index]) this.inputs[index].isActive = true;
   }
 
+  selectPreviousInput() {
+    const currentInputIndex = this.inputs.findIndex(i => i.isActive);
+    const previousInputIndex = currentInputIndex === 0 ?
+          this.inputs.length - 1
+          :
+          currentInputIndex - 1;
+    this.selectInput(previousInputIndex);
+  }
+
+  selectNextInput() {
+    const currentInputIndex = this.inputs.findIndex(i => i.isActive);
+    const nextInputIndex = currentInputIndex === (this.inputs.length - 1) ?
+          0
+          :
+          currentInputIndex + 1;
+    this.selectInput(nextInputIndex);
+  }
+
   addInput(content) {
     let activeInput = this.inputs.find(i => i.isActive);
     if (activeInput) {
