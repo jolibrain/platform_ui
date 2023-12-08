@@ -58,6 +58,13 @@
         border: 0;
         padding: 0;
       }
+
+      .btn-outline-secondary {
+
+        &:hover {
+          color: #fff;
+        }
+      }
     }
   }
 

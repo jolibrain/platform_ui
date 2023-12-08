@@ -245,25 +245,25 @@ const InputForm = observer(class InputForm extends React.Component {
       <div className="card inputUrl" ref={this.setWrapperRef}>
         <div className="card-body">
           <div className="input-group">
-            <div className="input-group-prepend">
-              <button
-                className="btn btn-outline-secondary dropdown-toggle"
-                type="button"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-                onClick={this.handleOpenDropdown}
-              >
-                <i className={this.state.method.iconClassName}></i>&nbsp;
-                {this.state.method.label}
-              </button>
-              <div
-                className={
-                  this.state.dropdown ? "dropdown-menu show" : "dropdown-menu"
-                }
-              >
-                {inputMethods.map((method, index) => {
-                  return (
+            <button
+              className="btn btn-outline-secondary dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+              onClick={this.handleOpenDropdown}
+            >
+              <i className={this.state.method.iconClassName}></i>&nbsp;
+              {this.state.method.label}
+            </button>
+            <ul
+              className={
+                this.state.dropdown ? "dropdown-menu show" : "dropdown-menu"
+              }
+            >
+              {inputMethods.map((method, index) => {
+                return (
+                  <li>
                     <a
                       key={index}
                       className="dropdown-item"
@@ -272,10 +272,10 @@ const InputForm = observer(class InputForm extends React.Component {
                       <i className={method.iconClassName}></i>&nbsp;
                       {method.label}
                     </a>
-                  );
-                })}
-              </div>
-            </div>
+                  </li>
+                );
+              })}
+            </ul>
             <input
               style={{
                 display: ["image", "video", "mjpeg"].includes(
@@ -335,15 +335,13 @@ const InputForm = observer(class InputForm extends React.Component {
                 </Menu>
               )}
             />
-            <div className="input-group-append input-group-text">
-              <button
-                className="btn"
-                type="button"
-                onClick={this.handleButtonClean}
-              >
-                <i className="fas fa-times" />
-              </button>
-            </div>
+            <button
+              className="btn"
+              type="button"
+              onClick={this.handleButtonClean}
+            >
+              <i className="fas fa-times" />
+            </button>
           </div>
         </div>
       </div>
