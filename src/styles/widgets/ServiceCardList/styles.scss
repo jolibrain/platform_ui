@@ -135,6 +135,11 @@
 
       a.btn-outline-danger {
         color: $support_red_5;
+
+        &:hover {
+          color: $support_red_10;
+          background-color: $support_red_3;
+        }
       }
 
       a.btn-outline-primary {
