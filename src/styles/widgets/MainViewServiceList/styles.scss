@@ -203,13 +203,11 @@
         }
       }
 
-      &:hover {
-        a.btn-outline-danger {
-          display: inline;
+      a.btn-outline-danger {
+        display: inline;
 
-          &:hover {
-            color: $neutral_blue_10;
-          }
+        &:hover {
+          color: $neutral_blue_10;
         }
       }
     }

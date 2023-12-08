@@ -174,7 +174,7 @@ const ModelRepositoryCard = withRouter(observer(class ModelRepositoryCard extend
     let modelValues = null;
     if (repository.bestModel) {
       modelValues = (
-        <div className="content row py-2 pl-2">
+        <div className="content row py-2 ps-2">
           {Object.keys(repository.bestModel).map((k, i) => {
             let attrTitle =
               i === 0
@@ -194,7 +194,7 @@ const ModelRepositoryCard = withRouter(observer(class ModelRepositoryCard extend
       );
     } else {
       modelValues = (
-        <div className="content row py-2 pl-2 values">
+        <div className="content row py-2 ps-2 values">
           {info.map((i, index) => {
             return (
               <div key={index} className="col-6">
@@ -212,8 +212,8 @@ const ModelRepositoryCard = withRouter(observer(class ModelRepositoryCard extend
         onClick={this.toggleCompareState}
         className={
           this.state.compareSelected
-            ? "btn btn-compare-selected mr-1"
-            : "btn btn-compare mr-1"
+            ? "btn btn-compare-selected me-1"
+            : "btn btn-compare me-1"
         }
       >
         {this.state.compareSelected ? (
@@ -231,7 +231,7 @@ const ModelRepositoryCard = withRouter(observer(class ModelRepositoryCard extend
     let publishButton = repository.jsonConfig ? (
       <a
         onClick={this.openPublishTrainingModal}
-        className="btn btn-outline-primary mr-1"
+        className="btn btn-outline-primary me-1"
       >
         <i className="fas fa-plus" /> Publish
       </a>
@@ -239,7 +239,7 @@ const ModelRepositoryCard = withRouter(observer(class ModelRepositoryCard extend
 
     if (this.state.isPublishing) {
       publishButton = (
-        <a className="btn btn-outline-primary mr-1">
+        <a className="btn btn-outline-primary me-1">
           <i className="fas fa-spinner fa-spin" /> Publishing...
         </a>
       );

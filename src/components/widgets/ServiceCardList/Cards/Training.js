@@ -236,7 +236,7 @@ const TrainingCard = withRouter(observer(class TrainingCard extends React.Compon
           <div className="card-footer text-right">
             <a
               onClick={this.openDeleteServiceModal}
-              className="btn btn-outline-danger mr-1"
+              className="btn btn-outline-danger me-1"
             >
               <i className="fas fa-trash" /> Delete
             </a>
@@ -256,7 +256,7 @@ const TrainingCard = withRouter(observer(class TrainingCard extends React.Compon
       case "training":
       default:
         cardContent = (
-          <div className="content row py-2 pl-2 values">
+          <div className="content row py-2 ps-2 values">
             {info.map((i, index) => {
               return (
                 <div key={index} className="col-6">
@@ -276,7 +276,7 @@ const TrainingCard = withRouter(observer(class TrainingCard extends React.Compon
             {service.serverSettings.isWritable ? (
               <a
                 onClick={this.openDeleteServiceModal}
-                className="btn btn-outline-danger mr-1"
+                className="btn btn-outline-danger me-1"
               >
                 <i className="fas fa-trash" /> Delete
               </a>
@@ -294,7 +294,7 @@ const TrainingCard = withRouter(observer(class TrainingCard extends React.Compon
     let bestModelInfo = null;
     if (service.bestModel !== null && service.bestModel.iteration) {
       bestModelInfo = (
-        <div className="content row pt-2 pl-2 border-top">
+        <div className="content row pt-2 ps-2 border-top">
           {Object.keys(service.bestModel).map((k, i) => {
             let attrTitle =
               i === 0

@@ -50,7 +50,7 @@ const PredictCard = withRouter(observer(class PredictCard extends React.Componen
             {service.serverSettings.isWritable ? (
               <a
                 onClick={this.openDeleteServiceModal}
-                className="btn btn-outline-danger mr-1"
+                className="btn btn-outline-danger me-1"
               >
                 <i className="fas fa-trash" /> Delete
               </a>

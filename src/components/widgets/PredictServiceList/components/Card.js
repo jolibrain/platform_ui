@@ -45,7 +45,7 @@ const Card = withRouter(observer(class Card extends React.Component {
     let modelValues = null;
     if (repository.bestModel) {
       modelValues = (
-        <div className="content row pt-2 pl-2">
+        <div className="content row pt-2 ps-2">
           {Object.keys(repository.bestModel).map((k, i) => {
             let attrTitle =
               i === 0
@@ -117,8 +117,8 @@ const Card = withRouter(observer(class Card extends React.Component {
                 onClick={this.toggleBenchmarkState}
                 className={
                   this.state.benchmarkSelected
-                    ? "btn btn-benchmark-selected mr-1"
-                    : "btn btn-benchmark mr-1"
+                    ? "btn btn-benchmark-selected me-1"
+                    : "btn btn-benchmark me-1"
                 }
               >
                 {this.state.benchmarkSelected ? (

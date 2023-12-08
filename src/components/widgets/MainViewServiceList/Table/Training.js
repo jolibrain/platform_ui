@@ -233,10 +233,10 @@ const TrainingItem = withRouter(observer(class TrainingItem extends React.Compon
         break;
       case "not-running":
         cardFooter = (
-          <div className="card-footer text-right">
+          <div className="card-footer text-end">
             <a
               onClick={this.openDeleteServiceModal}
-              className="btn btn-outline-danger mr-1"
+              className="btn btn-outline-danger me-2"
             >
               <i className="fas fa-trash" /> Delete
             </a>
@@ -256,7 +256,7 @@ const TrainingItem = withRouter(observer(class TrainingItem extends React.Compon
       case "training":
       default:
         cardContent = (
-          <div className="content row py-2 pl-2 values">
+          <div className="content row py-2 ps-2 values">
             {info.map((i, index) => {
               return (
                 <div key={index} className="col-6">
@@ -272,18 +272,18 @@ const TrainingItem = withRouter(observer(class TrainingItem extends React.Compon
           </div>
         );
         cardFooter = (
-          <div className="card-footer text-right">
+          <div className="card-footer text-end p-2">
             {service.serverSettings.isWritable ? (
               <a
                 onClick={this.openDeleteServiceModal}
-                className="btn btn-outline-danger mr-1"
+                className="btn btn-outline-danger me-1"
               >
                 <i className="fas fa-trash" /> Delete
               </a>
             ) : (
               ""
             )}
-            <Link to={serviceUrl} className="btn btn-primary">
+            <Link to={serviceUrl} className="btn btn-primary m-2">
               Monitor <i className="fas fa-chevron-right" />
             </Link>
           </div>
@@ -294,7 +294,7 @@ const TrainingItem = withRouter(observer(class TrainingItem extends React.Compon
     let bestModelInfo = null;
     if (service.bestModel !== null && service.bestModel.iteration) {
       bestModelInfo = (
-        <div className="content row pt-2 pl-2 border-top">
+        <div className="content row pt-2 ps-2 border-top">
           {Object.keys(service.bestModel).map((k, i) => {
             let attrTitle =
               i === 0

@@ -24,7 +24,7 @@ class Item extends React.Component {
         </div>
         <div className="d-flex mb-2 last">
           <i className="fas fa-caret-right" /> Path{" "}
-          <span className="ml-auto pl-2">{settings.path}</span>
+          <span className="ml-auto ps-2">{settings.path}</span>
         </div>
       </div>
     );
