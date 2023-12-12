@@ -1,12 +1,14 @@
 # DeepDetect Platform UI (Changelog)
 
-### [0.24.16](https://github.com/jolibrain/platform_ui/compare/v0.24.15...v0.24.16) (2023-11-13)
+### [0.24.17](https://github.com/jolibrain/platform_ui/compare/v0.24.16...v0.24.17) (2023-12-12)
 
 
 ### Bug Fixes
 
-* justify-content-center Home title ([febf9ab](https://github.com/jolibrain/platform_ui/commit/febf9abab3bf795cbdb1bb62c1a1c064df45461a))
-* missing danger theme color ([da018d2](https://github.com/jolibrain/platform_ui/commit/da018d25341adfaa74a62ada31c2f66d2b4aa42b))
-* PublishTrainingModal display ([bef352d](https://github.com/jolibrain/platform_ui/commit/bef352d5a7b7ceefad16f86c9844066d989008a3))
-* remove btn-publish-service style ([a3ff45c](https://github.com/jolibrain/platform_ui/commit/a3ff45c3ce668012f337c8d668e0f57f6ceca77c))
-* trainingmonitor layout icons ([27e8c53](https://github.com/jolibrain/platform_ui/commit/27e8c53130d1b82f55fb36c368942726ce765832))
+* allow export of torch native models ([1b0d006](https://github.com/jolibrain/platform_ui/commit/1b0d006f5684b35c00b77720487dede2e31c12c9))
+* css upgrade to bootstrap5 ([0501dc2](https://github.com/jolibrain/platform_ui/commit/0501dc26fb62e753ca9ef4555f55f15c39fa1bdc))
+* hover on Predict service card delete ([6741012](https://github.com/jolibrain/platform_ui/commit/6741012ea15b474c1604d55eab337945253d1d97))
+* imaginate typeahead bootstrap5 ([18f681c](https://github.com/jolibrain/platform_ui/commit/18f681c0a1a67671eaeb73f7971991c5bfc37c17))
+* keyboard navigation on Imaginate ImageList ([ccc7653](https://github.com/jolibrain/platform_ui/commit/ccc7653824097a5190c05bca501167dd53c0735c))
+* pagination color ([63af4dd](https://github.com/jolibrain/platform_ui/commit/63af4ddbc07a3f60bc326b1dcefb0d81b63f9b01))
+* pagination colors ([6d6d3bd](https://github.com/jolibrain/platform_ui/commit/6d6d3bd07c51fa2582796e958264ba74b85c3ff9))
