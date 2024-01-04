@@ -3,6 +3,7 @@ import agent from "../../agent";
 
 export default class Input {
   isActive = false;
+  isBase64 = false;
 
   content = {};
 

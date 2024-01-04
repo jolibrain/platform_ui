@@ -369,6 +369,19 @@ export default class deepdetectService {
     this.inputs.push(input);
   }
 
+  addInputBase64(content) {
+    let activeInput = this.inputs.find(i => i.isActive);
+    if (activeInput) {
+      activeInput.isActive = false;
+    }
+
+    const input = new Input();
+    input.content = content;
+    input.isBase64 = true;
+    input.isActive = true;
+    this.inputs.push(input);
+  }
+
   addOrReplaceInput(index, content) {
     let activeInput = this.inputs.find(i => i.isActive);
     if (activeInput) {

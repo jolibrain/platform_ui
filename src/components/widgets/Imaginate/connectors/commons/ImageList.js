@@ -86,22 +86,29 @@ const ImageList = observer(class ImageList extends React.Component {
 
     if (!service) return null;
 
+    // Only keep base64 inputs and image files
     let inputs = this.state.inputs.filter(i => {
-      return /\.(jpe?g|png|gif|bmp)$/i.test(i.content.toLowerCase());
+      return i.isBase64 ||
+        /\.(jpe?g|png|gif|bmp)$/i.test(i.content.toLowerCase());
     });
 
     if (inputs.length === 0) {
       return (
         <div className="alert alert-warning" role="alert">
-          No image found in selected path
+          Select an image to start <i className="fas fa-arrow-right" />
         </div>
       );
     } else {
       inputs = inputs.map((input, index) => {
+
+        const content = input.isBase64 ?
+              `data:image/jpeg;base64,${input.content}`
+              : input.content
+
         return (
           <div key={`img-${index}`} className="slide">
             <img
-              src={input.content}
+              src={content}
               key={`img-${index}`}
               className={input.isActive ? "img-block active" : "img-block"}
               alt=""

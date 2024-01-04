@@ -313,10 +313,15 @@ const BoundingBox = observer(class BoundingBox extends React.Component {
     //      (pixelSegmentation && pixelSegmentation.length > 0) ||
     //      segmentationMasks.length > 0;
 
+
+    const content = input.isBase64 ?
+          `data:image/jpeg;base64,${input.content}`
+          : input.content
+
     return (
       <Boundingbox
         className="boundingboxdisplay"
-        image={input.content}
+        image={content}
         boxes={boxes}
         selectedIndex={
           input.boxes && input.boxes.length > this.props.selectedBoxIndex

@@ -11,6 +11,7 @@ import "react-bootstrap-typeahead/css/Typeahead.css";
 //
 
 import stores from "../../../../../stores/rootStore";
+import FileUploader from "./FileUploader";
 
 const InputForm = observer(class InputForm extends React.Component {
 
@@ -42,6 +43,13 @@ const InputForm = observer(class InputForm extends React.Component {
           label: "Platform Data",
           iconClassName: "fas fa-folder-open",
           mediaType: "imagePath",
+          isAvailable: true
+        },
+        {
+          id: "imageDrop",
+          label: "Drop Image file",
+          iconClassName: "fas fa-arrow-down",
+          mediaType: "image",
           isAvailable: true
         },
         // {
@@ -88,6 +96,8 @@ const InputForm = observer(class InputForm extends React.Component {
 
     this.setWrapperRef = this.setWrapperRef.bind(this);
     this.handleClickOutside = this.handleClickOutside.bind(this);
+
+    this.handleFileDrop = this.handleFileDrop.bind(this);
   }
 
   componentDidMount() {
@@ -128,9 +138,11 @@ const InputForm = observer(class InputForm extends React.Component {
   }
 
   handleInputChange() {
+
     const { imaginateStore, dataRepositoriesStore } = stores;
-    const {fileExtensionFilter } = this.props;
     const { systemPath } = dataRepositoriesStore.settings;
+
+    const { fileExtensionFilter } = this.props;
 
     const selected = this.typeaheadRef.current.getInput().value;
 
@@ -175,13 +187,13 @@ const InputForm = observer(class InputForm extends React.Component {
       const { service } = imaginateStore;
 
       service.uiParams.mediaType = selectedMethod.mediaType;
-    } else {
-      this.setState({
-        dropdown: false,
-        method: selectedMethod,
-        focusInput: true
-      });
     }
+
+    this.setState({
+      dropdown: false,
+      focusInput: true,
+      method: selectedMethod
+    });
   }
 
   componentDidUpdate() {
@@ -214,6 +226,25 @@ const InputForm = observer(class InputForm extends React.Component {
     }
   }
 
+  handleFileDrop(files) {
+    const { imaginateStore } = stores;
+    files.forEach((file) => {
+        const reader = new FileReader()
+
+        reader.onabort = () => console.log('file reading was aborted')
+        reader.onerror = () => console.log('file reading has failed')
+        reader.onload = () => {
+          const binaryStr = reader.result
+          const base64String = btoa(
+            String.fromCharCode(...new Uint8Array(binaryStr))
+          );
+          imaginateStore.service.addInputBase64(base64String);
+          imaginateStore.predict();
+        }
+        reader.readAsArrayBuffer(file)
+    })
+  }
+
   addUrl(url) {
     const { imaginateStore } = stores;
 
@@ -235,7 +266,9 @@ const InputForm = observer(class InputForm extends React.Component {
   }
 
   render() {
-    const inputMethods = this.state.availableMethods.filter(m => {
+    const { dropdown, method, availableMethods } = this.state;
+
+    const inputMethods = availableMethods.filter(m => {
       return m.isAvailable;
     });
 
@@ -253,12 +286,12 @@ const InputForm = observer(class InputForm extends React.Component {
               aria-expanded="false"
               onClick={this.handleOpenDropdown}
             >
-              <i className={this.state.method.iconClassName}></i>&nbsp;
-              {this.state.method.label}
+              <i className={method.iconClassName}></i>&nbsp;
+              {method.label}
             </button>
             <ul
               className={
-                this.state.dropdown ? "dropdown-menu show" : "dropdown-menu"
+                dropdown ? "dropdown-menu show" : "dropdown-menu"
               }
             >
               {inputMethods.map((method, index) => {
@@ -279,7 +312,7 @@ const InputForm = observer(class InputForm extends React.Component {
             <input
               style={{
                 display: ["image", "video", "mjpeg"].includes(
-                  this.state.method.id
+                  method.id
                 )
                   ? "block"
                   : "none"
@@ -287,20 +320,20 @@ const InputForm = observer(class InputForm extends React.Component {
               ref={this.inputRef}
               type="text"
               className="form-control"
-              placeholder={this.state.method.label}
-              aria-label={this.state.method.label}
+              placeholder={method.label}
+              aria-label={method.label}
               onKeyPress={this.handleKeyPress}
             />
             <Typeahead
               className={
-                ["imagePath", "folderPath"].includes(this.state.method.id) ? "" : "hidden"
+                ["imagePath", "folderPath"].includes(method.id) ? "" : "hidden"
               }
               id="inlineFormInputPlatformDataLocation"
               ref={this.typeaheadRef}
               placeholder={
                 dataRepositoriesStore.isLoading
                   ? "Fetching data repositories..."
-                  : ""
+                  : "Click here to select a data repository"
               }
               options={toJS(dataRepositoriesStore.repositories)}
               onChange={this.handleInputChange}
@@ -336,13 +369,20 @@ const InputForm = observer(class InputForm extends React.Component {
               )}
             />
             <button
-              className="btn"
               type="button"
               onClick={this.handleButtonClean}
+              className={
+                ["image", "imagePath", "folderPath"].includes(method.id) ?
+                  "btn btn-outline-secondary" : "hidden"
+              }
             >
               <i className="fas fa-times" />
             </button>
           </div>
+          <FileUploader
+            onChange={this.handleFileDrop}
+            selectedMethod={method}
+          />
         </div>
       </div>
     );
