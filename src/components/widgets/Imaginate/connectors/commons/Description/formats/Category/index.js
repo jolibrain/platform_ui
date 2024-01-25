@@ -105,7 +105,7 @@ const Category = observer(class Category extends React.Component {
       <div key={index}>
         <span
           style={styles}
-          className="badge badge-success"
+          className="badge text-bg-success"
           onMouseOver={onOver ? onOver.bind(this, index) : () => {}}
           onMouseLeave={onLeave ? onLeave.bind(this, index) : () => {}}
           data-tip={tooltipValue}
