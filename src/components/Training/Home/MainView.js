@@ -285,7 +285,7 @@ const MainView = withRouter(observer(class MainView extends React.Component {
                 pathFilterStore.filters.map((item, i) => {
                   return <span
                            key={i}
-                           className="badge badge-dark"
+                           className="badge text-bg-dark"
                            onClick={
                              pathFilterStore
                                .removePathFilter.bind(this, item)

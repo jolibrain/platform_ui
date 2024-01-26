@@ -30,7 +30,7 @@ const TitleItem = observer(class TitleItem extends React.Component {
         </td>
         <td>
           <a
-            className="badge badge-dark"
+            className="badge text-bg-dark"
             href={benchmarkHref}
             target="_blank"
             rel="noopener noreferrer"
@@ -39,7 +39,7 @@ const TitleItem = observer(class TitleItem extends React.Component {
           </a>
           <br/>
           <a
-            className="badge badge-dark"
+            className="badge text-bg-dark"
             href={service.path + "config.json"}
             target="_blank"
             rel="noopener noreferrer"

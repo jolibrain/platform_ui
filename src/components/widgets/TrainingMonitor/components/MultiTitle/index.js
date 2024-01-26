@@ -187,7 +187,7 @@ const MultiTitle = class MultiTitle extends React.Component {
           return <>
             <a
               href={`${props.service.path}config.json`}
-              className="badge badge-dark"
+              className="badge text-bg-dark"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -196,7 +196,7 @@ const MultiTitle = class MultiTitle extends React.Component {
             <br />
             <a
               href={`${props.service.path}metrics.json`}
-              className="badge badge-dark"
+              className="badge text-bg-dark"
               target="_blank"
               rel="noopener noreferrer"
             >

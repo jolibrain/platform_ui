@@ -116,7 +116,7 @@ const Table = withRouter(observer(class Table extends React.Component {
             const configBadge = service.jsonConfig ? (
               <a
                 href={`${service.path}config.json`}
-                className="badge badge-dark"
+                className="badge text-bg-dark"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -127,7 +127,7 @@ const Table = withRouter(observer(class Table extends React.Component {
             const metricsBadge = service.jsonMetrics ? (
               <a
                 href={`${service.path}metrics.json`}
-                className="badge badge-dark"
+                className="badge text-bg-dark"
                 target="_blank"
                 rel="noopener noreferrer"
               >

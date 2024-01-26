@@ -307,7 +307,7 @@ const BoundingBox = observer(class BoundingBox extends React.Component {
 
     // TODO temporary fix on segmentation display
     // investigate usefulness of previous code in order to maintain this fix
-    const separateSegmentation = true;
+    const separateSegmentation = false;
 
     //    const separateSegmentation =
     //      (pixelSegmentation && pixelSegmentation.length > 0) ||
