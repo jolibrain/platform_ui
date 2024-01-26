@@ -336,9 +336,9 @@ const Form = withRouter(observer(class Form extends React.Component {
                           let badgeClasses = "badge float-right";
                           let badgeText = result.store.name;
                           if (badgeText === "public") {
-                            badgeClasses += " badge-primary";
+                            badgeClasses += " text-bg-primary";
                           } else {
-                            badgeClasses += " badge-warning";
+                            badgeClasses += " text-bg-warning";
                           }
 
                           return (

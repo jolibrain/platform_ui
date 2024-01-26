@@ -96,7 +96,7 @@ const CsvConnector = withRouter(observer(class CsvConnector extends React.Compon
                 ) {
                   const badgeValue = input.json.body.predictions[0].series[rowIndex].out[colIndex];
                   resultBadge = (
-                    <span className="badge badge-primary">
+                    <span className="badge text-bg-primary">
                       {parseFloat(badgeValue).toFixed(2)}
                     </span>
                   );

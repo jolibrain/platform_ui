@@ -40,7 +40,7 @@ const MainView = withRouter(observer(class MainView extends React.Component {
 
               <a
                 href={`/json/${chain.path}`}
-                className="badge badge-secondary"
+                className="badge text-bg-secondary"
                 target="_blank"
                 rel="noopener noreferrer"
               >json</a>
@@ -53,13 +53,13 @@ const MainView = withRouter(observer(class MainView extends React.Component {
                 if (call.service) {
                   if (!existingServiceNames.includes(call.service)) {
                     badge = (
-                      <span className="badge badge-danger">
+                      <span className="badge text-bg-danger">
                         service missing
                       </span>
                     );
                   } else {
                     badge = (
-                      <span className="badge badge-success">service ready</span>
+                      <span className="badge text-bg-success">service ready</span>
                     );
                   }
                 }

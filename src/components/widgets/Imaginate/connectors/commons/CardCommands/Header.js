@@ -7,7 +7,7 @@ const Header = observer(class Header extends React.Component {
     return (
       <div className="card-header">
         {this.props.requestTime !== -1 ? (
-          <span className="badge badge-secondary float-right">
+          <span className="badge text-bg-secondary float-right">
             {this.props.requestTime}ms
           </span>
         ) : (
@@ -15,7 +15,7 @@ const Header = observer(class Header extends React.Component {
         )}
 
         {this.props.isRequesting ? (
-          <span className="badge badge-secondary float-right">
+          <span className="badge text-bg-secondary float-right">
             <i className="fas fa-spinner fa-spin fa-sm" />
           </span>
         ) : (

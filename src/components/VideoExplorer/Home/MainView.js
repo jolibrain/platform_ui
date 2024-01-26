@@ -410,14 +410,14 @@ const MainView = withRouter(observer(class MainView extends React.Component {
                         <a
                           href={`${selectedVideo.path}output.mp4`}
                           download={`${selectedVideo.name}.mp4`}
-                          className="badge badge-secondary"
+                          className="badge text-bg-secondary"
                         >
                           <i className="fas fa-download" /> Original video
                         </a> &nbsp;
                         <a
                           href={`${selectedVideo.path}output_bbox.mp4`}
                           download={`${selectedVideo.name}_bbox.mp4`}
-                          className="badge badge-secondary"
+                          className="badge text-bg-secondary"
                         >
                           <i className="fas fa-download" /> Video with bounding boxes
                         </a>
@@ -454,7 +454,7 @@ const MainView = withRouter(observer(class MainView extends React.Component {
                         <a
                           href={`${selectedVideo.path}${selectedFrame.jsonFile}`}
                           download={`${selectedVideo.name}_${selectedFrame.jsonFile}`}
-                          className="badge badge-secondary"
+                          className="badge text-bg-secondary"
                         >
                           <i className="fas fa-download" /> JSON
                         </a>
@@ -462,7 +462,7 @@ const MainView = withRouter(observer(class MainView extends React.Component {
                         <a
                           href={`${selectedVideo.path}${selectedFrame.jsonFile.replace('.json', '.png')}`}
                           download={`${selectedVideo.name}_${selectedFrame.jsonFile.replace('.json', '.png')}`}
-                          className="badge badge-secondary"
+                          className="badge text-bg-secondary"
                         >
                           <i className="fas fa-download" /> Image
                         </a>
@@ -470,7 +470,7 @@ const MainView = withRouter(observer(class MainView extends React.Component {
                         <a
                           href={`${selectedVideo.path}${settings.folders.bbox_images}${selectedFrame.jsonFile.replace('.json', '.png')}`}
                           download={`${selectedVideo.name}_${selectedFrame.jsonFile.replace('.json', '_bbox.png')}`}
-                          className="badge badge-secondary"
+                          className="badge text-bg-secondary"
                         >
                           <i className="fas fa-download" /> Image with bounding-boxes
                         </a>
@@ -542,7 +542,7 @@ const MainView = withRouter(observer(class MainView extends React.Component {
                       Frames {visibleFrames.length} / {frames.length}
                       <a
                         onClick={this.handleDownloadZipFrames}
-                        className="badge badge-secondary"
+                        className="badge text-bg-secondary"
                       >
                         <i className={this.state.isGeneratingZip ?
                                      "fas fa-spinner fa-spin"

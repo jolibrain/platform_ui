@@ -119,13 +119,13 @@ const ListItem = withRouter(observer(class ListItem extends React.Component {
     switch (repository.store.name) {
       case "public":
         badges.push({
-          classNames: "badge badge-primary",
+          classNames: "badge text-bg-primary",
           status: repository.store.name
         });
         break;
       default:
         badges.push({
-          classNames: "badge badge-warning",
+          classNames: "badge text-bg-warning",
           status: repository.store.name
         });
         break;
@@ -137,7 +137,7 @@ const ListItem = withRouter(observer(class ListItem extends React.Component {
         .filter(t => t !== "private" && t !== "public")
         .forEach(t =>
           badges.push({
-            classNames: "badge badge-info",
+            classNames: "badge text-bg-info",
             status: t
           })
         );
@@ -145,7 +145,7 @@ const ListItem = withRouter(observer(class ListItem extends React.Component {
 
     if (repository.metricsDate) {
       badges.push({
-        classNames: "badge badge-light",
+        classNames: "badge text-bg-light",
         status: moment(repository.metricsDate).format("L LT")
       });
     }

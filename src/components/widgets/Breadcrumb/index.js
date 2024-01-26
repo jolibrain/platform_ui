@@ -63,7 +63,7 @@ const Breadcrumb = observer(class Breadcrumb extends React.Component {
         </Link>
         <a
           href={serviceJsonUrl}
-          className="badge badge-secondary"
+          className="badge text-bg-secondary"
           target="_blank"
           rel="noreferrer noopener"
         >
@@ -73,7 +73,7 @@ const Breadcrumb = observer(class Breadcrumb extends React.Component {
         {trainingJsonUrl ? (
           <a
             href={trainingJsonUrl}
-            className="badge badge-secondary"
+            className="badge text-bg-secondary"
             target="_blank"
             rel="noreferrer noopener"
           >
@@ -85,7 +85,7 @@ const Breadcrumb = observer(class Breadcrumb extends React.Component {
         )}
         {service.serverSettings.isWritable ? (
           <a
-            className="badge badge-secondary delete-service"
+            className="badge text-bg-secondary delete-service"
             onClick={this.openDeleteServiceModal}
           >
             <i className="far fa-trash-alt" />
