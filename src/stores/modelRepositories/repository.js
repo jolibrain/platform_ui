@@ -144,7 +144,11 @@ export default class Repository {
 
       } else if(['iteration'].includes(metricKey)) {
 
-        value = this.bestModel['iteration']
+        if(this.bestModel !== null) {
+          value = this.bestModel['iteration'];
+        } else {
+          value = '--';
+        }
 
       } else {
         // train_loss, L1_mean_error, mcll, eucll
