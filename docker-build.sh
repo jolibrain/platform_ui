@@ -68,7 +68,7 @@ do
                             docker push ${IMAGE_NAME}:dev
                             ;;
         --tag )             shift
-                            TAG=$(git tag --sort=committerdate | tail -1)
+                            TAG=$(git tag --sort=version:refname | tail -1)
                             docker build -t ${IMAGE_NAME}:latest -t ${IMAGE_NAME}:${TAG} --no-cache .
                             docker push ${IMAGE_NAME}:latest
                             docker push ${IMAGE_NAME}:${TAG}
