@@ -112,11 +112,17 @@ const PredictAddServiceModal = withRouter(observer(class PredictAddServiceModal 
 
     serviceData.parameters.mllib.gpuid = this.state.gpuId;
 
-    deepdetectStore.newService(serviceName, serviceData, (resp, err) => {
+    deepdetectStore.newService(serviceName, serviceData, async (resp, err) => {
       if (err) {
+        let status;
+        try {
+          status = JSON.parse(err.message).status;
+        } catch (e) {
+          status = undefined;
+        }
         const message =
-          typeof err.status !== "undefined"
-            ? `${err.status.msg}: ${err.status.dd_msg}`
+          typeof status !== "undefined"
+            ? `${status.msg}: ${status.dd_msg}`
             : "Error while creating service";
 
         this.setState({
@@ -237,9 +243,9 @@ const PredictAddServiceModal = withRouter(observer(class PredictAddServiceModal 
               </div>
             ) : (
               <div className="form-group">
-                <label>GPU Id</label>
+                <label>GPU Status</label>
                 <small id="gpuIdHelp" className="form-text text-muted">
-                  No gpu found for <code>{hostableServer.name}</code> server.
+                   &nbsp;- No gpu found for <code>{hostableServer.name}</code> server.
                 </small>
               </div>
             )}

@@ -20,7 +20,7 @@
     "css-loader": "^6.8.1",
     "css-minimizer-webpack-plugin": "^5.0.1",
     "customize-cra": "^1.0.0",
-    "deepdetect-js": "^1.8.11",
+    "deepdetect-js": "^1.8.12",
     "dotenv": "8.2.0",
     "dotenv-expand": "5.1.0",
     "eslint": "^8.51.0",
