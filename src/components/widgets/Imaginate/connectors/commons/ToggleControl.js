@@ -16,7 +16,7 @@ const ToggleControl = observer(class ToggleControl extends React.Component {
             checked={value}
           />
           <label className="custom-control-label" htmlFor={elementId}>
-            {title}
+            &nbsp;{title}
           </label>
         </div>
       </div>

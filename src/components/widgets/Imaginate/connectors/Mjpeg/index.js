@@ -27,6 +27,7 @@ const MjpegConnector = observer(class MjpegConnector extends React.Component {
       showLabels: false,
       segmentationMask: true,
       segmentationConfidence: false,
+      segmentationSeparate: false,
       unsupervisedSearch: false
     };
 
@@ -44,6 +45,9 @@ const MjpegConnector = observer(class MjpegConnector extends React.Component {
       this
     );
     this.handleSegmentationConfidenceToggle = this.handleSegmentationConfidenceToggle.bind(
+      this
+    );
+    this.handleSegmentationSeparateToggle = this.handleSegmentationSeparateToggle.bind(
       this
     );
     this.handleUnsupervisedSearchToggle = this.handleUnsupervisedSearchToggle.bind(
@@ -140,6 +144,12 @@ const MjpegConnector = observer(class MjpegConnector extends React.Component {
     imaginateStore.predict();
   }
 
+  handleSegmentationSeparateToggle(e) {
+    this.setState({
+      segmentationSeparate: e.target.checked
+    });
+  }
+
   handleUnsupervisedSearchToggle(e) {
     const { imaginateStore } = stores;
     const { service } = imaginateStore;
@@ -190,6 +200,14 @@ const MjpegConnector = observer(class MjpegConnector extends React.Component {
     }
 
     if (service.settings.mltype === "segmentation") {
+      uiControls.push(
+        <ToggleControl
+          key="settingCheckbox-display-segmentation-separate"
+          title="Separate Segmentation layer"
+          value={this.state.segmentationSeparate}
+          onChange={this.handleSegmentationSeparateToggle}
+        />
+      );
       uiControls.push(
         <ToggleControl
           key="settingCheckbox-display-segmentation-confidence"
@@ -362,6 +380,7 @@ const MjpegConnector = observer(class MjpegConnector extends React.Component {
                 boxFormat={this.state.boxFormat}
                 showLabels={this.state.showLabels}
                 showSegmentation={showSegmentation}
+                segmentationSeparate={this.state.segmentationSeparate}
               />
             </div>
           </div>

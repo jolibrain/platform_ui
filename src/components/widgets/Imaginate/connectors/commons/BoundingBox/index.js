@@ -305,14 +305,6 @@ const BoundingBox = observer(class BoundingBox extends React.Component {
       });
     }
 
-    // TODO temporary fix on segmentation display
-    // investigate usefulness of previous code in order to maintain this fix
-    const separateSegmentation = false;
-
-    //    const separateSegmentation =
-    //      (pixelSegmentation && pixelSegmentation.length > 0) ||
-    //      segmentationMasks.length > 0;
-
     return (
       <Boundingbox
         className="boundingboxdisplay"
@@ -329,7 +321,7 @@ const BoundingBox = observer(class BoundingBox extends React.Component {
             ? pixelSegmentation
             : []
         }
-        separateSegmentation={separateSegmentation}
+        separateSegmentation={this.props.segmentationSeparate}
         segmentationColors={segmentationColors}
         segmentationMasks={segmentationMasks}
         drawLabel={drawLabel}
