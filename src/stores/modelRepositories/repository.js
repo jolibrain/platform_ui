@@ -10,6 +10,7 @@ export default class Repository {
   jsonConfig = null;
   jsonMetrics = null;
   bestModel = null;
+  bestModelTest = [];
 
   metricsDate = null;
 
@@ -230,6 +231,7 @@ export default class Repository {
     this._loadJsonConfig();
     this._loadJsonMetrics();
     this._loadBestModel();
+    this._loadBestModelTest();
     this._loadBenchmarks();
 
     // Set metrics date if it hasn't already been done
@@ -317,35 +319,47 @@ export default class Repository {
     this.metricsDate = metricsDate;
   }
 
-  _updateBestModel(bestModel) {
-    this.bestModel = bestModel;
-  }
-
   async _loadBestModel() {
     try {
-      let bestModel = {};
       const meta = await this.$reqBestModel();
       this._updateMetricsDate(meta.header["last-modified"]);
-      const bestModelTxt = meta.content;
-
-      // Transform current best_model.txt to json format
-      if (bestModelTxt.length > 0) {
-        bestModelTxt
-          .split("\n")
-          .filter(a =>
-                  a.length > 0 &&
-                  !a.startsWith('test_name')
-                 )
-          .map(a => a.split(":"))
-          .forEach(content => {
-            bestModel[content[0]] = content[1];
-          });
-      }
-
-      this._updateBestModel(bestModel);
+      this.bestModel = this._readBestModelContent(meta.content);
     } catch (e) {
       //console.log(e);
     }
+  }
+
+  async _loadBestModelTest() {
+
+    for(let i = 0; i < 10; i++) {
+      try {
+        const meta = await this.$reqBestModelTestIndex(i);
+        if(meta === null)
+          break;
+        this._updateMetricsDate(meta.header["last-modified"]);
+        this.bestModelTest.push(
+          this._readBestModelContent(meta.content)
+        );
+      } catch (e) {
+        //console.log(e);
+      }
+    }
+  }
+
+  _readBestModelContent(content) {
+    let bestModel = {};
+    content
+      .split("\n")
+      .filter(a =>
+              a.length > 0 &&
+              !a.startsWith('test_name')
+              )
+      .map(a => a.split(":"))
+      .forEach(content => {
+        bestModel[content[0]] = content[1];
+      });
+
+    return bestModel;
   }
 
   _updateBenchmarks(benchmarks) {
@@ -388,6 +402,11 @@ export default class Repository {
   $reqBestModel() {
     if (!this.files.includes("best_model.txt")) return null;
     return agent.Webserver.getFileMeta(`${this.path}best_model.txt`);
+  }
+
+  $reqBestModelTestIndex(index) {
+    if (!this.files.includes(`best_model_test_${index}.txt`)) return null;
+    return agent.Webserver.getFileMeta(`${this.path}best_model_test_${index}.txt`);
   }
 
   $reqBenchmarks() {

@@ -42,9 +42,9 @@ const Card = withRouter(observer(class Card extends React.Component {
 
     if (!repository) return null;
 
-    let modelValues = null;
+    let modelValues = [];
     if (repository.bestModel) {
-      modelValues = (
+      modelValues.push(
         <div className="content row pt-2 ps-2">
           {Object.keys(repository.bestModel).map((k, i) => {
             let attrTitle =
@@ -65,12 +65,38 @@ const Card = withRouter(observer(class Card extends React.Component {
       );
     }
 
+    if (repository.bestModelTest.length > 0) {
+
+      for (let testIndex = 0; testIndex < repository.bestModelTest.length; testIndex++) {
+        const bestModel = repository.bestModelTest[testIndex];
+        modelValues.push(
+          <div className="content row pt-2 ps-2">
+            {Object.keys(bestModel).map((k, i) => {
+              let attrTitle =
+                i === 0
+                  ? k.replace(/\b\w/g, l => l.toUpperCase())
+                  : k.toUpperCase();
+
+              if (attrTitle === "MEANIOU") attrTitle = "Mean IOU";
+
+              return (
+                <div key={i} className="col-6">
+                  <h3>{bestModel[k]}</h3>
+                  <h4>{attrTitle} / test_{testIndex}</h4>
+                </div>
+              );
+            })}
+          </div>
+        );
+      }
+    }
+
     return (
       <div className="col-lg-4 col-md-12 my-2">
         <div className="card">
           <div
             className={
-              modelValues !== null ? "card-body hasBestModel" : "card-body"
+              modelValues.length > 0 ? "card-body hasBestModel" : "card-body"
             }
           >
             <h5 className="card-title">
@@ -108,7 +134,13 @@ const Card = withRouter(observer(class Card extends React.Component {
             </div>
 
             <DownloadModelFiles repository={repository} hidePath />
-            {modelValues}
+            <div style={{
+              maxHeight: 120,
+              overflowX: "hidden",
+              overflowY: "auto"
+            }}>
+              {modelValues}
+            </div>
           </div>
 
           <div className="card-footer text-right">
